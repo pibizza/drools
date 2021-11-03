@@ -35,6 +35,7 @@ public abstract class BaseKnowledgeBuilderResultImpl implements KnowledgeBuilder
         this.resource = resource;
     }
 
+    @Override
     public Resource getResource() {
         return resource;
     }
@@ -43,6 +44,7 @@ public abstract class BaseKnowledgeBuilderResultImpl implements KnowledgeBuilder
         this.resource = resource;
     }
 
+    @Override
     public abstract ResultSeverity getSeverity();
 
     public boolean isError() {
@@ -53,15 +55,18 @@ public abstract class BaseKnowledgeBuilderResultImpl implements KnowledgeBuilder
      * Classes that extend this must provide a printable message,
      * which summarises the error.
      */
+    @Override
     public abstract String getMessage();
 
     /**
      * Returns the lines of the error in the source file
-     * 
+     *
      * @return
      */
+    @Override
     public abstract int[] getLines();
 
+    @Override
     public String toString() {
         return getClass().getSimpleName() + ": " + getMessage();
     }

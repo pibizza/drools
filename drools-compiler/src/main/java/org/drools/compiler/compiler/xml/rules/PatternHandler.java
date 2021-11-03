@@ -39,6 +39,7 @@ public class PatternHandler extends BaseAbstractHandler
 
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -66,6 +67,7 @@ public class PatternHandler extends BaseAbstractHandler
         return patternDescr;
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -84,6 +86,7 @@ public class PatternHandler extends BaseAbstractHandler
         return patternDescr;
     }
 
+    @Override
     public Class generateNodeFor() {
         return PatternDescr.class;
     }

@@ -44,6 +44,7 @@ public class RestrictionConnectiveHandler extends BaseAbstractHandler
     public RestrictionConnectiveHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -62,6 +63,7 @@ public class RestrictionConnectiveHandler extends BaseAbstractHandler
 
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -86,6 +88,7 @@ public class RestrictionConnectiveHandler extends BaseAbstractHandler
         return c;
     }
 
+    @Override
     public Class generateNodeFor() {
         return RestrictionConnectiveDescr.class;
     }

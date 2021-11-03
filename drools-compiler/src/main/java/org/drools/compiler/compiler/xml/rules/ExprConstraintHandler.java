@@ -36,6 +36,7 @@ public class ExprConstraintHandler extends BaseAbstractHandler
     public ExprConstraintHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -46,6 +47,7 @@ public class ExprConstraintHandler extends BaseAbstractHandler
         return "";
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -62,6 +64,7 @@ public class ExprConstraintHandler extends BaseAbstractHandler
         return descr;
     }
 
+    @Override
     public Class generateNodeFor() {
         return ExprConstraintDescr.class;
     }

@@ -36,6 +36,7 @@ public class EvalHandler extends BaseAbstractHandler
     public EvalHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -48,6 +49,7 @@ public class EvalHandler extends BaseAbstractHandler
         return evalDescr;
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -67,6 +69,7 @@ public class EvalHandler extends BaseAbstractHandler
         return evalDescr;
     }
 
+    @Override
     public Class generateNodeFor() {
         return EvalDescr.class;
     }

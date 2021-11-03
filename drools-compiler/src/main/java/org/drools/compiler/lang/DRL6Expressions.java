@@ -3,28 +3,28 @@
 package org.drools.compiler.lang;
 
 import java.util.LinkedList;
-import org.drools.compiler.compiler.DroolsParserException;
-import org.drools.compiler.lang.ParserHelper;
-import org.drools.compiler.lang.DroolsParserExceptionFactory;
-import org.drools.compiler.lang.Location;
+import java.util.List;
+import java.util.Stack;
 
+import org.antlr.runtime.BitSet;
+import org.antlr.runtime.EarlyExitException;
+import org.antlr.runtime.FailedPredicateException;
+import org.antlr.runtime.MismatchedSetException;
+import org.antlr.runtime.NoViableAltException;
+import org.antlr.runtime.ParserRuleReturnScope;
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.RecognizerSharedState;
+import org.antlr.runtime.Token;
+import org.antlr.runtime.TokenStream;
+import org.drools.compiler.compiler.DroolsParserException;
 import org.drools.compiler.lang.api.AnnotatedDescrBuilder;
 import org.drools.compiler.lang.api.AnnotationDescrBuilder;
-
-import org.drools.compiler.lang.descr.AtomicExprDescr;
-import org.drools.compiler.lang.descr.AnnotatedBaseDescr;
 import org.drools.compiler.lang.descr.AnnotationDescr;
+import org.drools.compiler.lang.descr.AtomicExprDescr;
 import org.drools.compiler.lang.descr.BaseDescr;
+import org.drools.compiler.lang.descr.BindingDescr;
 import org.drools.compiler.lang.descr.ConstraintConnectiveDescr;
 import org.drools.compiler.lang.descr.RelationalExprDescr;
-import org.drools.compiler.lang.descr.BindingDescr;
-
-import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
 @SuppressWarnings("all")
 public class DRL6Expressions extends DRLExpressions {
@@ -148,38 +148,47 @@ public class DRL6Expressions extends DRLExpressions {
         this.helper = helper;
     }
 
+    @Override
     public ParserHelper getHelper() {
         return helper;
     }
 
+    @Override
     public boolean hasErrors() {
         return helper.hasErrors();
     }
 
+    @Override
     public List<DroolsParserException> getErrors() {
         return helper.getErrors();
     }
 
+    @Override
     public List<String> getErrorMessages() {
         return helper.getErrorMessages();
     }
 
+    @Override
     public void enableEditorInterface() {
         helper.enableEditorInterface();
     }
 
+    @Override
     public void disableEditorInterface() {
         helper.disableEditorInterface();
     }
 
+    @Override
     public LinkedList<DroolsSentence> getEditorInterface() {
         return helper.getEditorInterface();
     }
 
+    @Override
     public void reportError(RecognitionException ex) {
         helper.reportError(ex);
     }
 
+    @Override
     public void emitErrorMessage(String msg) {
     }
 
@@ -188,26 +197,32 @@ public class DRL6Expressions extends DRLExpressions {
     private int ternOp = 0;
     private boolean hasBindings;
 
+    @Override
     public void setBuildDescr(boolean build) {
         this.buildDescr = build;
     }
 
+    @Override
     public boolean isBuildDescr() {
         return this.buildDescr;
     }
 
+    @Override
     public void setLeftMostExpr(String value) {
         helper.setLeftMostExpr(value);
     }
 
+    @Override
     public String getLeftMostExpr() {
         return helper.getLeftMostExpr();
     }
 
+    @Override
     public void setHasBindings(boolean value) {
         this.hasBindings = value;
     }
 
+    @Override
     public boolean hasBindings() {
         return this.hasBindings;
     }
@@ -1986,6 +2001,7 @@ public class DRL6Expressions extends DRLExpressions {
 
     // $ANTLR start "conditionalOrExpression"
     // src/main/resources/org/drools/compiler/lang/DRL6Expressions.g:228:1: conditionalOrExpression returns [BaseDescr result] : left= conditionalAndExpression ( DOUBLE_PIPE (args= fullAnnotation[null] )? right= conditionalAndExpression )* ;
+    @Override
     public final BaseDescr conditionalOrExpression() throws RecognitionException {
         BaseDescr result = null;
 
@@ -2802,7 +2818,7 @@ public class DRL6Expressions extends DRLExpressions {
         BaseDescr lsd;
     }
 
-    protected Stack<relationalExpression_scope> relationalExpression_stack = new Stack<relationalExpression_scope>();
+    protected Stack<relationalExpression_scope> relationalExpression_stack = new Stack<>();
 
     // $ANTLR start "relationalExpression"
     // src/main/resources/org/drools/compiler/lang/DRL6Expressions.g:368:1: relationalExpression returns [BaseDescr result] : left= shiftExpression ( ( operator | LEFT_PAREN )=>right= orRestriction )* ;
@@ -4706,7 +4722,7 @@ public class DRL6Expressions extends DRLExpressions {
         ParserRuleReturnScope f = null;
         ParserRuleReturnScope s = null;
 
-        exprs = new java.util.ArrayList<String>();
+        exprs = new java.util.ArrayList<>();
         try {
             // src/main/resources/org/drools/compiler/lang/DRL6Expressions.g:579:3: (f= expression ( COMMA s= expression )* )
             // src/main/resources/org/drools/compiler/lang/DRL6Expressions.g:579:7: f= expression ( COMMA s= expression )*
@@ -6904,7 +6920,7 @@ public class DRL6Expressions extends DRLExpressions {
         ParserRuleReturnScope f = null;
         ParserRuleReturnScope s = null;
 
-        exprs = new java.util.ArrayList<String>();
+        exprs = new java.util.ArrayList<>();
         try {
             // src/main/resources/org/drools/compiler/lang/DRL6Expressions.g:733:3: (f= expression ( COMMA s= expression )* )
             // src/main/resources/org/drools/compiler/lang/DRL6Expressions.g:733:7: f= expression ( COMMA s= expression )*

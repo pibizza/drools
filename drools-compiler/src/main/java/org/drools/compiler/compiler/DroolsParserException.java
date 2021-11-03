@@ -77,6 +77,7 @@ public class DroolsParserException extends Exception {
         this.offset = offset;
     }
 
+    @Override
     public String getMessage() {
         if (null == errorCode) {
             return super.getMessage();

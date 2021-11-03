@@ -47,14 +47,17 @@ public class FunctionError extends DroolsError {
         return this.object;
     }
 
+    @Override
     public int[] getLines() {
         return errorLines;
     }
 
+    @Override
     public String getMessage() {
         return this.message;
     }
 
+    @Override
     public String toString() {
         return this.message;
     }

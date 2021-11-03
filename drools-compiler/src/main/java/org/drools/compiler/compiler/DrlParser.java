@@ -46,7 +46,7 @@ public class DrlParser {
 
     // TODO: REMOVE THIS GENERIC MESSAGE ASAP
     private static final String GENERIC_ERROR_MESSAGE = "Unexpected exception raised while parsing. This is a bug. Please contact the Development team :\n";
-    private final List<DroolsError> results = new ArrayList<DroolsError>();
+    private final List<DroolsError> results = new ArrayList<>();
     private List<DroolsSentence> editorSentences = null;
     private Location location = new Location(Location.LOCATION_UNKNOWN);
     private DRLLexer lexer = null;
@@ -115,7 +115,7 @@ public class DrlParser {
     /**
      * Parse and build a rule package from a DRL source with a domain specific
      * language.
-     * 
+     *
      * @param source
      *        As Text.
      * @param dsl
@@ -169,7 +169,7 @@ public class DrlParser {
 
     /**
      * This will expand the DRL. useful for debugging.
-     * 
+     *
      * @param source -
      *        the source which use a DSL
      * @param dsl -
@@ -187,7 +187,7 @@ public class DrlParser {
     /**
      * This will expand the DRL using the given expander resolver. useful for
      * debugging.
-     * 
+     *
      * @param source -
      *        the source which use a DSL
      * @param resolver -

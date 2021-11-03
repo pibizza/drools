@@ -40,6 +40,7 @@ public class RuleHandler extends BaseAbstractHandler
     public RuleHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -58,6 +59,7 @@ public class RuleHandler extends BaseAbstractHandler
         return ruleDescr;
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -99,6 +101,7 @@ public class RuleHandler extends BaseAbstractHandler
         return ruleDescr;
     }
 
+    @Override
     public Class generateNodeFor() {
         return RuleDescr.class;
     }

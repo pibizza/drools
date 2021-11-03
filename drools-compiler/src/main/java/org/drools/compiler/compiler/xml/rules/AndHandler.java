@@ -39,6 +39,7 @@ public class AndHandler extends BaseAbstractHandler
     public AndHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -50,6 +51,7 @@ public class AndHandler extends BaseAbstractHandler
         return andDescr;
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -75,6 +77,7 @@ public class AndHandler extends BaseAbstractHandler
         return andDescr;
     }
 
+    @Override
     public Class generateNodeFor() {
         return AndDescr.class;
     }

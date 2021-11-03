@@ -33,6 +33,7 @@ public class FromHandler extends BaseAbstractHandler
     public FromHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -43,6 +44,7 @@ public class FromHandler extends BaseAbstractHandler
         return fromDesctiptor;
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -63,6 +65,7 @@ public class FromHandler extends BaseAbstractHandler
         return fromDescr;
     }
 
+    @Override
     public Class generateNodeFor() {
         return FromDescr.class;
     }

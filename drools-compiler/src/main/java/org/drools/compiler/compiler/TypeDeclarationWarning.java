@@ -28,14 +28,17 @@ public class TypeDeclarationWarning extends BaseKnowledgeBuilderResultImpl {
         this.line = new int[] { line };
     }
 
+    @Override
     public int[] getLines() {
         return this.line;
     }
 
+    @Override
     public String getMessage() {
         return this.message;
     }
 
+    @Override
     public String toString() {
         return this.getMessage();
     }

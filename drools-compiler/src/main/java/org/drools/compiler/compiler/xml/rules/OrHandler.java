@@ -34,6 +34,7 @@ public class OrHandler extends BaseAbstractHandler
     public OrHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -45,6 +46,7 @@ public class OrHandler extends BaseAbstractHandler
         return orDescr;
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -70,6 +72,7 @@ public class OrHandler extends BaseAbstractHandler
         return orDescr;
     }
 
+    @Override
     public Class generateNodeFor() {
         return OrDescr.class;
     }

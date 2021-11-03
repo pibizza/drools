@@ -36,6 +36,7 @@ public class ReturnValueRestrictionHandler extends BaseAbstractHandler
     public ReturnValueRestrictionHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -49,6 +50,7 @@ public class ReturnValueRestrictionHandler extends BaseAbstractHandler
         return evaluator.trim() + " ";
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -63,6 +65,7 @@ public class ReturnValueRestrictionHandler extends BaseAbstractHandler
         return null;
     }
 
+    @Override
     public Class generateNodeFor() {
         return ReturnValueRestrictionDescr.class;
     }

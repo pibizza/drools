@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -53,7 +53,7 @@ public class ProjectJavaCompiler {
             List<String> classList,
             MemoryResourceReader src) {
 
-        List<KnowledgeBuilderResult> results = new ArrayList<KnowledgeBuilderResult>();
+        List<KnowledgeBuilderResult> results = new ArrayList<>();
 
         if (classList.isEmpty()) {
             return results;
@@ -67,7 +67,7 @@ public class ProjectJavaCompiler {
                 projectClassLoader);
 
         if (result.getErrors().length > 0) {
-            Map<String, ErrorHandler> errorHandlerMap = new HashMap<String, ErrorHandler>();
+            Map<String, ErrorHandler> errorHandlerMap = new HashMap<>();
 
             for (int i = 0; i < result.getErrors().length; i++) {
                 final CompilationProblem err = new CompilationProblemAdapter(result.getErrors()[i]);

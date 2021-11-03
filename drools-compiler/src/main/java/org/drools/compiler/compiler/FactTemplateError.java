@@ -17,7 +17,6 @@
 package org.drools.compiler.compiler;
 
 import org.drools.compiler.lang.descr.BaseDescr;
-import org.kie.internal.jci.CompilationProblem;
 
 public class FactTemplateError extends DroolsError {
     private Package pkg;
@@ -57,6 +56,7 @@ public class FactTemplateError extends DroolsError {
         return this.object;
     }
 
+    @Override
     public int[] getLines() {
         return this.line;
     }
@@ -69,6 +69,7 @@ public class FactTemplateError extends DroolsError {
         return this.line[0];
     }
 
+    @Override
     public String getMessage() {
         return BuilderResultUtils.getProblemMessage(this.object, this.message);
     }

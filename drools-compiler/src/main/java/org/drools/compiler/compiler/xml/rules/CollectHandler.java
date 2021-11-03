@@ -34,6 +34,7 @@ public class CollectHandler extends BaseAbstractHandler
     public CollectHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -44,6 +45,7 @@ public class CollectHandler extends BaseAbstractHandler
         return collectDescr;
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -64,6 +66,7 @@ public class CollectHandler extends BaseAbstractHandler
         return collectDescr;
     }
 
+    @Override
     public Class generateNodeFor() {
         return CollectDescr.class;
     }

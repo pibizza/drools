@@ -32,6 +32,7 @@ public class AccumulateHelperHandler extends BaseAbstractHandler
     public AccumulateHelperHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -43,6 +44,7 @@ public class AccumulateHelperHandler extends BaseAbstractHandler
         return new BaseDescr();
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -77,6 +79,7 @@ public class AccumulateHelperHandler extends BaseAbstractHandler
         return null;
     }
 
+    @Override
     public Class generateNodeFor() {
         return BaseDescr.class;
     }

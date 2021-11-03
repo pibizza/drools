@@ -40,6 +40,7 @@ public class PackageHandler extends BaseAbstractHandler
     public PackageHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -60,6 +61,7 @@ public class PackageHandler extends BaseAbstractHandler
         return packageDescr;
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -117,6 +119,7 @@ public class PackageHandler extends BaseAbstractHandler
         return packageDescr;
     }
 
+    @Override
     public Class generateNodeFor() {
         return PackageDescr.class;
     }

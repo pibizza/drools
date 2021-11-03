@@ -33,10 +33,12 @@ public class ExpressionHandler extends BaseAbstractHandler
     public ExpressionHandler() {
     }
 
+    @Override
     public Class generateNodeFor() {
         return BaseDescr.class;
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -47,6 +49,7 @@ public class ExpressionHandler extends BaseAbstractHandler
         return new BaseDescr();
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {

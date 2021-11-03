@@ -35,9 +35,10 @@ public class ForallHandler extends BaseAbstractHandler
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.kie.xml.Handler#start(java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -52,9 +53,10 @@ public class ForallHandler extends BaseAbstractHandler
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.kie.xml.Handler#end(java.lang.String, java.lang.String)
      */
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -72,9 +74,10 @@ public class ForallHandler extends BaseAbstractHandler
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.kie.xml.Handler#generateNodeFor()
      */
+    @Override
     public Class generateNodeFor() {
         return ForallDescr.class;
     }

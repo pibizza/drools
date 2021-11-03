@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -81,10 +81,12 @@ public class MemoryFileSystem
         folders.put(ROOT_PATH, new HashSet<>());
     }
 
+    @Override
     public Folder getRootFolder() {
         return folder;
     }
 
+    @Override
     public Collection<KiePath> getFilePaths() {
         return fileContents.keySet();
     }
@@ -101,6 +103,7 @@ public class MemoryFileSystem
         return resource != null ? ((InternalResource) resource).getBytes() : null;
     }
 
+    @Override
     public File getFile(KiePath path) {
         KiePath parent = path.getParent();
         return new MemoryFile(this, path.getFileName(), parent != null ? getFolder(parent) : getRootFolder());
@@ -145,10 +148,12 @@ public class MemoryFileSystem
         folders.get(file.getFolder().getPath()).add(file);
     }
 
+    @Override
     public void mark() {
         modifiedFilesSinceLastMark = new HashSet<>();
     }
 
+    @Override
     public Collection<String> getModifiedResourcesSinceLastMark() {
         return modifiedFilesSinceLastMark;
     }
@@ -180,6 +185,7 @@ public class MemoryFileSystem
         }
     }
 
+    @Override
     public boolean remove(Folder folder) {
         if (folder.exists()) {
             remove(folders.get(folder.getPath()));
@@ -206,6 +212,7 @@ public class MemoryFileSystem
         }
     }
 
+    @Override
     public boolean remove(File file) {
         if (file.exists()) {
             KiePath filePath = file.getPath();
@@ -292,19 +299,24 @@ public class MemoryFileSystem
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         MemoryFileSystem other = (MemoryFileSystem) obj;
 
         if (folder == null) {
-            if (other.folder != null)
+            if (other.folder != null) {
                 return false;
-        } else if (!folder.equals(other.folder))
+            }
+        } else if (!folder.equals(other.folder)) {
             return false;
+        }
 
         return fileContents.equals(other.fileContents) && folders.equals(other.folders);
     }
@@ -538,6 +550,7 @@ public class MemoryFileSystem
         return null;
     }
 
+    @Override
     public MemoryFileSystem clone() {
         MemoryFileSystem clone = new MemoryFileSystem();
         for (Map.Entry<KiePath, InternalResource> entry : fileContents.entrySet()) {

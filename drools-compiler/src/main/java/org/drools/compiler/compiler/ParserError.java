@@ -49,6 +49,7 @@ public class ParserError extends DroolsError {
         this.namespace = namespace;
     }
 
+    @Override
     public String getMessage() {
         return this.message;
     }
@@ -58,6 +59,7 @@ public class ParserError extends DroolsError {
         return namespace;
     }
 
+    @Override
     public int[] getLines() {
         return new int[] { this.row };
     }
@@ -70,6 +72,7 @@ public class ParserError extends DroolsError {
         return this.row;
     }
 
+    @Override
     public String toString() {
         return "[" + this.row + "," + this.col + "]: " + this.message;
     }

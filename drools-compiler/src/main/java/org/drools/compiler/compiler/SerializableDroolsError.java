@@ -46,23 +46,27 @@ public class SerializableDroolsError extends DroolsError implements Externalizab
      * Classes that extend this must provide a printable message,
      * which summarises the error.
      */
+    @Override
     public String getMessage() {
         return this.message;
     }
 
     /**
      * Returns the lines of the error in the source file
-     * 
+     *
      * @return
      */
+    @Override
     public int[] getLines() {
         return this.errorLines;
     }
 
+    @Override
     public String toString() {
         return this.errorClassName + ": " + getMessage();
     }
 
+    @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeObject(this.message);
         out.writeObject(this.errorLines);
@@ -70,6 +74,7 @@ public class SerializableDroolsError extends DroolsError implements Externalizab
         out.writeObject(this.namespace);
     }
 
+    @Override
     public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
         this.message = (String) in.readObject();

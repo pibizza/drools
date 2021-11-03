@@ -37,14 +37,17 @@ public class GlobalError extends DroolsError {
         return globalDescr.getIdentifier();
     }
 
+    @Override
     public int[] getLines() {
         return new int[] { globalDescr.getLine() };
     }
 
+    @Override
     public String getMessage() {
         return message;
     }
 
+    @Override
     public String toString() {
         return "GlobalError: " + getGlobal() + " : " + message;
     }

@@ -21,8 +21,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.drools.core.util.ReflectiveVisitor;
-import org.drools.core.util.StringUtils;
 import org.drools.compiler.lang.descr.AccumulateDescr;
 import org.drools.compiler.lang.descr.AccumulateDescr.AccumulateFunctionCallDescr;
 import org.drools.compiler.lang.descr.AndDescr;
@@ -50,6 +48,8 @@ import org.drools.compiler.lang.descr.QueryDescr;
 import org.drools.compiler.lang.descr.ReturnValueRestrictionDescr;
 import org.drools.compiler.lang.descr.RuleDescr;
 import org.drools.compiler.lang.descr.VariableRestrictionDescr;
+import org.drools.core.util.ReflectiveVisitor;
+import org.drools.core.util.StringUtils;
 
 /**
  * This utility will take a AST of a rule package, and emit XML.
@@ -64,6 +64,7 @@ public class XmlDumper extends ReflectiveVisitor
     private final static String eol = System.getProperty("line.separator");
     private String template;
 
+    @Override
     public synchronized String dump(final PackageDescr packageDescr) {
         this.xmlDump = new StringBuilder();
         visitPackageDescr(packageDescr);
@@ -73,10 +74,11 @@ public class XmlDumper extends ReflectiveVisitor
     public void visitAndDescr(final AndDescr descr) {
         this.template = new String();
         if (descr.getDescrs() != Collections.EMPTY_LIST) {
-            if (!this.patternContext)
+            if (!this.patternContext) {
                 this.template = "<and-conditional-element>" + processDescrList(descr.getDescrs()) + "</and-conditional-element>";
-            else
+            } else {
                 this.template = "<and-constraint-connective>" + processDescrList(descr.getDescrs()) + "</and-constraint-connective>";
+            }
         }
     }
 
@@ -105,7 +107,7 @@ public class XmlDumper extends ReflectiveVisitor
         } else {
             if (descr.getIdentifier() != null) {
                 localString.append("<pattern identifier=\"" + descr.getIdentifier() + "\" object-type=\"" + descr.getObjectType() + "\" >" + XmlDumper.eol);
-                ;
+
             } else {
                 localString.append("<pattern object-type=\"" + descr.getObjectType() + "\" >" + XmlDumper.eol);
             }
@@ -153,8 +155,9 @@ public class XmlDumper extends ReflectiveVisitor
         if (descr.isExternalFunction()) {
             AccumulateFunctionCallDescr func = descr.getFunctions().get(0);
             tmpstr += "<external-function evaluator=\"" + func.getFunction() + "\" expression=\"" + func.getParams()[0] + "\"/>";
-        } else
+        } else {
             tmpstr += "<init>" + descr.getInitCode() + "</init><action>" + descr.getActionCode() + "</action><result>" + descr.getResultCode() + "</result>";
+        }
 
         this.template = tmpstr + " </accumulate> </from> ";
     }
@@ -223,10 +226,11 @@ public class XmlDumper extends ReflectiveVisitor
     public void visitOrDescr(final OrDescr descr) {
         this.template = new String();
         if (descr.getDescrs() != Collections.EMPTY_LIST) {
-            if (!this.patternContext)
+            if (!this.patternContext) {
                 this.template = "<or-conditional-element>" + processDescrList(descr.getDescrs()) + "</or-conditional-element>";
-            else
+            } else {
                 this.template = "<or-constraint-connective>" + processDescrList(descr.getDescrs()) + "</or-constraint-connective>";
+            }
         }
     }
 

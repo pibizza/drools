@@ -38,6 +38,7 @@ public class FunctionHandler extends BaseAbstractHandler
     public FunctionHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -53,6 +54,7 @@ public class FunctionHandler extends BaseAbstractHandler
         return new FunctionDescr(name, returnType);
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -91,6 +93,7 @@ public class FunctionHandler extends BaseAbstractHandler
         return functionDescr;
     }
 
+    @Override
     public Class generateNodeFor() {
         return FunctionDescr.class;
     }

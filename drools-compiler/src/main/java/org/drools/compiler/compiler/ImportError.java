@@ -37,14 +37,17 @@ public class ImportError extends DroolsError {
         return importDescr.getTarget();
     }
 
+    @Override
     public int[] getLines() {
         return this.line;
     }
 
+    @Override
     public String getMessage() {
         return "Error importing : '" + getGlobal() + "'";
     }
 
+    @Override
     public String toString() {
         return getMessage();
     }

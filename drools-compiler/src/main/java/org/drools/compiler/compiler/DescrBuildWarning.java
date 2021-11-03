@@ -49,6 +49,7 @@ public class DescrBuildWarning extends DroolsWarning {
         return this.object;
     }
 
+    @Override
     public int[] getLines() {
         return this.errorLines;
     }
@@ -65,10 +66,12 @@ public class DescrBuildWarning extends DroolsWarning {
         return this.descr != null ? this.descr.getColumn() : -1;
     }
 
+    @Override
     public String getMessage() {
         return BuilderResultUtils.getProblemMessage(this.object, this.message, "\n");
     }
 
+    @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder()
                 .append(this.message)

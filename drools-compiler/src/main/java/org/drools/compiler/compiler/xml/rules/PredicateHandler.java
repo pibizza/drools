@@ -38,6 +38,7 @@ public class PredicateHandler extends BaseAbstractHandler
     public PredicateHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -47,6 +48,7 @@ public class PredicateHandler extends BaseAbstractHandler
         return ""; // need to return something, otherwise it'll pop the parent
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -68,6 +70,7 @@ public class PredicateHandler extends BaseAbstractHandler
         return expr;
     }
 
+    @Override
     public Class generateNodeFor() {
         return PredicateDescr.class;
     }

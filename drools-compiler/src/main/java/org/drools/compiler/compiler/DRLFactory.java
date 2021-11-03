@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -14,6 +14,9 @@
 */
 
 package org.drools.compiler.compiler;
+
+import java.io.InputStream;
+import java.io.Reader;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.ANTLRReaderStream;
@@ -34,9 +37,6 @@ import org.drools.compiler.lang.DRLLexer;
 import org.drools.compiler.lang.DRLParser;
 import org.drools.compiler.lang.ParserHelper;
 import org.kie.internal.builder.conf.LanguageLevelOption;
-
-import java.io.InputStream;
-import java.io.Reader;
 
 public class DRLFactory {
 

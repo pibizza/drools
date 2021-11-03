@@ -31,6 +31,7 @@ public class FieldBindingHandler extends BaseAbstractHandler
     public FieldBindingHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -55,6 +56,7 @@ public class FieldBindingHandler extends BaseAbstractHandler
         return fieldBindingDescr;
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -69,6 +71,7 @@ public class FieldBindingHandler extends BaseAbstractHandler
         return fieldBindingDescr;
     }
 
+    @Override
     public Class generateNodeFor() {
         return BindingDescr.class;
     }

@@ -31,6 +31,7 @@ public class QualifiedIdentifierRestrictionHandler extends BaseAbstractHandler
     public QualifiedIdentifierRestrictionHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -44,6 +45,7 @@ public class QualifiedIdentifierRestrictionHandler extends BaseAbstractHandler
         return evaluator.trim() + " ";
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -59,6 +61,7 @@ public class QualifiedIdentifierRestrictionHandler extends BaseAbstractHandler
         return null;
     }
 
+    @Override
     public Class generateNodeFor() {
         return QualifiedIdentifierRestrictionDescr.class;
     }

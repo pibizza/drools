@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -37,10 +37,12 @@ public class MemoryFile implements File,
         this.mfs = mfs;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public InputStream getContents() throws IOException {
         if (!exists()) {
             throw new IOException("File does not exist, unable to open InputStream");
@@ -48,6 +50,7 @@ public class MemoryFile implements File,
         return new ByteArrayInputStream(mfs.getFileContents(this));
     }
 
+    @Override
     public KiePath getPath() {
         return folder.getPath().resolve(name);
     }
@@ -56,10 +59,12 @@ public class MemoryFile implements File,
         return this.folder;
     }
 
+    @Override
     public boolean exists() {
         return mfs.existsFile(getPath());
     }
 
+    @Override
     public void setContents(InputStream is) throws IOException {
         if (!exists()) {
             throw new IOException("File does not exists, cannot set contents");
@@ -68,6 +73,7 @@ public class MemoryFile implements File,
         mfs.setFileContents(this, new InputStreamResource(is));
     }
 
+    @Override
     public void create(InputStream is) throws IOException {
         mfs.setFileContents(this, new InputStreamResource(is));
     }
@@ -83,23 +89,30 @@ public class MemoryFile implements File,
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         MemoryFile other = (MemoryFile) obj;
         if (folder == null) {
-            if (other.folder != null)
+            if (other.folder != null) {
                 return false;
-        } else if (!folder.equals(other.folder))
+            }
+        } else if (!folder.equals(other.folder)) {
             return false;
+        }
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         return true;
     }
 

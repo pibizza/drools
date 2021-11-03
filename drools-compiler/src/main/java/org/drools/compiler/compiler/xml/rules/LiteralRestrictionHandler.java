@@ -33,6 +33,7 @@ public class LiteralRestrictionHandler extends BaseAbstractHandler
     public LiteralRestrictionHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -57,6 +58,7 @@ public class LiteralRestrictionHandler extends BaseAbstractHandler
         return evaluator.trim() + " " + text.trim();
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -69,6 +71,7 @@ public class LiteralRestrictionHandler extends BaseAbstractHandler
         return null;
     }
 
+    @Override
     public Class generateNodeFor() {
         return LiteralRestrictionDescr.class;
     }

@@ -38,6 +38,7 @@ public class QueryHandler extends BaseAbstractHandler
     public QueryHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -53,6 +54,7 @@ public class QueryHandler extends BaseAbstractHandler
         return queryDescr;
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -72,6 +74,7 @@ public class QueryHandler extends BaseAbstractHandler
         return queryDescr;
     }
 
+    @Override
     public Class generateNodeFor() {
         return QueryDescr.class;
     }

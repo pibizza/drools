@@ -43,14 +43,17 @@ public class TypeDeclarationError extends DroolsError {
         return namespace;
     }
 
+    @Override
     public int[] getLines() {
         return this.line;
     }
 
+    @Override
     public String getMessage() {
         return this.errorMessage;
     }
 
+    @Override
     public String toString() {
         return this.getMessage();
     }

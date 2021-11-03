@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -43,6 +43,7 @@ public class PackageBuilderResults extends ArrayList<KnowledgeBuilderResult>
         }
     }
 
+    @Override
     public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
         SerializableDroolsError[] temp = (SerializableDroolsError[]) in.readObject();
@@ -52,6 +53,7 @@ public class PackageBuilderResults extends ArrayList<KnowledgeBuilderResult>
         }
     }
 
+    @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         if (!this.errors.getClass().getComponentType().equals(SerializableDroolsError.class)) {
             SerializableDroolsError[] temp = new SerializableDroolsError[this.errors.length];
@@ -69,10 +71,12 @@ public class PackageBuilderResults extends ArrayList<KnowledgeBuilderResult>
         return errors;
     }
 
+    @Override
     public boolean isEmpty() {
         return this.errors.length == 0;
     }
 
+    @Override
     public String toString() {
         final StringBuilder buf = new StringBuilder();
         for (int i = 0, length = this.errors.length; i < length; i++) {

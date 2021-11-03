@@ -16,9 +16,9 @@
 
 package org.drools.compiler.compiler;
 
+import org.kie.api.io.Resource;
 import org.kie.internal.builder.KnowledgeBuilderError;
 import org.kie.internal.builder.ResultSeverity;
-import org.kie.api.io.Resource;
 
 public abstract class DroolsError extends BaseKnowledgeBuilderResultImpl implements KnowledgeBuilderError {
 
@@ -30,13 +30,14 @@ public abstract class DroolsError extends BaseKnowledgeBuilderResultImpl impleme
         super(resource);
     }
 
+    @Override
     public ResultSeverity getSeverity() {
         return ResultSeverity.ERROR;
     }
 
     /**
      * Default implementation (overriden where possible and meaningful) returning just an empty string
-     * 
+     *
      * @return
      */
     public String getNamespace() {

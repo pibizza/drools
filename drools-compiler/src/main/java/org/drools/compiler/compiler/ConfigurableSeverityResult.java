@@ -15,10 +15,10 @@
 */
 package org.drools.compiler.compiler;
 
+import org.kie.api.io.Resource;
 import org.kie.internal.builder.KnowledgeBuilderConfiguration;
 import org.kie.internal.builder.ResultSeverity;
 import org.kie.internal.builder.conf.KBuilderSeverityOption;
-import org.kie.api.io.Resource;
 
 /**
  *
@@ -34,7 +34,7 @@ public abstract class ConfigurableSeverityResult extends BaseKnowledgeBuilderRes
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.kie.compiler.DroolsProblem#getProblemType()
      */
     @Override

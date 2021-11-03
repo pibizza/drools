@@ -38,6 +38,7 @@ public class NotHandler extends BaseAbstractHandler
     public NotHandler() {
     }
 
+    @Override
     public Object start(final String uri,
             final String localName,
             final Attributes attrs,
@@ -49,6 +50,7 @@ public class NotHandler extends BaseAbstractHandler
         return notDescr;
     }
 
+    @Override
     public Object end(final String uri,
             final String localName,
             final ExtensibleXmlParser parser) throws SAXException {
@@ -67,6 +69,7 @@ public class NotHandler extends BaseAbstractHandler
         return null;
     }
 
+    @Override
     public Class generateNodeFor() {
         return NotDescr.class;
     }

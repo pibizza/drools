@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -31,5 +31,6 @@ public interface File extends FileSystemItem {
 
     void create(InputStream is) throws IOException;
 
+    @Override
     KiePath getPath();
 }

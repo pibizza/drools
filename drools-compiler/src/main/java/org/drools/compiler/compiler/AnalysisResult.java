@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -24,28 +24,28 @@ public interface AnalysisResult {
 
     /**
      * Returns the Set<String> of all used identifiers
-     * 
+     *
      * @return
      */
     Set<String> getIdentifiers();
 
     /**
      * Returns the array of lists<String> of bound identifiers
-     * 
+     *
      * @return
      */
     BoundIdentifiers getBoundIdentifiers();
 
     /**
      * Returns the Set<String> of not bounded identifiers
-     * 
+     *
      * @return
      */
     Set<String> getNotBoundedIdentifiers();
 
     /**
      * Returns the Set<String> of declared local variables
-     * 
+     *
      * @return
      */
     Set<String> getLocalVariables();
