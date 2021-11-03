@@ -57,6 +57,7 @@ public abstract class BaseKnowledgeBuilderResultImpl implements KnowledgeBuilder
 
     /**
      * Returns the lines of the error in the source file
+     * 
      * @return
      */
     public abstract int[] getLines();

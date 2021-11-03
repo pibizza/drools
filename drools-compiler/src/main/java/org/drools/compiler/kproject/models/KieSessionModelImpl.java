@@ -39,54 +39,56 @@ import org.kie.api.runtime.conf.ClockTypeOption;
 public class KieSessionModelImpl
         implements
         KieSessionModel {
-    private String                           name;
+    private String name;
 
-    private KieSessionType                   type =  KieSessionType.STATEFUL;
+    private KieSessionType type = KieSessionType.STATEFUL;
 
-    private ClockTypeOption                  clockType = ClockTypeOption.REALTIME;
+    private ClockTypeOption clockType = ClockTypeOption.REALTIME;
 
-    private BeliefSystemTypeOption           beliefSystem = BeliefSystemTypeOption.get(BeliefSystemType.SIMPLE.toString());
+    private BeliefSystemTypeOption beliefSystem = BeliefSystemTypeOption.get(BeliefSystemType.SIMPLE.toString());
 
-    private String                           scope;
+    private String scope;
 
-    private KieBaseModelImpl                 kBase;
+    private KieBaseModelImpl kBase;
 
-    private final List<ListenerModel>        listeners = new ArrayList<ListenerModel>();
+    private final List<ListenerModel> listeners = new ArrayList<ListenerModel>();
     private final List<WorkItemHandlerModel> wihs = new ArrayList<WorkItemHandlerModel>();
-    private final List<ChannelModel>         channels = new ArrayList<ChannelModel>();
-    private       Map<String, String>        calendars;
+    private final List<ChannelModel> channels = new ArrayList<ChannelModel>();
+    private Map<String, String> calendars;
 
-    private boolean                          isDefault = false;
+    private boolean isDefault = false;
 
-    private String                           consoleLogger;
+    private String consoleLogger;
 
-    private FileLoggerModel                  fileLogger;
+    private FileLoggerModel fileLogger;
 
-    private boolean                          directFiring = false;
+    private boolean directFiring = false;
 
-    private boolean                          threadSafe = true;
+    private boolean threadSafe = true;
 
-    private boolean                          accumulateNullPropagation = false;
+    private boolean accumulateNullPropagation = false;
 
-    private KieSessionModelImpl() { }
+    private KieSessionModelImpl() {
+    }
 
     public KieSessionModelImpl(KieBaseModelImpl kBase, String name) {
         this.kBase = kBase;
         this.name = name;
     }
-    
+
     public KieBaseModelImpl getKieBaseModel() {
         return kBase;
     }
+
     public boolean isDefault() {
         return isDefault;
     }
-    
+
     public void setKBase(KieBaseModel kieBaseModel) {
         this.kBase = (KieBaseModelImpl) kieBaseModel;
     }
 
-    public KieSessionModel setDefault( boolean isDefault) {
+    public KieSessionModel setDefault(boolean isDefault) {
         this.isDefault = isDefault;
         return this;
     }
@@ -97,11 +99,10 @@ public class KieSessionModelImpl
     }
 
     @Override
-    public KieSessionModel setDirectFiring( boolean directFiring ) {
+    public KieSessionModel setDirectFiring(boolean directFiring) {
         this.directFiring = directFiring;
         return this;
     }
-
 
     @Override
     public boolean isThreadSafe() {
@@ -109,7 +110,7 @@ public class KieSessionModelImpl
     }
 
     @Override
-    public KieSessionModel setThreadSafe( boolean threadSafe ) {
+    public KieSessionModel setThreadSafe(boolean threadSafe) {
         this.threadSafe = threadSafe;
         return this;
     }
@@ -125,7 +126,9 @@ public class KieSessionModelImpl
         return this;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.kie.kproject.KieSessionModel#getName()
      */
     public String getName() {
@@ -138,14 +141,18 @@ public class KieSessionModelImpl
         return this;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.kie.kproject.KieSessionModel#getType()
      */
     public KieSessionType getType() {
         return type;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.kie.kproject.KieSessionModel#setType(java.lang.String)
      */
     public KieSessionModel setType(KieSessionType type) {
@@ -153,14 +160,18 @@ public class KieSessionModelImpl
         return this;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.kie.kproject.KieSessionModel#getClockType()
      */
     public ClockTypeOption getClockType() {
         return clockType;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.kie.kproject.KieSessionModel#setClockType(org.kie.api.runtime.conf.ClockTypeOption)
      */
     public KieSessionModel setClockType(ClockTypeOption clockType) {
@@ -186,7 +197,7 @@ public class KieSessionModelImpl
     @Override
     public String getScope() {
         return this.scope;
-    }    
+    }
 
     public ListenerModel newListenerModel(String type, ListenerModel.Kind kind) {
         ListenerModelImpl listenerModel = new ListenerModelImpl(this, type, kind);
@@ -225,19 +236,19 @@ public class KieSessionModelImpl
     private void addWorkItemHandelerModel(WorkItemHandlerModel wih) {
         wihs.add(wih);
     }
-    
+
     public ChannelModel newChannelModel(String name, String type) {
-    	ChannelModelImpl channelModel = new ChannelModelImpl(this, name, type);
-    	channels.add(channelModel);
-    	return channelModel;
+        ChannelModelImpl channelModel = new ChannelModelImpl(this, name, type);
+        channels.add(channelModel);
+        return channelModel;
     }
-    
+
     public List<ChannelModel> getChannelModels() {
-    	return channels;
+        return channels;
     }
-    
+
     private void addChannelModel(ChannelModel channel) {
-    	channels.add(channel);
+        channels.add(channel);
     }
 
     public KieSessionModel addCalendar(String name, String type) {
@@ -289,19 +300,19 @@ public class KieSessionModelImpl
         public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
             KieSessionModelImpl kSession = (KieSessionModelImpl) value;
             writer.addAttribute("name", kSession.getName());
-            writer.addAttribute("type", kSession.getType().toString().toLowerCase() );
-            writer.addAttribute( "default", Boolean.toString(kSession.isDefault()) );
-            writer.addAttribute( "directFiring", Boolean.toString(kSession.isDirectFiring()) );
-            writer.addAttribute( "threadSafe", Boolean.toString(kSession.isThreadSafe()) );
-            writer.addAttribute( "accumulateNullPropagation", Boolean.toString(kSession.isAccumulateNullPropagation()) );
+            writer.addAttribute("type", kSession.getType().toString().toLowerCase());
+            writer.addAttribute("default", Boolean.toString(kSession.isDefault()));
+            writer.addAttribute("directFiring", Boolean.toString(kSession.isDirectFiring()));
+            writer.addAttribute("threadSafe", Boolean.toString(kSession.isThreadSafe()));
+            writer.addAttribute("accumulateNullPropagation", Boolean.toString(kSession.isAccumulateNullPropagation()));
             if (kSession.getClockType() != null) {
                 writer.addAttribute("clockType", kSession.getClockType().getClockType());
             }
-            if ( kSession.getBeliefSystem() != null ) {
-                writer.addAttribute( "beliefSystem", kSession.getBeliefSystem().getBeliefSystemType().toLowerCase() );
+            if (kSession.getBeliefSystem() != null) {
+                writer.addAttribute("beliefSystem", kSession.getBeliefSystem().getBeliefSystemType().toLowerCase());
             }
             if (kSession.getScope() != null) {
-                writer.addAttribute("scope", kSession.getScope() );
+                writer.addAttribute("scope", kSession.getScope());
             }
             if (kSession.getConsoleLogger() != null) {
                 writer.startNode("consoleLogger");
@@ -340,72 +351,75 @@ public class KieSessionModelImpl
         public Object unmarshal(HierarchicalStreamReader reader, final UnmarshallingContext context) {
             final KieSessionModelImpl kSession = new KieSessionModelImpl();
             kSession.name = reader.getAttribute("name");
-            kSession.setDefault( "true".equals(reader.getAttribute( "default" )) );
-            kSession.setDirectFiring( "true".equals(reader.getAttribute( "directFiring" )) );
-            kSession.setThreadSafe( "true".equals(reader.getAttribute( "threadSafe" )) );
-            kSession.setAccumulateNullPropagation( "true".equals(reader.getAttribute( "accumulateNullPropagation" )) );
+            kSession.setDefault("true".equals(reader.getAttribute("default")));
+            kSession.setDirectFiring("true".equals(reader.getAttribute("directFiring")));
+            kSession.setThreadSafe("true".equals(reader.getAttribute("threadSafe")));
+            kSession.setAccumulateNullPropagation("true".equals(reader.getAttribute("accumulateNullPropagation")));
 
             String kSessionType = reader.getAttribute("type");
-            kSession.setType(kSessionType != null ? KieSessionType.valueOf( kSessionType.toUpperCase() ) : KieSessionType.STATEFUL);
+            kSession.setType(kSessionType != null ? KieSessionType.valueOf(kSessionType.toUpperCase()) : KieSessionType.STATEFUL);
 
             String clockType = reader.getAttribute("clockType");
             if (clockType != null) {
                 kSession.setClockType(ClockTypeOption.get(clockType));
             }
 
-            String beliefSystem = reader.getAttribute( "beliefSystem" );
-            if ( beliefSystem != null ) {
-                kSession.setBeliefSystem( BeliefSystemTypeOption.get( beliefSystem ) );
+            String beliefSystem = reader.getAttribute("beliefSystem");
+            if (beliefSystem != null) {
+                kSession.setBeliefSystem(BeliefSystemTypeOption.get(beliefSystem));
             }
 
             String scope = reader.getAttribute("scope");
             if (scope != null) {
-                kSession.setScope( scope );
-            }            
-            
-            readNodes( reader, new AbstractXStreamConverter.NodeReader() {
+                kSession.setScope(scope);
+            }
+
+            readNodes(reader, new AbstractXStreamConverter.NodeReader() {
                 public void onNode(HierarchicalStreamReader reader,
-                                   String name,
-                                   String value) {
-                    if ("listeners".equals( name )) {
+                        String name,
+                        String value) {
+                    if ("listeners".equals(name)) {
                         while (reader.hasMoreChildren()) {
                             reader.moveDown();
                             String nodeName = reader.getNodeName();
                             ListenerModelImpl listener = readObject(reader, context, ListenerModelImpl.class);
-                            listener.setKSession( kSession );
+                            listener.setKSession(kSession);
                             listener.setKind(ListenerModel.Kind.fromString(nodeName));
                             kSession.addListenerModel(listener);
                             reader.moveUp();
                         }
-                    } else if ( "workItemHandlers".equals( name ) ) {
+                    } else if ("workItemHandlers".equals(name)) {
                         List<WorkItemHandlerModelImpl> wihs = readObjectList(reader, context, WorkItemHandlerModelImpl.class);
                         for (WorkItemHandlerModelImpl wih : wihs) {
-                            wih.setKSession( kSession );
+                            wih.setKSession(kSession);
                             kSession.addWorkItemHandelerModel(wih);
                         }
                     } else if ("calendars".equals(name)) {
                         kSession.calendars = readMap(reader, context, "name", "type");
-                    } else if ( "channels".equals( name ) ) {
+                    } else if ("channels".equals(name)) {
                         List<ChannelModelImpl> channels = readObjectList(reader, context, ChannelModelImpl.class);
                         for (ChannelModelImpl channel : channels) {
-                            channel.setKSession( kSession );
-                            kSession.addChannelModel(channel);;
+                            channel.setKSession(kSession);
+                            kSession.addChannelModel(channel);
+                            ;
                         }
-                    } else if ( "consoleLogger".equals( name ) ) {
+                    } else if ("consoleLogger".equals(name)) {
                         String consoleLogger = reader.getAttribute("name");
                         kSession.setConsoleLogger(consoleLogger == null ? "" : consoleLogger);
-                    } else if ( "fileLogger".equals( name ) ) {
-                        FileLoggerModelImpl fileLoggerModel = new FileLoggerModelImpl( reader.getAttribute("file") );
+                    } else if ("fileLogger".equals(name)) {
+                        FileLoggerModelImpl fileLoggerModel = new FileLoggerModelImpl(reader.getAttribute("file"));
                         try {
-                            fileLoggerModel.setInterval( Integer.parseInt(reader.getAttribute("interval")) );
-                        } catch (Exception e) { }
+                            fileLoggerModel.setInterval(Integer.parseInt(reader.getAttribute("interval")));
+                        } catch (Exception e) {
+                        }
                         try {
-                            fileLoggerModel.setThreaded( Boolean.parseBoolean(reader.getAttribute("threaded")) );
-                        } catch (Exception e) { }
+                            fileLoggerModel.setThreaded(Boolean.parseBoolean(reader.getAttribute("threaded")));
+                        } catch (Exception e) {
+                        }
                         kSession.fileLogger = fileLoggerModel;
                     }
                 }
-            } );
+            });
             return kSession;
         }
     }

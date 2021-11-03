@@ -28,9 +28,9 @@ public class EvaluatorBasedRestrictionDescr extends RestrictionDescr {
 
     private static final long serialVersionUID = 150l;
 
-    private String            evaluator;
-    private boolean           negated;
-    private List<String>      parameters;
+    private String evaluator;
+    private boolean negated;
+    private List<String> parameters;
 
     /**
      * Creates a new EvaluatorBasedRestriction
@@ -46,11 +46,11 @@ public class EvaluatorBasedRestrictionDescr extends RestrictionDescr {
      * @param parameterText the parameter text, in case there is any. null otherwise.
      */
     public EvaluatorBasedRestrictionDescr(final String evaluator,
-                                          final boolean isNegated,
-                                          final String parameterText) {
-        this( evaluator,
-              isNegated,
-              Collections.singletonList( parameterText ) );
+            final boolean isNegated,
+            final String parameterText) {
+        this(evaluator,
+                isNegated,
+                Collections.singletonList(parameterText));
     }
 
     /**
@@ -61,8 +61,8 @@ public class EvaluatorBasedRestrictionDescr extends RestrictionDescr {
      * @param parameters the list of parameters texts, in case there is any. null otherwise.
      */
     public EvaluatorBasedRestrictionDescr(final String evaluator,
-                                          final boolean isNegated,
-                                          final List<String> parameters) {
+            final boolean isNegated,
+            final List<String> parameters) {
         this.evaluator = evaluator;
         this.negated = isNegated;
         this.parameters = parameters;
@@ -70,6 +70,7 @@ public class EvaluatorBasedRestrictionDescr extends RestrictionDescr {
 
     /**
      * Returns the evaluator ID for this restriction
+     * 
      * @return
      */
     public String getEvaluator() {
@@ -94,34 +95,34 @@ public class EvaluatorBasedRestrictionDescr extends RestrictionDescr {
      * @return the parameterText
      */
     public String getParameterText() {
-        if( parameters != null ) {
+        if (parameters != null) {
             StringBuilder builder = new StringBuilder();
             boolean first = true;
-            for( String param : parameters ) {
-                if( first ) {
+            for (String param : parameters) {
+                if (first) {
                     first = false;
                 } else {
-                    builder.append( "," );
+                    builder.append(",");
                 }
-                builder.append( param );
+                builder.append(param);
             }
             return builder.toString();
         }
         return null;
     }
-    
+
     public List<String> getParameters() {
         return parameters;
     }
-    
-    public void setParameters( List<String> parameters ) {
+
+    public void setParameters(List<String> parameters) {
         this.parameters = parameters;
     }
 
     /**
      * Sets the evaluator ID for this restriction
      */
-    public void setEvaluator( String evaluator ) {
+    public void setEvaluator(String evaluator) {
         this.evaluator = evaluator;
     }
 
@@ -131,7 +132,7 @@ public class EvaluatorBasedRestrictionDescr extends RestrictionDescr {
      * 
      * @param negated the negated
      */
-    public void setNegated( boolean negated ) {
+    public void setNegated(boolean negated) {
         this.negated = negated;
     }
 

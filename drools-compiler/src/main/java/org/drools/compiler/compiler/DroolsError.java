@@ -36,6 +36,7 @@ public abstract class DroolsError extends BaseKnowledgeBuilderResultImpl impleme
 
     /**
      * Default implementation (overriden where possible and meaningful) returning just an empty string
+     * 
      * @return
      */
     public String getNamespace() {

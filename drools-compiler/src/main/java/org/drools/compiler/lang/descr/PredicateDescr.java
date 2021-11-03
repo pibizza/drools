@@ -22,15 +22,16 @@ import java.util.List;
 
 public class PredicateDescr extends RestrictionDescr {
     private static final long serialVersionUID = 510l;
-    private Object            content;
+    private Object content;
 
-    private String[]          declarations;
+    private String[] declarations;
 
-    private String            classMethodName;
+    private String classMethodName;
 
-    private List<String>      parameters;
+    private List<String> parameters;
 
-    public PredicateDescr() { }
+    public PredicateDescr() {
+    }
 
     public PredicateDescr(final Object text) {
         this(null, text);
@@ -81,10 +82,9 @@ public class PredicateDescr extends RestrictionDescr {
         return "predicate '" + content + "'";
     }
 
-
-    public void copyParameters( BaseDescr base ) {
-        if ( base instanceof RelationalExprDescr ) {
-            setParameters( ((RelationalExprDescr) base).getParameters() );
+    public void copyParameters(BaseDescr base) {
+        if (base instanceof RelationalExprDescr) {
+            setParameters(((RelationalExprDescr) base).getParameters());
         }
     }
 }

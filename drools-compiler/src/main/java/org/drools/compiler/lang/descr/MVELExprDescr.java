@@ -21,14 +21,14 @@ public class MVELExprDescr extends DeclarativeInvokerDescr {
     private static final long serialVersionUID = 510l;
 
     public MVELExprDescr() {
-        this( null );
+        this(null);
     }
 
     public MVELExprDescr(final String expr) {
-        super( );
-        setText( expr );
+        super();
+        setText(expr);
     }
-    
+
     public String getExpression() {
         return getText();
     }

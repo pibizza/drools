@@ -20,26 +20,26 @@ import org.kie.api.definition.process.Process;
 import org.kie.internal.builder.KnowledgeBuilderConfiguration;
 
 public class DuplicateProcess extends ConfigurableSeverityResult {
-    
+
     public static final String KEY = "duplicateProcess";
     private static final int[] line = new int[0];
-    
+
     private String processId;
-    
+
     public DuplicateProcess(Process process, KnowledgeBuilderConfiguration config) {
         super(process.getResource(), config);
         processId = process.getId();
     }
 
-	@Override
-	public String getMessage() {
-		return "Process with same id already exists: " + processId;
-	}
+    @Override
+    public String getMessage() {
+        return "Process with same id already exists: " + processId;
+    }
 
-	@Override
-	public int[] getLines() {
-		return line;
-	}
+    @Override
+    public int[] getLines() {
+        return line;
+    }
 
     @Override
     String getOptionKey() {

@@ -30,36 +30,36 @@ import org.xml.sax.SAXException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class VariableRestrictionsHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public VariableRestrictionsHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
 
-        String evaluator = attrs.getValue( "evaluator" );
-        String identifier = attrs.getValue( "identifier" );
-        
-        emptyAttributeCheck( localName, "evaluator", evaluator, parser );
-        emptyAttributeCheck( localName, identifier, "identifier", parser );
-        
-        return evaluator.trim() + " "  + identifier.trim();        
+        String evaluator = attrs.getValue("evaluator");
+        String identifier = attrs.getValue("identifier");
+
+        emptyAttributeCheck(localName, "evaluator", evaluator, parser);
+        emptyAttributeCheck(localName, identifier, "identifier", parser);
+
+        return evaluator.trim() + " " + identifier.trim();
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
-        
+
         ConnectiveDescr c = (ConnectiveDescr) parser.getParent();
         String s = (String) parser.getCurrent();
 
-        c.add( s );
+        c.add(s);
         return null;
     }
 

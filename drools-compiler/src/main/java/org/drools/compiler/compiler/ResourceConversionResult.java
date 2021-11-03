@@ -47,12 +47,15 @@ public class ResourceConversionResult {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         ResourceConversionResult that = (ResourceConversionResult) o;
 
-        if (content != null ? !content.equals(that.content) : that.content != null) return false;
+        if (content != null ? !content.equals(that.content) : that.content != null)
+            return false;
         return !(type != null ? !type.equals(that.type) : that.type != null);
 
     }

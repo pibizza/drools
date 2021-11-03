@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class KieBaseUpdatersImpl implements Consumer<KieBaseUpdaterFactory>,
-                                            KieBaseUpdaters {
+        KieBaseUpdaters {
 
     List<KieBaseUpdaterFactory> children = new ArrayList<>();
 

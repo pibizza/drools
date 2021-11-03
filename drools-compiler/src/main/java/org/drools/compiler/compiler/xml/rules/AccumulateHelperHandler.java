@@ -25,56 +25,53 @@ import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-
 public class AccumulateHelperHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
 
     public AccumulateHelperHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
 
-        parser.startElementBuilder( localName,
-                                                  attrs );
+        parser.startElementBuilder(localName,
+                attrs);
 
         return new BaseDescr();
     }
-    
+
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
 
         final Element element = parser.endElementBuilder();
 
-        
-        
-        final String expression =((org.w3c.dom.Text)element.getChildNodes().item( 0 )).getWholeText();
+        final String expression = ((org.w3c.dom.Text) element.getChildNodes().item(0)).getWholeText();
 
         final Object parent = parser.getParent();
 
         final AccumulateDescr accumulate = (AccumulateDescr) parent;
 
-        if ( localName.equals( "init" ) ) {
-            emptyContentCheck( localName, expression, parser );
-            accumulate.setInitCode( expression.trim() );
-        } else if ( localName.equals( "action" ) ) {
-            emptyContentCheck( localName, expression, parser );
-            accumulate.setActionCode( expression.trim() );
-        } else if ( localName.equals( "result" ) ) {
-            emptyContentCheck( localName, expression, parser );
-            accumulate.setResultCode( expression.trim() );
-        } else if ( localName.equals( "reverse" ) ) {
-            emptyContentCheck( localName, expression, parser );
-            accumulate.setReverseCode( expression.trim() );
-        } else if ( localName.equals( "external-function" ) ) {
-            accumulate.addFunction( element.getAttribute( "evaluator" ), 
-                                    null, // no support to bindings yet?
-                                    false,
-                                    new String[] { element.getAttribute( "expression" ) });
+        if (localName.equals("init")) {
+            emptyContentCheck(localName, expression, parser);
+            accumulate.setInitCode(expression.trim());
+        } else if (localName.equals("action")) {
+            emptyContentCheck(localName, expression, parser);
+            accumulate.setActionCode(expression.trim());
+        } else if (localName.equals("result")) {
+            emptyContentCheck(localName, expression, parser);
+            accumulate.setResultCode(expression.trim());
+        } else if (localName.equals("reverse")) {
+            emptyContentCheck(localName, expression, parser);
+            accumulate.setReverseCode(expression.trim());
+        } else if (localName.equals("external-function")) {
+            accumulate.addFunction(element.getAttribute("evaluator"),
+                    null, // no support to bindings yet?
+                    false,
+                    new String[] { element.getAttribute("expression") });
         }
 
         return null;

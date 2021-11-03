@@ -26,38 +26,38 @@ import java.util.Collections;
 import java.util.List;
 
 public class TypeDeclarationDescr
-    extends AbstractClassTypeDeclarationDescr
-    implements Comparable<TypeDeclarationDescr> {
+        extends AbstractClassTypeDeclarationDescr
+        implements Comparable<TypeDeclarationDescr> {
 
-    private List<QualifiedName>          superTypes;
+    private List<QualifiedName> superTypes;
 
-    private boolean                      trait;
+    private boolean trait;
 
     public TypeDeclarationDescr() {
-        this( null );
+        this(null);
     }
 
     public TypeDeclarationDescr(final String typeName) {
-        super( typeName );
+        super(typeName);
     }
 
     public TypeDeclarationDescr(final String typeName, final String typeNamespace) {
-        super( typeName, typeNamespace );
+        super(typeName, typeNamespace);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void readExternal( ObjectInput in ) throws IOException,
-                                              ClassNotFoundException {
-        super.readExternal( in );
+    public void readExternal(ObjectInput in) throws IOException,
+            ClassNotFoundException {
+        super.readExternal(in);
         this.superTypes = (List<QualifiedName>) in.readObject();
         this.trait = in.readBoolean();
     }
-    
+
     @Override
-    public void writeExternal( ObjectOutput out ) throws IOException {
+    public void writeExternal(ObjectOutput out) throws IOException {
         super.writeExternal(out);
-        out.writeObject( superTypes );
+        out.writeObject(superTypes);
         out.writeBoolean(trait);
     }
 
@@ -74,42 +74,42 @@ public class TypeDeclarationDescr
     }
 
     public List<QualifiedName> getSuperTypes() {
-        return superTypes != null ? superTypes : Collections.<QualifiedName>emptyList();
+        return superTypes != null ? superTypes : Collections.<QualifiedName> emptyList();
     }
 
-    public void addSuperType( String type ) {
-        addSuperType( new QualifiedName( type ) );
+    public void addSuperType(String type) {
+        addSuperType(new QualifiedName(type));
     }
 
-    public void addSuperType( QualifiedName type ) {
-        if ( superTypes == null ) {
+    public void addSuperType(QualifiedName type) {
+        if (superTypes == null) {
             superTypes = new ArrayList<QualifiedName>();
         }
-        if ( ! this.superTypes.contains( type ) ) {
-            this.superTypes.add( type );
+        if (!this.superTypes.contains(type)) {
+            this.superTypes.add(type);
         }
     }
 
     public int compareTo(TypeDeclarationDescr descr) {
-        if ( ! this.getSuperTypes().isEmpty() && ! descr.getSuperTypes().isEmpty() ) {
-            for ( QualifiedName q : descr.getSuperTypes() ) {
-                if ( this.getSuperTypes().contains( q ) ) {
+        if (!this.getSuperTypes().isEmpty() && !descr.getSuperTypes().isEmpty()) {
+            for (QualifiedName q : descr.getSuperTypes()) {
+                if (this.getSuperTypes().contains(q)) {
                     return -1;
                 }
             }
-            for ( QualifiedName q : this.getSuperTypes() ) {
-                if ( descr.getSuperTypes().contains( q ) ) {
+            for (QualifiedName q : this.getSuperTypes()) {
+                if (descr.getSuperTypes().contains(q)) {
                     return +1;
                 }
             }
         }
-        for ( TypeFieldDescr field : this.getFields().values() ) {
-            if ( descr.getTypeName().equals( field.getPattern().getObjectType() ) ) {
+        for (TypeFieldDescr field : this.getFields().values()) {
+            if (descr.getTypeName().equals(field.getPattern().getObjectType())) {
                 return -1;
             }
         }
-        for ( TypeFieldDescr field : descr.getFields().values() ) {
-            if ( this.getTypeName().equals( field.getPattern().getObjectType() ) ) {
+        for (TypeFieldDescr field : descr.getFields().values()) {
+            if (this.getTypeName().equals(field.getPattern().getObjectType())) {
                 return +1;
             }
         }
@@ -126,7 +126,7 @@ public class TypeDeclarationDescr
 
     @Override
     public void indexByFQN(boolean isStrict) {
-        super.indexByFQN( isStrict );
-        trait |= hasAnnotation( Trait.class );
+        super.indexByFQN(isStrict);
+        trait |= hasAnnotation(Trait.class);
     }
 }

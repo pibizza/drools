@@ -24,21 +24,21 @@ import java.util.Map;
  * A class to hold contextual information during DRL parsing
  */
 public class Location {
-    
+
     public static final int LOCATION_UNKNOWN = 0;
-    
+
     public static final int LOCATION_LHS_BEGIN_OF_CONDITION = 1;
     public static final int LOCATION_LHS_BEGIN_OF_CONDITION_EXISTS = 2;
     public static final int LOCATION_LHS_BEGIN_OF_CONDITION_AND_OR = 3;
     public static final int LOCATION_LHS_BEGIN_OF_CONDITION_NOT = 4;
-    
+
     public static final int LOCATION_LHS_INSIDE_CONDITION_START = 100;
     public static final int LOCATION_LHS_INSIDE_CONDITION_OPERATOR = 101;
     public static final int LOCATION_LHS_INSIDE_CONDITION_ARGUMENT = 102;
     public static final int LOCATION_LHS_INSIDE_CONDITION_END = 103;
 
     public static final int LOCATION_LHS_INSIDE_EVAL = 200;
-    
+
     public static final int LOCATION_LHS_FROM = 300;
     public static final int LOCATION_LHS_FROM_COLLECT = 301;
     public static final int LOCATION_LHS_FROM_ACCUMULATE = 302;
@@ -51,11 +51,11 @@ public class Location {
     public static final int LOCATION_LHS_FROM_ACCUMULATE_RESULT = 309;
     public static final int LOCATION_LHS_FROM_ACCUMULATE_RESULT_INSIDE = 310;
     public static final int LOCATION_LHS_FROM_ENTRY_POINT = 311;
-    
+
     public static final int LOCATION_RHS = 1000;
     public static final int LOCATION_RULE_HEADER = 2000;
     public static final int LOCATION_RULE_HEADER_KEYWORD = 2001;
-    
+
     public static final String LOCATION_PROPERTY_CLASS_NAME = "ClassName";
     public static final String LOCATION_PROPERTY_PROPERTY_NAME = "PropertyName";
     public static final String LOCATION_PROPERTY_OPERATOR = "Operator";
@@ -69,7 +69,7 @@ public class Location {
     public static final String LOCATION_LHS_CONTENT = "LHSContent";
     public static final String LOCATION_RHS_CONTENT = "RHSContent";
     public static final String LOCATION_HEADER_CONTENT = "HeaderContent";
-    
+
     private int type;
     private Map properties = new HashMap();
 

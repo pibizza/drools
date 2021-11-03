@@ -36,26 +36,26 @@ public class DiskResourceReader implements ResourceReader {
 
     private Map<KiePath, Integer> filesHashing;
 
-    public DiskResourceReader( final File root ) {
+    public DiskResourceReader(final File root) {
         this.root = root;
         this.rootPath = KiePath.of(root.getAbsolutePath());
     }
-    
-    public boolean isAvailable( KiePath resourcePath ) {
+
+    public boolean isAvailable(KiePath resourcePath) {
         return new File(root, resourcePath.asString()).exists();
     }
 
-    public byte[] getBytes( KiePath resourcePath ) {
+    public byte[] getBytes(KiePath resourcePath) {
         try {
             return readBytesFromInputStream(new FileInputStream(new File(root, resourcePath.asString())));
-        } catch(Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
-    
+
     public Collection<KiePath> getFilePaths() {
         List<KiePath> list = new ArrayList<>();
-        list(root, list);        
+        list(root, list);
         return list;
     }
 
@@ -83,23 +83,23 @@ public class DiskResourceReader implements ResourceReader {
     private Map<KiePath, Integer> hashFiles() {
         Map<KiePath, Integer> hashing = new HashMap<>();
         for (KiePath filePath : getFilePaths()) {
-            byte[] bytes = getBytes( filePath );
-            if ( bytes != null ) {
+            byte[] bytes = getBytes(filePath);
+            if (bytes != null) {
                 hashing.put(filePath, Arrays.hashCode(bytes));
             }
         }
         return hashing;
     }
 
-    private void list( final File pFile, final List<KiePath> pFiles ) {
+    private void list(final File pFile, final List<KiePath> pFiles) {
         if (pFile.isDirectory()) {
             final File[] directoryFiles = pFile.listFiles();
             for (int i = 0; i < directoryFiles.length; i++) {
                 list(directoryFiles[i], pFiles);
             }
         } else {
-            pFiles.add( KiePath.of( pFile.getAbsolutePath().substring(rootPath.asString().length()+1) ) );
+            pFiles.add(KiePath.of(pFile.getAbsolutePath().substring(rootPath.asString().length() + 1)));
         }
-    }   
-    
+    }
+
 }

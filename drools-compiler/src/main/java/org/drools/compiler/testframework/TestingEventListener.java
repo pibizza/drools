@@ -54,14 +54,14 @@ public class TestingEventListener implements AgendaEventListener {
 
     long totalFires;
 
-
     public TestingEventListener() {
     }
 
     public AgendaFilter getAgendaFilter(final HashSet<String> ruleNames, final boolean inclusive) {
         return new AgendaFilter() {
             public boolean accept(Match match) {
-                if (ruleNames.size() ==0) return true;
+                if (ruleNames.size() == 0)
+                    return true;
                 String ruleName = match.getRule().getName();
 
                 //jdelong: please don't want to see records of cancelled activations
@@ -86,46 +86,40 @@ public class TestingEventListener implements AgendaEventListener {
         };
     }
 
-
-
-//    /**
-//     * Exclusive means DO NOT fire the rules mentioned.
-//     * For those rules, they will still be counted, just not allowed to activate.
-//     * Inclusive means only the rules on the given set are allowed to fire.
-//     * The other rules will have their activation counted but not be allowed to fire.
-//     */
-//    static void stubOutRules(HashSet<String> ruleNames, RuleBase ruleBase,
-//            boolean inclusive) {
-//        if (ruleNames.size() > 0) {
-//            if (inclusive) {
-//                Package[] pkgs = ruleBase.getPackages();
-//                for (int i = 0; i < pkgs.length; i++) {
-//                    Rule[] rules = pkgs[i].getRules();
-//                    for (int j = 0; j < rules.length; j++) {
-//                        Rule rule = rules[j];
-//                        if (!ruleNames.contains(rule.getName())) {
-//                            rule.setConsequence(new NilConsequence());
-//                        }
-//                    }
-//                }
-//            } else {
-//                Package[] pkgs = ruleBase.getPackages();
-//                for (int i = 0; i < pkgs.length; i++) {
-//                    Package pkg = pkgs[i];
-//                    for (Iterator iter = ruleNames.iterator(); iter.hasNext();) {
-//                        String name = (String) iter.next();
-//                        Rule rule = pkg.getRule(name);
-//                        rule.setConsequence(new NilConsequence());
-//                    }
-//
-//                }
-//            }
-//        }
-//    }
-
-
-
-
+    //    /**
+    //     * Exclusive means DO NOT fire the rules mentioned.
+    //     * For those rules, they will still be counted, just not allowed to activate.
+    //     * Inclusive means only the rules on the given set are allowed to fire.
+    //     * The other rules will have their activation counted but not be allowed to fire.
+    //     */
+    //    static void stubOutRules(HashSet<String> ruleNames, RuleBase ruleBase,
+    //            boolean inclusive) {
+    //        if (ruleNames.size() > 0) {
+    //            if (inclusive) {
+    //                Package[] pkgs = ruleBase.getPackages();
+    //                for (int i = 0; i < pkgs.length; i++) {
+    //                    Rule[] rules = pkgs[i].getRules();
+    //                    for (int j = 0; j < rules.length; j++) {
+    //                        Rule rule = rules[j];
+    //                        if (!ruleNames.contains(rule.getName())) {
+    //                            rule.setConsequence(new NilConsequence());
+    //                        }
+    //                    }
+    //                }
+    //            } else {
+    //                Package[] pkgs = ruleBase.getPackages();
+    //                for (int i = 0; i < pkgs.length; i++) {
+    //                    Package pkg = pkgs[i];
+    //                    for (Iterator iter = ruleNames.iterator(); iter.hasNext();) {
+    //                        String name = (String) iter.next();
+    //                        Rule rule = pkg.getRule(name);
+    //                        rule.setConsequence(new NilConsequence());
+    //                    }
+    //
+    //                }
+    //            }
+    //        }
+    //    }
 
     public void matchCancelled(MatchCancelledEvent event) {
     }
@@ -160,11 +154,9 @@ public class TestingEventListener implements AgendaEventListener {
         }
     }
 
-
-
     /**
      * @return A map of the number of times a given rule "fired".
-     * (of course in reality the side effect of its firing may have been nilled out).
+     *         (of course in reality the side effect of its firing may have been nilled out).
      */
     public Map<String, Integer> getFiringCounts() {
         return this.firingCounts;
@@ -205,14 +197,13 @@ public class TestingEventListener implements AgendaEventListener {
 
     }
 
-
-
 }
 
 class NilConsequence implements Consequence {
 
     public void evaluate(KnowledgeHelper knowledgeHelper, ReteEvaluator reteEvaluator) throws Exception {
     }
+
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
 
     }
@@ -220,9 +211,8 @@ class NilConsequence implements Consequence {
     public void writeExternal(ObjectOutput out) throws IOException {
 
     }
-    
+
     public String getName() {
         return "default";
     }
 }
-

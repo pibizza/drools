@@ -37,14 +37,14 @@ import org.kie.api.io.Resource;
  * A builder implementation for PackageDescrs using a fluent API.
  */
 public class PackageDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBuilder, PackageDescr>
-    implements
-    PackageDescrBuilder {
+        implements
+        PackageDescrBuilder {
 
     private Resource resource;
 
     protected PackageDescrBuilderImpl() {
-        super( null,
-               new PackageDescr() );
+        super(null,
+                new PackageDescr());
     }
 
     private PackageDescrBuilderImpl(Resource resource) {
@@ -71,69 +71,69 @@ public class PackageDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBu
     /**
      * {@inheritDoc}
      */
-    public PackageDescrBuilder name( String name ) {
-        descr.setNamespace( name );
+    public PackageDescrBuilder name(String name) {
+        descr.setNamespace(name);
         return this;
     }
 
     public UnitDescrBuilder newUnit() {
-        UnitDescrBuilder impl = new UnitDescrBuilderImpl( this );
-        descr.setUnit( initDescr(impl) );
+        UnitDescrBuilder impl = new UnitDescrBuilderImpl(this);
+        descr.setUnit(initDescr(impl));
         return impl;
     }
 
     public ImportDescrBuilder newImport() {
-        ImportDescrBuilder impl = new ImportDescrBuilderImpl( this, false );
-        descr.addImport( initDescr(impl) );
+        ImportDescrBuilder impl = new ImportDescrBuilderImpl(this, false);
+        descr.addImport(initDescr(impl));
         return impl;
     }
 
     public ImportDescrBuilder newFunctionImport() {
-        ImportDescrBuilder impl = new ImportDescrBuilderImpl( this, true );
-        descr.addFunctionImport( (FunctionImportDescr) initDescr(impl) );
+        ImportDescrBuilder impl = new ImportDescrBuilderImpl(this, true);
+        descr.addFunctionImport((FunctionImportDescr) initDescr(impl));
         return impl;
     }
 
     public AccumulateImportDescrBuilder newAccumulateImport() {
-        AccumulateImportDescrBuilder impl = new AccumulateImportDescrBuilderImpl( this );
-        descr.addAccumulateImport( (AccumulateImportDescr) initDescr(impl) );
+        AccumulateImportDescrBuilder impl = new AccumulateImportDescrBuilderImpl(this);
+        descr.addAccumulateImport((AccumulateImportDescr) initDescr(impl));
         return impl;
     }
 
     public GlobalDescrBuilder newGlobal() {
-        GlobalDescrBuilder global = new GlobalDescrBuilderImpl( this );
-        descr.addGlobal( initDescr(global) );
+        GlobalDescrBuilder global = new GlobalDescrBuilderImpl(this);
+        descr.addGlobal(initDescr(global));
         return global;
     }
 
     public DeclareDescrBuilder newDeclare() {
-        DeclareDescrBuilder declare = new DeclareDescrBuilderImpl( this );
+        DeclareDescrBuilder declare = new DeclareDescrBuilderImpl(this);
         return declare;
     }
 
     public RuleDescrBuilder newRule() {
-        RuleDescrBuilder rule = new RuleDescrBuilderImpl( this );
-        descr.addRule( initDescr(rule) );
-        rule.getDescr().setUnit( descr.getUnit() );
+        RuleDescrBuilder rule = new RuleDescrBuilderImpl(this);
+        descr.addRule(initDescr(rule));
+        rule.getDescr().setUnit(descr.getUnit());
         return rule;
     }
 
     public QueryDescrBuilder newQuery() {
-        QueryDescrBuilder query = new QueryDescrBuilderImpl( this );
-        descr.addRule( initDescr(query) );
-        query.getDescr().setUnit( descr.getUnit() );
+        QueryDescrBuilder query = new QueryDescrBuilderImpl(this);
+        descr.addRule(initDescr(query));
+        query.getDescr().setUnit(descr.getUnit());
         return query;
     }
 
     public FunctionDescrBuilder newFunction() {
-        FunctionDescrBuilder function = new FunctionDescrBuilderImpl( this );
-        descr.addFunction( initDescr(function) );
+        FunctionDescrBuilder function = new FunctionDescrBuilderImpl(this);
+        descr.addFunction(initDescr(function));
         return function;
     }
 
-    public AttributeDescrBuilder<PackageDescrBuilder> attribute( String name ) {
-        AttributeDescrBuilder<PackageDescrBuilder> attribute = new AttributeDescrBuilderImpl<PackageDescrBuilder>( this, name );
-        descr.addAttribute( initDescr(attribute) );
+    public AttributeDescrBuilder<PackageDescrBuilder> attribute(String name) {
+        AttributeDescrBuilder<PackageDescrBuilder> attribute = new AttributeDescrBuilderImpl<PackageDescrBuilder>(this, name);
+        descr.addAttribute(initDescr(attribute));
         return attribute;
     }
 
@@ -144,19 +144,19 @@ public class PackageDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBu
         return descr;
     }
 
-    public PackageDescrBuilder attribute( String name,
-                                          String value ) {
-        descr.addAttribute( new AttributeDescr( name,
-                                                value ) );
+    public PackageDescrBuilder attribute(String name,
+            String value) {
+        descr.addAttribute(new AttributeDescr(name,
+                value));
         return this;
     }
 
-    public PackageDescrBuilder attribute( String name,
-                                          String value,
-                                          AttributeDescr.Type type ) {
-        descr.addAttribute( new AttributeDescr( name,
-                                                value,
-                                                type ) );
+    public PackageDescrBuilder attribute(String name,
+            String value,
+            AttributeDescr.Type type) {
+        descr.addAttribute(new AttributeDescr(name,
+                value,
+                type));
         return this;
     }
 

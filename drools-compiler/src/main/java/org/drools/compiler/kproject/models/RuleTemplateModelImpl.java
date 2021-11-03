@@ -33,9 +33,10 @@ public class RuleTemplateModelImpl implements RuleTemplateModel {
     private int row;
     private int col;
 
-    public RuleTemplateModelImpl() { }
+    public RuleTemplateModelImpl() {
+    }
 
-    public RuleTemplateModelImpl( KieBaseModelImpl kbase, String dtable, String template, int row, int col ) {
+    public RuleTemplateModelImpl(KieBaseModelImpl kbase, String dtable, String template, int row, int col) {
         this.kbase = kbase;
         this.dtable = dtable;
         this.template = template;
@@ -51,7 +52,7 @@ public class RuleTemplateModelImpl implements RuleTemplateModel {
         return dtable;
     }
 
-    public void setDtable( String dtable ) {
+    public void setDtable(String dtable) {
         this.dtable = dtable;
     }
 
@@ -59,7 +60,7 @@ public class RuleTemplateModelImpl implements RuleTemplateModel {
         return template;
     }
 
-    public void setTemplate( String template ) {
+    public void setTemplate(String template) {
         this.template = template;
     }
 
@@ -67,7 +68,7 @@ public class RuleTemplateModelImpl implements RuleTemplateModel {
         return row;
     }
 
-    public void setRow( int row ) {
+    public void setRow(int row) {
         this.row = row;
     }
 
@@ -75,7 +76,7 @@ public class RuleTemplateModelImpl implements RuleTemplateModel {
         return col;
     }
 
-    public void setCol( int col ) {
+    public void setCol(int col) {
         this.col = col;
     }
 
@@ -87,18 +88,18 @@ public class RuleTemplateModelImpl implements RuleTemplateModel {
 
         public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
             RuleTemplateModelImpl rtm = (RuleTemplateModelImpl) value;
-            writer.addAttribute( "dtable", rtm.getDtable() );
-            writer.addAttribute( "template", rtm.getTemplate() );
-            writer.addAttribute( "row", "" + rtm.getRow() );
-            writer.addAttribute( "col", "" + rtm.getCol() );
+            writer.addAttribute("dtable", rtm.getDtable());
+            writer.addAttribute("template", rtm.getTemplate());
+            writer.addAttribute("row", "" + rtm.getRow());
+            writer.addAttribute("col", "" + rtm.getCol());
         }
 
         public Object unmarshal(HierarchicalStreamReader reader, final UnmarshallingContext context) {
             RuleTemplateModelImpl rtm = new RuleTemplateModelImpl();
             rtm.setDtable(reader.getAttribute("dtable"));
             rtm.setTemplate(reader.getAttribute("template"));
-            rtm.setRow(Integer.parseInt( reader.getAttribute("row")) );
-            rtm.setCol(Integer.parseInt( reader.getAttribute( "col" ) ) );
+            rtm.setRow(Integer.parseInt(reader.getAttribute("row")));
+            rtm.setCol(Integer.parseInt(reader.getAttribute("col")));
             return rtm;
         }
     }

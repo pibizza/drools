@@ -48,31 +48,30 @@ public class TypeDeclarationCache {
     private KnowledgeBuilderImpl kbuilder;
     private Map<String, TypeDeclaration> cacheTypes = new HashMap<String, TypeDeclaration>();
 
-    TypeDeclarationCache( KnowledgeBuilderImpl kbuilder ) {
+    TypeDeclarationCache(KnowledgeBuilderImpl kbuilder) {
         this.kbuilder = kbuilder;
-        if ( hasMvel() ) {
+        if (hasMvel()) {
             initBuiltinTypeDeclarations();
         }
     }
 
     private void initBuiltinTypeDeclarations() {
-        initBuiltinTypeDeclaration( Collection.class );
-        initBuiltinTypeDeclaration( Map.class );
-        initBuiltinTypeDeclaration( Match.class );
-        initBuiltinTypeDeclaration(Thing.class).setKind( TypeDeclaration.Kind.TRAIT );
+        initBuiltinTypeDeclaration(Collection.class);
+        initBuiltinTypeDeclaration(Map.class);
+        initBuiltinTypeDeclaration(Match.class);
+        initBuiltinTypeDeclaration(Thing.class).setKind(TypeDeclaration.Kind.TRAIT);
     }
 
     private TypeDeclaration initBuiltinTypeDeclaration(Class<?> cls) {
-        TypeDeclaration type = new TypeDeclaration( cls.getSimpleName() );
-        type.setTypesafe( false );
-        type.setTypeClass( cls );
-        setClassDefinitionOnTypeDeclaration( cls, type );
-        cacheTypes.put( cls.getCanonicalName(), type );
+        TypeDeclaration type = new TypeDeclaration(cls.getSimpleName());
+        type.setTypesafe(false);
+        type.setTypeClass(cls);
+        setClassDefinitionOnTypeDeclaration(cls, type);
+        cacheTypes.put(cls.getCanonicalName(), type);
         return type;
     }
 
-
-    public TypeDeclaration getAndRegisterTypeDeclaration( Class<?> cls, String packageName ) {
+    public TypeDeclaration getAndRegisterTypeDeclaration(Class<?> cls, String packageName) {
         if (cls.isPrimitive() || cls.isArray()) {
             return null;
         }
@@ -88,12 +87,12 @@ public class TypeDeclarationCache {
         }
 
         typeDeclaration = createTypeDeclarationForBean(cls);
-        initTypeDeclaration( cls, typeDeclaration );
-        registerTypeDeclaration( packageName, typeDeclaration );
+        initTypeDeclaration(cls, typeDeclaration);
+        registerTypeDeclaration(packageName, typeDeclaration);
         return typeDeclaration;
     }
 
-    TypeDeclaration getTypeDeclaration( Class<?> cls ) {
+    TypeDeclaration getTypeDeclaration(Class<?> cls) {
         if (cls.isPrimitive() || cls.isArray())
             return null;
 
@@ -102,15 +101,13 @@ public class TypeDeclarationCache {
         return tdecl != null ? tdecl : createTypeDeclaration(cls);
     }
 
-
-    private void registerTypeDeclaration( String packageName,
-                                          TypeDeclaration typeDeclaration ) {
-        if (typeDeclaration.getNature() == TypeDeclaration.Nature.DECLARATION || packageName.equals( typeDeclaration.getTypeClass().getPackage().getName() )) {
+    private void registerTypeDeclaration(String packageName,
+            TypeDeclaration typeDeclaration) {
+        if (typeDeclaration.getNature() == TypeDeclaration.Nature.DECLARATION || packageName.equals(typeDeclaration.getTypeClass().getPackage().getName())) {
             PackageRegistry packageRegistry = kbuilder.getOrCreatePackageRegistry(new PackageDescr(packageName, ""));
             packageRegistry.getPackage().addTypeDeclaration(typeDeclaration);
         }
     }
-
 
     private TypeDeclaration createTypeDeclaration(Class<?> cls) {
         TypeDeclaration typeDeclaration = getExistingTypeDeclaration(cls);
@@ -124,7 +121,7 @@ public class TypeDeclarationCache {
     }
 
     public TypeDeclaration getCachedTypeDeclaration(Class<?> cls) {
-        return getCachedTypeDeclaration( cls.getName() );
+        return getCachedTypeDeclaration(cls.getName());
     }
 
     public TypeDeclaration getCachedTypeDeclaration(String className) {
@@ -133,35 +130,34 @@ public class TypeDeclarationCache {
 
     private TypeDeclaration getExistingTypeDeclaration(Class<?> cls) {
         TypeDeclaration typeDeclaration = null;
-        PackageRegistry pkgReg = kbuilder.getPackageRegistry( ClassUtils.getPackage( cls ) );
+        PackageRegistry pkgReg = kbuilder.getPackageRegistry(ClassUtils.getPackage(cls));
         if (pkgReg != null) {
             String className = cls.getName();
-            String typeName = className.substring(className.lastIndexOf( "." ) + 1 );
+            String typeName = className.substring(className.lastIndexOf(".") + 1);
             typeDeclaration = pkgReg.getPackage().getTypeDeclaration(typeName);
         }
         return typeDeclaration;
     }
 
     private void initTypeDeclaration(Class<?> cls,
-                                     TypeDeclaration typeDeclaration) {
+            TypeDeclaration typeDeclaration) {
         ClassDefinition clsDef = typeDeclaration.getTypeClassDef();
         if (clsDef == null) {
-            clsDef = setClassDefinitionOnTypeDeclaration( cls, typeDeclaration );
+            clsDef = setClassDefinitionOnTypeDeclaration(cls, typeDeclaration);
         } else {
-            processFieldsPosition( cls, clsDef, typeDeclaration );
+            processFieldsPosition(cls, clsDef, typeDeclaration);
         }
 
         if (typeDeclaration.isPropertyReactive()) {
             TypeDeclarationUtils.processModifiedProps(cls, clsDef);
         }
 
-
         // build up a set of all the super classes and interfaces
         Set<TypeDeclaration> tdecls = new LinkedHashSet<TypeDeclaration>();
 
         tdecls.add(typeDeclaration);
         buildTypeDeclarations(cls,
-                              tdecls);
+                tdecls);
 
         // Iterate and for each typedeclr assign it's value if it's not already set
         // We start from the rear as those are the furthest away classes and interfaces
@@ -169,56 +165,56 @@ public class TypeDeclarationCache {
         for (int i = tarray.length - 1; i >= 0; i--) {
             TypeDeclaration currentTDecl = tarray[i];
             if (!isSet(typeDeclaration.getSetMask(),
-                       TypeDeclaration.ROLE_BIT) && isSet(currentTDecl.getSetMask(),
-                                                          TypeDeclaration.ROLE_BIT)) {
+                    TypeDeclaration.ROLE_BIT) && isSet(currentTDecl.getSetMask(),
+                            TypeDeclaration.ROLE_BIT)) {
                 typeDeclaration.setRole(currentTDecl.getRole());
             }
             if (!isSet(typeDeclaration.getSetMask(),
-                       TypeDeclaration.FORMAT_BIT) && isSet(currentTDecl.getSetMask(),
-                                                            TypeDeclaration.FORMAT_BIT)) {
+                    TypeDeclaration.FORMAT_BIT) && isSet(currentTDecl.getSetMask(),
+                            TypeDeclaration.FORMAT_BIT)) {
                 typeDeclaration.setFormat(currentTDecl.getFormat());
             }
             if (!isSet(typeDeclaration.getSetMask(),
-                       TypeDeclaration.TYPESAFE_BIT) && isSet(currentTDecl.getSetMask(),
-                                                              TypeDeclaration.TYPESAFE_BIT)) {
+                    TypeDeclaration.TYPESAFE_BIT) && isSet(currentTDecl.getSetMask(),
+                            TypeDeclaration.TYPESAFE_BIT)) {
                 typeDeclaration.setTypesafe(currentTDecl.isTypesafe());
             }
         }
 
         this.cacheTypes.put(cls.getName(),
-                            typeDeclaration);
+                typeDeclaration);
     }
 
-    private ClassDefinition setClassDefinitionOnTypeDeclaration( Class<?> cls, TypeDeclaration typeDeclaration ) {
-        ClassDefinition clsDef = createClassDefinition( cls, typeDeclaration.getResource() );
+    private ClassDefinition setClassDefinitionOnTypeDeclaration(Class<?> cls, TypeDeclaration typeDeclaration) {
+        ClassDefinition clsDef = createClassDefinition(cls, typeDeclaration.getResource());
         typeDeclaration.setTypeClassDef(clsDef);
         return clsDef;
     }
 
-    private void processFieldsPosition( Class<?> cls,
-                                        ClassDefinition clsDef,
-                                        TypeDeclaration typeDeclaration ) {
+    private void processFieldsPosition(Class<?> cls,
+            ClassDefinition clsDef,
+            TypeDeclaration typeDeclaration) {
         // it's a new type declaration, so generate the @Position for it
         Collection<Field> fields = new ArrayList<Field>();
         Class<?> tempKlass = cls;
         while (tempKlass != null && tempKlass != Object.class) {
-            Collections.addAll( fields, tempKlass.getDeclaredFields() );
+            Collections.addAll(fields, tempKlass.getDeclaredFields());
             tempKlass = tempKlass.getSuperclass();
         }
 
-        FieldDefinition[] orderedFields = new FieldDefinition[ fields.size() ];
+        FieldDefinition[] orderedFields = new FieldDefinition[fields.size()];
 
         for (Field fld : fields) {
             Position pos = fld.getAnnotation(Position.class);
             if (pos != null) {
                 if (pos.value() < 0 || pos.value() >= fields.size()) {
                     kbuilder.addBuilderResult(new TypeDeclarationError(typeDeclaration,
-                                                                       "Out of range position " + pos.value() + " for field '" + fld.getName() + "' on class " + cls.getName()));
+                            "Out of range position " + pos.value() + " for field '" + fld.getName() + "' on class " + cls.getName()));
                     continue;
                 }
                 if (orderedFields[pos.value()] != null) {
                     kbuilder.addBuilderResult(new TypeDeclarationError(typeDeclaration,
-                                                                       "Duplicated position " + pos.value() + " for field '" + fld.getName() + "' on class " + cls.getName()));
+                            "Duplicated position " + pos.value() + " for field '" + fld.getName() + "' on class " + cls.getName()));
                     continue;
                 }
                 FieldDefinition fldDef = clsDef.getField(fld.getName());
@@ -226,7 +222,7 @@ public class TypeDeclarationCache {
                     fldDef = new FieldDefinition(fld.getName(), fld.getType().getName());
                 }
                 fldDef.setIndex(pos.value());
-                orderedFields[ pos.value() ] = fldDef;
+                orderedFields[pos.value()] = fldDef;
             }
         }
         for (FieldDefinition fld : orderedFields) {
@@ -241,27 +237,27 @@ public class TypeDeclarationCache {
         Annotated annotated = new Annotated.ClassAdapter(cls);
         TypeDeclaration typeDeclaration = TypeDeclaration.createTypeDeclarationForBean(cls, annotated, kbuilder.getBuilderConfiguration().getPropertySpecificOption());
 
-        String namespace = ClassUtils.getPackage( cls );
-        PackageRegistry pkgRegistry = kbuilder.getOrCreatePackageRegistry( new PackageDescr(namespace) );
+        String namespace = ClassUtils.getPackage(cls);
+        PackageRegistry pkgRegistry = kbuilder.getOrCreatePackageRegistry(new PackageDescr(namespace));
 
-        processMvelBasedAccessors( kbuilder, pkgRegistry, annotated, typeDeclaration );
+        processMvelBasedAccessors(kbuilder, pkgRegistry, annotated, typeDeclaration);
         return typeDeclaration;
     }
 
     private void buildTypeDeclarations(Class<?> cls,
-                                       Set<TypeDeclaration> tdecls) {
+            Set<TypeDeclaration> tdecls) {
         // Process current interfaces
         Class<?>[] intfs = cls.getInterfaces();
         for (Class<?> intf : intfs) {
             buildTypeDeclarationInterfaces(intf,
-                                           tdecls);
+                    tdecls);
         }
 
         // Process super classes and their interfaces
         cls = cls.getSuperclass();
         while (cls != null && cls != Object.class) {
             if (!buildTypeDeclarationInterfaces(cls,
-                                                tdecls)) {
+                    tdecls)) {
                 break;
             }
             cls = cls.getSuperclass();
@@ -270,7 +266,7 @@ public class TypeDeclarationCache {
     }
 
     private boolean buildTypeDeclarationInterfaces(Class cls,
-                                                   Set<TypeDeclaration> tdecls) {
+            Set<TypeDeclaration> tdecls) {
         PackageRegistry pkgReg;
 
         TypeDeclaration tdecl = this.cacheTypes.get((cls.getName()));
@@ -299,7 +295,7 @@ public class TypeDeclarationCache {
 
         for (Class<?> intf : intfs) {
             if (!buildTypeDeclarationInterfaces(intf,
-                                                tdecls)) {
+                    tdecls)) {
                 return false;
             }
         }
@@ -307,7 +303,6 @@ public class TypeDeclarationCache {
         return true;
 
     }
-
 
     Collection<String> removeTypesGeneratedFromResource(Resource resource) {
         if (cacheTypes != null) {

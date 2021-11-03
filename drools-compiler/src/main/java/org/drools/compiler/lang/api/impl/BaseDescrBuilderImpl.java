@@ -22,43 +22,43 @@ import org.drools.compiler.lang.descr.BaseDescr;
 /**
  * A base class for all DescrBuilders
  */
-public class BaseDescrBuilderImpl<P extends DescrBuilder<?,? extends BaseDescr>, T extends BaseDescr>
-    implements
-    DescrBuilder<P, T> {
+public class BaseDescrBuilderImpl<P extends DescrBuilder<?, ? extends BaseDescr>, T extends BaseDescr>
+        implements
+        DescrBuilder<P, T> {
 
     protected T descr;
     protected P parent;
 
     protected BaseDescrBuilderImpl(final P parent,
-                                   final T descr) {
+            final T descr) {
         this.parent = parent;
         this.descr = descr;
-        if( parent != null ) {
+        if (parent != null) {
             this.descr.setResource(parent.getDescr().getResource());
         }
     }
 
-    public DescrBuilder<P, T> startLocation( int line,
-                                       int column ) {
-        descr.setLocation( line,
-                           column );
+    public DescrBuilder<P, T> startLocation(int line,
+            int column) {
+        descr.setLocation(line,
+                column);
         return this;
     }
 
-    public DescrBuilder<P, T> endLocation( int line,
-                                     int column ) {
-        descr.setEndLocation( line,
-                              column );
+    public DescrBuilder<P, T> endLocation(int line,
+            int column) {
+        descr.setEndLocation(line,
+                column);
         return this;
     }
 
-    public DescrBuilder<P, T> startCharacter( int offset ) {
-        descr.setStartCharacter( offset );
+    public DescrBuilder<P, T> startCharacter(int offset) {
+        descr.setStartCharacter(offset);
         return this;
     }
 
-    public DescrBuilder<P, T> endCharacter( int offset ) {
-        descr.setEndCharacter( offset );
+    public DescrBuilder<P, T> endCharacter(int offset) {
+        descr.setEndCharacter(offset);
         return this;
     }
 

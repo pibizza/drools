@@ -28,9 +28,9 @@ import org.kie.api.builder.model.KieSessionModel;
 import org.kie.internal.builder.KnowledgeBuilder;
 
 public interface KieProject {
-    
+
     ReleaseId getGAV();
-    
+
     InternalKieModule getKieModuleForKBase(String kBaseName);
 
     Collection<String> getKieBaseNames();
@@ -45,23 +45,28 @@ public interface KieProject {
 
     KieSessionModel getDefaultStatelessKieSession();
 
-    void init();   
-    
+    void init();
+
     ClassLoader getClassLoader();
 
     ResultsImpl verify();
-    ResultsImpl verify( String... kModelNames );
+
+    ResultsImpl verify(String... kModelNames);
+
     void verify(BuildContext buildContext);
 
     long getCreationTimestamp();
 
     Set<String> getTransitiveIncludes(String kBaseName);
+
     Set<String> getTransitiveIncludes(KieBaseModel kBaseModel);
 
     InputStream getPomAsStream();
 
-    KnowledgeBuilder buildKnowledgePackages( KieBaseModelImpl kBaseModel, BuildContext buildContext );
-    KnowledgeBuilder buildKnowledgePackages( KieBaseModelImpl kBaseModel, BuildContext buildContext, Predicate<String> buildFilter );
+    KnowledgeBuilder buildKnowledgePackages(KieBaseModelImpl kBaseModel, BuildContext buildContext);
 
-    default void writeProjectOutput(MemoryFileSystem trgMfs, BuildContext buildContext) {}
+    KnowledgeBuilder buildKnowledgePackages(KieBaseModelImpl kBaseModel, BuildContext buildContext, Predicate<String> buildFilter);
+
+    default void writeProjectOutput(MemoryFileSystem trgMfs, BuildContext buildContext) {
+    }
 }

@@ -21,15 +21,15 @@ import org.drools.compiler.lang.descr.RuleDescr;
 import org.kie.internal.builder.KnowledgeBuilderConfiguration;
 
 public class DuplicateRule extends ConfigurableSeverityResult {
-    
+
     public static final String KEY = "duplicateRule";
-    
+
     private String rule;
-    
+
     private PackageDescr pkgDescr;
-    
+
     private int[] line;
-    
+
     public DuplicateRule(RuleDescr ruleDescr, PackageDescr pkg, KnowledgeBuilderConfiguration config) {
         super(ruleDescr.getResource(), config);
         rule = ruleDescr.getName();
@@ -38,16 +38,16 @@ public class DuplicateRule extends ConfigurableSeverityResult {
         line[0] = ruleDescr.getLine();
     }
 
-	@Override
-	public String getMessage() {
-		return "Rule name " + rule 
-        + " already exists in package  " + pkgDescr.getName();
-	}
+    @Override
+    public String getMessage() {
+        return "Rule name " + rule
+                + " already exists in package  " + pkgDescr.getName();
+    }
 
-	@Override
-	public int[] getLines() {
-		return line;
-	}
+    @Override
+    public int[] getLines() {
+        return line;
+    }
 
     @Override
     String getOptionKey() {

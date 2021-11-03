@@ -58,27 +58,27 @@ import org.slf4j.LoggerFactory;
 import static org.kie.memorycompiler.resources.KiePath.ROOT_PATH;
 
 public class MemoryFileSystem
-    implements
-    FileSystem,
-    ResourceReader,
-    Serializable,
-    ResourceStore {
+        implements
+        FileSystem,
+        ResourceReader,
+        Serializable,
+        ResourceStore {
 
-    private static final Logger log = LoggerFactory.getLogger( MemoryFileSystem.class );
+    private static final Logger log = LoggerFactory.getLogger(MemoryFileSystem.class);
 
-    private final MemoryFolder               folder;
+    private final MemoryFolder folder;
 
     private final Map<KiePath, Set<FileSystemItem>> folders = new HashMap<>();
 
-    private final Map<KiePath, Folder>        folderMap = new HashMap<>();
+    private final Map<KiePath, Folder> folderMap = new HashMap<>();
 
     private final Map<KiePath, InternalResource> fileContents = new HashMap<>();
 
-    private Set<String>                      modifiedFilesSinceLastMark;
+    private Set<String> modifiedFilesSinceLastMark;
 
     public MemoryFileSystem() {
-        folder = new MemoryFolder( this, ROOT_PATH );
-        folders.put( ROOT_PATH, new HashSet<>() );
+        folder = new MemoryFolder(this, ROOT_PATH);
+        folders.put(ROOT_PATH, new HashSet<>());
     }
 
     public Folder getRootFolder() {
@@ -91,58 +91,58 @@ public class MemoryFileSystem
 
     public Map<KiePath, byte[]> getMap() {
         Map<KiePath, byte[]> bytesMap = new HashMap<>();
-        for (Entry<KiePath, InternalResource> kv : fileContents.entrySet() ) {
-            bytesMap.put( kv.getKey(), resourceToBytes( kv.getValue() ) );
+        for (Entry<KiePath, InternalResource> kv : fileContents.entrySet()) {
+            bytesMap.put(kv.getKey(), resourceToBytes(kv.getValue()));
         }
         return bytesMap;
     }
 
     private byte[] resourceToBytes(Resource resource) {
-        return resource != null ? (( InternalResource )resource).getBytes() : null;
+        return resource != null ? ((InternalResource) resource).getBytes() : null;
     }
-    
+
     public File getFile(KiePath path) {
         KiePath parent = path.getParent();
-        return new MemoryFile( this, path.getFileName(), parent != null ? getFolder( parent ) : getRootFolder() );
+        return new MemoryFile(this, path.getFileName(), parent != null ? getFolder(parent) : getRootFolder());
     }
 
     @Override
     public Folder getFolder(KiePath path) {
-        return folderMap.computeIfAbsent(path, p -> new MemoryFolder( this, p ));
+        return folderMap.computeIfAbsent(path, p -> new MemoryFolder(this, p));
     }
 
-    public Set< ? extends FileSystemItem> getMembers( Folder folder) {
-        return folders.get( folder.getPath() );
+    public Set<? extends FileSystemItem> getMembers(Folder folder) {
+        return folders.get(folder.getPath());
     }
 
     public byte[] getFileContents(MemoryFile file) {
-        return resourceToBytes( getResource(file) );
+        return resourceToBytes(getResource(file));
     }
 
     public InternalResource getResource(MemoryFile file) {
-        return fileContents.get( file.getPath() );
+        return fileContents.get(file.getPath());
     }
 
     public void setFileContents(MemoryFile file, byte[] contents) throws IOException {
-        setFileContents(file, new ByteArrayResource( contents ));
+        setFileContents(file, new ByteArrayResource(contents));
     }
 
     public void setFileContents(MemoryFile file, Resource resource) throws IOException {
-        if ( !existsFolder( (MemoryFolder) file.getFolder() ) ) {
-            createFolder( (MemoryFolder) file.getFolder() );
+        if (!existsFolder((MemoryFolder) file.getFolder())) {
+            createFolder((MemoryFolder) file.getFolder());
         }
 
         KiePath filePath = file.getPath();
         if (modifiedFilesSinceLastMark != null) {
-            byte[] contents = resourceToBytes( resource );
-            byte[] oldContent = resourceToBytes( fileContents.get( filePath ) );
+            byte[] contents = resourceToBytes(resource);
+            byte[] oldContent = resourceToBytes(fileContents.get(filePath));
             if (oldContent == null || !Arrays.equals(oldContent, contents)) {
                 modifiedFilesSinceLastMark.add(filePath.asString());
             }
         }
-        fileContents.put( filePath, (InternalResource) resource );
-        resource.setSourcePath( file.getPath().asString() );
-        folders.get( file.getFolder().getPath() ).add( file );
+        fileContents.put(filePath, (InternalResource) resource);
+        resource.setSourcePath(file.getPath().asString());
+        folders.get(file.getFolder().getPath()).add(file);
     }
 
     public void mark() {
@@ -154,7 +154,7 @@ public class MemoryFileSystem
     }
 
     public boolean existsFolder(MemoryFolder folder) {
-        return existsFolder( folder.getPath() );
+        return existsFolder(folder.getPath());
     }
 
     public boolean existsFolder(KiePath path) {
@@ -167,23 +167,23 @@ public class MemoryFileSystem
 
     public void createFolder(MemoryFolder folder) {
         // create current, if it does not exist.
-        if ( !existsFolder( folder ) ) {
+        if (!existsFolder(folder)) {
             // create parent if it does not exist
-            if ( !existsFolder( ( MemoryFolder) folder.getParent() ) ) {
-                createFolder( (MemoryFolder) folder.getParent() );
+            if (!existsFolder((MemoryFolder) folder.getParent())) {
+                createFolder((MemoryFolder) folder.getParent());
             }
 
-            folders.put( folder.getPath(), new HashSet<>() );
+            folders.put(folder.getPath(), new HashSet<>());
 
             Folder parent = folder.getParent();
-            folders.get( parent.getPath() ).add( folder );
+            folders.get(parent.getPath()).add(folder);
         }
     }
 
     public boolean remove(Folder folder) {
-        if ( folder.exists() ) {
-            remove( folders.get( folder.getPath() ) );
-            folders.remove( folder.getPath() );
+        if (folder.exists()) {
+            remove(folders.get(folder.getPath()));
+            folders.remove(folder.getPath());
             return true;
         } else {
             return false;
@@ -191,15 +191,15 @@ public class MemoryFileSystem
     }
 
     public void remove(Set<FileSystemItem> members) {
-        for (Iterator<FileSystemItem> it = members.iterator(); it.hasNext(); ) {
+        for (Iterator<FileSystemItem> it = members.iterator(); it.hasNext();) {
             FileSystemItem res = it.next();
-            if ( res instanceof Folder ) {
-                remove( folders.get( res.getPath() ) );
+            if (res instanceof Folder) {
+                remove(folders.get(res.getPath()));
             } else {
                 KiePath filePath = res.getPath();
-                fileContents.remove( filePath );
+                fileContents.remove(filePath);
                 if (modifiedFilesSinceLastMark != null) {
-                    modifiedFilesSinceLastMark.add( filePath.asString() );
+                    modifiedFilesSinceLastMark.add(filePath.asString());
                 }
             }
             it.remove();
@@ -207,13 +207,13 @@ public class MemoryFileSystem
     }
 
     public boolean remove(File file) {
-        if ( file.exists() ) {
+        if (file.exists()) {
             KiePath filePath = file.getPath();
-            fileContents.remove( filePath );
+            fileContents.remove(filePath);
             if (modifiedFilesSinceLastMark != null) {
-                modifiedFilesSinceLastMark.add( filePath.asString() );
+                modifiedFilesSinceLastMark.add(filePath.asString());
             }
-            folders.get( ((MemoryFile) file).getFolder().getPath() ).remove( file );
+            folders.get(((MemoryFile) file).getFolder().getPath()).remove(file);
             return true;
         } else {
             return false;
@@ -221,57 +221,57 @@ public class MemoryFileSystem
     }
 
     public int copyFolder(Folder srcFolder,
-                          MemoryFileSystem trgMfs,
-                          Folder trgFolder,
-                          String... filters) {
-        return copyFolder( this,
-                           srcFolder,
-                           trgMfs,
-                           trgFolder,
-                           0,
-                           filters );
+            MemoryFileSystem trgMfs,
+            Folder trgFolder,
+            String... filters) {
+        return copyFolder(this,
+                srcFolder,
+                trgMfs,
+                trgFolder,
+                0,
+                filters);
     }
 
     private static int copyFolder(MemoryFileSystem srcMfs,
-                                  Folder srcFolder,
-                                  MemoryFileSystem trgMfs,
-                                  Folder trgFolder,
-                                  int count,
-                                  String... filters) {
-        if ( !trgFolder.exists() ) {
-            trgMfs.getFolder( trgFolder.getPath() ).create();
+            Folder srcFolder,
+            MemoryFileSystem trgMfs,
+            Folder trgFolder,
+            int count,
+            String... filters) {
+        if (!trgFolder.exists()) {
+            trgMfs.getFolder(trgFolder.getPath()).create();
         }
 
-        if ( srcFolder != null ) {
-            for ( FileSystemItem rs : srcFolder.getMembers() ) {
-                if ( rs instanceof Folder ) {
-                    count = copyFolder( srcMfs,
-                                        (Folder) rs,
-                                        trgMfs,
-                                        trgFolder.getFolder( ((Folder) rs).getName() ),
-                                        count,
-                                        filters );
+        if (srcFolder != null) {
+            for (FileSystemItem rs : srcFolder.getMembers()) {
+                if (rs instanceof Folder) {
+                    count = copyFolder(srcMfs,
+                            (Folder) rs,
+                            trgMfs,
+                            trgFolder.getFolder(((Folder) rs).getName()),
+                            count,
+                            filters);
                 } else {
-                    MemoryFile trgFile = (MemoryFile) trgFolder.getFile( ((org.drools.compiler.compiler.io.File) rs).getName() );
+                    MemoryFile trgFile = (MemoryFile) trgFolder.getFile(((org.drools.compiler.compiler.io.File) rs).getName());
                     boolean accept = false;
 
-                    if ( filters == null || filters.length == 0 ) {
+                    if (filters == null || filters.length == 0) {
                         accept = true;
                     } else {
-                        for ( String filter : filters ) {
-                            if ( trgFile.getName().endsWith( filter ) ) {
+                        for (String filter : filters) {
+                            if (trgFile.getName().endsWith(filter)) {
                                 accept = true;
                                 break;
                             }
                         }
                     }
 
-                    if ( accept ) {
+                    if (accept) {
                         try {
-                            trgMfs.setFileContents( trgFile, srcMfs.getResource( (MemoryFile) rs ) );
+                            trgMfs.setFileContents(trgFile, srcMfs.getResource((MemoryFile) rs));
                             count++;
-                        } catch ( IOException e ) {
-                            throw new RuntimeException( e );
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
                     }
                 }
@@ -292,16 +292,21 @@ public class MemoryFileSystem
 
     @Override
     public boolean equals(Object obj) {
-        if ( this == obj ) return true;
-        if ( obj == null ) return false;
-        if ( getClass() != obj.getClass() ) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
         MemoryFileSystem other = (MemoryFileSystem) obj;
 
-        if ( folder == null ) {
-            if ( other.folder != null ) return false;
-        } else if ( !folder.equals( other.folder ) ) return false;
+        if (folder == null) {
+            if (other.folder != null)
+                return false;
+        } else if (!folder.equals(other.folder))
+            return false;
 
-        return fileContents.equals( other.fileContents ) && folders.equals( other.folders );
+        return fileContents.equals(other.fileContents) && folders.equals(other.folders);
     }
 
     @Override
@@ -310,27 +315,27 @@ public class MemoryFileSystem
     }
 
     public void printFs(PrintStream out) {
-        printFs( getRootFolder(),
-                 out );
+        printFs(getRootFolder(),
+                out);
 
     }
 
     public void printFs(Folder f,
-                        PrintStream out) {
-        for ( FileSystemItem rs : f.getMembers() ) {
-            out.println( rs );
-            if ( rs instanceof Folder ) {
-                printFs( (Folder) rs,
-                         out );
+            PrintStream out) {
+        for (FileSystemItem rs : f.getMembers()) {
+            out.println(rs);
+            if (rs instanceof Folder) {
+                printFs((Folder) rs,
+                        out);
             } else {
-                out.println( new String( getFileContents( (MemoryFile) rs ), IoUtils.UTF8_CHARSET ) );
+                out.println(new String(getFileContents((MemoryFile) rs), IoUtils.UTF8_CHARSET));
             }
         }
     }
 
     @Override
     public boolean isAvailable(KiePath resourcePath) {
-        return existsFile( resourcePath );
+        return existsFile(resourcePath);
     }
 
     @Override
@@ -344,36 +349,36 @@ public class MemoryFileSystem
 
     @Override
     public void write(KiePath resourcePath, byte[] pResourceData) {
-        write( resourcePath, pResourceData, false );
+        write(resourcePath, pResourceData, false);
     }
 
     @Override
     public void write(KiePath resourcePath, byte[] pResourceData, boolean createFolder) {
-        write( resourcePath, new ByteArrayResource( pResourceData ), createFolder );
+        write(resourcePath, new ByteArrayResource(pResourceData), createFolder);
     }
 
     public void write(KiePath resourcePath, Resource resource) {
-        write( resourcePath, resource, false );
+        write(resourcePath, resource, false);
     }
 
     public void write(KiePath resourcePath, Resource resource, boolean createFolder) {
-        MemoryFile memoryFile = (MemoryFile) getFile( resourcePath );
-        if ( createFolder ) {
+        MemoryFile memoryFile = (MemoryFile) getFile(resourcePath);
+        if (createFolder) {
             KiePath folderPath = memoryFile.getFolder().getPath();
-            if ( !existsFolder( folderPath ) ) {
+            if (!existsFolder(folderPath)) {
                 memoryFile.getFolder().create();
             }
         }
         try {
-            setFileContents( memoryFile, resource );
-        } catch ( IOException e ) {
-            throw new RuntimeException( e );
+            setFileContents(memoryFile, resource);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public byte[] read(KiePath resourcePath) {
-        return getBytes( resourcePath );
+        return getBytes(resourcePath);
     }
 
     @Override
@@ -383,39 +388,39 @@ public class MemoryFileSystem
 
     public byte[] writeAsBytes() {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        zip( baos );
+        zip(baos);
         return baos.toByteArray();
     }
 
     public java.io.File writeAsJar(java.io.File folder,
-                                   String jarName) {
+            String jarName) {
         try {
-            java.io.File jarFile = new java.io.File( folder,
-                                                     jarName + ".jar" );
-            System.out.println( jarFile );
-            zip( new FileOutputStream( jarFile ) );
+            java.io.File jarFile = new java.io.File(folder,
+                    jarName + ".jar");
+            System.out.println(jarFile);
+            zip(new FileOutputStream(jarFile));
             return jarFile;
-        } catch ( IOException e ) {
-            throw new RuntimeException( e );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     private void zip(OutputStream outputStream) {
         ZipOutputStream out = null;
         try {
-            out = new ZipOutputStream( outputStream );
+            out = new ZipOutputStream(outputStream);
 
-            writeJarEntries( getRootFolder(),
-                             out );
+            writeJarEntries(getRootFolder(),
+                    out);
             out.close();
-        } catch ( IOException e ) {
-            throw new RuntimeException( e );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } finally {
             try {
                 if (out != null) {
                     out.close();
                 }
-            } catch ( IOException e ) {
+            } catch (IOException e) {
                 log.error(e.getMessage(), e);
             }
         }
@@ -427,18 +432,18 @@ public class MemoryFileSystem
     }
 
     public void writeAsFs(Folder f,
-                          java.io.File file1) {
-        for ( FileSystemItem rs : f.getMembers() ) {
-            if ( rs instanceof Folder ) {
-                java.io.File file2 = new java.io.File( file1, ((Folder) rs).getName());
+            java.io.File file1) {
+        for (FileSystemItem rs : f.getMembers()) {
+            if (rs instanceof Folder) {
+                java.io.File file2 = new java.io.File(file1, ((Folder) rs).getName());
                 file2.mkdir();
-                writeAsFs( (Folder) rs, file2 );
+                writeAsFs((Folder) rs, file2);
             } else {
-                byte[] bytes = getFileContents( (MemoryFile) rs );
+                byte[] bytes = getFileContents((MemoryFile) rs);
 
                 try {
                     IoUtils.write(new java.io.File(file1, ((File) rs).getName()), bytes);
-                } catch ( IOException e ) {
+                } catch (IOException e) {
                     throw new RuntimeException("Unable to write project to file system\n", e);
                 }
             }
@@ -446,27 +451,27 @@ public class MemoryFileSystem
     }
 
     private void writeJarEntries(Folder f,
-                                 ZipOutputStream out) throws IOException {
-        for ( FileSystemItem rs : f.getMembers() ) {
+            ZipOutputStream out) throws IOException {
+        for (FileSystemItem rs : f.getMembers()) {
             String rname = rs.getPath().asString();
-            if ( rs instanceof Folder ) {
+            if (rs instanceof Folder) {
                 rname = rname.endsWith("/") ? rname : rname + "/"; // a folder name must end with / according to ZIP spec
-                ZipEntry entry = new ZipEntry( rname );
-                out.putNextEntry( entry );
+                ZipEntry entry = new ZipEntry(rname);
+                out.putNextEntry(entry);
 
-                writeJarEntries( (Folder) rs,
-                                 out );
+                writeJarEntries((Folder) rs,
+                        out);
             } else {
-                ZipEntry entry = new ZipEntry( rname );
-                out.putNextEntry( entry );
+                ZipEntry entry = new ZipEntry(rname);
+                out.putNextEntry(entry);
 
-                byte[] contents = getFileContents( (MemoryFile) rs );
+                byte[] contents = getFileContents((MemoryFile) rs);
                 if (contents == null) {
                     IOException e = new IOException("No content found for: " + rs);
                     log.error(e.getMessage(), e);
                     throw e;
                 }
-                out.write( contents );
+                out.write(contents);
                 out.closeEntry();
             }
         }
@@ -474,59 +479,59 @@ public class MemoryFileSystem
 
     public static MemoryFileSystem readFromJar(java.io.File jarFile) {
         MemoryFileSystem mfs = new MemoryFileSystem();
-        try ( ZipFile zipFile = new ZipFile( jarFile ) ) {
-            Enumeration< ? extends ZipEntry> entries = zipFile.entries();
-            while ( entries.hasMoreElements() ) {
+        try (ZipFile zipFile = new ZipFile(jarFile)) {
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
-                int separator = entry.getName().lastIndexOf( '/' );
-                KiePath path = separator > 0 ? KiePath.of( entry.getName().substring( 0, separator ) ) : ROOT_PATH;
-                String name = entry.getName().substring( separator + 1 );
+                int separator = entry.getName().lastIndexOf('/');
+                KiePath path = separator > 0 ? KiePath.of(entry.getName().substring(0, separator)) : ROOT_PATH;
+                String name = entry.getName().substring(separator + 1);
 
-                Folder folder = mfs.getFolder( path );
+                Folder folder = mfs.getFolder(path);
                 folder.create();
 
-                File file = folder.getFile( name );
-                file.create( zipFile.getInputStream( entry ) );
+                File file = folder.getFile(name);
+                file.create(zipFile.getInputStream(entry));
             }
-        } catch ( IOException e ) {
-            throw new RuntimeException( e );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return mfs;
     }
 
     public static MemoryFileSystem readFromJar(byte[] jarFile) {
-        return readFromJar( new ByteArrayInputStream( jarFile ) );
+        return readFromJar(new ByteArrayInputStream(jarFile));
     }
 
     public static MemoryFileSystem readFromJar(InputStream jarFile) {
         MemoryFileSystem mfs = new MemoryFileSystem();
-        try (JarInputStream zipFile = new JarInputStream( jarFile )) {
+        try (JarInputStream zipFile = new JarInputStream(jarFile)) {
             ZipEntry entry;
-            while ( (entry = zipFile.getNextEntry()) != null ) {
+            while ((entry = zipFile.getNextEntry()) != null) {
                 if (entry.isDirectory()) {
                     continue;
                 }
                 // entry.getSize() is not accurate according to documentation, so have to read bytes until -1 is found
                 ByteArrayOutputStream content = new ByteArrayOutputStream();
                 int b;
-                while( (b = zipFile.read()) != -1 ) {
-                    content.write( b );
+                while ((b = zipFile.read()) != -1) {
+                    content.write(b);
                 }
-                mfs.write( entry.getName(), content.toByteArray(), true );
+                mfs.write(entry.getName(), content.toByteArray(), true);
             }
-        } catch ( IOException e ) {
-            throw new RuntimeException( e );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return mfs;
     }
 
     public String findPomProperties() {
-        for( Entry<KiePath, InternalResource> content : fileContents.entrySet() ) {
-            if ( content.getKey().endsWith( "pom.properties" ) && content.getKey().startsWith( "META-INF/maven/" ) ) {
+        for (Entry<KiePath, InternalResource> content : fileContents.entrySet()) {
+            if (content.getKey().endsWith("pom.properties") && content.getKey().startsWith("META-INF/maven/")) {
                 try (InputStream resourceStream = content.getValue().getInputStream()) {
-                    return StringUtils.readFileAsString( new InputStreamReader( resourceStream, IoUtils.UTF8_CHARSET ) );
+                    return StringUtils.readFileAsString(new InputStreamReader(resourceStream, IoUtils.UTF8_CHARSET));
                 } catch (IOException ioe) {
-                    throw new RuntimeException( ioe );
+                    throw new RuntimeException(ioe);
                 }
             }
         }

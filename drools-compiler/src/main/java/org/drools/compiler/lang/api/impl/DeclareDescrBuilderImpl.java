@@ -24,36 +24,35 @@ import org.drools.compiler.lang.api.EntryPointDeclarationDescrBuilder;
 import org.drools.compiler.lang.api.WindowDeclarationDescrBuilder;
 
 public class DeclareDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBuilder, PackageDescr>
-    implements
+        implements
         DeclareDescrBuilder {
 
-    protected DeclareDescrBuilderImpl( PackageDescrBuilder parent ) {
-        super( parent, parent.getDescr() );
+    protected DeclareDescrBuilderImpl(PackageDescrBuilder parent) {
+        super(parent, parent.getDescr());
     }
 
     public EntryPointDeclarationDescrBuilder entryPoint() {
-        EntryPointDeclarationDescrBuilder epb = new EntryPointDeclarationDescrBuilderImpl( parent);
-        descr.addEntryPointDeclaration( epb.getDescr() );
+        EntryPointDeclarationDescrBuilder epb = new EntryPointDeclarationDescrBuilderImpl(parent);
+        descr.addEntryPointDeclaration(epb.getDescr());
         return epb;
     }
 
     public TypeDeclarationDescrBuilder type() {
-        TypeDeclarationDescrBuilder tddb = new TypeDeclarationDescrBuilderImpl( parent );
-        descr.addTypeDeclaration( tddb.getDescr() );
+        TypeDeclarationDescrBuilder tddb = new TypeDeclarationDescrBuilderImpl(parent);
+        descr.addTypeDeclaration(tddb.getDescr());
         return tddb;
     }
 
     public WindowDeclarationDescrBuilder window() {
-        WindowDeclarationDescrBuilder wddb = new WindowDeclarationDescrBuilderImpl( parent );
-        descr.addWindowDeclaration( wddb.getDescr() );
+        WindowDeclarationDescrBuilder wddb = new WindowDeclarationDescrBuilderImpl(parent);
+        descr.addWindowDeclaration(wddb.getDescr());
         return wddb;
-	}
-
-    public EnumDeclarationDescrBuilder enumerative() {
-        EnumDeclarationDescrBuilder eddb = new EnumDeclarationDescrBuilderImpl( parent );
-        descr.addEnumDeclaration( eddb.getDescr() );
-        return eddb;
     }
 
+    public EnumDeclarationDescrBuilder enumerative() {
+        EnumDeclarationDescrBuilder eddb = new EnumDeclarationDescrBuilderImpl(parent);
+        descr.addEnumDeclaration(eddb.getDescr());
+        return eddb;
+    }
 
 }

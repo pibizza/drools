@@ -31,36 +31,36 @@ import org.xml.sax.SAXException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class ReturnValueRestrictionHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public ReturnValueRestrictionHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
 
-        String evaluator = attrs.getValue( "evaluator" );
-        emptyAttributeCheck( localName, "evaluator", evaluator, parser );
-        
+        String evaluator = attrs.getValue("evaluator");
+        emptyAttributeCheck(localName, "evaluator", evaluator, parser);
+
         return evaluator.trim() + " ";
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {        
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
-        final String expression =((org.w3c.dom.Text)element.getChildNodes().item( 0 )).getWholeText();
-        emptyContentCheck( localName, expression, parser );
-        
-        ConnectiveDescr c = (ConnectiveDescr) parser.getParent();
-        String s = ( (String) parser.getCurrent()) + "(" + expression + ")";
+        final String expression = ((org.w3c.dom.Text) element.getChildNodes().item(0)).getWholeText();
+        emptyContentCheck(localName, expression, parser);
 
-        c.add( s );
-        return null;        
+        ConnectiveDescr c = (ConnectiveDescr) parser.getParent();
+        String s = ((String) parser.getCurrent()) + "(" + expression + ")";
+
+        c.add(s);
+        return null;
     }
 
     public Class generateNodeFor() {

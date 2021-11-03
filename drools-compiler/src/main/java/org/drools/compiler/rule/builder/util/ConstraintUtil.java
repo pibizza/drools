@@ -14,7 +14,8 @@ public class ConstraintUtil {
 
     private static final boolean ENABLE_NORMALIZE = Boolean.parseBoolean(System.getProperty(DROOLS_NORMALIZE_CONSTRAINT, "true"));
 
-    private ConstraintUtil() {}
+    private ConstraintUtil() {
+    }
 
     /**
      * Swap left and right operands in a constraint when a fact property is located on the right side.
@@ -22,9 +23,9 @@ public class ConstraintUtil {
      * e.g. Person(20 < age) should be normalized to Person(age > 20)
      * 
      * @param expression
-     * @param operator 
-     * @param rightValue 
-     * @param leftValue 
+     * @param operator
+     * @param rightValue
+     * @param leftValue
      * @return Normalized <code>expression</code>
      */
     public static String inverseExpression(RelationalExprDescr relDescr, String expression, String leftValue, String rightValue, String operator, Pattern pattern) {
@@ -40,7 +41,7 @@ public class ConstraintUtil {
 
         if (canInverse(pattern, operator, operatorDescr, leftProp, rightProp) && isPropertyOnRight(clazz, leftProp, rightProp)) {
             boolean negate = false;
-            if ( isNegatedExpression(expression, leftValue, rightValue, operator)) {
+            if (isNegatedExpression(expression, leftValue, rightValue, operator)) {
                 if (relDescr.getOperatorDescr().isNegated()) {
                     negate = true;
                 } else {
@@ -99,7 +100,7 @@ public class ConstraintUtil {
         }
     }
 
-    private static boolean isNegatedExpression( String expression, String leftValue, String rightValue, String operator ) {
+    private static boolean isNegatedExpression(String expression, String leftValue, String rightValue, String operator) {
         return expression.matches("^!\\s*\\(\\s*\\Q" + leftValue + "\\E\\s*" + operator + "\\s*\\Q" + rightValue + "\\E\\s*\\)$");
     }
 }

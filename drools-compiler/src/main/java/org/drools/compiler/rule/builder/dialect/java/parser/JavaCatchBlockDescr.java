@@ -16,15 +16,15 @@
 package org.drools.compiler.rule.builder.dialect.java.parser;
 
 public class JavaCatchBlockDescr extends AbstractJavaContainerBlockDescr
-    implements
-    JavaBlockDescr,
-    JavaContainerBlockDescr {
-    private int                  start;
-    private int                  end;
-    private int                  clauseStart;
-    private int                  textStart;
+        implements
+        JavaBlockDescr,
+        JavaContainerBlockDescr {
+    private int start;
+    private int end;
+    private int clauseStart;
+    private int textStart;
 
-    private String               clause;
+    private String clause;
 
     public JavaCatchBlockDescr(String clause) {
         this.clause = clause;

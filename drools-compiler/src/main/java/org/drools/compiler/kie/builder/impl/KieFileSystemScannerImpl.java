@@ -32,11 +32,11 @@ public class KieFileSystemScannerImpl extends AbstractKieScanner<InternalKieModu
     private final String kjarFileHead;
     private final VersionComparator versionComparator;
 
-    public KieFileSystemScannerImpl(final KieContainer kieContainer, final String repositoryFolder ) {
-        this.kieContainer = ( InternalKieContainer ) kieContainer;
+    public KieFileSystemScannerImpl(final KieContainer kieContainer, final String repositoryFolder) {
+        this.kieContainer = (InternalKieContainer) kieContainer;
         this.kjarFileHead = kieContainer.getReleaseId().getArtifactId() + "-";
-        this.versionComparator = new VersionComparator( kjarFileHead.length() );
-        this.repositoryFolder = new File( repositoryFolder );
+        this.versionComparator = new VersionComparator(kjarFileHead.length());
+        this.repositoryFolder = new File(repositoryFolder);
     }
 
     @Override
@@ -46,22 +46,22 @@ public class KieFileSystemScannerImpl extends AbstractKieScanner<InternalKieModu
     }
 
     @Override
-    protected void internalUpdate(final InternalKieModule kmodule ) {
-        (( KieContainerImpl ) kieContainer).updateToKieModule( kmodule );
+    protected void internalUpdate(final InternalKieModule kmodule) {
+        ((KieContainerImpl) kieContainer).updateToKieModule(kmodule);
     }
 
     private File findNewFile() {
-        File[] files = repositoryFolder.listFiles((dir, name) -> name.startsWith(kjarFileHead) && name.endsWith(".jar" ));
+        File[] files = repositoryFolder.listFiles((dir, name) -> name.startsWith(kjarFileHead) && name.endsWith(".jar"));
         if (files == null || files.length == 0) {
             return null;
         }
 
-        File candidateNew = getCandidateNew( files );
+        File candidateNew = getCandidateNew(files);
         int versionComparison = compareVersion(getVersionFromFile(candidateNew, kjarFileHead.length()), kieContainer.getReleaseId().getVersion());
-        return versionComparison > 0 || ( versionComparison == 0 && kieContainer.getReleaseId().isSnapshot() ) ? candidateNew : null;
+        return versionComparison > 0 || (versionComparison == 0 && kieContainer.getReleaseId().isSnapshot()) ? candidateNew : null;
     }
 
-    private File getCandidateNew( File[] files ) {
+    private File getCandidateNew(File[] files) {
         if (files.length == 1) {
             return files[0];
         }
@@ -78,17 +78,17 @@ public class KieFileSystemScannerImpl extends AbstractKieScanner<InternalKieModu
         }
 
         @Override
-        public int compare(final File f1, final File f2 ) {
-            return compareVersion( getVersionFromFile(f1, headLength), getVersionFromFile(f2, headLength) );
+        public int compare(final File f1, final File f2) {
+            return compareVersion(getVersionFromFile(f1, headLength), getVersionFromFile(f2, headLength));
         }
     }
 
     private static int compareVersion(String v1, String v2) {
-        return new ComparableVersion( v1 ).compareTo( new ComparableVersion( v2 ) );
+        return new ComparableVersion(v1).compareTo(new ComparableVersion(v2));
     }
 
     private static String getVersionFromFile(File f, int headLength) {
         String name = f.getName();
-        return name.substring( headLength, name.length()-4 );
+        return name.substring(headLength, name.length() - 4);
     }
 }

@@ -37,23 +37,23 @@ public class PackageDescr extends BaseDescr
         Namespaceable,
         KnowledgeDescr {
 
-    private static final long               serialVersionUID       = 530l;
-    private String                          documentation;
+    private static final long serialVersionUID = 530l;
+    private String documentation;
 
-    private UnitDescr                       unit;
+    private UnitDescr unit;
 
-    private List<ImportDescr>               imports                = Collections.emptyList();
-    private List<FunctionImportDescr>       functionImports        = Collections.emptyList();
-    private List<AccumulateImportDescr>     accumulateImports      = Collections.emptyList();
-    private List<AttributeDescr>            attributes             = Collections.emptyList();
-    private List<GlobalDescr>               globals                = Collections.emptyList();
-    private List<FunctionDescr>             functions              = Collections.emptyList();
-    private List<RuleDescr>                 rules                  = Collections.emptyList();
-    private List<TypeDeclarationDescr>      typeDeclarations       = Collections.emptyList();
+    private List<ImportDescr> imports = Collections.emptyList();
+    private List<FunctionImportDescr> functionImports = Collections.emptyList();
+    private List<AccumulateImportDescr> accumulateImports = Collections.emptyList();
+    private List<AttributeDescr> attributes = Collections.emptyList();
+    private List<GlobalDescr> globals = Collections.emptyList();
+    private List<FunctionDescr> functions = Collections.emptyList();
+    private List<RuleDescr> rules = Collections.emptyList();
+    private List<TypeDeclarationDescr> typeDeclarations = Collections.emptyList();
     private Set<EntryPointDeclarationDescr> entryPointDeclarations = Collections.emptySet();
-    private Set<WindowDeclarationDescr>     windowDeclarations     = Collections.emptySet();
-    private List<EnumDeclarationDescr>      enumDeclarations       = Collections.emptyList();
-    private String                          preferredPkgUUID;
+    private Set<WindowDeclarationDescr> windowDeclarations = Collections.emptySet();
+    private List<EnumDeclarationDescr> enumDeclarations = Collections.emptyList();
+    private String preferredPkgUUID;
 
     public PackageDescr() {
         this("",
@@ -124,7 +124,7 @@ public class PackageDescr extends BaseDescr
         return this.documentation;
     }
 
-    public void setUnit( UnitDescr unit ) {
+    public void setUnit(UnitDescr unit) {
         this.unit = unit;
     }
 
@@ -132,7 +132,7 @@ public class PackageDescr extends BaseDescr
         return unit;
     }
 
-    public void addAllImports( final Collection<ImportDescr> importEntries ) {
+    public void addAllImports(final Collection<ImportDescr> importEntries) {
         if (this.imports == Collections.EMPTY_LIST) {
             this.imports = new ArrayList<ImportDescr>();
         }
@@ -304,6 +304,7 @@ public class PackageDescr extends BaseDescr
     /**
      * Get the <b>pkgUUID</b> to be used inside <code>PackageModel</code>
      * If <b>empty</b>, a default generated one will be used
+     * 
      * @return
      */
     public Optional<String> getPreferredPkgUUID() {

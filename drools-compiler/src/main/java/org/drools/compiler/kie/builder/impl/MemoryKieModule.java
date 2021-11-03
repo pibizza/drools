@@ -59,46 +59,47 @@ public class MemoryKieModule extends AbstractKieModule
     private MemoryFileSystem mfs;
     private final long creationTimestamp = System.currentTimeMillis();
 
-    public MemoryKieModule() { }
+    public MemoryKieModule() {
+    }
 
     public MemoryKieModule(ReleaseId releaseId) {
-        this( releaseId, new KieModuleModelImpl(), new MemoryFileSystem() );
+        this(releaseId, new KieModuleModelImpl(), new MemoryFileSystem());
     }
 
     public MemoryKieModule(ReleaseId releaseId,
-                           KieModuleModel kModuleModel,
-                           MemoryFileSystem mfs) {
-        super( releaseId, kModuleModel );
+            KieModuleModel kModuleModel,
+            MemoryFileSystem mfs) {
+        super(releaseId, kModuleModel);
         this.mfs = mfs;
     }
 
     @Override
     public boolean isAvailable(String path) {
-        return isAvailable( KiePath.of(path) );
+        return isAvailable(KiePath.of(path));
     }
 
     @Override
     public boolean isAvailable(KiePath path) {
-        return mfs.existsFile( path );
+        return mfs.existsFile(path);
     }
 
     @Override
     public byte[] getBytes(String path) {
-        return mfs.getBytes( path );
+        return mfs.getBytes(path);
     }
 
     @Override
     public byte[] getBytes(KiePath path) {
-        return mfs.getBytes( path );
+        return mfs.getBytes(path);
     }
 
     @Override
-    public InternalResource getResource( String fileName) {
-        return getResource( KiePath.of(fileName) );
+    public InternalResource getResource(String fileName) {
+        return getResource(KiePath.of(fileName));
     }
 
-    public InternalResource getResource( KiePath path) {
-        return mfs.getResource( path );
+    public InternalResource getResource(KiePath path) {
+        return mfs.getResource(path);
     }
 
     @Override
@@ -141,8 +142,8 @@ public class MemoryKieModule extends AbstractKieModule
     public void afterKieBaseCreationUpdate(String kBaseName, InternalKnowledgeBase kBase) {
         KnowledgeBuilder knowledgeBuilderForKieBase = getKnowledgeBuilderForKieBase(kBaseName);
 
-        if(knowledgeBuilderForKieBase instanceof KnowledgeBuilderImpl) {
-            KnowledgeBuilderImpl knowledgeBuilderForImpl = (KnowledgeBuilderImpl)knowledgeBuilderForKieBase;
+        if (knowledgeBuilderForKieBase instanceof KnowledgeBuilderImpl) {
+            KnowledgeBuilderImpl knowledgeBuilderForImpl = (KnowledgeBuilderImpl) knowledgeBuilderForKieBase;
             KnowledgeBuilderConfigurationImpl builderConfiguration = knowledgeBuilderForImpl.getBuilderConfiguration();
 
             KieContainerImpl.CompositeRunnable compositeUpdater = new KieContainerImpl.CompositeRunnable();
@@ -154,9 +155,8 @@ public class MemoryKieModule extends AbstractKieModule
             updaters.getChildren()
                     .stream()
                     .map(kbu -> kbu.create(new KieBaseUpdatersContext(kieBaseUpdaterOptions,
-                                                                      kBase.getRete(),
-                                                                      kBase.getRootClassLoader()
-                    )))
+                            kBase.getRete(),
+                            kBase.getRootClassLoader())))
                     .forEach(compositeUpdater::add);
 
             kBase.enqueueModification(compositeUpdater);
@@ -174,15 +174,15 @@ public class MemoryKieModule extends AbstractKieModule
             clone.addKieDependency(dep);
         }
         for (KieBaseModel kBaseModel : getKieModuleModel().getKieBaseModels().values()) {
-            clone.cacheKnowledgeBuilderForKieBase(kBaseModel.getName(), getKnowledgeBuilderForKieBase( kBaseModel.getName() ));
+            clone.cacheKnowledgeBuilderForKieBase(kBaseModel.getName(), getKnowledgeBuilderForKieBase(kBaseModel.getName()));
         }
 
-        clone.setPomModel( getPomModel() );
-        for ( InternalKieModule dependency : getKieDependencies().values() ) {
-            clone.addKieDependency( dependency );
+        clone.setPomModel(getPomModel());
+        for (InternalKieModule dependency : getKieDependencies().values()) {
+            clone.addKieDependency(dependency);
         }
-        clone.setUnresolvedDependencies( getUnresolvedDependencies() );
-        
+        clone.setUnresolvedDependencies(getUnresolvedDependencies());
+
         return clone;
     }
 
@@ -236,9 +236,12 @@ public class MemoryKieModule extends AbstractKieModule
             }
         }
 
-        @Override public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof MemoryKieModuleResourceProvider)) return false;
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (!(o instanceof MemoryKieModuleResourceProvider))
+                return false;
 
             MemoryKieModuleResourceProvider that =
                     (MemoryKieModuleResourceProvider) o;
@@ -246,7 +249,8 @@ public class MemoryKieModule extends AbstractKieModule
             return mfs != null ? mfs.equals(that.mfs) : that.mfs == null;
         }
 
-        @Override public int hashCode() {
+        @Override
+        public int hashCode() {
             return mfs != null ? mfs.hashCode() : 0;
         }
     }
@@ -271,7 +275,6 @@ public class MemoryKieModule extends AbstractKieModule
         private MemoryFolderURLStreamHandler(Folder folder) {
             this.folder = folder;
         }
-
 
         @Override
         protected URLConnection openConnection(URL url) throws IOException {
@@ -337,7 +340,7 @@ public class MemoryKieModule extends AbstractKieModule
             if (members != null) {
                 for (FileSystemItem resource : members) {
                     // take just the name of the member, no the whole path
-                    sb.append(resource.getPath().asString().substring(folder.getPath().asString().length()+1));
+                    sb.append(resource.getPath().asString().substring(folder.getPath().asString().length() + 1));
                     // append "\n" to be in sync with the JDK's ClassLoader (returns "\n" even on Windows)
                     sb.append("\n");
                 }

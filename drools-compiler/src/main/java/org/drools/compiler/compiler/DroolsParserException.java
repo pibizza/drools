@@ -56,17 +56,17 @@ public class DroolsParserException extends Exception {
      * DroolsParserException constructor.
      *
      * @param errorCode
-     *            error code
+     *        error code
      * @param message
-     *            message
+     *        message
      * @param lineNumber
-     *            line number
+     *        line number
      * @param column
-     *            column
+     *        column
      * @param offset
-     *            offset
+     *        offset
      * @param cause
-     *            exception cause
+     *        exception cause
      */
     public DroolsParserException(String errorCode, String message, int lineNumber,
             int column, int offset, Throwable cause) {

@@ -24,21 +24,21 @@ import org.kie.internal.builder.ScoreCardConfiguration;
 public class ScoreCardFactory {
 
     private static class LazyHolder {
-        private static final ScoreCardProvider provider = ServiceRegistry.getService( ScoreCardProvider.class );
+        private static final ScoreCardProvider provider = ServiceRegistry.getService(ScoreCardProvider.class);
     }
 
     public static String loadFromInputStream(InputStream is, ScoreCardConfiguration configuration) {
-        return getScoreCardProvider().loadFromInputStream( is, configuration );
+        return getScoreCardProvider().loadFromInputStream(is, configuration);
     }
-    
+
     public static String getPMMLStringFromInputStream(InputStream is, ScoreCardConfiguration configuration) {
-    	return getScoreCardProvider().getPMMLStringFromInputStream(is, configuration);
+        return getScoreCardProvider().getPMMLStringFromInputStream(is, configuration);
     }
-    
+
     public static KieBase getKieBaseFromInputStream(InputStream is, ScoreCardConfiguration configuration) {
-    	return getScoreCardProvider().getKieBaseFromInputStream(is, configuration);
+        return getScoreCardProvider().getKieBaseFromInputStream(is, configuration);
     }
-    
+
     public static ScoreCardProvider getScoreCardProvider() {
         return LazyHolder.provider;
     }

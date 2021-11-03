@@ -19,14 +19,17 @@ package org.drools.compiler.kie.builder.impl.event;
 import org.kie.api.builder.KieScanner.Status;
 import org.kie.api.event.kiescanner.KieScannerStatusChangeEvent;
 
-public class KieScannerStatusChangeEventImpl  implements KieScannerStatusChangeEvent {
+public class KieScannerStatusChangeEventImpl implements KieScannerStatusChangeEvent {
     private final Status status;
+
     public KieScannerStatusChangeEventImpl(Status status) {
         this.status = status;
     }
+
     public Status getStatus() {
         return status;
     }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -34,6 +37,7 @@ public class KieScannerStatusChangeEventImpl  implements KieScannerStatusChangeE
         result = prime * result + ((status == null) ? 0 : status.hashCode());
         return result;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -47,6 +51,7 @@ public class KieScannerStatusChangeEventImpl  implements KieScannerStatusChangeE
             return false;
         return true;
     }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

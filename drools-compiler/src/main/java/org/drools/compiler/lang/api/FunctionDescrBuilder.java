@@ -19,12 +19,12 @@ package org.drools.compiler.lang.api;
 import org.drools.compiler.lang.descr.FunctionDescr;
 
 /**
- *  A descriptor builder for functions
+ * A descriptor builder for functions
  */
 public interface FunctionDescrBuilder
-    extends
-    DescrBuilder<PackageDescrBuilder, FunctionDescr>,
-    ParameterSupportBuilder<FunctionDescrBuilder> {
+        extends
+        DescrBuilder<PackageDescrBuilder, FunctionDescr>,
+        ParameterSupportBuilder<FunctionDescrBuilder> {
 
     /**
      * Sets an alternate namespace for the function
@@ -33,7 +33,7 @@ public interface FunctionDescrBuilder
      * 
      * @return itself
      */
-    public FunctionDescrBuilder namespace( String namespace );
+    public FunctionDescrBuilder namespace(String namespace);
 
     /**
      * Sets function name
@@ -42,7 +42,7 @@ public interface FunctionDescrBuilder
      * 
      * @return itself
      */
-    public FunctionDescrBuilder name( String name );
+    public FunctionDescrBuilder name(String name);
 
     /**
      * Sets function return type
@@ -51,7 +51,7 @@ public interface FunctionDescrBuilder
      * 
      * @return itself
      */
-    public FunctionDescrBuilder returnType( String type );
+    public FunctionDescrBuilder returnType(String type);
 
     /**
      * Sets the function body
@@ -60,7 +60,7 @@ public interface FunctionDescrBuilder
      * 
      * @return itself
      */
-    public FunctionDescrBuilder body( String body );
+    public FunctionDescrBuilder body(String body);
 
     /**
      * Sets the function dialect. Default is java.
@@ -69,5 +69,5 @@ public interface FunctionDescrBuilder
      * 
      * @return itself
      */
-    public FunctionDescrBuilder dialect( String dialect );
+    public FunctionDescrBuilder dialect(String dialect);
 }

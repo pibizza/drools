@@ -22,7 +22,7 @@ public class MissingImplementationException extends RuntimeException {
     private final Resource resource;
     private final String dependency;
 
-    public MissingImplementationException( Resource resource, String dependency ) {
+    public MissingImplementationException(Resource resource, String dependency) {
         this.resource = resource;
         this.dependency = dependency;
     }

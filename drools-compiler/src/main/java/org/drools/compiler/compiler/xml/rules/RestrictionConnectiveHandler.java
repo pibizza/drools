@@ -35,54 +35,53 @@ import org.xml.sax.SAXParseException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class RestrictionConnectiveHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
 
     public final static String AND = "and-";
-    public final static String OR  = "or-";
+    public final static String OR = "or-";
 
-   public RestrictionConnectiveHandler() {
+    public RestrictionConnectiveHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
-        
-        if ( localName.startsWith( RestrictionConnectiveHandler.OR ) ) {
-            return new ConnectiveDescr(RestrictionConnectiveType.OR);    
-        } else if ( localName.startsWith( RestrictionConnectiveHandler.AND ) ) {
-            return new ConnectiveDescr(RestrictionConnectiveType.AND);   
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
+
+        if (localName.startsWith(RestrictionConnectiveHandler.OR)) {
+            return new ConnectiveDescr(RestrictionConnectiveType.OR);
+        } else if (localName.startsWith(RestrictionConnectiveHandler.AND)) {
+            return new ConnectiveDescr(RestrictionConnectiveType.AND);
         } else {
-            throw new SAXParseException( "<" + localName + "> should have'",
-                                         parser.getLocator() );
+            throw new SAXParseException("<" + localName + "> should have'",
+                    parser.getLocator());
         }
-        
-        
+
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
-        
+
         Object op = parser.getParent();
         ConnectiveDescr c = (ConnectiveDescr) parser.getCurrent();
-        
-        if ( op instanceof PatternDescr ) {
+
+        if (op instanceof PatternDescr) {
             StringBuilder sb = new StringBuilder();
-            c.buildExpression( sb );
-                  
-            ExprConstraintDescr expr = new ExprConstraintDescr( );
-            expr.setExpression( sb.toString() );
-              
-            final PatternDescr patternDescr = (PatternDescr)op;  
-            patternDescr.addConstraint( expr );    
-        } else {        
-            ConnectiveDescr p = (ConnectiveDescr)op;
-            p.add( c );
+            c.buildExpression(sb);
+
+            ExprConstraintDescr expr = new ExprConstraintDescr();
+            expr.setExpression(sb.toString());
+
+            final PatternDescr patternDescr = (PatternDescr) op;
+            patternDescr.addConstraint(expr);
+        } else {
+            ConnectiveDescr p = (ConnectiveDescr) op;
+            p.add(c);
         }
         return c;
     }

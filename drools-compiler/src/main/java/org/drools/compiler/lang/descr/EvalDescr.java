@@ -20,17 +20,18 @@ import java.util.Collections;
 import java.util.List;
 
 public class EvalDescr extends BaseDescr
-    implements
-    ConditionalElementDescr {
+        implements
+        ConditionalElementDescr {
     private static final long serialVersionUID = 510l;
 
-    private Object            content;
+    private Object content;
 
-    private String[]          declarations;
+    private String[] declarations;
 
-    private String            classMethodName;
+    private String classMethodName;
 
-    public EvalDescr() { }
+    public EvalDescr() {
+    }
 
     public EvalDescr(final Object content) {
         this.content = content;
@@ -65,21 +66,21 @@ public class EvalDescr extends BaseDescr
     }
 
     public void addDescr(final BaseDescr baseDescr) {
-        throw new UnsupportedOperationException("Can't add descriptors to "+this.getClass().getName());
+        throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
-    
-    public void insertBeforeLast(final Class clazz ,final BaseDescr baseDescr ) {
-        throw new UnsupportedOperationException( "Can't add descriptors to " + this.getClass().getName() );
+
+    public void insertBeforeLast(final Class clazz, final BaseDescr baseDescr) {
+        throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
     public void addOrMerge(BaseDescr baseDescr) {
-        throw new UnsupportedOperationException("Can't add descriptors to "+this.getClass().getName());
+        throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
-     public boolean removeDescr(BaseDescr baseDescr) {
-        throw new UnsupportedOperationException("Can't remove descriptors from "+this.getClass().getName());
+    public boolean removeDescr(BaseDescr baseDescr) {
+        throw new UnsupportedOperationException("Can't remove descriptors from " + this.getClass().getName());
     }
-    
+
     @Override
     public String toString() {
         return content.toString();

@@ -32,22 +32,22 @@ import java.util.List;
 /**
  * An implementation for the CollectDescrBuilder
  */
-public class AccumulateDescrBuilderImpl<P extends DescrBuilder< ?, ? >> extends BaseDescrBuilderImpl<P, AccumulateDescr>
-    implements
+public class AccumulateDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends BaseDescrBuilderImpl<P, AccumulateDescr>
+        implements
         AccumulateDescrBuilder<P> {
 
     public AccumulateDescrBuilderImpl(P parent) {
-        super( parent,
-               new AccumulateDescr() );
+        super(parent,
+                new AccumulateDescr());
     }
 
     /**
      * {@inheritDoc}
      */
-    public PatternDescrBuilder<AccumulateDescrBuilder<P>> pattern( String type ) {
-        PatternDescrBuilder<AccumulateDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<AccumulateDescrBuilder<P>>( this,
-                                                                                                                         type );
-        descr.setInputPattern( pattern.getDescr() );
+    public PatternDescrBuilder<AccumulateDescrBuilder<P>> pattern(String type) {
+        PatternDescrBuilder<AccumulateDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<AccumulateDescrBuilder<P>>(this,
+                type);
+        descr.setInputPattern(pattern.getDescr());
         return pattern;
     }
 
@@ -55,56 +55,56 @@ public class AccumulateDescrBuilderImpl<P extends DescrBuilder< ?, ? >> extends 
      * {@inheritDoc}
      */
     public PatternDescrBuilder<AccumulateDescrBuilder<P>> pattern() {
-        PatternDescrBuilder<AccumulateDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<AccumulateDescrBuilder<P>>( this );
-        descr.setInputPattern( pattern.getDescr() );
+        PatternDescrBuilder<AccumulateDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<AccumulateDescrBuilder<P>>(this);
+        descr.setInputPattern(pattern.getDescr());
         return pattern;
     }
 
     public CEDescrBuilder<AccumulateDescrBuilder<P>, AndDescr> source() {
-        CEDescrBuilder<AccumulateDescrBuilder<P>, AndDescr> and = new CEDescrBuilderImpl<AccumulateDescrBuilder<P>, AndDescr>( this,
-                                                                                                                               new AndDescr() );
-        descr.setInput( and.getDescr() );
+        CEDescrBuilder<AccumulateDescrBuilder<P>, AndDescr> and = new CEDescrBuilderImpl<AccumulateDescrBuilder<P>, AndDescr>(this,
+                new AndDescr());
+        descr.setInput(and.getDescr());
         return and;
     }
 
-    public AccumulateDescrBuilder<P> function( String name,
-                                               String bind,
-                                               boolean unif,
-                                               String... parameters ) {
-        descr.addFunction( name,
-                           bind,
-                           unif,
-                           parameters );
+    public AccumulateDescrBuilder<P> function(String name,
+            String bind,
+            boolean unif,
+            String... parameters) {
+        descr.addFunction(name,
+                bind,
+                unif,
+                parameters);
         return this;
     }
 
-    public AccumulateDescrBuilder<P> init( String block ) {
-        descr.setInitCode( block );
+    public AccumulateDescrBuilder<P> init(String block) {
+        descr.setInitCode(block);
         return this;
     }
 
-    public AccumulateDescrBuilder<P> action( String block ) {
-        descr.setActionCode( block );
+    public AccumulateDescrBuilder<P> action(String block) {
+        descr.setActionCode(block);
         return this;
     }
 
-    public AccumulateDescrBuilder<P> reverse( String block ) {
-        descr.setReverseCode( block );
+    public AccumulateDescrBuilder<P> reverse(String block) {
+        descr.setReverseCode(block);
         return this;
     }
 
-    public AccumulateDescrBuilder<P> result( String expr ) {
-        descr.setResultCode( expr );
+    public AccumulateDescrBuilder<P> result(String expr) {
+        descr.setResultCode(expr);
         return this;
     }
 
     @Override
-    public AccumulateDescrBuilder<P> constraint( String constr ) {
-        if ( parent instanceof PatternDescrBuilder ) {
-            ( (PatternDescrBuilder) parent ).constraint( constr );
-        } else if ( parent instanceof CEDescrBuilder ) {
+    public AccumulateDescrBuilder<P> constraint(String constr) {
+        if (parent instanceof PatternDescrBuilder) {
+            ((PatternDescrBuilder) parent).constraint(constr);
+        } else if (parent instanceof CEDescrBuilder) {
             List<? extends BaseDescr> args = ((ConditionalElementDescr) parent.getDescr()).getDescrs();
-            ( (PatternDescr) args.get( args.size() - 1 ) ).addConstraint( new ExprConstraintDescr( constr ) );
+            ((PatternDescr) args.get(args.size() - 1)).addConstraint(new ExprConstraintDescr(constr));
         }
         return this;
     }

@@ -20,7 +20,7 @@ import org.drools.compiler.lang.api.impl.PackageDescrBuilderImpl;
 import org.kie.api.io.Resource;
 
 /**
- * A factory API for the *Descr classes 
+ * A factory API for the *Descr classes
  */
 public class DescrFactory {
 

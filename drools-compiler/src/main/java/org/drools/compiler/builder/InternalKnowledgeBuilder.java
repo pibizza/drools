@@ -47,9 +47,9 @@ import org.kie.internal.builder.ResultSeverity;
 
 public interface InternalKnowledgeBuilder extends KnowledgeBuilder, DroolsAssemblerContext, AssemblerContext {
 
-    ResourceRemovalResult removeObjectsGeneratedFromResource( Resource resource );
+    ResourceRemovalResult removeObjectsGeneratedFromResource(Resource resource);
 
-    void addPackage( PackageDescr packageDescr );
+    void addPackage(PackageDescr packageDescr);
 
     InternalKnowledgePackage getPackage(String name);
 
@@ -59,25 +59,25 @@ public interface InternalKnowledgeBuilder extends KnowledgeBuilder, DroolsAssemb
         private boolean modified;
         private Collection<String> removedTypes;
 
-        public ResourceRemovalResult(  ) {
-            this( false, Collections.emptyList() );
+        public ResourceRemovalResult() {
+            this(false, Collections.emptyList());
         }
 
-        public ResourceRemovalResult( boolean modified, Collection<String> removedTypes ) {
+        public ResourceRemovalResult(boolean modified, Collection<String> removedTypes) {
             this.modified = modified;
             this.removedTypes = removedTypes;
         }
 
         public void add(ResourceRemovalResult other) {
-            mergeModified( other.modified );
+            mergeModified(other.modified);
             if (this.removedTypes.isEmpty()) {
                 this.removedTypes = other.removedTypes;
             } else {
-                this.removedTypes.addAll( other.removedTypes );
+                this.removedTypes.addAll(other.removedTypes);
             }
         }
 
-        public void mergeModified( boolean otherModified ) {
+        public void mergeModified(boolean otherModified) {
             this.modified = this.modified || otherModified;
         }
 
@@ -97,7 +97,7 @@ public interface InternalKnowledgeBuilder extends KnowledgeBuilder, DroolsAssemb
 
         private KnowledgeBuilderImpl knowledgeBuilder;
 
-        public Empty( ClassLoader rootClassLoader, Supplier<KnowledgeBuilderImpl> lazyBuilder ) {
+        public Empty(ClassLoader rootClassLoader, Supplier<KnowledgeBuilderImpl> lazyBuilder) {
             this.rootClassLoader = rootClassLoader;
             this.lazyBuilder = lazyBuilder;
         }
@@ -118,13 +118,13 @@ public interface InternalKnowledgeBuilder extends KnowledgeBuilder, DroolsAssemb
         }
 
         @Override
-        public KnowledgeBuilderResults getResults( ResultSeverity... severities ) {
-            return withKnowledgeBuilder(kb -> kb.getResults( severities ), new PackageBuilderResults());
+        public KnowledgeBuilderResults getResults(ResultSeverity... severities) {
+            return withKnowledgeBuilder(kb -> kb.getResults(severities), new PackageBuilderResults());
         }
 
         @Override
-        public boolean hasResults( ResultSeverity... severities ) {
-            return withKnowledgeBuilder(kb -> kb.hasResults( severities ), false);
+        public boolean hasResults(ResultSeverity... severities) {
+            return withKnowledgeBuilder(kb -> kb.hasResults(severities), false);
         }
 
         @Override
@@ -153,18 +153,18 @@ public interface InternalKnowledgeBuilder extends KnowledgeBuilder, DroolsAssemb
         }
 
         @Override
-        public void reportError( KnowledgeBuilderError error ) {
-            withKnowledgeBuilder(kb -> kb.reportError( error ));
+        public void reportError(KnowledgeBuilderError error) {
+            withKnowledgeBuilder(kb -> kb.reportError(error));
         }
 
         @Override
-        public ResourceRemovalResult removeObjectsGeneratedFromResource( Resource resource ) {
-            return getOrCreateKnowledgeBuilder().removeObjectsGeneratedFromResource( resource );
+        public ResourceRemovalResult removeObjectsGeneratedFromResource(Resource resource) {
+            return getOrCreateKnowledgeBuilder().removeObjectsGeneratedFromResource(resource);
         }
 
         @Override
-        public InternalKnowledgePackage getPackage( String name ) {
-            return withKnowledgeBuilder(kb -> kb.getPackage( name ), null);
+        public InternalKnowledgePackage getPackage(String name) {
+            return withKnowledgeBuilder(kb -> kb.getPackage(name), null);
         }
 
         @Override
@@ -173,23 +173,23 @@ public interface InternalKnowledgeBuilder extends KnowledgeBuilder, DroolsAssemb
         }
 
         @Override
-        public TypeDeclaration getAndRegisterTypeDeclaration( Class<?> cls, String name ) {
-            return withKnowledgeBuilder(kb -> kb.getAndRegisterTypeDeclaration( cls, name ), null);
+        public TypeDeclaration getAndRegisterTypeDeclaration(Class<?> cls, String name) {
+            return withKnowledgeBuilder(kb -> kb.getAndRegisterTypeDeclaration(cls, name), null);
         }
 
         @Override
-        public TypeDeclaration getTypeDeclaration( Class<?> typeClass ) {
-            return withKnowledgeBuilder(kb -> kb.getTypeDeclaration( typeClass ), null);
+        public TypeDeclaration getTypeDeclaration(Class<?> typeClass) {
+            return withKnowledgeBuilder(kb -> kb.getTypeDeclaration(typeClass), null);
         }
 
         @Override
-        public List<PackageDescr> getPackageDescrs( String namespace ) {
-            return withKnowledgeBuilder(kb -> kb.getPackageDescrs( namespace ), Collections.emptyList());
+        public List<PackageDescr> getPackageDescrs(String namespace) {
+            return withKnowledgeBuilder(kb -> kb.getPackageDescrs(namespace), Collections.emptyList());
         }
 
         @Override
-        public PackageRegistry getPackageRegistry( String packageName ) {
-            return withKnowledgeBuilder(kb -> kb.getPackageRegistry( packageName ), null);
+        public PackageRegistry getPackageRegistry(String packageName) {
+            return withKnowledgeBuilder(kb -> kb.getPackageRegistry(packageName), null);
         }
 
         @Override
@@ -199,32 +199,32 @@ public interface InternalKnowledgeBuilder extends KnowledgeBuilder, DroolsAssemb
 
         private synchronized void withKnowledgeBuilder(Consumer<InternalKnowledgeBuilder> f) {
             if (knowledgeBuilder != null) {
-                f.accept( knowledgeBuilder );
+                f.accept(knowledgeBuilder);
             }
         }
 
         private synchronized <T> T withKnowledgeBuilder(Function<InternalKnowledgeBuilder, T> f, T defaultValue) {
-            return knowledgeBuilder != null ? f.apply( knowledgeBuilder ) : defaultValue;
+            return knowledgeBuilder != null ? f.apply(knowledgeBuilder) : defaultValue;
         }
 
         @Override
-        public void addPackage( PackageDescr packageDescr ) {
-            getOrCreateKnowledgeBuilder().addPackage( packageDescr );
+        public void addPackage(PackageDescr packageDescr) {
+            getOrCreateKnowledgeBuilder().addPackage(packageDescr);
         }
 
         @Override
-        public void add( Resource resource, ResourceType type ) {
+        public void add(Resource resource, ResourceType type) {
             getOrCreateKnowledgeBuilder().add(resource, type);
         }
 
         @Override
-        public void add( Resource resource, ResourceType type, ResourceConfiguration configuration ) {
+        public void add(Resource resource, ResourceType type, ResourceConfiguration configuration) {
             getOrCreateKnowledgeBuilder().add(resource, type, configuration);
         }
 
         @Override
-        public <T extends ResourceTypePackage<?>> T computeIfAbsent( ResourceType resourceType, String namespace, Function<? super ResourceType, T> mappingFunction ) {
-            return getOrCreateKnowledgeBuilder().computeIfAbsent( resourceType, namespace, mappingFunction );
+        public <T extends ResourceTypePackage<?>> T computeIfAbsent(ResourceType resourceType, String namespace, Function<? super ResourceType, T> mappingFunction) {
+            return getOrCreateKnowledgeBuilder().computeIfAbsent(resourceType, namespace, mappingFunction);
         }
 
         @Override

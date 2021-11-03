@@ -19,17 +19,18 @@ package org.drools.compiler.lang.descr;
 public class AtomicExprDescr extends BaseDescr implements ExpressionDescr {
     private static final long serialVersionUID = 510l;
 
-    private String            expression;
-    private String            rewrittenExpression;
-    private boolean           literal;
+    private String expression;
+    private String rewrittenExpression;
+    private boolean literal;
 
-    public AtomicExprDescr() { }
-
-    public AtomicExprDescr(final String expression) {
-        this( expression, false );
+    public AtomicExprDescr() {
     }
 
-    public AtomicExprDescr(final String expression, final boolean isLiteral ) {
+    public AtomicExprDescr(final String expression) {
+        this(expression, false);
+    }
+
+    public AtomicExprDescr(final String expression, final boolean isLiteral) {
         this.expression = expression;
         this.literal = isLiteral;
     }
@@ -38,7 +39,7 @@ public class AtomicExprDescr extends BaseDescr implements ExpressionDescr {
         return this.expression;
     }
 
-    public void setExpression( final String expression ) {
+    public void setExpression(final String expression) {
         this.expression = expression;
     }
 
@@ -51,7 +52,7 @@ public class AtomicExprDescr extends BaseDescr implements ExpressionDescr {
         return literal;
     }
 
-    public void setLiteral( boolean literal ) {
+    public void setLiteral(boolean literal) {
         this.literal = literal;
     }
 
@@ -69,7 +70,7 @@ public class AtomicExprDescr extends BaseDescr implements ExpressionDescr {
 
     @Override
     public AtomicExprDescr replaceVariable(String oldVar, String newVar) {
-        expression = expression.replace( oldVar, newVar );
+        expression = expression.replace(oldVar, newVar);
         return this;
     }
 

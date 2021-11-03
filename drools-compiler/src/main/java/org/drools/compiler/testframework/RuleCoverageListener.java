@@ -38,6 +38,7 @@ public class RuleCoverageListener implements AgendaEventListener {
 
     /**
      * Pass in the expected rules to fire.
+     * 
      * @param expectedRuleNames
      */
     public RuleCoverageListener(HashSet<String> expectedRuleNames) {
@@ -100,7 +101,5 @@ public class RuleCoverageListener implements AgendaEventListener {
         // TODO Auto-generated method stub
 
     }
-
-
 
 }

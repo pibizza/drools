@@ -23,10 +23,10 @@ import org.drools.core.rule.PredicateConstraint;
 
 public interface PredicateBuilder {
     public void build(final RuleBuildContext context,
-                      final BoundIdentifiers usedIdentifiers,
-                      final Declaration[] previousDeclarations,
-                      final Declaration[] localDeclarations,
-                      final PredicateConstraint predicateConstraint,
-                      final PredicateDescr predicateDescr, 
-                      AnalysisResult analysis);
+            final BoundIdentifiers usedIdentifiers,
+            final Declaration[] previousDeclarations,
+            final Declaration[] localDeclarations,
+            final PredicateConstraint predicateConstraint,
+            final PredicateDescr predicateDescr,
+            AnalysisResult analysis);
 }

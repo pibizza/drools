@@ -29,23 +29,23 @@ import org.kie.api.io.Resource;
  * This is the super type for all pattern AST nodes.
  */
 public class BaseDescr
-    implements
-    Externalizable,
-    Namespaceable {
+        implements
+        Externalizable,
+        Namespaceable {
 
     private static final long serialVersionUID = 510l;
-    private int               startCharacter   = -1;
-    private int               endCharacter     = -1;
-    private int               line             = -1;
-    private int               column           = -1;
-    private int               endLine          = -1;
-    private int               endColumn        = -1;
-    private String            text             = "";
-    private Resource          resource;
-    private String            namespace        = "";
+    private int startCharacter = -1;
+    private int endCharacter = -1;
+    private int line = -1;
+    private int column = -1;
+    private int endLine = -1;
+    private int endColumn = -1;
+    private String text = "";
+    private Resource resource;
+    private String namespace = "";
 
-    public void readExternal( ObjectInput in ) throws IOException,
-                                              ClassNotFoundException {
+    public void readExternal(ObjectInput in) throws IOException,
+            ClassNotFoundException {
         startCharacter = in.readInt();
         endCharacter = in.readInt();
         line = in.readInt();
@@ -57,16 +57,16 @@ public class BaseDescr
         namespace = in.readUTF();
     }
 
-    public void writeExternal( ObjectOutput out ) throws IOException {
-        out.writeInt( startCharacter );
-        out.writeInt( endCharacter );
-        out.writeInt( line );
-        out.writeInt( column );
-        out.writeInt( endLine );
-        out.writeInt( endColumn );
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeInt(startCharacter);
+        out.writeInt(endCharacter);
+        out.writeInt(line);
+        out.writeInt(column);
+        out.writeInt(endLine);
+        out.writeInt(endColumn);
         out.writeObject(text);
-        out.writeObject( resource );
-        out.writeUTF( namespace );
+        out.writeObject(resource);
+        out.writeUTF(namespace);
     }
 
     public Resource getResource() {
@@ -92,18 +92,18 @@ public class BaseDescr
         return text;
     }
 
-    public void setText( String text ) {
+    public void setText(String text) {
         this.text = text;
     }
 
-    public void setLocation( final int line,
-                             final int column ) {
+    public void setLocation(final int line,
+            final int column) {
         this.line = line;
         this.column = column;
     }
 
-    public void setEndLocation( final int line,
-                                final int column ) {
+    public void setEndLocation(final int line,
+            final int column) {
         this.endLine = line;
         this.endColumn = column;
     }
@@ -134,7 +134,7 @@ public class BaseDescr
     /**
      * @param endCharacter the endCharacter to set
      */
-    public void setEndCharacter( final int endCharacter ) {
+    public void setEndCharacter(final int endCharacter) {
         this.endCharacter = endCharacter;
     }
 
@@ -148,15 +148,15 @@ public class BaseDescr
     /**
      * @param startCharacter the startCharacter to set
      */
-    public void setStartCharacter( final int startCharacter ) {
+    public void setStartCharacter(final int startCharacter) {
         this.startCharacter = startCharacter;
     }
-    
-    public void copyLocation( BaseDescr d ) {
-        this.setLocation( d.getLine(), d.getColumn() );
-        this.setEndLocation( d.getEndLine(), d.getEndColumn() );
-        this.setStartCharacter( d.getStartCharacter() );
-        this.setEndCharacter( d.getEndCharacter() );
+
+    public void copyLocation(BaseDescr d) {
+        this.setLocation(d.getLine(), d.getColumn());
+        this.setEndLocation(d.getEndLine(), d.getEndColumn());
+        this.setStartCharacter(d.getStartCharacter());
+        this.setEndCharacter(d.getEndCharacter());
     }
 
     public String positionAsString() {

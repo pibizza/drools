@@ -29,19 +29,19 @@ public class MemoryFolder implements Folder, Serializable {
 
     private final MemoryFileSystem mfs;
 
-    private final KiePath          path;
-    
-    private MemoryFolder     pFolder;
+    private final KiePath path;
+
+    private MemoryFolder pFolder;
 
     public MemoryFolder(MemoryFileSystem mfs, String path) {
-        this(mfs, KiePath.of(path) );
+        this(mfs, KiePath.of(path));
     }
 
     public MemoryFolder(MemoryFileSystem mfs, KiePath path) {
         this.mfs = mfs;
         this.path = path;
     }
-    
+
     public String getName() {
         return path.getFileName();
     }
@@ -51,32 +51,32 @@ public class MemoryFolder implements Folder, Serializable {
     }
 
     public File getFile(String name) {
-        return mfs.getFile( path.resolve(name) );
+        return mfs.getFile(path.resolve(name));
     }
 
     public Folder getFolder(String name) {
-        return mfs.getFolder( path.resolve(name) );
+        return mfs.getFolder(path.resolve(name));
     }
 
     public Folder getParent() {
-        if ( pFolder == null ) {
-            pFolder = new MemoryFolder( mfs, path.getParent() );
+        if (pFolder == null) {
+            pFolder = new MemoryFolder(mfs, path.getParent());
         }
-        
+
         return pFolder;
     }
-    
+
     public Collection<? extends FileSystemItem> getMembers() {
-        Collection<? extends FileSystemItem> members = mfs.getMembers( this );
+        Collection<? extends FileSystemItem> members = mfs.getMembers(this);
         return members != null ? members : Collections.emptyList();
     }
 
     public boolean exists() {
-        return mfs.existsFolder( path );
+        return mfs.existsFolder(path);
     }
 
     public boolean create() {
-        mfs.createFolder( this );
+        mfs.createFolder(this);
         return true;
     }
 
@@ -90,9 +90,12 @@ public class MemoryFolder implements Folder, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if ( this == obj ) return true;
-        if ( obj == null ) return false;
-        if ( getClass() != obj.getClass() ) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
         MemoryFolder other = (MemoryFolder) obj;
         return Objects.equals(path, other.path);
     }

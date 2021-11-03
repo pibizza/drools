@@ -19,11 +19,11 @@ package org.drools.compiler.lang.api;
 import org.drools.compiler.lang.descr.PatternDescr;
 
 /**
- *  A descriptor builder for Pattern sources
+ * A descriptor builder for Pattern sources
  */
 public interface SourceDescrBuilder<P extends PatternDescrBuilder<?>>
-    extends
-    DescrBuilder<P, PatternDescr> {
+        extends
+        DescrBuilder<P, PatternDescr> {
 
     /**
      * Defines the pattern source as being an expression result
@@ -32,7 +32,7 @@ public interface SourceDescrBuilder<P extends PatternDescrBuilder<?>>
      * 
      * @return parent descriptor builder
      */
-    P expression( String expression );
+    P expression(String expression);
 
     /**
      * Defines the pattern source as being an entry point
@@ -41,10 +41,10 @@ public interface SourceDescrBuilder<P extends PatternDescrBuilder<?>>
      * 
      * @return parent descriptor builder
      */
-    P entryPoint( String entryPoint );
+    P entryPoint(String entryPoint);
 
     /**
-     * Defines the pattern source as a collection 
+     * Defines the pattern source as a collection
      * 
      * @return the collect descriptor builder
      */
@@ -64,6 +64,6 @@ public interface SourceDescrBuilder<P extends PatternDescrBuilder<?>>
      * 
      * @return parent descriptor builder
      */
-    P window( String window );
+    P window(String window);
 
 }

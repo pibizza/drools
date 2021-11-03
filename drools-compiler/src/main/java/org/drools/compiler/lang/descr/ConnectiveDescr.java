@@ -32,17 +32,18 @@ import java.util.List;
  */
 public class ConnectiveDescr extends RestrictionDescr {
 
-    private static final long                     serialVersionUID = 510l;
+    private static final long serialVersionUID = 510l;
 
-    public final static RestrictionConnectiveType AND              = RestrictionConnectiveType.AND;
-    public final static RestrictionConnectiveType OR               = RestrictionConnectiveType.OR;
+    public final static RestrictionConnectiveType AND = RestrictionConnectiveType.AND;
+    public final static RestrictionConnectiveType OR = RestrictionConnectiveType.OR;
 
-    private RestrictionConnectiveType             connective;
-    private List<Object>                          children;
-    private String                                prefix;
-    private boolean                               paren;
+    private RestrictionConnectiveType connective;
+    private List<Object> children;
+    private String prefix;
+    private boolean paren;
 
-    public ConnectiveDescr() { }
+    public ConnectiveDescr() {
+    }
 
     public ConnectiveDescr(final RestrictionConnectiveType connective) {
         super();
@@ -52,9 +53,9 @@ public class ConnectiveDescr extends RestrictionDescr {
     }
 
     @Override
-    public void readExternal( ObjectInput in ) throws IOException,
-                                                      ClassNotFoundException {
-        super.readExternal( in );
+    public void readExternal(ObjectInput in) throws IOException,
+            ClassNotFoundException {
+        super.readExternal(in);
         this.connective = (RestrictionConnectiveType) in.readObject();
         this.children = (List<Object>) in.readObject();
         this.prefix = (String) in.readObject();
@@ -62,18 +63,18 @@ public class ConnectiveDescr extends RestrictionDescr {
     }
 
     @Override
-    public void writeExternal( ObjectOutput out ) throws IOException {
-        super.writeExternal( out );
+    public void writeExternal(ObjectOutput out) throws IOException {
+        super.writeExternal(out);
         out.writeObject(connective);
-        out.writeObject( children );
-        out.writeObject( prefix );
-        out.writeBoolean( paren );
+        out.writeObject(children);
+        out.writeObject(prefix);
+        out.writeBoolean(paren);
     }
 
     public RestrictionConnectiveType getConnective() {
         return this.connective;
     }
-    
+
     public boolean isParen() {
         return paren;
     }
@@ -91,49 +92,49 @@ public class ConnectiveDescr extends RestrictionDescr {
     }
 
     public void add(ConnectiveDescr restriction) {
-        if ( this.children == Collections.EMPTY_LIST ) {
+        if (this.children == Collections.EMPTY_LIST) {
             this.children = new ArrayList<Object>(2);
         }
-        this.children.add( restriction );
-    }    
-    
+        this.children.add(restriction);
+    }
+
     public void add(String restriction) {
-        if ( this.children == Collections.EMPTY_LIST ) {
+        if (this.children == Collections.EMPTY_LIST) {
             this.children = new ArrayList<Object>(2);
-        }        
-        this.children.add( restriction );
-    }      
+        }
+        this.children.add(restriction);
+    }
 
     public List<Object> getRestrictions() {
         return this.children;
     }
-    
-    public void buildExpression(StringBuilder sb ) {
-        if ( !StringUtils.isEmpty( prefix )) {
-            sb.append( prefix );      
-            sb.append( " " );            
+
+    public void buildExpression(StringBuilder sb) {
+        if (!StringUtils.isEmpty(prefix)) {
+            sb.append(prefix);
+            sb.append(" ");
         }
 
-        for ( int i = 0; i < this.children.size(); i++ ) {
-            if ( isParen() && children.get( i )  instanceof ConnectiveDescr ) {
-                sb.append( "(" );
-                ((ConnectiveDescr)children.get( i ) ).buildExpression( sb );
-                sb.append( ")" );
+        for (int i = 0; i < this.children.size(); i++) {
+            if (isParen() && children.get(i) instanceof ConnectiveDescr) {
+                sb.append("(");
+                ((ConnectiveDescr) children.get(i)).buildExpression(sb);
+                sb.append(")");
             } else {
-                sb.append( children.get( i ) );
+                sb.append(children.get(i));
             }
-            
-            if ( i < this.children.size() -1 ) {
-                sb.append( " " );
-                sb.append( connective );
-                sb.append( " " );
+
+            if (i < this.children.size() - 1) {
+                sb.append(" ");
+                sb.append(connective);
+                sb.append(" ");
             }
         }
     }
 
     public String toString() {
         final StringBuilder buf = new StringBuilder();
-        buildExpression( buf );
+        buildExpression(buf);
         return buf.toString();
     }
 

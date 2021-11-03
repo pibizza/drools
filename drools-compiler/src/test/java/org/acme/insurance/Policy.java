@@ -16,17 +16,17 @@
 package org.acme.insurance;
 
 /**
- * This represents a policy that a driver is applying for. 
+ * This represents a policy that a driver is applying for.
  * 
  * Obviously in the real world, there are actuaries to mess things up, but lets just pretend there is
  * some simple base price and discount that we can calculate with relatively simple rules !
  */
 public class Policy {
 
-    private String  type            = "COMPREHENSIVE";
-    private boolean approved        = false;
-    private int     discountPercent = 0;
-    private int     basePrice;
+    private String type = "COMPREHENSIVE";
+    private boolean approved = false;
+    private int discountPercent = 0;
+    private int basePrice;
 
     public boolean isApproved() {
         return this.approved;

@@ -30,7 +30,7 @@ public class DialectError extends DroolsError {
     public int[] getLines() {
         return line;
     }
-    
+
     public String getMessage() {
         return this.message;
     }

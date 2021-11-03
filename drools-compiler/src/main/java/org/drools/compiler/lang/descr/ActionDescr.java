@@ -17,8 +17,9 @@ package org.drools.compiler.lang.descr;
 
 public class ActionDescr extends BaseDescr {
     private String text;
-    
-    public ActionDescr() { }
+
+    public ActionDescr() {
+    }
 
     public ActionDescr(String text) {
         this.text = text;

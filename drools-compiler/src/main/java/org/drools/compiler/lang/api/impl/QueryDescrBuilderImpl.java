@@ -27,38 +27,35 @@ import org.drools.compiler.lang.descr.AndDescr;
  * A descr builder for queries
  */
 public class QueryDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBuilder, QueryDescr>
-    implements
-    QueryDescrBuilder {
+        implements
+        QueryDescrBuilder {
 
-    protected QueryDescrBuilderImpl( PackageDescrBuilder parent ) {
-        super( parent, new QueryDescr() );
+    protected QueryDescrBuilderImpl(PackageDescrBuilder parent) {
+        super(parent, new QueryDescr());
     }
 
-
-    public AnnotationDescrBuilder<QueryDescrBuilder> newAnnotation( String name ) {
-        AnnotationDescrBuilder<QueryDescrBuilder> annotation = new AnnotationDescrBuilderImpl<QueryDescrBuilder>( this, name );
-        descr.addAnnotation( annotation.getDescr() );
+    public AnnotationDescrBuilder<QueryDescrBuilder> newAnnotation(String name) {
+        AnnotationDescrBuilder<QueryDescrBuilder> annotation = new AnnotationDescrBuilderImpl<QueryDescrBuilder>(this, name);
+        descr.addAnnotation(annotation.getDescr());
         return annotation;
     }
 
-    public QueryDescrBuilder name( String name ) {
-        descr.setName( name );
+    public QueryDescrBuilder name(String name) {
+        descr.setName(name);
         return this;
     }
 
     public CEDescrBuilder<QueryDescrBuilder, AndDescr> lhs() {
-        CEDescrBuilder<QueryDescrBuilder, AndDescr> ce = new CEDescrBuilderImpl<QueryDescrBuilder, AndDescr>( this, new AndDescr() );
-        descr.setLhs( ce.getDescr() );
+        CEDescrBuilder<QueryDescrBuilder, AndDescr> ce = new CEDescrBuilderImpl<QueryDescrBuilder, AndDescr>(this, new AndDescr());
+        descr.setLhs(ce.getDescr());
         return ce;
     }
 
-
-    public QueryDescrBuilder parameter( String type,
-                                        String variable ) {
-        descr.addParameter( type,
-                            variable );
+    public QueryDescrBuilder parameter(String type,
+            String variable) {
+        descr.addParameter(type,
+                variable);
         return this;
     }
-
 
 }

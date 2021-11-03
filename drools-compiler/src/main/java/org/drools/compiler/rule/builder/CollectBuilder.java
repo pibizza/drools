@@ -24,35 +24,35 @@ import org.drools.core.rule.Pattern;
 import org.drools.core.rule.RuleConditionElement;
 
 public class CollectBuilder
-    implements
-    RuleConditionBuilder {
+        implements
+        RuleConditionBuilder {
 
     public RuleConditionElement build(final RuleBuildContext context,
-                                    final BaseDescr descr) {
-        return build( context,
-                      descr,
-                      null );
+            final BaseDescr descr) {
+        return build(context,
+                descr,
+                null);
     }
 
     public RuleConditionElement build(final RuleBuildContext context,
-                                    final BaseDescr descr,
-                                    final Pattern prefixPattern) {
+            final BaseDescr descr,
+            final Pattern prefixPattern) {
 
         final CollectDescr collectDescr = (CollectDescr) descr;
-        final PatternBuilder patternBuilder = (PatternBuilder) context.getDialect().getBuilder( PatternDescr.class );
-        final Pattern sourcePattern = (Pattern) patternBuilder.build( context,
-                                                                      collectDescr.getInputPattern() );
+        final PatternBuilder patternBuilder = (PatternBuilder) context.getDialect().getBuilder(PatternDescr.class);
+        final Pattern sourcePattern = (Pattern) patternBuilder.build(context,
+                collectDescr.getInputPattern());
 
-        if ( sourcePattern == null ) {
+        if (sourcePattern == null) {
             return null;
         }
 
         final String className = "collect" + context.getNextId();
-        collectDescr.setClassMethodName( className );
-        
+        collectDescr.setClassMethodName(className);
+
         Pattern resultPattern = (Pattern) context.getDeclarationResolver().peekBuildStack();
 
-        return new Collect( sourcePattern, resultPattern );
+        return new Collect(sourcePattern, resultPattern);
     }
 
 }

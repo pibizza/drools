@@ -26,45 +26,45 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class FieldBindingHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public FieldBindingHandler() {
     }
 
-    public Object start( final String uri,
-                         final String localName,
-                         final Attributes attrs,
-                         final ExtensibleXmlParser parser ) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+    public Object start(final String uri,
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
 
-        final String identifier = attrs.getValue( "identifier" );
-        final String fieldName = attrs.getValue( "field-name" );
+        final String identifier = attrs.getValue("identifier");
+        final String fieldName = attrs.getValue("field-name");
 
-        emptyAttributeCheck( localName,
-                             "identifier",
-                             identifier,
-                             parser );
-        emptyAttributeCheck( localName,
-                             "fieldName",
-                             fieldName,
-                             parser );
+        emptyAttributeCheck(localName,
+                "identifier",
+                identifier,
+                parser);
+        emptyAttributeCheck(localName,
+                "fieldName",
+                fieldName,
+                parser);
 
-        final BindingDescr fieldBindingDescr = new BindingDescr( identifier,
-                                                                 fieldName);
+        final BindingDescr fieldBindingDescr = new BindingDescr(identifier,
+                fieldName);
         return fieldBindingDescr;
     }
 
-    public Object end( final String uri,
-                       final String localName,
-                       final ExtensibleXmlParser parser ) throws SAXException {
+    public Object end(final String uri,
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
 
         final BindingDescr fieldBindingDescr = (BindingDescr) parser.getCurrent();
 
         final PatternDescr patternDescr = (PatternDescr) parser.getParent();
 
-        patternDescr.addConstraint( fieldBindingDescr );
+        patternDescr.addConstraint(fieldBindingDescr);
 
         return fieldBindingDescr;
     }

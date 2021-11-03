@@ -20,17 +20,17 @@ public class ParseException extends RuntimeException {
 
     private static final long serialVersionUID = 510l;
 
-    private int               lineNumber;
+    private int lineNumber;
 
-    private Throwable         cause;
+    private Throwable cause;
 
     /**
      * Thrown if there is an exception related to parsing a line in a drl file.
      * For more generic exception, a different exception class will be used.
      */
     public ParseException(final String message,
-                          final int lineNumber) {
-        super( message );
+            final int lineNumber) {
+        super(message);
         this.lineNumber = lineNumber;
     }
 
@@ -39,9 +39,9 @@ public class ParseException extends RuntimeException {
      * that triggered the error.
      */
     public ParseException(final String message,
-                          final int lineNumber,
-                          final Throwable cause) {
-        super( message );
+            final int lineNumber,
+            final Throwable cause) {
+        super(message);
         this.lineNumber = lineNumber;
         this.cause = cause;
     }
@@ -54,12 +54,12 @@ public class ParseException extends RuntimeException {
     }
 
     /**
-     * This will print out a summary, including the line number. 
+     * This will print out a summary, including the line number.
      * It will also print out the cause message if applicable.
      */
     @Override
     public String getMessage() {
-        if ( this.cause == null ) {
+        if (this.cause == null) {
             return super.getMessage() + " Line number: " + this.lineNumber;
         } else {
             return super.getMessage() + " Line number: " + this.lineNumber + ". Caused by: " + this.cause.getMessage();

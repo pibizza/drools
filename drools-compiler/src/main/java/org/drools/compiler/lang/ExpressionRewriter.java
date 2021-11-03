@@ -15,43 +15,42 @@
 
 package org.drools.compiler.lang;
 
-
 import org.drools.compiler.lang.descr.BaseDescr;
 import org.drools.compiler.lang.descr.ConstraintConnectiveDescr;
 import org.drools.compiler.lang.descr.OperatorDescr;
 
 public interface ExpressionRewriter {
 
-    String dump( BaseDescr base );
+    String dump(BaseDescr base);
 
-    String dump( BaseDescr base,
-                 MVELDumper.MVELDumperContext context );
+    String dump(BaseDescr base,
+            MVELDumper.MVELDumperContext context);
 
-    String dump( BaseDescr base,
-                 ConstraintConnectiveDescr parent,
-                 MVELDumper.MVELDumperContext context );
+    String dump(BaseDescr base,
+            ConstraintConnectiveDescr parent,
+            MVELDumper.MVELDumperContext context);
 
-    String dump( BaseDescr base,
-                 int parentPrecedence );
+    String dump(BaseDescr base,
+            int parentPrecedence);
 
-    StringBuilder dump( StringBuilder sbuilder,
-                        BaseDescr base,
-                        int parentPriority,
-                        boolean isInsideRelCons,
-                        MVELDumper.MVELDumperContext context );
+    StringBuilder dump(StringBuilder sbuilder,
+            BaseDescr base,
+            int parentPriority,
+            boolean isInsideRelCons,
+            MVELDumper.MVELDumperContext context);
 
-    StringBuilder dump( StringBuilder sbuilder,
-                        BaseDescr base,
-                        ConstraintConnectiveDescr parent,
-                        int parentIndex,
-                        int parentPriority,
-                        boolean isInsideRelCons,
-                        MVELDumper.MVELDumperContext context );
+    StringBuilder dump(StringBuilder sbuilder,
+            BaseDescr base,
+            ConstraintConnectiveDescr parent,
+            int parentIndex,
+            int parentPriority,
+            boolean isInsideRelCons,
+            MVELDumper.MVELDumperContext context);
 
-    String processRestriction( MVELDumper.MVELDumperContext context,
-                               String left,
-                               OperatorDescr operator,
-                               String right );
+    String processRestriction(MVELDumper.MVELDumperContext context,
+            String left,
+            OperatorDescr operator,
+            String right);
 
     public Class<?> getEvaluatorWrapperClass();
 }

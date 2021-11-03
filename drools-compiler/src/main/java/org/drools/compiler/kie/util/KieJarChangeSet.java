@@ -29,15 +29,15 @@ public class KieJarChangeSet {
     }
 
     public void removeFile(String file) {
-        changes.put( file, new ResourceChangeSet( file, ChangeType.REMOVED ) );
+        changes.put(file, new ResourceChangeSet(file, ChangeType.REMOVED));
     }
 
     public void addFile(String file) {
-        changes.put( file, new ResourceChangeSet( file, ChangeType.ADDED ) );
+        changes.put(file, new ResourceChangeSet(file, ChangeType.ADDED));
     }
 
     public void registerChanges(String file, ResourceChangeSet changeSet) {
-        changes.put( file, changeSet );
+        changes.put(file, changeSet);
     }
 
     public boolean contains(String resourceName) {
@@ -61,9 +61,12 @@ public class KieJarChangeSet {
 
     @Override
     public boolean equals(Object obj) {
-        if ( this == obj ) return true;
-        if ( obj == null ) return false;
-        if ( getClass() != obj.getClass() ) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
         KieJarChangeSet other = (KieJarChangeSet) obj;
         return changes.equals(other.changes);
     }

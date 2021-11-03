@@ -28,79 +28,79 @@ import org.drools.compiler.lang.descr.PatternDescr;
 /**
  * A descr builder implementation for Patterns
  */
-public class PatternDescrBuilderImpl<P extends DescrBuilder< ?, ? >> extends BaseDescrBuilderImpl<P, PatternDescr>
-    implements
+public class PatternDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends BaseDescrBuilderImpl<P, PatternDescr>
+        implements
         PatternDescrBuilder<P> {
 
     protected PatternDescrBuilderImpl(P parent) {
-        this( parent,
-              null );
+        this(parent,
+                null);
     }
 
     protected PatternDescrBuilderImpl(P parent,
-                                      String type) {
-        super( parent, new PatternDescr( type ) );
+            String type) {
+        super(parent, new PatternDescr(type));
         this.parent = parent;
     }
 
-    public PatternDescrBuilder<P> id( String id,
-                                      boolean isUnification ) {
-        descr.setIdentifier( id );
-        descr.setUnification( isUnification );
+    public PatternDescrBuilder<P> id(String id,
+            boolean isUnification) {
+        descr.setIdentifier(id);
+        descr.setUnification(isUnification);
         return this;
     }
 
-    public PatternDescrBuilder<P> type( String type ) {
-        descr.setObjectType( type );
+    public PatternDescrBuilder<P> type(String type) {
+        descr.setObjectType(type);
         return this;
     }
 
-    public PatternDescrBuilder<P> isQuery( boolean query ) {
-        descr.setQuery( query );
+    public PatternDescrBuilder<P> isQuery(boolean query) {
+        descr.setQuery(query);
         return this;
     }
 
-    public PatternDescrBuilder<P> constraint( String constraint ) {
-        ExprConstraintDescr constr = new ExprConstraintDescr( constraint );
-        constr.setType( ExprConstraintDescr.Type.NAMED );
-        constr.setPosition( descr.getConstraint().getDescrs().size() );
+    public PatternDescrBuilder<P> constraint(String constraint) {
+        ExprConstraintDescr constr = new ExprConstraintDescr(constraint);
+        constr.setType(ExprConstraintDescr.Type.NAMED);
+        constr.setPosition(descr.getConstraint().getDescrs().size());
         constr.setResource(descr.getResource());
-        descr.addConstraint( constr );
+        descr.addConstraint(constr);
         return this;
     }
 
-    public PatternDescrBuilder<P> constraint( String constraint,
-                                              boolean positional ) {
-        ExprConstraintDescr constr = new ExprConstraintDescr( constraint );
-        constr.setType( positional ? ExprConstraintDescr.Type.POSITIONAL : ExprConstraintDescr.Type.NAMED );
-        constr.setPosition( descr.getConstraint().getDescrs().size() );
+    public PatternDescrBuilder<P> constraint(String constraint,
+            boolean positional) {
+        ExprConstraintDescr constr = new ExprConstraintDescr(constraint);
+        constr.setType(positional ? ExprConstraintDescr.Type.POSITIONAL : ExprConstraintDescr.Type.NAMED);
+        constr.setPosition(descr.getConstraint().getDescrs().size());
         constr.setResource(descr.getResource());
-        descr.addConstraint( constr );
+        descr.addConstraint(constr);
         return this;
     }
 
-    public PatternDescrBuilder<P> bind( String var,
-                                        String target,
-                                        boolean isUnification ) {
-        BindingDescr bindDescr = new BindingDescr( var,
-                                                   target,
-                                                   isUnification );
+    public PatternDescrBuilder<P> bind(String var,
+            String target,
+            boolean isUnification) {
+        BindingDescr bindDescr = new BindingDescr(var,
+                target,
+                isUnification);
         bindDescr.setResource(descr.getResource());
-        descr.addConstraint( bindDescr );
+        descr.addConstraint(bindDescr);
         return this;
     }
 
     public SourceDescrBuilder<PatternDescrBuilder<P>> from() {
-        return new SourceDescrBuilderImpl<PatternDescrBuilder<P>>( this );
+        return new SourceDescrBuilderImpl<PatternDescrBuilder<P>>(this);
     }
 
     public BehaviorDescrBuilder<PatternDescrBuilder<P>> behavior() {
-        return new BehaviorDescrBuilderImpl<PatternDescrBuilder<P>>( this );
+        return new BehaviorDescrBuilderImpl<PatternDescrBuilder<P>>(this);
     }
 
     public AnnotationDescrBuilder<PatternDescrBuilder<P>> newAnnotation(String name) {
-        AnnotationDescrBuilder<PatternDescrBuilder<P>> annotation = new AnnotationDescrBuilderImpl<PatternDescrBuilder<P>>( this, name );
-        descr.addAnnotation( annotation.getDescr() );
+        AnnotationDescrBuilder<PatternDescrBuilder<P>> annotation = new AnnotationDescrBuilderImpl<PatternDescrBuilder<P>>(this, name);
+        descr.addAnnotation(annotation.getDescr());
         return annotation;
     }
 }

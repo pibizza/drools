@@ -28,39 +28,39 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class AccumulateHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
 
     public AccumulateHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
 
-        parser.startElementBuilder( localName,
-                                                  attrs );
+        parser.startElementBuilder(localName,
+                attrs);
         final AccumulateDescr accumulateDesrc = new AccumulateDescr();
         return accumulateDesrc;
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
 
         final Element element = parser.endElementBuilder();
         final AccumulateDescr accumulateDescr = (AccumulateDescr) parser.getCurrent();
 
         final Object parent = parser.getParent();
 
-        if ( parent.getClass().getName().equals( FromDescr.class.getName() ) ) {
-            final PatternDescr result = (PatternDescr) parser.getParent( 1 );
-            result.setSource( accumulateDescr );
+        if (parent.getClass().getName().equals(FromDescr.class.getName())) {
+            final PatternDescr result = (PatternDescr) parser.getParent(1);
+            result.setSource(accumulateDescr);
 
-        } else if ( parent instanceof ConditionalElementDescr ) {
+        } else if (parent instanceof ConditionalElementDescr) {
             final ConditionalElementDescr parentDescr = (ConditionalElementDescr) parent;
-            parentDescr.addDescr( accumulateDescr );
+            parentDescr.addDescr(accumulateDescr);
         }
 
         return accumulateDescr;

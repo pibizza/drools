@@ -20,7 +20,8 @@ import org.antlr.runtime.Lexer;
 import org.antlr.runtime.RecognizerSharedState;
 
 public abstract class AbstractDRLLexer extends Lexer implements DRLLexer {
-    public AbstractDRLLexer() { }
+    public AbstractDRLLexer() {
+    }
 
     public AbstractDRLLexer(CharStream input) {
         super(input);

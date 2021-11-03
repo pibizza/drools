@@ -38,8 +38,8 @@ public class AnnotationFactory {
 
     public static Annotation buildAnnotation(AnnotationDescr annotationDescr, Class<?> annotationClass) {
         return (Annotation) newProxyInstance(annotationClass.getClassLoader(),
-                                             new Class<?>[]{Annotation.class, annotationClass},
-                                             new AnnotationInvocationHandler(annotationClass, annotationDescr));
+                new Class<?>[] { Annotation.class, annotationClass },
+                new AnnotationInvocationHandler(annotationClass, annotationDescr));
     }
 
     public static class AnnotationInvocationHandler implements InvocationHandler {

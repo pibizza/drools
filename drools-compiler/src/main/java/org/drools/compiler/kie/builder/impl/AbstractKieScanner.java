@@ -32,7 +32,7 @@ public abstract class AbstractKieScanner<T> implements KieScanner {
 
     private Timer timer;
 
-    private static final Logger log = LoggerFactory.getLogger( KieScanner.class );
+    private static final Logger log = LoggerFactory.getLogger(KieScanner.class);
 
     protected InternalKieContainer kieContainer;
 
@@ -43,13 +43,13 @@ public abstract class AbstractKieScanner<T> implements KieScanner {
     protected KieScannerEventSupport listeners = new KieScannerEventSupport();
 
     @Override
-    public final void addListener( KieScannerEventListener listener ) {
-        listeners.addEventListener( listener );
+    public final void addListener(KieScannerEventListener listener) {
+        listeners.addEventListener(listener);
     }
 
     @Override
-    public final void removeListener( KieScannerEventListener listener ) {
-        listeners.removeEventListener( listener );
+    public final void removeListener(KieScannerEventListener listener) {
+        listeners.removeEventListener(listener);
     }
 
     @Override
@@ -57,9 +57,9 @@ public abstract class AbstractKieScanner<T> implements KieScanner {
         return listeners.getEventListeners();
     }
 
-    protected final void changeStatus( Status status ) {
+    protected final void changeStatus(Status status) {
         this.status = status;
-        listeners.fireKieScannerStatusChangeEventImpl( status );
+        listeners.fireKieScannerStatusChangeEventImpl(status);
     }
 
     public final synchronized ReleaseId getScannerReleaseId() {
@@ -74,29 +74,29 @@ public abstract class AbstractKieScanner<T> implements KieScanner {
         return status;
     }
 
-    public final synchronized void start( long pollingInterval ) {
-        if ( getStatus() == Status.SHUTDOWN ) {
-            throw new IllegalStateException( "The scanner was shut down and can no longer be started." );
+    public final synchronized void start(long pollingInterval) {
+        if (getStatus() == Status.SHUTDOWN) {
+            throw new IllegalStateException("The scanner was shut down and can no longer be started.");
         }
-        if ( pollingInterval <= 0 ) {
-            throw new IllegalArgumentException( "pollingInterval must be positive" );
+        if (pollingInterval <= 0) {
+            throw new IllegalArgumentException("pollingInterval must be positive");
         }
-        if ( timer != null ) {
-            throw new IllegalStateException( "The scanner is already running" );
+        if (timer != null) {
+            throw new IllegalStateException("The scanner is already running");
         }
-        startScanTask( pollingInterval );
+        startScanTask(pollingInterval);
     }
 
     public final synchronized void stop() {
-        if ( getStatus() == Status.SHUTDOWN ) {
-            throw new IllegalStateException( "The scanner was already shut down." );
+        if (getStatus() == Status.SHUTDOWN) {
+            throw new IllegalStateException("The scanner was already shut down.");
         }
-        if ( timer != null ) {
+        if (timer != null) {
             timer.cancel();
             timer = null;
         }
         this.pollingInterval = 0;
-        changeStatus( Status.STOPPED );
+        changeStatus(Status.STOPPED);
     }
 
     public final synchronized long getPollingInterval() {
@@ -104,53 +104,53 @@ public abstract class AbstractKieScanner<T> implements KieScanner {
     }
 
     public final void shutdown() {
-        if ( getStatus() != Status.SHUTDOWN ) {
+        if (getStatus() != Status.SHUTDOWN) {
             stop(); // making sure it is stopped
-            changeStatus( Status.SHUTDOWN );
+            changeStatus(Status.SHUTDOWN);
         }
     }
 
-    private void startScanTask( long pollingInterval ) {
-        changeStatus( Status.RUNNING );
+    private void startScanTask(long pollingInterval) {
+        changeStatus(Status.RUNNING);
         this.pollingInterval = pollingInterval;
-        timer = new Timer( true );
-        timer.schedule( new ScanTask(), pollingInterval, pollingInterval );
+        timer = new Timer(true);
+        timer.schedule(new ScanTask(), pollingInterval, pollingInterval);
     }
 
     private class ScanTask extends TimerTask {
         public void run() {
             synchronized (AbstractKieScanner.this) {
                 // don't scan if the scanner was already stopped! This would lead to inconsistent scanner behavior.
-                if ( status == Status.STOPPED ) {
+                if (status == Status.STOPPED) {
                     return;
                 }
                 scanNow();
-                changeStatus( Status.RUNNING );
+                changeStatus(Status.RUNNING);
             }
         }
     }
 
     public final synchronized void scanNow() {
-        if (getStatus() == Status.SHUTDOWN ) {
+        if (getStatus() == Status.SHUTDOWN) {
             throw new IllegalStateException("The scanner was already shut down and can no longer be used.");
         }
         // Polling can be started so remember the original state.
         final Status originalStatus = status;
         try {
-            changeStatus( Status.SCANNING );
+            changeStatus(Status.SCANNING);
             T updatedArtifacts = internalScan();
-            if ( updatedArtifacts == null ) {
-                changeStatus( originalStatus );
+            if (updatedArtifacts == null) {
+                changeStatus(originalStatus);
                 return;
             }
-            changeStatus( Status.UPDATING );
-            internalUpdate( updatedArtifacts );
+            changeStatus(Status.UPDATING);
+            internalUpdate(updatedArtifacts);
         } finally {
-            changeStatus( originalStatus );
+            changeStatus(originalStatus);
         }
     }
 
     protected abstract T internalScan();
 
-    protected abstract void internalUpdate( T updatedArtifacts );
+    protected abstract void internalUpdate(T updatedArtifacts);
 }

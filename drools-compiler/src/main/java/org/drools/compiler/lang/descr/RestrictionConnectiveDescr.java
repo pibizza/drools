@@ -31,15 +31,16 @@ import java.util.List;
  */
 public class RestrictionConnectiveDescr extends RestrictionDescr {
 
-    private static final long                     serialVersionUID = 510l;
+    private static final long serialVersionUID = 510l;
 
-    public final static ConnectiveDescr.RestrictionConnectiveType AND              = ConnectiveDescr.RestrictionConnectiveType.AND;
-    public final static ConnectiveDescr.RestrictionConnectiveType OR               = ConnectiveDescr.RestrictionConnectiveType.OR;
+    public final static ConnectiveDescr.RestrictionConnectiveType AND = ConnectiveDescr.RestrictionConnectiveType.AND;
+    public final static ConnectiveDescr.RestrictionConnectiveType OR = ConnectiveDescr.RestrictionConnectiveType.OR;
 
     private ConnectiveDescr.RestrictionConnectiveType connective;
-    private List<RestrictionDescr>                restrictions;
+    private List<RestrictionDescr> restrictions;
 
-    public RestrictionConnectiveDescr() { }
+    public RestrictionConnectiveDescr() {
+    }
 
     public RestrictionConnectiveDescr(final ConnectiveDescr.RestrictionConnectiveType connective) {
         super();
@@ -48,18 +49,18 @@ public class RestrictionConnectiveDescr extends RestrictionDescr {
     }
 
     @Override
-    public void readExternal( ObjectInput in ) throws IOException,
-                                                      ClassNotFoundException {
-        super.readExternal( in );
-        this.connective = ( ConnectiveDescr.RestrictionConnectiveType ) in.readObject();
+    public void readExternal(ObjectInput in) throws IOException,
+            ClassNotFoundException {
+        super.readExternal(in);
+        this.connective = (ConnectiveDescr.RestrictionConnectiveType) in.readObject();
         this.restrictions = (List<RestrictionDescr>) in.readObject();
     }
 
     @Override
-    public void writeExternal( ObjectOutput out ) throws IOException {
-        super.writeExternal( out );
-        out.writeObject( connective );
-        out.writeObject( restrictions );
+    public void writeExternal(ObjectOutput out) throws IOException {
+        super.writeExternal(out);
+        out.writeObject(connective);
+        out.writeObject(restrictions);
     }
 
     public ConnectiveDescr.RestrictionConnectiveType getConnective() {
@@ -67,20 +68,20 @@ public class RestrictionConnectiveDescr extends RestrictionDescr {
     }
 
     public void addRestriction(RestrictionDescr restriction) {
-        if ( this.restrictions == Collections.EMPTY_LIST ) {
+        if (this.restrictions == Collections.EMPTY_LIST) {
             this.restrictions = new ArrayList<RestrictionDescr>();
         }
-        this.restrictions.add( restriction );
+        this.restrictions.add(restriction);
     }
 
     public void addOrMerge(RestrictionDescr restriction) {
-        if ( (restriction instanceof RestrictionConnectiveDescr) && ((RestrictionConnectiveDescr) restriction).connective == this.connective ) {
-            if ( this.restrictions == Collections.EMPTY_LIST ) {
+        if ((restriction instanceof RestrictionConnectiveDescr) && ((RestrictionConnectiveDescr) restriction).connective == this.connective) {
+            if (this.restrictions == Collections.EMPTY_LIST) {
                 this.restrictions = new ArrayList<RestrictionDescr>();
             }
-            this.restrictions.addAll( ((RestrictionConnectiveDescr) restriction).getRestrictions() );
+            this.restrictions.addAll(((RestrictionConnectiveDescr) restriction).getRestrictions());
         } else {
-            this.addRestriction( restriction );
+            this.addRestriction(restriction);
         }
     }
 
@@ -90,14 +91,14 @@ public class RestrictionConnectiveDescr extends RestrictionDescr {
 
     public String toString() {
         final StringBuilder buf = new StringBuilder();
-        buf.append( "( " );
-        for ( Iterator it = this.restrictions.iterator(); it.hasNext(); ) {
-            buf.append( it.next().toString() );
-            if ( it.hasNext() ) {
-                buf.append( this.connective.toString() );
+        buf.append("( ");
+        for (Iterator it = this.restrictions.iterator(); it.hasNext();) {
+            buf.append(it.next().toString());
+            if (it.hasNext()) {
+                buf.append(this.connective.toString());
             }
         }
-        buf.append( "  )" );
+        buf.append("  )");
         return buf.toString();
     }
 }

@@ -19,30 +19,30 @@ package org.drools.compiler.lang.descr;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
- 
+
 public class EntryPointDeclarationDescr extends AnnotatedBaseDescr {
 
-    private static final long            serialVersionUID = 530l;
-    private String                       entryPoint = null;
+    private static final long serialVersionUID = 530l;
+    private String entryPoint = null;
 
     public EntryPointDeclarationDescr() {
         super();
     }
 
     @Override
-    public void readExternal( ObjectInput in ) throws IOException,
-                                              ClassNotFoundException {
-        super.readExternal( in );
+    public void readExternal(ObjectInput in) throws IOException,
+            ClassNotFoundException {
+        super.readExternal(in);
         this.entryPoint = (String) in.readObject();
     }
-    
+
     @Override
-    public void writeExternal( ObjectOutput out ) throws IOException {
-        super.writeExternal( out );
-        out.writeObject( entryPoint );
+    public void writeExternal(ObjectOutput out) throws IOException {
+        super.writeExternal(out);
+        out.writeObject(entryPoint);
     }
 
-    public void setEntryPointId( String name ) {
+    public void setEntryPointId(String name) {
         this.entryPoint = name;
     }
 
@@ -65,14 +65,19 @@ public class EntryPointDeclarationDescr extends AnnotatedBaseDescr {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals( Object obj ) {
-        if ( this == obj ) return true;
-        if ( obj == null ) return false;
-        if ( getClass() != obj.getClass() ) return false;
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
         EntryPointDeclarationDescr other = (EntryPointDeclarationDescr) obj;
-        if ( entryPoint == null ) {
-            if ( other.entryPoint != null ) return false;
-        } else if ( !entryPoint.equals( other.entryPoint ) ) return false;
+        if (entryPoint == null) {
+            if (other.entryPoint != null)
+                return false;
+        } else if (!entryPoint.equals(other.entryPoint))
+            return false;
         return true;
     }
 

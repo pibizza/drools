@@ -19,16 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JavaTryBlockDescr extends AbstractJavaContainerBlockDescr
-    implements
-    JavaBlockDescr,
-    JavaContainerBlockDescr {
-    private int                       start;
-    private int                       end;
+        implements
+        JavaBlockDescr,
+        JavaContainerBlockDescr {
+    private int start;
+    private int end;
 
-    private int                       textStart;
+    private int textStart;
 
     private List<JavaCatchBlockDescr> catchBlocks = new ArrayList<JavaCatchBlockDescr>();
-    private JavaFinalBlockDescr       finalBlock;
+    private JavaFinalBlockDescr finalBlock;
 
     public JavaTryBlockDescr() {
     }
@@ -70,7 +70,7 @@ public class JavaTryBlockDescr extends AbstractJavaContainerBlockDescr
     }
 
     public void addCatch(JavaCatchBlockDescr cd) {
-        this.catchBlocks.add( cd );
+        this.catchBlocks.add(cd);
     }
 
     public void setFinally(JavaFinalBlockDescr fd) {

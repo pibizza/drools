@@ -19,6 +19,6 @@ package org.drools.compiler.lang;
 public interface ExpanderResolver {
 
     Expander get(String name,
-                 String config);
+            String config);
 
 }

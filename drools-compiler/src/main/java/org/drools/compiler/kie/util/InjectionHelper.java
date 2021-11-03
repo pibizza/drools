@@ -46,8 +46,8 @@ public class InjectionHelper {
 
         private static BeanCreator lookupCdiBeanCreator() {
             try {
-                return (BeanCreator) Class.forName( "org.drools.cdi.CDIHelper" )
-                                          .getMethod( "getCdiBeanCreator" ).invoke( null );
+                return (BeanCreator) Class.forName("org.drools.cdi.CDIHelper")
+                        .getMethod("getCdiBeanCreator").invoke(null);
             } catch (Exception e) {
                 return null;
             }
@@ -62,63 +62,63 @@ public class InjectionHelper {
         wireSessionComponents(BeanCreatorHolder.beanCreator, model, kSession);
     }
 
-    public static void wireSessionComponents( KieSessionModel model, KieSession kSession, Map<String, Object> parameters ) {
-        wireSessionComponents( ConstraintBuilder.get().createMVELBeanCreator( parameters ), model, kSession );
+    public static void wireSessionComponents(KieSessionModel model, KieSession kSession, Map<String, Object> parameters) {
+        wireSessionComponents(ConstraintBuilder.get().createMVELBeanCreator(parameters), model, kSession);
     }
 
     public static void wireSessionComponents(KieSessionModel model, StatelessKieSession kSession, Map<String, Object> parameters) {
-        wireSessionComponents( ConstraintBuilder.get().createMVELBeanCreator(parameters), model, kSession);
+        wireSessionComponents(ConstraintBuilder.get().createMVELBeanCreator(parameters), model, kSession);
     }
 
     public static void wireSessionComponents(BeanCreator beanCreator, KieSessionModel model, KieSession kSession) {
         BeanCreator fallbackBeanCreator = new ReflectionBeanCreator();
-        ClassLoader cl = ((InternalKnowledgeBase)kSession.getKieBase()).getRootClassLoader();
+        ClassLoader cl = ((InternalKnowledgeBase) kSession.getKieBase()).getRootClassLoader();
         wireListeners(beanCreator, fallbackBeanCreator, cl, model.getListenerModels(), kSession);
         wireWIHs(beanCreator, fallbackBeanCreator, cl, model.getWorkItemHandlerModels(), kSession);
         wireChannels(beanCreator, fallbackBeanCreator, cl, model.getChannelModels(), kSession);
     }
-    
-    public static void wireSessionComponents(BeanCreator beanCreator, KieSessionModel model, StatelessKieSession kSession ) {
+
+    public static void wireSessionComponents(BeanCreator beanCreator, KieSessionModel model, StatelessKieSession kSession) {
         BeanCreator fallbackBeanCreator = new ReflectionBeanCreator();
-        ClassLoader cl = ((InternalKnowledgeBase)kSession.getKieBase()).getRootClassLoader();
+        ClassLoader cl = ((InternalKnowledgeBase) kSession.getKieBase()).getRootClassLoader();
         wireListeners(beanCreator, fallbackBeanCreator, cl, model.getListenerModels(), kSession);
         wireChannels(beanCreator, fallbackBeanCreator, cl, model.getChannelModels(), kSession);
     }
-      
-    private static void wireWIHs(BeanCreator beanCreator, BeanCreator fallbackBeanCreator, ClassLoader cl, List<WorkItemHandlerModel> wihModels, KieSession kSession) { 
-     	 for (WorkItemHandlerModel wihModel : wihModels) {
-             WorkItemHandler wih;
-             try {
-                 wih = beanCreator.createBean(cl, wihModel.getType(), wihModel.getQualifierModel());
-             } catch (Exception e) {
-                 try {
-                     wih = fallbackBeanCreator.createBean(cl, wihModel.getType(), wihModel.getQualifierModel() );
-                 } catch (Exception ex) {
-                     throw new RuntimeException("Cannot instance WorkItemHandler " + wihModel.getType(), e);
-                 }
-             }
-             kSession.getWorkItemManager().registerWorkItemHandler(wihModel.getName(), wih );
-         }
-     }
-    
+
+    private static void wireWIHs(BeanCreator beanCreator, BeanCreator fallbackBeanCreator, ClassLoader cl, List<WorkItemHandlerModel> wihModels, KieSession kSession) {
+        for (WorkItemHandlerModel wihModel : wihModels) {
+            WorkItemHandler wih;
+            try {
+                wih = beanCreator.createBean(cl, wihModel.getType(), wihModel.getQualifierModel());
+            } catch (Exception e) {
+                try {
+                    wih = fallbackBeanCreator.createBean(cl, wihModel.getType(), wihModel.getQualifierModel());
+                } catch (Exception ex) {
+                    throw new RuntimeException("Cannot instance WorkItemHandler " + wihModel.getType(), e);
+                }
+            }
+            kSession.getWorkItemManager().registerWorkItemHandler(wihModel.getName(), wih);
+        }
+    }
+
     private static void wireListeners(BeanCreator beanCreator, BeanCreator fallbackBeanCreator, ClassLoader cl, List<ListenerModel> listenerModels, KieRuntimeEventManager kRuntimeEventManager) {
-    	for (ListenerModel listenerModel : listenerModels) {
-            Object listener = createListener( beanCreator, fallbackBeanCreator, cl, listenerModel );
-            switch(listenerModel.getKind()) {
+        for (ListenerModel listenerModel : listenerModels) {
+            Object listener = createListener(beanCreator, fallbackBeanCreator, cl, listenerModel);
+            switch (listenerModel.getKind()) {
                 case AGENDA_EVENT_LISTENER:
-                    kRuntimeEventManager.addEventListener((AgendaEventListener)listener);
+                    kRuntimeEventManager.addEventListener((AgendaEventListener) listener);
                     break;
                 case RULE_RUNTIME_EVENT_LISTENER:
-                    kRuntimeEventManager.addEventListener((RuleRuntimeEventListener)listener);
+                    kRuntimeEventManager.addEventListener((RuleRuntimeEventListener) listener);
                     break;
                 case PROCESS_EVENT_LISTENER:
-                    kRuntimeEventManager.addEventListener((ProcessEventListener)listener);
+                    kRuntimeEventManager.addEventListener((ProcessEventListener) listener);
                     break;
             }
         }
     }
-    
-    private static Object createListener( BeanCreator beanCreator, BeanCreator fallbackBeanCreator, ClassLoader cl, ListenerModel listenerModel ) {
+
+    private static Object createListener(BeanCreator beanCreator, BeanCreator fallbackBeanCreator, ClassLoader cl, ListenerModel listenerModel) {
         Object listener;
         try {
             listener = beanCreator.createBean(cl, listenerModel.getType(), listenerModel.getQualifierModel());
@@ -131,35 +131,35 @@ public class InjectionHelper {
         }
         return listener;
     }
-    
+
     private static void wireChannels(BeanCreator beanCreator, BeanCreator fallbackBeanCreator, ClassLoader cl, List<ChannelModel> channelModels, KieSession kSession) {
-    	wireSessionChannels(beanCreator, fallbackBeanCreator, cl, channelModels, kSession);
+        wireSessionChannels(beanCreator, fallbackBeanCreator, cl, channelModels, kSession);
     }
-    
+
     private static void wireChannels(BeanCreator beanCreator, BeanCreator fallbackBeanCreator, ClassLoader cl, List<ChannelModel> channelModels, StatelessKieSession kSession) {
-    	wireSessionChannels(beanCreator, fallbackBeanCreator, cl, channelModels, kSession);
+        wireSessionChannels(beanCreator, fallbackBeanCreator, cl, channelModels, kSession);
     }
-    
+
     private static void wireSessionChannels(BeanCreator beanCreator, BeanCreator fallbackBeanCreator, ClassLoader cl, List<ChannelModel> channelModels, Object kSession) {
-    	for (ChannelModel channelModel : channelModels) {
+        for (ChannelModel channelModel : channelModels) {
             Channel channel;
             try {
                 channel = beanCreator.createBean(cl, channelModel.getType(), channelModel.getQualifierModel());
             } catch (Exception e) {
                 try {
-                    channel = fallbackBeanCreator.createBean(cl, channelModel.getType(), channelModel.getQualifierModel() );
+                    channel = fallbackBeanCreator.createBean(cl, channelModel.getType(), channelModel.getQualifierModel());
                 } catch (Exception ex) {
                     throw new RuntimeException("Cannot instance Channel " + channelModel.getType(), e);
                 }
             }
             if (kSession instanceof KieSession) {
-            	((KieSession) kSession).registerChannel(channelModel.getName(), channel);
+                ((KieSession) kSession).registerChannel(channelModel.getName(), channel);
             } else if (kSession instanceof StatelessKieSession) {
-            	((StatelessKieSession) kSession).registerChannel(channelModel.getName(), channel);
+                ((StatelessKieSession) kSession).registerChannel(channelModel.getName(), channel);
             } else {
-            	throw new IllegalArgumentException("kSession not of correct type. Expected KieSession or StatelessKieSession but was: " + kSession.getClass().getCanonicalName());
+                throw new IllegalArgumentException("kSession not of correct type. Expected KieSession or StatelessKieSession but was: " + kSession.getClass().getCanonicalName());
             }
         }
     }
-    
+
 }

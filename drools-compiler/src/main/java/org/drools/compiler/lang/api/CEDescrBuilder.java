@@ -23,13 +23,13 @@ import org.drools.compiler.lang.descr.NotDescr;
 import org.drools.compiler.lang.descr.OrDescr;
 
 /**
- *  A descriptor builder for Conditional Elements
+ * A descriptor builder for Conditional Elements
  */
 public interface CEDescrBuilder<P extends DescrBuilder<?, ?>, T extends AnnotatedBaseDescr>
-    extends
-    AnnotatedDescrBuilder<CEDescrBuilder<P, T>>,
-    PatternContainerDescrBuilder<CEDescrBuilder<P, T>, T>,
-    DescrBuilder< P, T > {
+        extends
+        AnnotatedDescrBuilder<CEDescrBuilder<P, T>>,
+        PatternContainerDescrBuilder<CEDescrBuilder<P, T>, T>,
+        DescrBuilder<P, T> {
 
     /**
      * Creates a set of AND'ed Conditional Elements
@@ -37,14 +37,14 @@ public interface CEDescrBuilder<P extends DescrBuilder<?, ?>, T extends Annotate
      * @return a descriptor builder for the AND'ed set of CEs
      */
     CEDescrBuilder<CEDescrBuilder<P, T>, AndDescr> and();
-    
+
     /**
      * Creates a set of OR'ed Conditional Elements
      * 
      * @return a descriptor builder for the OR'ed set of CEs
      */
     CEDescrBuilder<CEDescrBuilder<P, T>, OrDescr> or();
-    
+
     /**
      * Creates a set of NOT'ed Conditional Elements
      * 
@@ -58,14 +58,14 @@ public interface CEDescrBuilder<P extends DescrBuilder<?, ?>, T extends Annotate
      * @return a descriptor builder for the EXIST'ed set of CEs
      */
     CEDescrBuilder<CEDescrBuilder<P, T>, ExistsDescr> exists();
-    
+
     /**
      * Defines a FORALL Conditional Element
      * 
      * @return a descriptor builder for the FORALL CE
      */
     ForallDescrBuilder<CEDescrBuilder<P, T>> forall();
-    
+
     /**
      * Defines a top level ACCUMULATE CE
      * 

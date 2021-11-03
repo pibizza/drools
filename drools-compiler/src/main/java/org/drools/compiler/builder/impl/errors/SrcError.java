@@ -22,10 +22,10 @@ public class SrcError extends DroolsError {
 
     private Object object;
     private String message;
-    private int[]  errorLines = new int[0];
+    private int[] errorLines = new int[0];
 
     public SrcError(Object object,
-                    String message) {
+            String message) {
         super(null);
         this.object = object;
         this.message = message;

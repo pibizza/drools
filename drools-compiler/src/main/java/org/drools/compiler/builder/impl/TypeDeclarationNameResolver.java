@@ -39,7 +39,7 @@ public class TypeDeclarationNameResolver {
     }
 
     public void resolveTypes(Collection<? extends PackageDescr> packageDescrs,
-                             List<TypeDefinition> unresolvedTypes) {
+            List<TypeDefinition> unresolvedTypes) {
         for (PackageDescr packageDescr : packageDescrs) {
             TypeResolver typeResolver = kbuilder.getPackageRegistry(packageDescr.getName()).getTypeResolver();
             ensureQualifiedDeclarationName(unresolvedTypes, packageDescr, typeResolver);
@@ -52,8 +52,8 @@ public class TypeDeclarationNameResolver {
     }
 
     public void resolveTypes(PackageDescr packageDescr,
-                             List<TypeDefinition> unresolvedTypes,
-                             TypeResolver typeResolver) {
+            List<TypeDefinition> unresolvedTypes,
+            TypeResolver typeResolver) {
         ensureQualifiedDeclarationName(unresolvedTypes, packageDescr, typeResolver);
         qualifyNames(unresolvedTypes, packageDescr, typeResolver);
     }
@@ -61,9 +61,9 @@ public class TypeDeclarationNameResolver {
     private void ensureQualifiedDeclarationName(List<TypeDefinition> unresolvedTypes, PackageDescr packageDescr, TypeResolver typeResolver) {
         for (AbstractClassTypeDeclarationDescr descr : packageDescr.getClassAndEnumDeclarationDescrs()) {
             ensureQualifiedDeclarationName(descr,
-                                           packageDescr,
-                                           typeResolver,
-                                           unresolvedTypes);
+                    packageDescr,
+                    typeResolver,
+                    unresolvedTypes);
         }
     }
 
@@ -78,17 +78,17 @@ public class TypeDeclarationNameResolver {
     }
 
     private void qualifyNames(AbstractClassTypeDeclarationDescr declarationDescr,
-                              PackageDescr packageDescr,
-                              List<TypeDefinition> unresolvedTypes,
-                              TypeResolver typeResolver) {
+            PackageDescr packageDescr,
+            List<TypeDefinition> unresolvedTypes,
+            TypeResolver typeResolver) {
         ensureQualifiedSuperType(declarationDescr,
-                                 packageDescr,
-                                 typeResolver,
-                                 unresolvedTypes);
+                packageDescr,
+                typeResolver,
+                unresolvedTypes);
         ensureQualifiedFieldType(declarationDescr,
-                                 packageDescr,
-                                 typeResolver,
-                                 unresolvedTypes);
+                packageDescr,
+                typeResolver,
+                unresolvedTypes);
     }
 
     private void discoverHierarchyForRedeclarations(TypeDeclarationDescr typeDescr, PackageDescr packageDescr, TypeResolver typeResolver) {
@@ -99,9 +99,7 @@ public class TypeDeclarationNameResolver {
                 fillStaticInterfaces(typeDescr, typeClass);
             } else {
                 typeDescr.getSuperTypes().clear();
-                typeDescr.addSuperType(typeClass.isInterface() || typeClass == Object.class ?
-                                               Object.class.getName() :
-                                               typeClass.getSuperclass().getName());
+                typeDescr.addSuperType(typeClass.isInterface() || typeClass == Object.class ? Object.class.getName() : typeClass.getSuperclass().getName());
             }
         } else {
             // avoid to cache in the type resolver that this class doesn't exist
@@ -111,15 +109,15 @@ public class TypeDeclarationNameResolver {
     }
 
     private void ensureQualifiedDeclarationName(AbstractClassTypeDeclarationDescr declarationDescr,
-                                                PackageDescr packageDescr,
-                                                TypeResolver typeResolver,
-                                                List<TypeDefinition> unresolvedTypes) {
+            PackageDescr packageDescr,
+            TypeResolver typeResolver,
+            List<TypeDefinition> unresolvedTypes) {
         String resolvedName = resolveName(declarationDescr.getType().getFullName(),
-                                          declarationDescr,
-                                          packageDescr,
-                                          typeResolver,
-                                          unresolvedTypes,
-                                          false);
+                declarationDescr,
+                packageDescr,
+                typeResolver,
+                unresolvedTypes,
+                false);
 
         if (!declarationDescr.getType().getFullName().equals(resolvedName) || !declarationDescr.getType().isFullyQualified()) {
             if (resolvedName != null && !alreadyDefinedInPackage(resolvedName, declarationDescr, packageDescr)) {
@@ -141,50 +139,50 @@ public class TypeDeclarationNameResolver {
     }
 
     private void ensureQualifiedSuperType(AbstractClassTypeDeclarationDescr typeDescr,
-                                          PackageDescr packageDescr,
-                                          TypeResolver typeResolver,
-                                          List<TypeDefinition> unresolvedTypes) {
+            PackageDescr packageDescr,
+            TypeResolver typeResolver,
+            List<TypeDefinition> unresolvedTypes) {
         for (QualifiedName qname : typeDescr.getSuperTypes()) {
             String declaredSuperType = qname.getFullName();
 
             String resolved = resolveName(declaredSuperType,
-                                          typeDescr,
-                                          packageDescr,
-                                          typeResolver,
-                                          unresolvedTypes,
-                                          true);
+                    typeDescr,
+                    packageDescr,
+                    typeResolver,
+                    unresolvedTypes,
+                    true);
 
             if (resolved != null) {
                 qname.setName(resolved);
             } else {
                 kbuilder.addBuilderResult(new TypeDeclarationError(typeDescr,
-                                                                   "Cannot resolve supertype '" + declaredSuperType +
-                                                                           " for declared type " + typeDescr.getTypeName()));
+                        "Cannot resolve supertype '" + declaredSuperType +
+                                " for declared type " + typeDescr.getTypeName()));
             }
         }
     }
 
     public void ensureQualifiedFieldType(AbstractClassTypeDeclarationDescr typeDescr,
-                                         PackageDescr packageDescr,
-                                         TypeResolver typeResolver,
-                                         List<TypeDefinition> unresolvedTypes) {
+            PackageDescr packageDescr,
+            TypeResolver typeResolver,
+            List<TypeDefinition> unresolvedTypes) {
 
         for (TypeFieldDescr field : typeDescr.getFields().values()) {
-            boolean resolved = field.getPattern().resolveObjectType( type -> resolveName(type, typeDescr, packageDescr, typeResolver, unresolvedTypes, true) );
+            boolean resolved = field.getPattern().resolveObjectType(type -> resolveName(type, typeDescr, packageDescr, typeResolver, unresolvedTypes, true));
             if (!resolved) {
                 kbuilder.addBuilderResult(new TypeDeclarationError(typeDescr,
-                                                                   "Cannot resolve type '" + field.getPattern().getObjectType() + " for field " + field.getFieldName() +
-                                                                           " in declared type " + typeDescr.getTypeName()));
+                        "Cannot resolve type '" + field.getPattern().getObjectType() + " for field " + field.getFieldName() +
+                                " in declared type " + typeDescr.getTypeName()));
             }
         }
     }
 
     private String resolveName(String type,
-                               AbstractClassTypeDeclarationDescr typeDescr,
-                               PackageDescr packageDescr,
-                               TypeResolver typeResolver,
-                               List<TypeDefinition> unresolvedTypes,
-                               boolean forceResolution) {
+            AbstractClassTypeDeclarationDescr typeDescr,
+            PackageDescr packageDescr,
+            TypeResolver typeResolver,
+            List<TypeDefinition> unresolvedTypes,
+            boolean forceResolution) {
         boolean qualified = TypeDeclarationUtils.isQualified(type);
 
         if (!qualified) {
@@ -194,8 +192,8 @@ public class TypeDeclarationNameResolver {
         // if not qualified yet, it has to be resolved
         // DROOLS-677 : if qualified, it may be a partial name (e.g. an inner class)
         type = TypeDeclarationUtils.resolveType(type,
-                                                packageDescr,
-                                                kbuilder.getPackageRegistry(packageDescr.getNamespace()));
+                packageDescr,
+                kbuilder.getPackageRegistry(packageDescr.getNamespace()));
         qualified = TypeDeclarationUtils.isQualified(type);
 
         if (!qualified) {

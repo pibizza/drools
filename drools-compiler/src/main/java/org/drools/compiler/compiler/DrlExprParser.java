@@ -45,27 +45,27 @@ public class DrlExprParser {
     }
 
     /** Parse an expression from text */
-    public ConstraintConnectiveDescr parse( final String text ) {
+    public ConstraintConnectiveDescr parse(final String text) {
         ConstraintConnectiveDescr constraint = null;
         try {
             DRLLexer lexer = DRLFactory.getDRLLexer(new ANTLRStringStream(text), languageLevel);
-            CommonTokenStream input = new CommonTokenStream( lexer );
+            CommonTokenStream input = new CommonTokenStream(lexer);
             RecognizerSharedState state = new RecognizerSharedState();
-            helper = new ParserHelper( input, state, languageLevel );
+            helper = new ParserHelper(input, state, languageLevel);
             DRLExpressions parser = DRLFactory.getDRLExpressions(input, state, helper, languageLevel);
-            parser.setBuildDescr( true );
-            parser.setLeftMostExpr( null ); // setting initial value just in case
+            parser.setBuildDescr(true);
+            parser.setLeftMostExpr(null); // setting initial value just in case
             BaseDescr expr = parser.conditionalOrExpression();
-            if ( expr != null && !parser.hasErrors() ) {
+            if (expr != null && !parser.hasErrors()) {
                 constraint = ConstraintConnectiveDescr.newAnd();
-                constraint.addOrMerge( expr );
+                constraint.addOrMerge(expr);
             }
-        } catch ( RecognitionException e ) {
-            helper.reportError( e );
+        } catch (RecognitionException e) {
+            helper.reportError(e);
         }
         return constraint;
     }
-    
+
     public String getLeftMostExpr() {
         return helper != null ? helper.getLeftMostExpr() : null;
     }
@@ -78,7 +78,7 @@ public class DrlExprParser {
     }
 
     /**
-     * @return a list of errors found while parsing. 
+     * @return a list of errors found while parsing.
      */
     @SuppressWarnings("unchecked")
     public List<DroolsParserException> getErrors() {

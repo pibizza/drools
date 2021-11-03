@@ -73,10 +73,10 @@ public class ClassDefinitionFactory {
      * everything is using.
      */
     public ClassDefinition generateDeclaredBean(AbstractClassTypeDeclarationDescr typeDescr,
-                                                TypeDeclaration type,
-                                                PackageRegistry pkgRegistry,
-                                                List<TypeDefinition> unresolvedTypeDefinitions,
-                                                Map<String, AbstractClassTypeDeclarationDescr> unprocesseableDescrs) {
+            TypeDeclaration type,
+            PackageRegistry pkgRegistry,
+            List<TypeDefinition> unresolvedTypeDefinitions,
+            Map<String, AbstractClassTypeDeclarationDescr> unprocesseableDescrs) {
 
         ClassDefinition def = createClassDefinition(typeDescr, type);
 
@@ -130,19 +130,19 @@ public class ClassDefinitionFactory {
         switch (type.getKind()) {
             case TRAIT:
                 def = new ClassDefinition(fullName,
-                                          Object.class.getName(),
-                                          fullSuperTypes);
+                        Object.class.getName(),
+                        fullSuperTypes);
                 break;
             case ENUM:
                 def = new EnumClassDefinition(fullName,
-                                              fullSuperTypes[0],
-                                              null);
+                        fullSuperTypes[0],
+                        null);
                 break;
             case CLASS:
             default:
                 def = new ClassDefinition(fullName,
-                                          fullSuperTypes[0],
-                                          interfaces);
+                        fullSuperTypes[0],
+                        interfaces);
                 def.setTraitable(traitable, traitableAnn != null && traitableAnn.logical());
         }
 
@@ -161,15 +161,15 @@ public class ClassDefinitionFactory {
             if (annotation != null && annotation.isAnnotation()) {
                 try {
                     AnnotationDefinition annotationDefinition = AnnotationDefinition.build(annotation,
-                                                                                           annotationDescr.getValueMap(),
-                                                                                           resolver);
+                            annotationDescr.getValueMap(),
+                            resolver);
                     def.addAnnotation(annotationDefinition);
                 } catch (NoSuchMethodException nsme) {
                     kbuilder.addBuilderResult(new TypeDeclarationError(typeDescr,
-                                                                       "Annotated type " + typeDescr.getType().getFullName() +
-                                                                               "  - undefined property in @annotation " +
-                                                                               annotationDescr.getName() + ": " +
-                                                                               nsme.getMessage() + ";"));
+                            "Annotated type " + typeDescr.getType().getFullName() +
+                                    "  - undefined property in @annotation " +
+                                    annotationDescr.getName() + ": " +
+                                    nsme.getMessage() + ";"));
                 }
             }
             if (annotation == null || annotation.getCanonicalName().startsWith("org.kie.api.definition.type")) {
@@ -184,18 +184,17 @@ public class ClassDefinitionFactory {
         if (type.getKind() == TypeDeclaration.Kind.ENUM) {
             for (EnumLiteralDescr lit : ((EnumDeclarationDescr) typeDescr).getLiterals()) {
                 ((EnumClassDefinition) def).addLiteral(
-                        new EnumLiteralDefinition(lit.getName(), lit.getConstructorArgs())
-                );
+                        new EnumLiteralDefinition(lit.getName(), lit.getConstructorArgs()));
             }
         }
         return true;
     }
 
     protected boolean wireFields(AbstractClassTypeDeclarationDescr typeDescr,
-                                 TypeDeclaration type,
-                                 ClassDefinition def,
-                                 PackageRegistry pkgRegistry,
-                                 List<TypeDefinition> unresolvedTypeDefinitions) {
+            TypeDeclaration type,
+            ClassDefinition def,
+            PackageRegistry pkgRegistry,
+            List<TypeDefinition> unresolvedTypeDefinitions) {
         // fields definitions are created. will be used by subclasses, if any.
         // Fields are SORTED in the process
         if (!typeDescr.getFields().isEmpty()) {
@@ -222,15 +221,15 @@ public class ClassDefinitionFactory {
     }
 
     private static List<FieldDefinition> sortFields(Map<String, TypeFieldDescr> fields,
-                                                    TypeResolver typeResolver,
-                                                    KnowledgeBuilderImpl kbuilder) {
+            TypeResolver typeResolver,
+            KnowledgeBuilderImpl kbuilder) {
         List<FieldDefinition> fieldDefs = new ArrayList<FieldDefinition>(fields.size());
         int maxDeclaredPos = 0;
         BitSet occupiedPositions = new BitSet(fields.size());
 
         for (TypeFieldDescr field : fields.values()) {
             GenericTypeDefinition genericType = field.getPattern().getGenericType()
-                    .map( type -> TypeDeclarationUtils.toBuildableType(type, kbuilder != null ? kbuilder.getRootClassLoader() : null) );
+                    .map(type -> TypeDeclarationUtils.toBuildableType(type, kbuilder != null ? kbuilder.getRootClassLoader() : null));
 
             FieldDefinition fieldDef = new FieldDefinition(field.getFieldName(), genericType);
             fieldDefs.add(fieldDef);
@@ -267,7 +266,7 @@ public class ClassDefinitionFactory {
                 if (annotationDescr.getFullyQualifiedName() == null) {
                     if (annotationDescr.isStrict()) {
                         kbuilder.addBuilderResult(new TypeDeclarationError(field,
-                                                                           "Unknown annotation @" + annotationDescr.getName() + " on field " + field.getFieldName()));
+                                "Unknown annotation @" + annotationDescr.getName() + " on field " + field.getFieldName()));
                     } else {
                         // Annotation is custom metadata
                         fieldDef.addMetaData(annotationDescr.getName(), annotationDescr.getSingleValue());
@@ -278,19 +277,19 @@ public class ClassDefinitionFactory {
                 if (annotation != null) {
                     try {
                         AnnotationDefinition annotationDefinition = AnnotationDefinition.build(annotation.annotationType(),
-                                                                                               field.getAnnotation(annotationDescr.getFullyQualifiedName()).getValueMap(),
-                                                                                               typeResolver);
+                                field.getAnnotation(annotationDescr.getFullyQualifiedName()).getValueMap(),
+                                typeResolver);
                         fieldDef.addAnnotation(annotationDefinition);
                     } catch (Exception e) {
                         kbuilder.addBuilderResult(new TypeDeclarationError(field,
-                                                                           "Annotated field " + field.getFieldName() +
-                                                                                   "  - undefined property in @annotation " +
-                                                                                   annotationDescr.getName() + ": " + e.getMessage() + ";"));
+                                "Annotated field " + field.getFieldName() +
+                                        "  - undefined property in @annotation " +
+                                        annotationDescr.getName() + ": " + e.getMessage() + ";"));
                     }
                 } else {
                     if (annotationDescr.isStrict()) {
                         kbuilder.addBuilderResult(new TypeDeclarationError(field,
-                                                                           "Unknown annotation @" + annotationDescr.getName() + " on field " + field.getFieldName()));
+                                "Unknown annotation @" + annotationDescr.getName() + " on field " + field.getFieldName()));
                     }
                 }
             }
@@ -319,7 +318,7 @@ public class ClassDefinitionFactory {
 
     public static ClassDefinition createClassDefinition(Class<?> typeClass, Resource resource) {
         ClassDefinition clsDef = new ClassDefinition();
-        ClassDefinitionFactory.populateDefinitionFromClass( clsDef, resource, typeClass, typeClass.getAnnotation( Trait.class ) != null );
+        ClassDefinitionFactory.populateDefinitionFromClass(clsDef, resource, typeClass, typeClass.getAnnotation(Trait.class) != null);
         return clsDef;
     }
 

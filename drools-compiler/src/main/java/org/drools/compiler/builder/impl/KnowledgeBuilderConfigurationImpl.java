@@ -80,7 +80,7 @@ import static org.drools.core.reteoo.KieComponentFactory.createKieComponentFacto
 
 /**
  * This class configures the package compiler.
- * Dialects and their DialectConfigurations  are handled by the DialectRegistry
+ * Dialects and their DialectConfigurations are handled by the DialectRegistry
  * Normally you will not need to look at this class, unless you want to override the defaults.
  *
  * This class is not thread safe and it also contains state. Once it is created and used
@@ -112,57 +112,58 @@ public class KnowledgeBuilderConfigurationImpl
         implements
         KnowledgeBuilderConfiguration {
 
-    public static final String                DEFAULT_PACKAGE = "defaultpkg";
+    public static final String DEFAULT_PACKAGE = "defaultpkg";
 
-    private static final int                  DEFAULT_PARALLEL_RULES_BUILD_THRESHOLD = 10;
+    private static final int DEFAULT_PARALLEL_RULES_BUILD_THRESHOLD = 10;
 
     private final Map<String, DialectConfiguration> dialectConfigurations = new HashMap<>();
 
-    private DefaultDialectOption              defaultDialect = DefaultDialectOption.get("java");
+    private DefaultDialectOption defaultDialect = DefaultDialectOption.get("java");
 
     private ParallelRulesBuildThresholdOption parallelRulesBuildThreshold = ParallelRulesBuildThresholdOption.get(DEFAULT_PARALLEL_RULES_BUILD_THRESHOLD);
 
-    private ClassLoader                       classLoader;
+    private ClassLoader classLoader;
 
-    private ChainedProperties                 chainedProperties;
+    private ChainedProperties chainedProperties;
 
-    private Map<String, AccumulateFunction>   accumulateFunctions;
+    private Map<String, AccumulateFunction> accumulateFunctions;
 
-    private EvaluatorRegistry                 evaluatorRegistry;
+    private EvaluatorRegistry evaluatorRegistry;
 
-    private SemanticModules                   semanticModules;
+    private SemanticModules semanticModules;
 
-    private File                              dumpDirectory;
+    private File dumpDirectory;
 
-    private boolean                           processStringEscapes                  = true;
-    private boolean                           classLoaderCache                      = true;
-    private boolean                           trimCellsInDTable                     = true;
-    private boolean                           groupDRLsInKieBasesByFolder           = false;
+    private boolean processStringEscapes = true;
+    private boolean classLoaderCache = true;
+    private boolean trimCellsInDTable = true;
+    private boolean groupDRLsInKieBasesByFolder = false;
 
-    private boolean                           externaliseCanonicalModelLambda       = true;
-    private boolean                           parallelLambdaExternalization         = true;
+    private boolean externaliseCanonicalModelLambda = true;
+    private boolean parallelLambdaExternalization = true;
 
-    private AlphaNetworkCompilerOption        alphaNetworkCompilerOption            = AlphaNetworkCompilerOption.DISABLED;
+    private AlphaNetworkCompilerOption alphaNetworkCompilerOption = AlphaNetworkCompilerOption.DISABLED;
 
     private static final PropertySpecificOption DEFAULT_PROP_SPEC_OPT = PropertySpecificOption.ALWAYS;
-    private PropertySpecificOption            propertySpecificOption  = DEFAULT_PROP_SPEC_OPT;
+    private PropertySpecificOption propertySpecificOption = DEFAULT_PROP_SPEC_OPT;
 
-    private String                            defaultPackageName;
+    private String defaultPackageName;
 
-    private Map<String, ResultSeverity>       severityMap;
+    private Map<String, ResultSeverity> severityMap;
 
-    private DroolsCompilerComponentFactory    componentFactory;
+    private DroolsCompilerComponentFactory componentFactory;
 
-    private KieComponentFactory               kieComponentFactory;
+    private KieComponentFactory kieComponentFactory;
 
-    private LanguageLevelOption               languageLevel           = DrlParser.DEFAULT_LANGUAGE_LEVEL;
+    private LanguageLevelOption languageLevel = DrlParser.DEFAULT_LANGUAGE_LEVEL;
 
-    private CompilationCache                  compilationCache        = null;
+    private CompilationCache compilationCache = null;
 
     private static final Logger log = LoggerFactory.getLogger(KnowledgeBuilderConfigurationImpl.class);
 
-     /**
+    /**
      * Constructor that sets the parent class loader for the package being built/compiled
+     * 
      * @param classLoaders
      */
     public KnowledgeBuilderConfigurationImpl(ClassLoader... classLoaders) {
@@ -203,15 +204,15 @@ public class KnowledgeBuilderConfigurationImpl
 
     private void init(Properties properties) {
 
-        this.chainedProperties = ChainedProperties.getChainedProperties( getClassLoader() );
+        this.chainedProperties = ChainedProperties.getChainedProperties(getClassLoader());
 
         if (chainedProperties.getProperty("drools.dialect.java", null) == null) {
             // if it couldn't find a conf for java dialect using the project class loader
             // it means it could not load the conf file at all (very likely it is running in
             // an osgi environement) so try with the class loader of this class
-            this.chainedProperties = ChainedProperties.getChainedProperties( getClass().getClassLoader() );
+            this.chainedProperties = ChainedProperties.getChainedProperties(getClass().getClassLoader());
 
-            if (this.classLoader instanceof ProjectClassLoader ) {
+            if (this.classLoader instanceof ProjectClassLoader) {
                 ((ProjectClassLoader) classLoader).setDroolsClassLoader(getClass().getClassLoader());
             }
         }
@@ -221,32 +222,32 @@ public class KnowledgeBuilderConfigurationImpl
         }
 
         setProperty(ClassLoaderCacheOption.PROPERTY_NAME,
-                    this.chainedProperties.getProperty(ClassLoaderCacheOption.PROPERTY_NAME,
-                                                       "true"));
+                this.chainedProperties.getProperty(ClassLoaderCacheOption.PROPERTY_NAME,
+                        "true"));
 
-        setProperty( TrimCellsInDTableOption.PROPERTY_NAME,
-                    this.chainedProperties.getProperty(TrimCellsInDTableOption.PROPERTY_NAME,
-                                                       "true"));
+        setProperty(TrimCellsInDTableOption.PROPERTY_NAME,
+                this.chainedProperties.getProperty(TrimCellsInDTableOption.PROPERTY_NAME,
+                        "true"));
 
-        setProperty( GroupDRLsInKieBasesByFolderOption.PROPERTY_NAME,
-                    this.chainedProperties.getProperty(GroupDRLsInKieBasesByFolderOption.PROPERTY_NAME,
-                                                       "false"));
+        setProperty(GroupDRLsInKieBasesByFolderOption.PROPERTY_NAME,
+                this.chainedProperties.getProperty(GroupDRLsInKieBasesByFolderOption.PROPERTY_NAME,
+                        "false"));
 
         setProperty(PropertySpecificOption.PROPERTY_NAME,
-                    this.chainedProperties.getProperty(PropertySpecificOption.PROPERTY_NAME,
-                                                       DEFAULT_PROP_SPEC_OPT.toString()));
+                this.chainedProperties.getProperty(PropertySpecificOption.PROPERTY_NAME,
+                        DEFAULT_PROP_SPEC_OPT.toString()));
 
         setProperty(LanguageLevelOption.PROPERTY_NAME,
-                    this.chainedProperties.getProperty(LanguageLevelOption.PROPERTY_NAME,
-                                                       DrlParser.DEFAULT_LANGUAGE_LEVEL.toString()));
+                this.chainedProperties.getProperty(LanguageLevelOption.PROPERTY_NAME,
+                        DrlParser.DEFAULT_LANGUAGE_LEVEL.toString()));
 
         setProperty(ParallelRulesBuildThresholdOption.PROPERTY_NAME,
-        			this.chainedProperties.getProperty(ParallelRulesBuildThresholdOption.PROPERTY_NAME, 
-        												String.valueOf(DEFAULT_PARALLEL_RULES_BUILD_THRESHOLD)));
-        
+                this.chainedProperties.getProperty(ParallelRulesBuildThresholdOption.PROPERTY_NAME,
+                        String.valueOf(DEFAULT_PARALLEL_RULES_BUILD_THRESHOLD)));
+
         buildDialectConfigurationMap();
 
-        this.accumulateFunctions = AccumulateUtil.buildAccumulateFunctionsMap(chainedProperties, getFunctionFactoryClassLoader() );
+        this.accumulateFunctions = AccumulateUtil.buildAccumulateFunctionsMap(chainedProperties, getFunctionFactoryClassLoader());
 
         buildEvaluatorRegistry();
 
@@ -255,18 +256,18 @@ public class KnowledgeBuilderConfigurationImpl
         buildSeverityMap();
 
         setProperty(ProcessStringEscapesOption.PROPERTY_NAME,
-                    this.chainedProperties.getProperty(ProcessStringEscapesOption.PROPERTY_NAME,
-                                                       "true"));
+                this.chainedProperties.getProperty(ProcessStringEscapesOption.PROPERTY_NAME,
+                        "true"));
 
         setProperty(DefaultPackageNameOption.PROPERTY_NAME,
-                    this.chainedProperties.getProperty(DefaultPackageNameOption.PROPERTY_NAME,
-                                                       DEFAULT_PACKAGE));
+                this.chainedProperties.getProperty(DefaultPackageNameOption.PROPERTY_NAME,
+                        DEFAULT_PACKAGE));
 
         setProperty(ExternaliseCanonicalModelLambdaOption.PROPERTY_NAME,
-                    this.chainedProperties.getProperty(ExternaliseCanonicalModelLambdaOption.PROPERTY_NAME,"true"));
+                this.chainedProperties.getProperty(ExternaliseCanonicalModelLambdaOption.PROPERTY_NAME, "true"));
 
         setProperty(ParallelLambdaExternalizationOption.PROPERTY_NAME,
-                    this.chainedProperties.getProperty(ParallelLambdaExternalizationOption.PROPERTY_NAME,"true"));
+                this.chainedProperties.getProperty(ParallelLambdaExternalizationOption.PROPERTY_NAME, "true"));
 
         this.componentFactory = new DroolsCompilerComponentFactory();
 
@@ -334,8 +335,8 @@ public class KnowledgeBuilderConfigurationImpl
                 log.warn("Invalid value " + value + " for option " + LanguageLevelOption.PROPERTY_NAME);
             }
         } else if (name.equals(ParallelRulesBuildThresholdOption.PROPERTY_NAME)) {
-        	setParallelRulesBuildThreshold(Integer.valueOf(value));
-        }  else if (name.equals(ExternaliseCanonicalModelLambdaOption.PROPERTY_NAME)) {
+            setParallelRulesBuildThreshold(Integer.valueOf(value));
+        } else if (name.equals(ExternaliseCanonicalModelLambdaOption.PROPERTY_NAME)) {
             setExternaliseCanonicalModelLambda(Boolean.valueOf(value));
         } else if (name.equals(ParallelLambdaExternalizationOption.PROPERTY_NAME)) {
             setParallelLambdaExternalization(Boolean.valueOf(value));
@@ -388,11 +389,11 @@ public class KnowledgeBuilderConfigurationImpl
         } else if (name.equals(LanguageLevelOption.PROPERTY_NAME)) {
             return "" + getLanguageLevel();
         } else if (name.equals(ParallelRulesBuildThresholdOption.PROPERTY_NAME)) {
-        	return String.valueOf(getParallelRulesBuildThreshold());
+            return String.valueOf(getParallelRulesBuildThreshold());
         } else if (name.equals(ExternaliseCanonicalModelLambdaOption.PROPERTY_NAME)) {
-        	return String.valueOf(isExternaliseCanonicalModelLambda());
+            return String.valueOf(isExternaliseCanonicalModelLambda());
         } else if (name.equals(ParallelLambdaExternalizationOption.PROPERTY_NAME)) {
-        	return String.valueOf(isParallelLambdaExternalization());
+            return String.valueOf(isParallelLambdaExternalization());
         }
         return null;
     }
@@ -404,8 +405,8 @@ public class KnowledgeBuilderConfigurationImpl
     private void buildDialectConfigurationMap() {
         DialectConfiguration mvel = ConstraintBuilder.get().createMVELDialectConfiguration();
         if (mvel != null) {
-            mvel.init( this );
-            dialectConfigurations.put( "mvel", mvel );
+            mvel.init(this);
+            dialectConfigurations.put("mvel", mvel);
         }
 
         DialectConfiguration java = ConstraintBuilder.get().createJavaDialectConfiguration();
@@ -555,7 +556,7 @@ public class KnowledgeBuilderConfigurationImpl
 
     public void addAccumulateFunction(String identifier, String className) {
         this.accumulateFunctions.put(identifier,
-                                     AccumulateUtil.loadAccumulateFunction(getClassLoader(), identifier,
+                AccumulateUtil.loadAccumulateFunction(getClassLoader(), identifier,
                         className));
     }
 
@@ -583,7 +584,7 @@ public class KnowledgeBuilderConfigurationImpl
     }
 
     private void buildEvaluatorRegistry() {
-        this.evaluatorRegistry = new EvaluatorRegistry( getFunctionFactoryClassLoader() );
+        this.evaluatorRegistry = new EvaluatorRegistry(getFunctionFactoryClassLoader());
         Map<String, String> temp = new HashMap<String, String>();
         this.chainedProperties.mapStartsWith(temp,
                 EvaluatorOption.PROPERTY_NAME,
@@ -603,6 +604,7 @@ public class KnowledgeBuilderConfigurationImpl
 
     /**
      * Returns the evaluator registry for this package builder configuration
+     * 
      * @return
      */
     public EvaluatorRegistry getEvaluatorRegistry() {
@@ -617,7 +619,7 @@ public class KnowledgeBuilderConfigurationImpl
      * replace the previous one.
      *
      * @param className the name of the class for the implementation definition.
-     *                  The class must implement the EvaluatorDefinition interface.
+     *        The class must implement the EvaluatorDefinition interface.
      */
     public void addEvaluatorDefinition(String className) {
         this.evaluatorRegistry.addEvaluatorDefinition(className);
@@ -679,7 +681,7 @@ public class KnowledgeBuilderConfigurationImpl
         return trimCellsInDTable;
     }
 
-    public void setTrimCellsInDTable( boolean trimCellsInDTable ) {
+    public void setTrimCellsInDTable(boolean trimCellsInDTable) {
         this.trimCellsInDTable = trimCellsInDTable;
     }
 
@@ -687,16 +689,16 @@ public class KnowledgeBuilderConfigurationImpl
         return groupDRLsInKieBasesByFolder;
     }
 
-    public void setGroupDRLsInKieBasesByFolder( boolean groupDRLsInKieBasesByFolder ) {
+    public void setGroupDRLsInKieBasesByFolder(boolean groupDRLsInKieBasesByFolder) {
         this.groupDRLsInKieBasesByFolder = groupDRLsInKieBasesByFolder;
     }
 
     public int getParallelRulesBuildThreshold() {
-    	return parallelRulesBuildThreshold.getParallelRulesBuildThreshold();
+        return parallelRulesBuildThreshold.getParallelRulesBuildThreshold();
     }
-    
+
     public void setParallelRulesBuildThreshold(int parallelRulesBuildThreshold) {
-    	this.parallelRulesBuildThreshold = ParallelRulesBuildThresholdOption.get(parallelRulesBuildThreshold);
+        this.parallelRulesBuildThreshold = ParallelRulesBuildThresholdOption.get(parallelRulesBuildThreshold);
     }
 
     public String getDefaultPackageName() {

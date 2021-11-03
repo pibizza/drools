@@ -29,6 +29,6 @@ public interface ParameterSupportBuilder<P extends DescrBuilder<?, ?>> {
      * 
      * @return itself
      */
-    public P parameter( String type, String variable );
+    public P parameter(String type, String variable);
 
 }

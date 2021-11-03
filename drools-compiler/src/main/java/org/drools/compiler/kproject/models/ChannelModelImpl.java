@@ -33,7 +33,8 @@ public class ChannelModelImpl implements ChannelModel {
     private String type;
     private QualifierModel qualifier;
 
-    public ChannelModelImpl() { }
+    public ChannelModelImpl() {
+    }
 
     public ChannelModelImpl(KieSessionModelImpl kSession, String name, String type) {
         this.kSession = kSession;
@@ -89,39 +90,41 @@ public class ChannelModelImpl implements ChannelModel {
             ChannelModelImpl channel = (ChannelModelImpl) value;
             writer.addAttribute("name", channel.getName());
             writer.addAttribute("type", channel.getType());
-            /* TODO make qualifiers working properly before readd them to the xml
-            QualifierModelImpl qualifier = (QualifierModelImpl)channel.getQualifierModel();
-            if (qualifier != null) {
-                if (qualifier.isSimple()) {
-                    writer.addAttribute("qualifier", qualifier.getType());
-                } else {
-                    writeObject(writer, context, "qualifier", qualifier);
-                }
-            }
-            */
+            /*
+             * TODO make qualifiers working properly before readd them to the xml
+             * QualifierModelImpl qualifier = (QualifierModelImpl)channel.getQualifierModel();
+             * if (qualifier != null) {
+             * if (qualifier.isSimple()) {
+             * writer.addAttribute("qualifier", qualifier.getType());
+             * } else {
+             * writeObject(writer, context, "qualifier", qualifier);
+             * }
+             * }
+             */
         }
 
         public Object unmarshal(HierarchicalStreamReader reader, final UnmarshallingContext context) {
             final ChannelModelImpl channel = new ChannelModelImpl();
             channel.setName(reader.getAttribute("name"));
             channel.setType(reader.getAttribute("type"));
-            /* TODO make qualifiers working properly before readd them to the xml
-            String qualifierType = reader.getAttribute("qualifier");
-            if (qualifierType != null) {
-                channel.newQualifierModel(qualifierType);
-            }
-
-            readNodes( reader, new AbstractXStreamConverter.NodeReader() {
-                public void onNode(HierarchicalStreamReader reader,
-                                   String name,
-                                   String value) {
-                    if ( "qualifier".equals( name ) ) {
-                        QualifierModelImpl qualifier = readObject(reader, context, QualifierModelImpl.class);
-                        channel.setQualifierModel(qualifier);
-                    }
-                }
-            } );
-            */
+            /*
+             * TODO make qualifiers working properly before readd them to the xml
+             * String qualifierType = reader.getAttribute("qualifier");
+             * if (qualifierType != null) {
+             * channel.newQualifierModel(qualifierType);
+             * }
+             * 
+             * readNodes( reader, new AbstractXStreamConverter.NodeReader() {
+             * public void onNode(HierarchicalStreamReader reader,
+             * String name,
+             * String value) {
+             * if ( "qualifier".equals( name ) ) {
+             * QualifierModelImpl qualifier = readObject(reader, context, QualifierModelImpl.class);
+             * channel.setQualifierModel(qualifier);
+             * }
+             * }
+             * } );
+             */
             return channel;
         }
     }

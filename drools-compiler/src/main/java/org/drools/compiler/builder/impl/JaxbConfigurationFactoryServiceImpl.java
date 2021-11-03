@@ -22,7 +22,7 @@ import org.kie.internal.builder.JaxbConfigurationFactoryService;
 public class JaxbConfigurationFactoryServiceImpl implements JaxbConfigurationFactoryService {
 
     @Override
-    public JaxbConfiguration newJaxbConfiguration( Options xjcOpts, String systemId) {
-        return new JaxbConfigurationImpl( xjcOpts, systemId );
+    public JaxbConfiguration newJaxbConfiguration(Options xjcOpts, String systemId) {
+        return new JaxbConfigurationImpl(xjcOpts, systemId);
     }
 }

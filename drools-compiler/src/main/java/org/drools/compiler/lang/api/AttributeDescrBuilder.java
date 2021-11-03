@@ -19,11 +19,11 @@ package org.drools.compiler.lang.api;
 import org.drools.compiler.lang.descr.AttributeDescr;
 
 /**
- *  A descriptor builder for attributes
+ * A descriptor builder for attributes
  */
-public interface AttributeDescrBuilder<P extends DescrBuilder<?,?>>
-    extends
-    DescrBuilder<P, AttributeDescr> {
+public interface AttributeDescrBuilder<P extends DescrBuilder<?, ?>>
+        extends
+        DescrBuilder<P, AttributeDescr> {
 
     /**
      * Sets the attribute value
@@ -31,8 +31,8 @@ public interface AttributeDescrBuilder<P extends DescrBuilder<?,?>>
      * @param value
      * @return itself
      */
-    public AttributeDescrBuilder<P> value( String value );
-    
+    public AttributeDescrBuilder<P> value(String value);
+
     /**
      * Sets the attribute value type
      * 
@@ -40,6 +40,6 @@ public interface AttributeDescrBuilder<P extends DescrBuilder<?,?>>
      * 
      * @return itself
      */
-    public AttributeDescrBuilder<P> type( AttributeDescr.Type type );
+    public AttributeDescrBuilder<P> type(AttributeDescr.Type type);
 
 }

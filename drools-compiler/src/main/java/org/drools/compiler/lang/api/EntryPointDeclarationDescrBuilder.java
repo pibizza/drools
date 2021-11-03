@@ -22,17 +22,17 @@ import org.drools.compiler.lang.descr.EntryPointDeclarationDescr;
  * An interface for the entry point declaration descriptor builder
  */
 public interface EntryPointDeclarationDescrBuilder
-    extends
-    AnnotatedDescrBuilder<EntryPointDeclarationDescrBuilder>, 
-    DescrBuilder<PackageDescrBuilder, EntryPointDeclarationDescr> {
+        extends
+        AnnotatedDescrBuilder<EntryPointDeclarationDescrBuilder>,
+        DescrBuilder<PackageDescrBuilder, EntryPointDeclarationDescr> {
 
     /**
-     * Declares the entry point id 
+     * Declares the entry point id
      * 
      * @param name the name of the entry point to be declared
      * 
      * @return itself
      */
-    public EntryPointDeclarationDescrBuilder entryPointId( String name );
+    public EntryPointDeclarationDescrBuilder entryPointId(String name);
 
 }

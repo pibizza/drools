@@ -33,37 +33,37 @@ import org.xml.sax.SAXParseException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class PredicateHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public PredicateHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
         return ""; // need to return something, otherwise it'll pop the parent
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
 
-        final String expression =((org.w3c.dom.Text)element.getChildNodes().item( 0 )).getWholeText();
+        final String expression = ((org.w3c.dom.Text) element.getChildNodes().item(0)).getWholeText();
 
-        if ( expression == null || expression.trim().equals( "" ) ) {
-            throw new SAXParseException( "<predicate> must have some content",
-                                         parser.getLocator() );
+        if (expression == null || expression.trim().equals("")) {
+            throw new SAXParseException("<predicate> must have some content",
+                    parser.getLocator());
         }
 
         final PatternDescr patternDescr = (PatternDescr) parser.getParent();
-        
+
         ExprConstraintDescr expr = new ExprConstraintDescr("eval(" + expression + ")");
 
-        patternDescr.addConstraint( expr );
+        patternDescr.addConstraint(expr);
 
         return expr;
     }

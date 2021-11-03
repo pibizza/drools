@@ -20,22 +20,21 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-
 public class TypeFieldDescr extends AnnotatedBaseDescr
-    implements
-    Comparable<TypeFieldDescr> {
+        implements
+        Comparable<TypeFieldDescr> {
 
-    private static final long            serialVersionUID = 510l;
-    private int                          index            = -1;
-    private String                       fieldName;
-    private String                       initExpr;
-    private PatternDescr                 pattern;
-    private boolean                      inherited;
-    private TypeFieldDescr               overriding       = null;
-    private boolean                      recursive;
+    private static final long serialVersionUID = 510l;
+    private int index = -1;
+    private String fieldName;
+    private String initExpr;
+    private PatternDescr pattern;
+    private boolean inherited;
+    private TypeFieldDescr overriding = null;
+    private boolean recursive;
 
     public TypeFieldDescr() {
-        this( null );
+        this(null);
     }
 
     public TypeFieldDescr(final String fieldName) {
@@ -43,15 +42,15 @@ public class TypeFieldDescr extends AnnotatedBaseDescr
     }
 
     public TypeFieldDescr(final String fieldName,
-                          final PatternDescr pat) {
-        this( fieldName );
+            final PatternDescr pat) {
+        this(fieldName);
         this.pattern = pat;
     }
-    
+
     @Override
-    public void readExternal( ObjectInput in ) throws IOException,
-                                              ClassNotFoundException {
-        super.readExternal( in );
+    public void readExternal(ObjectInput in) throws IOException,
+            ClassNotFoundException {
+        super.readExternal(in);
         index = in.readInt();
         fieldName = (String) in.readObject();
         initExpr = (String) in.readObject();
@@ -60,17 +59,17 @@ public class TypeFieldDescr extends AnnotatedBaseDescr
         overriding = (TypeFieldDescr) in.readObject();
         recursive = in.readBoolean();
     }
-    
+
     @Override
-    public void writeExternal( ObjectOutput out ) throws IOException {
-        super.writeExternal( out );
-        out.writeInt( index );
-        out.writeObject( fieldName );
-        out.writeObject( initExpr );
-        out.writeObject( pattern );
-        out.writeBoolean( inherited );
-        out.writeObject( overriding );
-        out.writeBoolean( recursive );
+    public void writeExternal(ObjectOutput out) throws IOException {
+        super.writeExternal(out);
+        out.writeInt(index);
+        out.writeObject(fieldName);
+        out.writeObject(initExpr);
+        out.writeObject(pattern);
+        out.writeBoolean(inherited);
+        out.writeObject(overriding);
+        out.writeBoolean(recursive);
     }
 
     /**
@@ -83,13 +82,13 @@ public class TypeFieldDescr extends AnnotatedBaseDescr
     /**
      * @param fieldName the identifier to set
      */
-    public void setFieldName( String fieldName ) {
+    public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
     }
 
     /**
-    * @return the initExpr
-    */
+     * @return the initExpr
+     */
     public String getInitExpr() {
         return initExpr;
     }
@@ -97,7 +96,7 @@ public class TypeFieldDescr extends AnnotatedBaseDescr
     /**
      * @param initExpr the initExpr to set
      */
-    public void setInitExpr( String initExpr ) {
+    public void setInitExpr(String initExpr) {
         this.initExpr = initExpr;
     }
 
@@ -111,16 +110,16 @@ public class TypeFieldDescr extends AnnotatedBaseDescr
     /**
      * @param pattern the pattern to set
      */
-    public void setPattern( PatternDescr pattern ) {
+    public void setPattern(PatternDescr pattern) {
         this.pattern = pattern;
         this.pattern.setResource(getResource());
     }
 
     public String toString() {
-        return "TypeField[ " + this.getFieldName() + " : " + this.pattern + " = " + this.initExpr +  " ]";
+        return "TypeField[ " + this.getFieldName() + " : " + this.pattern + " = " + this.initExpr + " ]";
     }
 
-    public int compareTo( TypeFieldDescr other ) {
+    public int compareTo(TypeFieldDescr other) {
         return (this.index - other.index);
     }
 
@@ -128,10 +127,9 @@ public class TypeFieldDescr extends AnnotatedBaseDescr
         return index;
     }
 
-    public void setIndex( int index ) {
+    public void setIndex(int index) {
         this.index = index;
     }
-
 
     public boolean isInherited() {
         return inherited;
@@ -145,7 +143,7 @@ public class TypeFieldDescr extends AnnotatedBaseDescr
         return recursive;
     }
 
-    public void setRecursive( boolean recursive ) {
+    public void setRecursive(boolean recursive) {
         this.recursive = recursive;
     }
 
@@ -157,7 +155,7 @@ public class TypeFieldDescr extends AnnotatedBaseDescr
         return overriding;
     }
 
-    public void setOverriding( TypeFieldDescr overriding ) {
+    public void setOverriding(TypeFieldDescr overriding) {
         this.overriding = overriding;
     }
 }

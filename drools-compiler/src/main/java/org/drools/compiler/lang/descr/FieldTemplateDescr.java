@@ -19,16 +19,16 @@ package org.drools.compiler.lang.descr;
 public class FieldTemplateDescr extends BaseDescr {
 
     private static final long serialVersionUID = 510l;
-    private String            name;
-    private String            classType;
+    private String name;
+    private String classType;
 
     public FieldTemplateDescr() {
-        this( null,
-              null );
+        this(null,
+                null);
     }
 
     public FieldTemplateDescr(final String name,
-                              final String type) {
+            final String type) {
         this.name = name;
         this.classType = type;
     }

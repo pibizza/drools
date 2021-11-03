@@ -19,13 +19,12 @@ package org.drools.compiler.lang.api;
 import org.drools.compiler.lang.descr.TypeDeclarationDescr;
 
 /**
- *  A descriptor builder for declared types
+ * A descriptor builder for declared types
  */
 public interface TypeDeclarationDescrBuilder
-    extends
-    AnnotatedDescrBuilder<TypeDeclarationDescrBuilder>,
-    AbstractClassTypeDeclarationBuilder<TypeDeclarationDescr> {
-
+        extends
+        AnnotatedDescrBuilder<TypeDeclarationDescrBuilder>,
+        AbstractClassTypeDeclarationBuilder<TypeDeclarationDescr> {
 
     /**
      * Defines the type name
@@ -34,7 +33,7 @@ public interface TypeDeclarationDescrBuilder
      *
      * @return itself
      */
-    public TypeDeclarationDescrBuilder name( String type );
+    public TypeDeclarationDescrBuilder name(String type);
 
     /**
      * Defines the super type of this type. For POJOs, this is the
@@ -44,7 +43,7 @@ public interface TypeDeclarationDescrBuilder
      * 
      * @return itself
      */
-    public TypeDeclarationDescrBuilder superType( String type );
+    public TypeDeclarationDescrBuilder superType(String type);
 
-    public TypeDeclarationDescrBuilder setTrait( boolean trait );
+    public TypeDeclarationDescrBuilder setTrait(boolean trait);
 }

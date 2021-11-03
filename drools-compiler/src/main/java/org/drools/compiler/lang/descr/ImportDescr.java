@@ -23,10 +23,10 @@ import java.io.ObjectOutput;
 public class ImportDescr extends BaseDescr {
 
     private static final long serialVersionUID = 510l;
-    private String            target;
+    private String target;
 
     public ImportDescr() {
-        this( null );
+        this(null);
     }
 
     public ImportDescr(final String clazzName) {
@@ -41,7 +41,9 @@ public class ImportDescr extends BaseDescr {
         this.target = clazzName;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
@@ -52,25 +54,27 @@ public class ImportDescr extends BaseDescr {
         return result;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(final Object obj) {
-        if ( this == obj ) {
+        if (this == obj) {
             return true;
         }
-        if ( obj == null ) {
+        if (obj == null) {
             return false;
         }
-        if ( getClass() != obj.getClass() ) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
         final ImportDescr other = (ImportDescr) obj;
-        if ( this.target == null ) {
-            if ( other.target != null ) {
+        if (this.target == null) {
+            if (other.target != null) {
                 return false;
             }
-        } else if ( !this.target.equals( other.target ) ) {
+        } else if (!this.target.equals(other.target)) {
             return false;
         }
         return this.getStartCharacter() == other.getStartCharacter();
@@ -80,14 +84,14 @@ public class ImportDescr extends BaseDescr {
         return "import " + this.target;
     }
 
-    public void readExternal( ObjectInput in ) throws IOException,
+    public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
-        super.readExternal( in );
+        super.readExternal(in);
         target = (String) in.readObject();
     }
 
-    public void writeExternal( ObjectOutput out ) throws IOException {
-        super.writeExternal( out );
-        out.writeObject( target );
+    public void writeExternal(ObjectOutput out) throws IOException {
+        super.writeExternal(out);
+        out.writeObject(target);
     }
 }

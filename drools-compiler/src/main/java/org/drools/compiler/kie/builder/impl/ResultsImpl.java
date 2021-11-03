@@ -27,11 +27,11 @@ import org.kie.internal.builder.KnowledgeBuilderResult;
 import org.kie.internal.jci.CompilationProblem;
 
 public class ResultsImpl
-    implements
-    Results {
-    private List<Message> messages    = new ArrayList<Message>();
+        implements
+        Results {
+    private List<Message> messages = new ArrayList<Message>();
 
-    private long          idGenerator = 1L;
+    private long idGenerator = 1L;
 
     public List<Message> getMessages() {
         return messages;
@@ -39,28 +39,28 @@ public class ResultsImpl
 
     @Override
     public boolean hasMessages(Level... levels) {
-        return !filterMessages( levels ).isEmpty();
+        return !filterMessages(levels).isEmpty();
     }
 
     @Override
     public List<Message> getMessages(Level... levels) {
-        return filterMessages( levels );
+        return filterMessages(levels);
     }
 
     public void addMessage(CompilationProblem problem) {
-        messages.add( new MessageImpl( idGenerator++,
-                                       problem ) );
+        messages.add(new MessageImpl(idGenerator++,
+                problem));
     }
 
     public InternalMessage addMessage(KnowledgeBuilderResult result) {
         InternalMessage message = result.asMessage(idGenerator++);
-        messages.add( message );
+        messages.add(message);
         return message;
     }
 
     public InternalMessage addMessage(Level level, String path, String text) {
         InternalMessage message = new MessageImpl(idGenerator++, level, path, text);
-        messages.add( message );
+        messages.add(message);
         return message;
     }
 
@@ -77,31 +77,31 @@ public class ResultsImpl
     }
 
     public List<Message> filterMessages(Level... levels) {
-        return MessageImpl.filterMessages( messages,
-                                           levels );
+        return MessageImpl.filterMessages(messages,
+                levels);
     }
 
     public String toString() {
         StringBuilder sBuilder = new StringBuilder();
-        sBuilder.append( "Error Messages:\n" );
-        for ( Message msg : filterMessages( Level.ERROR ) ) {
-            sBuilder.append( msg.toString() );
-            sBuilder.append( "\n" );
+        sBuilder.append("Error Messages:\n");
+        for (Message msg : filterMessages(Level.ERROR)) {
+            sBuilder.append(msg.toString());
+            sBuilder.append("\n");
         }
 
-        sBuilder.append( "---\n" );
-        sBuilder.append( "Warning Messages:\n" );
-        for ( Message msg : filterMessages( Level.WARNING ) ) {
-            sBuilder.append( msg.toString() );
-            sBuilder.append( "\n" );
+        sBuilder.append("---\n");
+        sBuilder.append("Warning Messages:\n");
+        for (Message msg : filterMessages(Level.WARNING)) {
+            sBuilder.append(msg.toString());
+            sBuilder.append("\n");
         }
-        
-        sBuilder.append( "---\n" );
-        sBuilder.append( "Info Messages:\n" );
-        for ( Message msg : filterMessages( Level.INFO ) ) {
-            sBuilder.append( msg.toString() );
-            sBuilder.append( "\n" );
-        }        
+
+        sBuilder.append("---\n");
+        sBuilder.append("Info Messages:\n");
+        for (Message msg : filterMessages(Level.INFO)) {
+            sBuilder.append(msg.toString());
+            sBuilder.append("\n");
+        }
         return sBuilder.toString();
     }
 

@@ -40,7 +40,7 @@ public class AnnotationDescr extends AnnotatedBaseDescr implements PropertyMap {
     // '' and 'a' are passed through as 
     public static String unquote(String s) {
         if (s.startsWith("\"") && s.endsWith("\"") ||
-            s.startsWith("'") && s.endsWith("'")) {
+                s.startsWith("'") && s.endsWith("'")) {
             return s.substring(1, s.length() - 1);
         } else {
             return s;
@@ -56,14 +56,14 @@ public class AnnotationDescr extends AnnotatedBaseDescr implements PropertyMap {
     }
 
     public AnnotationDescr(final String name,
-                           final String value) {
+            final String value) {
         this(name);
         this.values.put(VALUE, value);
     }
 
     @Override
     public void readExternal(ObjectInput in) throws IOException,
-                                                    ClassNotFoundException {
+            ClassNotFoundException {
         super.readExternal(in);
         this.name = (String) in.readObject();
         this.values = (Map<String, Object>) in.readObject();
@@ -74,7 +74,7 @@ public class AnnotationDescr extends AnnotatedBaseDescr implements PropertyMap {
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        super.writeExternal( out );
+        super.writeExternal(out);
         out.writeObject(name);
         out.writeObject(values);
         out.writeObject(fullyQualifiedName);
@@ -103,7 +103,7 @@ public class AnnotationDescr extends AnnotatedBaseDescr implements PropertyMap {
     }
 
     public void setKeyValue(final String key,
-                            final Object value) {
+            final Object value) {
         this.values.put(key, value);
     }
 
@@ -127,7 +127,8 @@ public class AnnotationDescr extends AnnotatedBaseDescr implements PropertyMap {
 
     public Object getValueStripped() {
         Object single = getSingleValueStripped();
-        if (single != null) return single;
+        if (single != null)
+            return single;
         Map<String, String> sMap = new HashMap<String, String>();
         for (Map.Entry<String, Object> entry : this.values.entrySet()) {
             sMap.put(entry.getKey(), unquote(entry.getValue().toString()));
@@ -149,7 +150,7 @@ public class AnnotationDescr extends AnnotatedBaseDescr implements PropertyMap {
 
     public Object getSingleValueStripped() {
         if (values.size() == 1 && values.containsKey(VALUE)) {
-            return unquote( this.values.get( VALUE ).toString() );
+            return unquote(this.values.get(VALUE).toString());
         } else {
             return null;
         }
@@ -165,26 +166,31 @@ public class AnnotationDescr extends AnnotatedBaseDescr implements PropertyMap {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
         AnnotationDescr other = (AnnotationDescr) obj;
         if (name == null) {
-            if (other.name != null) return false;
-        } else if (!name.equals(other.name)) return false;
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
         return true;
     }
 
     public String getSingleValueAsString() {
-        return getValueAsString( VALUE );
+        return getValueAsString(VALUE);
     }
 
-    public String getValueAsString( String key ) {
-        Object x = getValue( key );
-        if ( x == null ) {
+    public String getValueAsString(String key) {
+        Object x = getValue(key);
+        if (x == null) {
             return null;
-        } else if ( x.getClass().isArray() ) {
-            return Arrays.toString( (Object[]) x );
+        } else if (x.getClass().isArray()) {
+            return Arrays.toString((Object[]) x);
         } else {
             return x.toString();
         }

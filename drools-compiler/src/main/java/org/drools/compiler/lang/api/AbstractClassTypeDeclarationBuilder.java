@@ -16,14 +16,11 @@
 
 package org.drools.compiler.lang.api;
 
-
 import org.drools.compiler.lang.descr.BaseDescr;
 
 public interface AbstractClassTypeDeclarationBuilder<T extends BaseDescr>
-    extends
-    DescrBuilder<PackageDescrBuilder, T> {
-
-
+        extends
+        DescrBuilder<PackageDescrBuilder, T> {
 
     /**
      * Adds a field to this type declaration
@@ -32,5 +29,5 @@ public interface AbstractClassTypeDeclarationBuilder<T extends BaseDescr>
      *
      * @return a descriptor builder for the field
      */
-    public FieldDescrBuilder<AbstractClassTypeDeclarationBuilder<T>> newField( String name );
+    public FieldDescrBuilder<AbstractClassTypeDeclarationBuilder<T>> newField(String name);
 }

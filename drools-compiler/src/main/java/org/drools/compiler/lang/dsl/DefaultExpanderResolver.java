@@ -30,8 +30,8 @@ import org.drools.compiler.lang.ExpanderResolver;
  * natural language support.
  */
 public class DefaultExpanderResolver
-    implements
-    ExpanderResolver {
+        implements
+        ExpanderResolver {
 
     private final Map expanders = new HashMap();
 
@@ -45,7 +45,7 @@ public class DefaultExpanderResolver
 
     /**
      * This will load up a DSL from the reader specified.
-     * This will make the expander available to any parser 
+     * This will make the expander available to any parser
      * regardless of name.
      * 
      * The DSL expander will be the default expander.
@@ -54,13 +54,13 @@ public class DefaultExpanderResolver
      */
     public DefaultExpanderResolver(final Reader reader) throws IOException {
         final DSLTokenizedMappingFile file = new DSLTokenizedMappingFile();
-        if ( file.parseAndLoad( reader ) ) {
+        if (file.parseAndLoad(reader)) {
             final Expander expander = new DefaultExpander();
-            expander.addDSLMapping( file.getMapping() );
-            this.expanders.put( "*",
-                                expander );
+            expander.addDSLMapping(file.getMapping());
+            this.expanders.put("*",
+                    expander);
         } else {
-            throw new RuntimeException( "Error parsing and loading DSL file." + file.getErrors() );
+            throw new RuntimeException("Error parsing and loading DSL file." + file.getErrors());
         }
     }
 
@@ -76,19 +76,19 @@ public class DefaultExpanderResolver
      * If you don't know what that sentence means, you probably don't need to use this method.
      */
     public void addExpander(final String name,
-                            final Expander expander) {
-        this.expanders.put( name,
-                            expander );
+            final Expander expander) {
+        this.expanders.put(name,
+                expander);
     }
 
     public Expander get(final String name,
-                        final String config) {
-        if ( this.expanders.containsKey( name ) ) {
-            return (Expander) this.expanders.get( name );
+            final String config) {
+        if (this.expanders.containsKey(name)) {
+            return (Expander) this.expanders.get(name);
         } else {
-            final Expander exp = (Expander) this.expanders.get( "*" );
-            if ( exp == null ) {
-                throw new IllegalArgumentException( "Unable to provide an expander for " + name + " or a default expander." );
+            final Expander exp = (Expander) this.expanders.get("*");
+            if (exp == null) {
+                throw new IllegalArgumentException("Unable to provide an expander for " + name + " or a default expander.");
             }
             return exp;
         }

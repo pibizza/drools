@@ -29,41 +29,41 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class OrHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public OrHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
         final OrDescr orDescr = new OrDescr();
 
         return orDescr;
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
 
         final OrDescr orDescr = (OrDescr) parser.getCurrent();
 
         final Object parent = parser.getParent();
 
-        if ( !orDescr.getDescrs().isEmpty() ) {
-            if ( parent instanceof RuleDescr || parent instanceof QueryDescr ) {
+        if (!orDescr.getDescrs().isEmpty()) {
+            if (parent instanceof RuleDescr || parent instanceof QueryDescr) {
                 final RuleDescr ruleDescr = (RuleDescr) parent;
-                ruleDescr.getLhs().addDescr( orDescr );
-            } else if ( parent instanceof MultiPatternDestinationDescr ) {
+                ruleDescr.getLhs().addDescr(orDescr);
+            } else if (parent instanceof MultiPatternDestinationDescr) {
                 final MultiPatternDestinationDescr mpDescr = (MultiPatternDestinationDescr) parent;
-                mpDescr.setInput( orDescr );
-            } else if ( parent instanceof ConditionalElementDescr ) {
+                mpDescr.setInput(orDescr);
+            } else if (parent instanceof ConditionalElementDescr) {
                 final ConditionalElementDescr ceDescr = (ConditionalElementDescr) parent;
-                ceDescr.addDescr( orDescr );
+                ceDescr.addDescr(orDescr);
             }
         }
 

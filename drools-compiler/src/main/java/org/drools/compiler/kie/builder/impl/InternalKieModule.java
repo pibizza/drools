@@ -74,37 +74,40 @@ public interface InternalKieModule extends KieModule, Serializable {
 
     InternalKnowledgePackage getPackage(String packageName);
 
-    void cacheResultsForKieBase( String kieBaseName, Results results);
+    void cacheResultsForKieBase(String kieBaseName, Results results);
 
-    Map<String, Results> getKnowledgeResultsCache();    
-    
-    KieModuleModel getKieModuleModel();    
-    
-    byte[] getBytes( );  
-    
-    boolean hasResource( String fileName );
-    InternalResource getResource( String fileName );
+    Map<String, Results> getKnowledgeResultsCache();
 
-    ResourceConfiguration getResourceConfiguration( String fileName );
-    
+    KieModuleModel getKieModuleModel();
+
+    byte[] getBytes();
+
+    boolean hasResource(String fileName);
+
+    InternalResource getResource(String fileName);
+
+    ResourceConfiguration getResourceConfiguration(String fileName);
+
     Map<ReleaseId, InternalKieModule> getKieDependencies();
-    
+
     void addKieDependency(InternalKieModule dependency);
 
     Collection<ReleaseId> getJarDependencies(DependencyFilter filter);
 
     Collection<ReleaseId> getUnresolvedDependencies();
+
     void setUnresolvedDependencies(Collection<ReleaseId> unresolvedDependencies);
 
-    boolean isAvailable( final String pResourceName );
-    
-    byte[] getBytes( final String pResourceName );
-    default byte[] getBytes( final KiePath resourcePath ) {
+    boolean isAvailable(final String pResourceName);
+
+    byte[] getBytes(final String pResourceName);
+
+    default byte[] getBytes(final KiePath resourcePath) {
         return getBytes(resourcePath.asString());
     }
 
-    Collection<String> getFileNames();  
-    
+    Collection<String> getFileNames();
+
     File getFile();
 
     ResourceProvider createResourceProvider();
@@ -112,6 +115,7 @@ public interface InternalKieModule extends KieModule, Serializable {
     Map<String, byte[]> getClassesMap();
 
     boolean addResourceToCompiler(CompositeKnowledgeBuilder ckbuilder, KieBaseModel kieBaseModel, String fileName);
+
     boolean addResourceToCompiler(CompositeKnowledgeBuilder ckbuilder, KieBaseModel kieBaseModel, String fileName, ResourceChangeSet rcs);
 
     long getCreationTimestamp();
@@ -120,11 +124,12 @@ public interface InternalKieModule extends KieModule, Serializable {
 
     PomModel getPomModel();
 
-    KnowledgeBuilderConfiguration createBuilderConfiguration( KieBaseModel kBaseModel, ClassLoader classLoader );
+    KnowledgeBuilderConfiguration createBuilderConfiguration(KieBaseModel kBaseModel, ClassLoader classLoader);
 
-    InternalKnowledgeBase createKieBase( KieBaseModelImpl kBaseModel, KieProject kieProject, BuildContext buildContext, KieBaseConfiguration conf );
+    InternalKnowledgeBase createKieBase(KieBaseModelImpl kBaseModel, KieProject kieProject, BuildContext buildContext, KieBaseConfiguration conf);
 
-    default void afterKieBaseCreationUpdate(String name, InternalKnowledgeBase kBase) { }
+    default void afterKieBaseCreationUpdate(String name, InternalKnowledgeBase kBase) {
+    }
 
     ClassLoader getModuleClassLoader();
 
@@ -135,42 +140,44 @@ public interface InternalKieModule extends KieModule, Serializable {
     }
 
     default KieJarChangeSet getChanges(InternalKieModule newKieModule) {
-        return ChangeSetBuilder.build( this, newKieModule );
+        return ChangeSetBuilder.build(this, newKieModule);
     }
 
     default boolean isFileInKBase(KieBaseModel kieBase, String fileName) {
-        return filterFileInKBase(this, kieBase, fileName, () -> getResource( fileName ), false);
+        return filterFileInKBase(this, kieBase, fileName, () -> getResource(fileName), false);
     }
 
     default KieBaseUpdater createKieBaseUpdater(KieBaseUpdaterImplContext context) {
-        return new KieBaseUpdaterImpl(context );
+        return new KieBaseUpdaterImpl(context);
     }
 
-    default ProjectClassLoader createModuleClassLoader( ClassLoader parent ) {
-        if( parent == null ) {
+    default ProjectClassLoader createModuleClassLoader(ClassLoader parent) {
+        if (parent == null) {
             ClassLoaderResolver resolver = ServiceRegistry.getService(ClassLoaderResolver.class);
-            if (resolver==null)  {
+            if (resolver == null) {
                 resolver = new NoDepsClassLoaderResolver();
             }
-            parent = resolver.getClassLoader( this );
+            parent = resolver.getClassLoader(this);
         }
-        return createProjectClassLoader( parent, createResourceProvider() );
+        return createProjectClassLoader(parent, createResourceProvider());
     }
 
-    default CompilationCache getCompilationCache( String kbaseName) { return null; }
+    default CompilationCache getCompilationCache(String kbaseName) {
+        return null;
+    }
 
     default InternalKieModule cloneForIncrementalCompilation(ReleaseId releaseId, KieModuleModel kModuleModel, MemoryFileSystem newFs) {
         throw new UnsupportedOperationException();
     }
 
     static InternalKieModule createKieModule(ReleaseId releaseId, File jar) {
-        if (jar.isDirectory() || !jar.getPath().endsWith( ".jar" )) {
+        if (jar.isDirectory() || !jar.getPath().endsWith(".jar")) {
             return null;
         }
         try (ZipFile zipFile = new ZipFile(jar)) {
             ZipEntry zipEntry = zipFile.getEntry(KieModuleModelImpl.KMODULE_JAR_PATH.asString());
             if (zipEntry != null) {
-                return internalCreateKieModule( releaseId, jar, zipFile, zipEntry );
+                return internalCreateKieModule(releaseId, jar, zipFile, zipEntry);
             }
         } catch (MalformedKieModuleException e) {
             // if the kie module exists but it's malformed raise the error
@@ -181,13 +188,13 @@ public interface InternalKieModule extends KieModule, Serializable {
         return null;
     }
 
-    static InternalKieModule internalCreateKieModule( ReleaseId releaseId, File jar, ZipFile zipFile, ZipEntry zipEntry ) throws MalformedKieModuleException {
-        try (InputStream xmlStream = zipFile.getInputStream( zipEntry )) {
-            KieModuleModel kieModuleModel = KieModuleModelImpl.fromXML( xmlStream );
-            setDefaultsforEmptyKieModule( kieModuleModel );
-            return kieModuleModel != null ? InternalKieModuleProvider.get( releaseId, kieModuleModel, jar ) : null;
+    static InternalKieModule internalCreateKieModule(ReleaseId releaseId, File jar, ZipFile zipFile, ZipEntry zipEntry) throws MalformedKieModuleException {
+        try (InputStream xmlStream = zipFile.getInputStream(zipEntry)) {
+            KieModuleModel kieModuleModel = KieModuleModelImpl.fromXML(xmlStream);
+            setDefaultsforEmptyKieModule(kieModuleModel);
+            return kieModuleModel != null ? InternalKieModuleProvider.get(releaseId, kieModuleModel, jar) : null;
         } catch (Exception e) {
-            throw new MalformedKieModuleException( e );
+            throw new MalformedKieModuleException(e);
         }
     }
 
@@ -197,9 +204,11 @@ public interface InternalKieModule extends KieModule, Serializable {
         }
     }
 
-    default void updateKieModule(InternalKieModule newKM) {}
+    default void updateKieModule(InternalKieModule newKM) {
+    }
 
-    default void addGeneratedClassNames(Set<String> classNames) {}
+    default void addGeneratedClassNames(Set<String> classNames) {
+    }
 
     class CompilationCache implements Serializable {
         private static final long serialVersionUID = 3812243055974412935L;
@@ -208,14 +217,14 @@ public interface InternalKieModule extends KieModule, Serializable {
 
         public void addEntry(String dialect, String className, byte[] bytecode) {
             Map<String, List<CompilationCacheEntry>> resourceEntries = compilationCache.get(dialect);
-            if( resourceEntries == null ) {
+            if (resourceEntries == null) {
                 resourceEntries = new HashMap<String, List<CompilationCacheEntry>>();
                 compilationCache.put(dialect, resourceEntries);
             }
 
-            String key = className.contains("$") ? className.substring(0, className.indexOf('$') ) + ".class" : className;
+            String key = className.contains("$") ? className.substring(0, className.indexOf('$')) + ".class" : className;
             List<CompilationCacheEntry> bytes = resourceEntries.get(key);
-            if( bytes == null ) {
+            if (bytes == null) {
                 bytes = new ArrayList<CompilationCacheEntry>();
                 resourceEntries.put(key, bytes);
             }
@@ -233,7 +242,7 @@ public interface InternalKieModule extends KieModule, Serializable {
         public final String className;
         public final byte[] bytecode;
 
-        public CompilationCacheEntry( String className, byte[] bytecode) {
+        public CompilationCacheEntry(String className, byte[] bytecode) {
             this.className = className;
             this.bytecode = bytecode;
         }

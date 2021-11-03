@@ -35,66 +35,66 @@ import org.xml.sax.SAXParseException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class RuleHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public RuleHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
 
-        final String ruleName = attrs.getValue( "name" );
-        emptyAttributeCheck( localName,
-                             "name",
-                             ruleName,
-                             parser );
+        final String ruleName = attrs.getValue("name");
+        emptyAttributeCheck(localName,
+                "name",
+                ruleName,
+                parser);
 
-        final RuleDescr ruleDescr = new RuleDescr( ruleName.trim() );
+        final RuleDescr ruleDescr = new RuleDescr(ruleName.trim());
 
         return ruleDescr;
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
 
         final RuleDescr ruleDescr = (RuleDescr) parser.getCurrent();
 
         final AndDescr lhs = ruleDescr.getLhs();
 
-        if ( lhs == null ) {
-            throw new SAXParseException( "<rule> requires a LHS",
-                                         parser.getLocator() );
+        if (lhs == null) {
+            throw new SAXParseException("<rule> requires a LHS",
+                    parser.getLocator());
         }
 
-        NodeList list = element.getElementsByTagName( "rhs" );
-        if ( list.getLength() == 0 ) {
-            throw new SAXParseException( "<rule> requires a <rh> child element",
-                                         parser.getLocator() );
+        NodeList list = element.getElementsByTagName("rhs");
+        if (list.getLength() == 0) {
+            throw new SAXParseException("<rule> requires a <rh> child element",
+                    parser.getLocator());
         }
 
-        ruleDescr.setConsequence( ((org.w3c.dom.Text)list.item( 0 ).getChildNodes().item( 0 )).getWholeText() );
+        ruleDescr.setConsequence(((org.w3c.dom.Text) list.item(0).getChildNodes().item(0)).getWholeText());
 
-        NodeList attributes = element.getElementsByTagName( "rule-attribute" );
-        for ( int i = 0, length = attributes.getLength(); i < length; i++ ) {
-            final String name = ((Element) attributes.item( i )).getAttribute( "name" );
-            emptyAttributeCheck( "rule-attribute",
-                                 "name",
-                                 name,
-                                 parser );
+        NodeList attributes = element.getElementsByTagName("rule-attribute");
+        for (int i = 0, length = attributes.getLength(); i < length; i++) {
+            final String name = ((Element) attributes.item(i)).getAttribute("name");
+            emptyAttributeCheck("rule-attribute",
+                    "name",
+                    name,
+                    parser);
 
-            final String value = ((Element) attributes.item( i )).getAttribute( "value" );
+            final String value = ((Element) attributes.item(i)).getAttribute("value");
 
-            ruleDescr.addAttribute( new AttributeDescr( name,
-                                                        value ) );
+            ruleDescr.addAttribute(new AttributeDescr(name,
+                    value));
         }
 
-        ((PackageDescr) parser.getData()).addRule( ruleDescr );
+        ((PackageDescr) parser.getData()).addRule(ruleDescr);
 
         return ruleDescr;
     }

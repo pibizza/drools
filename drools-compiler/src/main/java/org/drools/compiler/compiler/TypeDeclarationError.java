@@ -21,7 +21,7 @@ import org.drools.core.rule.TypeDeclaration;
 
 public class TypeDeclarationError extends DroolsError {
     private String errorMessage;
-    private int[]  line;
+    private int[] line;
     private String namespace;
 
     public TypeDeclarationError(BaseDescr typeDescr, String errorMessage) {
@@ -50,7 +50,7 @@ public class TypeDeclarationError extends DroolsError {
     public String getMessage() {
         return this.errorMessage;
     }
-    
+
     public String toString() {
         return this.getMessage();
     }

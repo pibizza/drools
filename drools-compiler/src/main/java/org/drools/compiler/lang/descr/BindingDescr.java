@@ -17,35 +17,35 @@
 package org.drools.compiler.lang.descr;
 
 public class BindingDescr extends BaseDescr implements ExpressionDescr {
-    
+
     private static final long serialVersionUID = 520l;
-    
-    private String               variable;
-    private String               bindingField;
-    private String               expression;
-    private boolean              unification;
+
+    private String variable;
+    private String bindingField;
+    private String expression;
+    private boolean unification;
 
     public BindingDescr() {
-        this( null,
-              null );
+        this(null,
+                null);
     }
 
     public BindingDescr(final String variable,
-                        final String expression) {
+            final String expression) {
         this.variable = variable;
         this.expression = expression;
     }
 
     public BindingDescr(final String variable,
-                        final String expression,
-                        final boolean isUnification ) {
-        this( variable, expression, expression, isUnification );
+            final String expression,
+            final boolean isUnification) {
+        this(variable, expression, expression, isUnification);
     }
 
     public BindingDescr(final String variable,
-                        final String bindingField,
-                        final String expression,
-                        final boolean isUnification ) {
+            final String bindingField,
+            final String expression,
+            final boolean isUnification) {
         this.variable = variable;
         this.bindingField = bindingField;
         this.expression = expression;
@@ -73,23 +73,23 @@ public class BindingDescr extends BaseDescr implements ExpressionDescr {
         return this.expression;
     }
 
-    public void setUnification( boolean isUnification ) {
+    public void setUnification(boolean isUnification) {
         this.unification = isUnification;
     }
-    
+
     public boolean isUnification() {
         return unification;
     }
-    
+
     public String toString() {
-        return this.variable + ( this.unification ? " := " : " : " ) + this.expression;
+        return this.variable + (this.unification ? " := " : " : ") + this.expression;
     }
 
     public String getBindingField() {
         return bindingField != null ? bindingField : expression;
     }
 
-    public void setBindingField( String bindingField ) {
+    public void setBindingField(String bindingField) {
         this.bindingField = bindingField;
     }
 }

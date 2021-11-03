@@ -100,22 +100,22 @@ public interface Dialect {
     EngineElementBuilder getBuilder(Class clazz);
 
     AnalysisResult analyzeExpression(final PackageBuildContext context,
-                                     final BaseDescr descr,
-                                     final Object content,
-                                     final BoundIdentifiers availableIdentifiers);
+            final BaseDescr descr,
+            final Object content,
+            final BoundIdentifiers availableIdentifiers);
 
     AnalysisResult analyzeBlock(final PackageBuildContext context,
-                                final BaseDescr descr,
-                                final String text,
-                                final BoundIdentifiers availableIdentifiers);
+            final BaseDescr descr,
+            final String text,
+            final BoundIdentifiers availableIdentifiers);
 
     void compileAll();
 
     void addRule(final RuleBuildContext context);
 
     void addFunction(FunctionDescr functionDescr,
-                     TypeResolver typeResolver,
-                     Resource resource);
+            TypeResolver typeResolver,
+            Resource resource);
 
     void addImport(ImportDescr importDescr);
 
@@ -130,16 +130,20 @@ public interface Dialect {
     void init(ProcessDescr processDescr);
 
     void postCompileAddFunction(FunctionDescr functionDescr,
-                                TypeResolver typeResolver);
+            TypeResolver typeResolver);
 
     void preCompileAddFunction(FunctionDescr functionDescr,
-                               TypeResolver typeResolver);
+            TypeResolver typeResolver);
 
     PackageRegistry getPackageRegistry();
 
-    default boolean isStrictMode() { return true; }
+    default boolean isStrictMode() {
+        return true;
+    }
 
-    default boolean isJava() { return true; }
+    default boolean isJava() {
+        return true;
+    }
 
     default void addSrc(String resourceName, byte[] content) {
         throw new UnsupportedOperationException();
@@ -193,17 +197,17 @@ public interface Dialect {
         }
 
         @Override
-        public void init( RuleDescr ruleDescr ) {
+        public void init(RuleDescr ruleDescr) {
             // we don't need to do anything here
         }
 
         @Override
-        public void init( ProcessDescr processDescr ) {
+        public void init(ProcessDescr processDescr) {
             // we don't need to do anything here
         }
 
         @Override
-        public EngineElementBuilder getBuilder( Class clazz ) {
+        public EngineElementBuilder getBuilder(Class clazz) {
             if (clazz == PatternDescr.class) {
                 return getPatternBuilder();
             }
@@ -292,12 +296,12 @@ public interface Dialect {
         }
 
         @Override
-        public AnalysisResult analyzeExpression( PackageBuildContext context, BaseDescr descr, Object content, BoundIdentifiers availableIdentifiers ) {
+        public AnalysisResult analyzeExpression(PackageBuildContext context, BaseDescr descr, Object content, BoundIdentifiers availableIdentifiers) {
             return throwExceptionForMissingMvel();
         }
 
         @Override
-        public AnalysisResult analyzeBlock( PackageBuildContext context, BaseDescr descr, String text, BoundIdentifiers availableIdentifiers ) {
+        public AnalysisResult analyzeBlock(PackageBuildContext context, BaseDescr descr, String text, BoundIdentifiers availableIdentifiers) {
             return throwExceptionForMissingMvel();
         }
 
@@ -307,12 +311,12 @@ public interface Dialect {
         }
 
         @Override
-        public void addRule( RuleBuildContext context ) {
+        public void addRule(RuleBuildContext context) {
             throwExceptionForMissingMvel();
         }
 
         @Override
-        public void addFunction( FunctionDescr functionDescr, TypeResolver typeResolver, Resource resource ) {
+        public void addFunction(FunctionDescr functionDescr, TypeResolver typeResolver, Resource resource) {
             throwExceptionForMissingMvel();
         }
 
@@ -327,12 +331,12 @@ public interface Dialect {
         }
 
         @Override
-        public void postCompileAddFunction( FunctionDescr functionDescr, TypeResolver typeResolver ) {
+        public void postCompileAddFunction(FunctionDescr functionDescr, TypeResolver typeResolver) {
             throwExceptionForMissingMvel();
         }
 
         @Override
-        public void preCompileAddFunction( FunctionDescr functionDescr, TypeResolver typeResolver ) {
+        public void preCompileAddFunction(FunctionDescr functionDescr, TypeResolver typeResolver) {
             throwExceptionForMissingMvel();
         }
     }

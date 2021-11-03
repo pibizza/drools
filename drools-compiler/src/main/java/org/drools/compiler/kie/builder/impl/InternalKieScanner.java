@@ -28,7 +28,7 @@ public interface InternalKieScanner extends KieScanner {
     void setKieContainer(KieContainer kieContainer);
 
     KieModule loadArtifact(ReleaseId releaseId);
-    
+
     KieModule loadArtifact(ReleaseId releaseId, InputStream pomXML);
 
     KieModule loadArtifact(ReleaseId releaseId, PomModel pomModel);

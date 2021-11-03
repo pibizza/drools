@@ -38,13 +38,13 @@ public class KieBaseUpdaterImplContext {
     public final ResultsImpl results;
     public final KieBaseModelImpl newKieBaseModel;
     public final KieBaseModelImpl currentKieBaseModel;
-    public final  InternalKnowledgeBuilder kbuilder;
+    public final InternalKnowledgeBuilder kbuilder;
 
     public KieBaseUpdaterImplContext(KieProject kProject, InternalKnowledgeBase kBase, InternalKieModule currentKM,
-                                     InternalKieModule newKM, KieJarChangeSet cs, Collection<Class<?>> modifiedClasses,
-                                     boolean modifyingUsedClass, Collection<String> unchangedResources, ResultsImpl results,
-                                     KieBaseModelImpl newKieBaseModel, KieBaseModelImpl currentKieBaseModel,
-                                     InternalKnowledgeBuilder kbuilder) {
+            InternalKieModule newKM, KieJarChangeSet cs, Collection<Class<?>> modifiedClasses,
+            boolean modifyingUsedClass, Collection<String> unchangedResources, ResultsImpl results,
+            KieBaseModelImpl newKieBaseModel, KieBaseModelImpl currentKieBaseModel,
+            InternalKnowledgeBuilder kbuilder) {
         this.kProject = kProject;
         this.kBase = kBase;
         this.currentKM = currentKM;

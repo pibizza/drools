@@ -37,10 +37,10 @@ public class DeclaredClassBuilder {
     }
 
     public void generateBeanFromDefinition(AbstractClassTypeDeclarationDescr typeDescr,
-                                           TypeDeclaration type,
-                                           PackageRegistry pkgRegistry,
-                                           ClassDefinition def,
-                                           ClassBuilder classBuilder) {
+            TypeDeclaration type,
+            PackageRegistry pkgRegistry,
+            ClassDefinition def,
+            ClassBuilder classBuilder) {
 
         if (type.isNovel()) {
             String fullName = typeDescr.getType().getFullName();
@@ -52,7 +52,8 @@ public class DeclaredClassBuilder {
         }
     }
 
-    private void buildClass(AbstractClassTypeDeclarationDescr typeDescr, PackageRegistry pkgRegistry, ClassDefinition def, ClassBuilder classBuilder, String fullName, JavaDialectRuntimeData dialect, String errorMessage) {
+    private void buildClass(AbstractClassTypeDeclarationDescr typeDescr, PackageRegistry pkgRegistry, ClassDefinition def, ClassBuilder classBuilder, String fullName, JavaDialectRuntimeData dialect,
+            String errorMessage) {
         try {
             byte[] bytecode = classBuilder.buildClass(def, kbuilder.getRootClassLoader());
             String resourceName = convertClassToResourcePath(fullName);
@@ -61,7 +62,7 @@ public class DeclaredClassBuilder {
                 Class<?> clazz = kbuilder.getKnowledgeBase().registerAndLoadTypeDefinition(fullName, bytecode);
                 pkgRegistry.getTypeResolver().registerClass(fullName, clazz);
             } else {
-                if (kbuilder.getRootClassLoader() instanceof ProjectClassLoader ) {
+                if (kbuilder.getRootClassLoader() instanceof ProjectClassLoader) {
                     Class<?> clazz = ((ProjectClassLoader) kbuilder.getRootClassLoader()).defineClass(fullName, resourceName, bytecode);
                     pkgRegistry.getTypeResolver().registerClass(fullName, clazz);
                 } else {
@@ -77,8 +78,8 @@ public class DeclaredClassBuilder {
         try {
             if (typeDescr instanceof TypeDeclarationDescr && !((TypeDeclarationDescr) typeDescr).isTrait()
                     && typeResolver.resolveType(def.getSuperClass()).isInterface()) {
-                def.addInterface( def.getSuperClass() );
-                def.setSuperClass( null );
+                def.addInterface(def.getSuperClass());
+                def.setSuperClass(null);
             }
 
             for (String sup : def.getInterfaces()) {

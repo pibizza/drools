@@ -25,9 +25,9 @@ import org.kie.internal.builder.KnowledgeBuilderError;
 import org.kie.internal.builder.KnowledgeBuilderErrors;
 
 public class PackageBuilderErrors extends ArrayList<KnowledgeBuilderError>
-    implements
+        implements
         KnowledgeBuilderErrors,
-    Externalizable {
+        Externalizable {
     private DroolsError[] errors;
 
     public PackageBuilderErrors() {
@@ -35,33 +35,33 @@ public class PackageBuilderErrors extends ArrayList<KnowledgeBuilderError>
     }
 
     public PackageBuilderErrors(DroolsError[] errors) {
-        super( errors.length );
+        super(errors.length);
         this.errors = errors;
 
-        for ( DroolsError error : errors ) {
-            add( error );
+        for (DroolsError error : errors) {
+            add(error);
         }
     }
 
     public void readExternal(ObjectInput in) throws IOException,
-                                            ClassNotFoundException {
+            ClassNotFoundException {
         SerializableDroolsError[] temp = (SerializableDroolsError[]) in.readObject();
         this.errors = temp;
-        for ( DroolsError error : temp ) {
-            add( error );
+        for (DroolsError error : temp) {
+            add(error);
         }
     }
 
     public void writeExternal(ObjectOutput out) throws IOException {
-        if ( !this.errors.getClass().getComponentType().equals( SerializableDroolsError.class ) ) {
+        if (!this.errors.getClass().getComponentType().equals(SerializableDroolsError.class)) {
             SerializableDroolsError[] temp = new SerializableDroolsError[this.errors.length];
             int i = 0;
-            for ( DroolsError error : this.errors ) {
-                temp[i] = new SerializableDroolsError( error );
+            for (DroolsError error : this.errors) {
+                temp[i] = new SerializableDroolsError(error);
             }
-            out.writeObject( temp );
+            out.writeObject(temp);
         } else {
-            out.writeObject( this.errors );
+            out.writeObject(this.errors);
         }
     }
 
@@ -75,9 +75,9 @@ public class PackageBuilderErrors extends ArrayList<KnowledgeBuilderError>
 
     public String toString() {
         final StringBuilder buf = new StringBuilder();
-        for ( int i = 0, length = this.errors.length; i < length; i++ ) {
-            buf.append( errors[i] );
-            buf.append( "\n" );
+        for (int i = 0, length = this.errors.length; i < length; i++) {
+            buf.append(errors[i]);
+            buf.append("\n");
         }
         return buf.toString();
     }

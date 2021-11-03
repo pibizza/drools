@@ -25,26 +25,26 @@ import org.antlr.runtime.MismatchedTokenException;
  */
 public class DroolsMismatchedTokenException extends MismatchedTokenException {
     private static final long serialVersionUID = -3708332833521751402L;
-    private String            tokenText;
+    private String tokenText;
 
     public DroolsMismatchedTokenException() {
         super();
     }
 
     public DroolsMismatchedTokenException(int expecting,
-                                          String tokenText,
-                                          IntStream input) {
-        super( expecting,
-               input );
+            String tokenText,
+            IntStream input) {
+        super(expecting,
+                input);
         this.tokenText = tokenText;
     }
 
     public String getTokenText() {
         return tokenText;
     }
-    
+
     @Override
     public String toString() {
-        return "DroolsMismatchedTokenException("+getUnexpectedType()+"!="+expecting+( tokenText != null ? "["+tokenText+"]" : "" )+")";
+        return "DroolsMismatchedTokenException(" + getUnexpectedType() + "!=" + expecting + (tokenText != null ? "[" + tokenText + "]" : "") + ")";
     }
 }

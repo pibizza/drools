@@ -15,7 +15,6 @@
 
 package org.drools.compiler.compiler;
 
-
 import org.kie.api.io.Resource;
 
 /**
@@ -32,14 +31,14 @@ public class ProcessLoadError extends DroolsError {
         this.message = message;
         this.exception = nested;
     }
-    
+
     public int[] getLines() {
         return this.lines;
     }
-    
+
     public String getMessage() {
         if (exception != null) {
-            return message + " : Exception " + exception.getClass() + " : "+ exception.getMessage();
+            return message + " : Exception " + exception.getClass() + " : " + exception.getMessage();
         } else {
             return message;
         }

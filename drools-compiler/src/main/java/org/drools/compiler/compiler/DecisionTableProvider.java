@@ -24,10 +24,9 @@ import java.util.List;
 public interface DecisionTableProvider extends Service {
 
     String loadFromResource(Resource resource,
-                            DecisionTableConfiguration configuration);
+            DecisionTableConfiguration configuration);
 
     List<String> loadFromInputStreamWithTemplates(Resource resource,
-                                                  DecisionTableConfiguration configuration);
-
+            DecisionTableConfiguration configuration);
 
 }

@@ -20,24 +20,24 @@ import org.drools.compiler.lang.descr.BaseDescr;
 import org.kie.internal.jci.CompilationProblem;
 
 public class FactTemplateError extends DroolsError {
-    private Package   pkg;
+    private Package pkg;
     private BaseDescr descr;
-    private Object    object;
-    private String    message;
-    private int[]     line;
-    private String    namespace;
+    private Object object;
+    private String message;
+    private int[] line;
+    private String namespace;
 
     public FactTemplateError(final Package pkg,
-                             final BaseDescr descr,
-                             final Object object,
-                             final String message) {
+            final BaseDescr descr,
+            final Object object,
+            final String message) {
         super(descr.getResource());
         this.namespace = pkg.getName();
         this.pkg = pkg;
         this.descr = descr;
         this.object = object;
         this.message = message;
-        this.line = new int[] {this.descr.getLine()};
+        this.line = new int[] { this.descr.getLine() };
     }
 
     @Override
@@ -56,12 +56,12 @@ public class FactTemplateError extends DroolsError {
     public Object getObject() {
         return this.object;
     }
-    
+
     public int[] getLines() {
         return this.line;
     }
 
-    /** 
+    /**
      * This will return the line number of the error, if possible
      * Otherwise it will be -1
      */
@@ -70,7 +70,7 @@ public class FactTemplateError extends DroolsError {
     }
 
     public String getMessage() {
-        return BuilderResultUtils.getProblemMessage( this.object, this.message );
+        return BuilderResultUtils.getProblemMessage(this.object, this.message);
     }
 
 }

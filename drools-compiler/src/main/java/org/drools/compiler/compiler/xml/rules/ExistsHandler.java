@@ -33,36 +33,36 @@ import org.xml.sax.SAXParseException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class ExistsHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public ExistsHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
         final ExistsDescr existsDescr = new ExistsDescr();
 
         return existsDescr;
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
 
         final ExistsDescr existsDescr = (ExistsDescr) parser.getCurrent();
 
-        if ( (existsDescr.getDescrs().size() != 1) && (existsDescr.getDescrs().get( 0 ).getClass() != PatternDescr.class) ) {
-            throw new SAXParseException( "<exists> can only have a single <pattern...> as a child element",
-                                         parser.getLocator() );
+        if ((existsDescr.getDescrs().size() != 1) && (existsDescr.getDescrs().get(0).getClass() != PatternDescr.class)) {
+            throw new SAXParseException("<exists> can only have a single <pattern...> as a child element",
+                    parser.getLocator());
         }
 
         final ConditionalElementDescr parentDescr = (ConditionalElementDescr) parser.getParent();
-        parentDescr.addDescr( existsDescr );
+        parentDescr.addDescr(existsDescr);
 
         return existsDescr;
     }

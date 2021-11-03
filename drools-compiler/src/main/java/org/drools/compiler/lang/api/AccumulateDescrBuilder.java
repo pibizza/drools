@@ -20,17 +20,17 @@ import org.drools.compiler.lang.descr.AccumulateDescr;
 import org.drools.compiler.lang.descr.AndDescr;
 
 /**
- *  A descriptor builder for Accumulate
+ * A descriptor builder for Accumulate
  */
-public interface AccumulateDescrBuilder<P extends DescrBuilder< ?, ? >>
-    extends
-    DescrBuilder<P, AccumulateDescr> {
-    
+public interface AccumulateDescrBuilder<P extends DescrBuilder<?, ?>>
+        extends
+        DescrBuilder<P, AccumulateDescr> {
+
     /**
      * Defines the source CE for the Accumulate CE. It is always
      * an AND descriptor that contains one or more Patterns and
-     * other CEs. 
-     *  
+     * other CEs.
+     * 
      * @return the CEDescrBuilder for the source CE
      */
     public CEDescrBuilder<AccumulateDescrBuilder<P>, AndDescr> source();
@@ -45,7 +45,7 @@ public interface AccumulateDescrBuilder<P extends DescrBuilder< ?, ? >>
      * 
      * function( "sum", "$sum", new String[] { "$value" } )
      * 
-     * Please note that accumulate supports multiple function calls 
+     * Please note that accumulate supports multiple function calls
      * and this method should be called for each function call.
      * 
      * Accumulate uses either accumulate functions or the custom
@@ -55,10 +55,10 @@ public interface AccumulateDescrBuilder<P extends DescrBuilder< ?, ? >>
      * @param name the name of the function being called. Mandatory non-null parameter.
      * @param bind the name of the bound variable if there is one. Null if no binding should be made.
      * @param isUnification true if the bound variable is expected to unify with the result of the acc function. false otherwise
-     *@param parameters the array of parameters to the function.
-     *  @return itself, so that it can be used as a fluent API
+     * @param parameters the array of parameters to the function.
+     * @return itself, so that it can be used as a fluent API
      */
-    public AccumulateDescrBuilder<P> function( String name, String bind, boolean isUnification, String... parameters );
+    public AccumulateDescrBuilder<P> function(String name, String bind, boolean isUnification, String... parameters);
 
     /**
      * For accumulate CEs that use custom code blocks, this call
@@ -74,7 +74,7 @@ public interface AccumulateDescrBuilder<P extends DescrBuilder< ?, ? >>
      * 
      * @return itself, so that it can be used as a fluent API
      */
-    public AccumulateDescrBuilder<P> init( String block );
+    public AccumulateDescrBuilder<P> init(String block);
 
     /**
      * For accumulate CEs that use custom code blocks, this call
@@ -90,7 +90,7 @@ public interface AccumulateDescrBuilder<P extends DescrBuilder< ?, ? >>
      * 
      * @return itself, so that it can be used as a fluent API
      */
-    public AccumulateDescrBuilder<P> action( String block );
+    public AccumulateDescrBuilder<P> action(String block);
 
     /**
      * For accumulate CEs that use custom code blocks, this call
@@ -106,8 +106,8 @@ public interface AccumulateDescrBuilder<P extends DescrBuilder< ?, ? >>
      * 
      * @return itself, so that it can be used as a fluent API
      */
-    public AccumulateDescrBuilder<P> reverse( String block );
-    
+    public AccumulateDescrBuilder<P> reverse(String block);
+
     /**
      * For accumulate CEs that use custom code blocks, this call
      * sets the content of the result expression. Please node that the
@@ -122,9 +122,9 @@ public interface AccumulateDescrBuilder<P extends DescrBuilder< ?, ? >>
      * 
      * @return itself, so that it can be used as a fluent API
      */
-    public AccumulateDescrBuilder<P> result( String expr );
+    public AccumulateDescrBuilder<P> result(String expr);
 
     public P end();
 
-    public AccumulateDescrBuilder<P> constraint( String constr );
+    public AccumulateDescrBuilder<P> constraint(String constr);
 }

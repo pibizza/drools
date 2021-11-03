@@ -51,18 +51,18 @@ public class KnowledgeBuilderFactoryServiceImpl implements KnowledgeBuilderFacto
 
     @Override
     public KnowledgeBuilder newKnowledgeBuilder() {
-        return new KnowledgeBuilderImpl( );
+        return new KnowledgeBuilderImpl();
     }
 
     @Override
     public KnowledgeBuilder newKnowledgeBuilder(KnowledgeBuilderConfiguration conf) {
-        return new KnowledgeBuilderImpl( (KnowledgeBuilderConfigurationImpl) conf );
+        return new KnowledgeBuilderImpl((KnowledgeBuilderConfigurationImpl) conf);
     }
 
     @Override
     public KnowledgeBuilder newKnowledgeBuilder(KieBase kbase) {
-        if ( kbase != null ) {
-            return new KnowledgeBuilderImpl( (InternalKnowledgeBase)kbase );
+        if (kbase != null) {
+            return new KnowledgeBuilderImpl((InternalKnowledgeBase) kbase);
         } else {
             return new KnowledgeBuilderImpl();
         }
@@ -70,11 +70,11 @@ public class KnowledgeBuilderFactoryServiceImpl implements KnowledgeBuilderFacto
 
     @Override
     public KnowledgeBuilder newKnowledgeBuilder(KieBase kbase,
-                                                KnowledgeBuilderConfiguration conf) {
-        if ( kbase != null ) {
-            return new KnowledgeBuilderImpl( (InternalKnowledgeBase)kbase, (KnowledgeBuilderConfigurationImpl) conf );
+            KnowledgeBuilderConfiguration conf) {
+        if (kbase != null) {
+            return new KnowledgeBuilderImpl((InternalKnowledgeBase) kbase, (KnowledgeBuilderConfigurationImpl) conf);
         } else {
-            return new KnowledgeBuilderImpl((KnowledgeBuilderConfigurationImpl) conf );
-        }        
+            return new KnowledgeBuilderImpl((KnowledgeBuilderConfigurationImpl) conf);
+        }
     }
 }

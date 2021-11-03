@@ -28,44 +28,44 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class LiteralRestrictionHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public LiteralRestrictionHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
 
-        String evaluator = attrs.getValue( "evaluator" );
-        emptyAttributeCheck( localName, "evaluator", evaluator, parser );
-        
-        String text = attrs.getValue( "value" );
-        
-        if ( !text.trim().equals( "null" )) {
+        String evaluator = attrs.getValue("evaluator");
+        emptyAttributeCheck(localName, "evaluator", evaluator, parser);
+
+        String text = attrs.getValue("value");
+
+        if (!text.trim().equals("null")) {
             // find out if it's a valid integer or decimal, if not wrap in quotes
             try {
-                new BigDecimal( text );
-            } catch ( NumberFormatException e ) {
+                new BigDecimal(text);
+            } catch (NumberFormatException e) {
                 text = "\"" + text.trim() + "\"";
             }
         }
-        
+
         return evaluator.trim() + " " + text.trim();
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
-        
+
         ConnectiveDescr c = (ConnectiveDescr) parser.getParent();
         String s = (String) parser.getCurrent();
 
-        c.add( s );
+        c.add(s);
         return null;
     }
 

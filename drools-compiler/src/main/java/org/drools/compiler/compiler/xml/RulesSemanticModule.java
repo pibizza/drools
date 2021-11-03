@@ -44,99 +44,97 @@ import org.drools.core.xml.DefaultSemanticModule;
 import org.drools.core.xml.SemanticModule;
 
 public class RulesSemanticModule extends DefaultSemanticModule
-    implements
-    SemanticModule {
+        implements
+        SemanticModule {
     public RulesSemanticModule(String url) {
-        super( url );
+        super(url);
 
-        addHandler( "package",
-                    new PackageHandler() );
-        addHandler( "rule",
-                    new RuleHandler() );
-        addHandler( "query",
-                    new QueryHandler() );
-        addHandler( "attribute",
-                    null );
-        addHandler( "function",
-                    new FunctionHandler() );
+        addHandler("package",
+                new PackageHandler());
+        addHandler("rule",
+                new RuleHandler());
+        addHandler("query",
+                new QueryHandler());
+        addHandler("attribute",
+                null);
+        addHandler("function",
+                new FunctionHandler());
 
         // Conditional Elements
-        addHandler( "lhs",
-                    new AndHandler() );
+        addHandler("lhs",
+                new AndHandler());
 
-        addHandler( "and-restriction-connective",
-                    new RestrictionConnectiveHandler() );
+        addHandler("and-restriction-connective",
+                new RestrictionConnectiveHandler());
 
-        addHandler( "or-restriction-connective",
-                    new RestrictionConnectiveHandler() );
-        
+        addHandler("or-restriction-connective",
+                new RestrictionConnectiveHandler());
 
-        addHandler( "and-constraint-connective",
-                    new RestrictionConnectiveHandler() );
-        addHandler( "or-constraint-connective",
-                    new RestrictionConnectiveHandler() );        
+        addHandler("and-constraint-connective",
+                new RestrictionConnectiveHandler());
+        addHandler("or-constraint-connective",
+                new RestrictionConnectiveHandler());
 
-        addHandler( "and-conditional-element",
-                    new AndHandler() );
+        addHandler("and-conditional-element",
+                new AndHandler());
 
-        addHandler( "or-conditional-element",
-                    new OrHandler() );
+        addHandler("or-conditional-element",
+                new OrHandler());
 
+        addHandler("not",
+                new NotHandler());
+        addHandler("exists",
+                new ExistsHandler());
+        addHandler("eval",
+                new EvalHandler());
+        addHandler("pattern",
+                new PatternHandler());
 
-        addHandler( "not",
-                    new NotHandler() );
-        addHandler( "exists",
-                    new ExistsHandler() );
-        addHandler( "eval",
-                    new EvalHandler() );
-        addHandler( "pattern",
-                    new PatternHandler() );
-
-        addHandler( "from",
-                    new FromHandler() );
-        addHandler( "forall",
-                    new ForallHandler() );
-        addHandler( "collect",
-                    new CollectHandler() );
-        addHandler( "accumulate",
-                    new AccumulateHandler() );
+        addHandler("from",
+                new FromHandler());
+        addHandler("forall",
+                new ForallHandler());
+        addHandler("collect",
+                new CollectHandler());
+        addHandler("accumulate",
+                new AccumulateHandler());
 
         // Field Constraints
-        addHandler( "expr",
-                    new ExprConstraintHandler() );        
-        addHandler( "field-constraint",
-                    new FieldConstraintHandler() );
-        addHandler( "literal-restriction",
-                    new LiteralRestrictionHandler() );
-        addHandler( "variable-restriction",
-                    new VariableRestrictionsHandler() );
-        addHandler( "predicate",
-                    new PredicateHandler() );
+        addHandler("expr",
+                new ExprConstraintHandler());
+        addHandler("field-constraint",
+                new FieldConstraintHandler());
+        addHandler("literal-restriction",
+                new LiteralRestrictionHandler());
+        addHandler("variable-restriction",
+                new VariableRestrictionsHandler());
+        addHandler("predicate",
+                new PredicateHandler());
 
-        addHandler( "return-value-restriction",
-                    new ReturnValueRestrictionHandler() );
-        addHandler( "qualified-identifier-restriction",
-                    new QualifiedIdentifierRestrictionHandler() );
+        addHandler("return-value-restriction",
+                new ReturnValueRestrictionHandler());
+        addHandler("qualified-identifier-restriction",
+                new QualifiedIdentifierRestrictionHandler());
 
-        addHandler( "field-binding",
-                    new FieldBindingHandler() );
+        addHandler("field-binding",
+                new FieldBindingHandler());
 
-        addHandler( "field-binding",
-                    new FieldBindingHandler() );
+        addHandler("field-binding",
+                new FieldBindingHandler());
 
-        addHandler( "init",
-                    new AccumulateHelperHandler() );
-        addHandler( "action",
-                    new AccumulateHelperHandler() );
-        addHandler( "result",
-                    new AccumulateHelperHandler() );
-        addHandler( "reverse",
-                    new AccumulateHelperHandler() );
+        addHandler("init",
+                new AccumulateHelperHandler());
+        addHandler("action",
+                new AccumulateHelperHandler());
+        addHandler("result",
+                new AccumulateHelperHandler());
+        addHandler("reverse",
+                new AccumulateHelperHandler());
 
-        addHandler( "external-function",
-                    new AccumulateHelperHandler() );
+        addHandler("external-function",
+                new AccumulateHelperHandler());
 
-        addHandler( "expression",
-                    new ExpressionHandler() );
+        addHandler("expression",
+                new ExpressionHandler());
     }
 }

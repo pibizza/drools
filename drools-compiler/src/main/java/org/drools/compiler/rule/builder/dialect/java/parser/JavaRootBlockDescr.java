@@ -16,7 +16,7 @@
 package org.drools.compiler.rule.builder.dialect.java.parser;
 
 public class JavaRootBlockDescr extends AbstractJavaContainerBlockDescr
-    implements JavaContainerBlockDescr {
+        implements JavaContainerBlockDescr {
 
     public BlockType getType() {
         throw new UnsupportedOperationException();

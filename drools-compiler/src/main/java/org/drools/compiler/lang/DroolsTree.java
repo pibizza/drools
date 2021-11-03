@@ -65,7 +65,7 @@ public class DroolsTree extends CommonTree {
      * setter for start char offset
      *
      * @param startCharOffset
-     *            start char offset
+     *        start char offset
      */
     public void setStartCharOffset(int startCharOffset) {
         this.startCharOffset = startCharOffset;
@@ -84,7 +84,7 @@ public class DroolsTree extends CommonTree {
      * setter of end char offset
      *
      * @param endCharOffset
-     *            end char offset
+     *        end char offset
      */
     public void setEndCharOffset(int endCharOffset) {
         this.endCharOffset = endCharOffset;
@@ -104,7 +104,7 @@ public class DroolsTree extends CommonTree {
      * setter of editor type
      *
      * @param editorElementType
-     *            editor type
+     *        editor type
      * @see DroolsEditorType
      */
     public void setEditorElementType(DroolsEditorType editorElementType) {

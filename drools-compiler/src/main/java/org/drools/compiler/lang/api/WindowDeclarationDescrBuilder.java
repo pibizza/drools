@@ -19,21 +19,21 @@ package org.drools.compiler.lang.api;
 import org.drools.compiler.lang.descr.WindowDeclarationDescr;
 
 /**
- *  A descriptor builder for declared types
+ * A descriptor builder for declared types
  */
 public interface WindowDeclarationDescrBuilder
-    extends
-    AnnotatedDescrBuilder<WindowDeclarationDescrBuilder>,
-    DescrBuilder<PackageDescrBuilder, WindowDeclarationDescr>,
-    PatternContainerDescrBuilder<WindowDeclarationDescrBuilder, WindowDeclarationDescr>{
+        extends
+        AnnotatedDescrBuilder<WindowDeclarationDescrBuilder>,
+        DescrBuilder<PackageDescrBuilder, WindowDeclarationDescr>,
+        PatternContainerDescrBuilder<WindowDeclarationDescrBuilder, WindowDeclarationDescr> {
 
     /**
      * Defines the window name
-     *  
+     * 
      * @param name the window name
      * 
      * @return itself
      */
-    public WindowDeclarationDescrBuilder name( String name );
+    public WindowDeclarationDescrBuilder name(String name);
 
 }

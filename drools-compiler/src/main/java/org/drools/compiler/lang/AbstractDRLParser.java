@@ -30,21 +30,23 @@ import java.util.List;
 
 public abstract class AbstractDRLParser implements DRLParser {
 
-    protected TokenStream           input;
+    protected TokenStream input;
     protected RecognizerSharedState state;
-    protected ParserHelper          helper;
+    protected ParserHelper helper;
 
     public AbstractDRLParser(TokenStream input) {
         this.input = input;
         this.state = new RecognizerSharedState();
-        this.helper = new ParserHelper( input, state, getLanguageLevel() );
+        this.helper = new ParserHelper(input, state, getLanguageLevel());
     }
-    
-    /* ------------------------------------------------------------------------------------------------
-     *                         GENERAL INTERFACING METHODS
-     * ------------------------------------------------------------------------------------------------ */
 
-     public ParserHelper getHelper() {
+    /*
+     * ------------------------------------------------------------------------------------------------
+     * GENERAL INTERFACING METHODS
+     * ------------------------------------------------------------------------------------------------
+     */
+
+    public ParserHelper getHelper() {
         return helper;
     }
 
@@ -72,15 +74,15 @@ public abstract class AbstractDRLParser implements DRLParser {
         return helper.getEditorInterface();
     }
 
-    public void reportError( RecognitionException ex ) {
-        if ( state.backtracking == 0 ) {
-            helper.reportError( ex );
+    public void reportError(RecognitionException ex) {
+        if (state.backtracking == 0) {
+            helper.reportError(ex);
         }
     }
 
-    public void reportError( Exception ex ) {
-        if ( state.backtracking == 0 ) {
-            helper.reportError( ex );
+    public void reportError(Exception ex) {
+        if (state.backtracking == 0) {
+            helper.reportError(ex);
         }
     }
 

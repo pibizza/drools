@@ -24,21 +24,21 @@ import org.drools.compiler.lang.descr.CollectDescr;
 /**
  * An implementation for the CollectDescrBuilder
  */
-public class CollectDescrBuilderImpl<P extends DescrBuilder< ?, ? >> extends BaseDescrBuilderImpl<P, CollectDescr>
-    implements
-    CollectDescrBuilder<P> {
+public class CollectDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends BaseDescrBuilderImpl<P, CollectDescr>
+        implements
+        CollectDescrBuilder<P> {
 
     public CollectDescrBuilderImpl(P parent) {
-        super( parent, new CollectDescr() );
+        super(parent, new CollectDescr());
     }
 
     /**
      * {@inheritDoc}
      */
-    public PatternDescrBuilder<CollectDescrBuilder<P>> pattern( String type ) {
-        PatternDescrBuilder<CollectDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<CollectDescrBuilder<P>>( this,
-                                                                                                                   type );
-        descr.setInputPattern( pattern.getDescr() );
+    public PatternDescrBuilder<CollectDescrBuilder<P>> pattern(String type) {
+        PatternDescrBuilder<CollectDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<CollectDescrBuilder<P>>(this,
+                type);
+        descr.setInputPattern(pattern.getDescr());
         return pattern;
     }
 
@@ -46,8 +46,8 @@ public class CollectDescrBuilderImpl<P extends DescrBuilder< ?, ? >> extends Bas
      * {@inheritDoc}
      */
     public PatternDescrBuilder<CollectDescrBuilder<P>> pattern() {
-        PatternDescrBuilder<CollectDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<CollectDescrBuilder<P>>( this );
-        descr.setInputPattern( pattern.getDescr() );
+        PatternDescrBuilder<CollectDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<CollectDescrBuilder<P>>(this);
+        descr.setInputPattern(pattern.getDescr());
         return pattern;
     }
 

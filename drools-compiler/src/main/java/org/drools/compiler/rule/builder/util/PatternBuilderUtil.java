@@ -25,14 +25,14 @@ import static org.drools.core.base.evaluators.PointInTimeEvaluator.getTimestampF
 
 public class PatternBuilderUtil {
 
-    public static String getNormalizeDate( ValueType vtype, FieldValue field ) {
+    public static String getNormalizeDate(ValueType vtype, FieldValue field) {
         Object value = field.getValue();
         if (value == null) {
             return "null";
         }
 
         if (vtype == ValueType.DATE_TYPE) {
-            return " new java.util.Date(" + getTimestampFromDate( value ) + ")";
+            return " new java.util.Date(" + getTimestampFromDate(value) + ")";
         }
         if (vtype == ValueType.LOCAL_DATE_TYPE) {
             if (value instanceof LocalDate) {
@@ -46,7 +46,7 @@ public class PatternBuilderUtil {
                 }
                 return " java.time.LocalDate.parse(\"" + dateValue + "\")";
             }
-            return " java.time.Instant.ofEpochMilli(" + getTimestampFromDate( value ) + ").atZone(java.time.ZoneId.systemDefault()).toLocalDate()";
+            return " java.time.Instant.ofEpochMilli(" + getTimestampFromDate(value) + ").atZone(java.time.ZoneId.systemDefault()).toLocalDate()";
         }
         if (vtype == ValueType.LOCAL_TIME_TYPE) {
             if (value instanceof LocalDate) {
@@ -55,13 +55,13 @@ public class PatternBuilderUtil {
             if (value instanceof LocalDateTime) {
                 return " java.time.LocalDateTime.parse(\"" + value + "\")";
             }
-            return " java.time.Instant.ofEpochMilli(" + getTimestampFromDate( value ) + ").atZone(java.time.ZoneId.systemDefault()).toLocalDateTime()";
+            return " java.time.Instant.ofEpochMilli(" + getTimestampFromDate(value) + ").atZone(java.time.ZoneId.systemDefault()).toLocalDateTime()";
         }
 
-        throw new IllegalArgumentException( "Unsupported type " + vtype );
+        throw new IllegalArgumentException("Unsupported type " + vtype);
     }
 
-    public static String normalizeStringOperator( String leftValue, String rightValue, LiteralRestrictionDescr restrictionDescr ) {
+    public static String normalizeStringOperator(String leftValue, String rightValue, LiteralRestrictionDescr restrictionDescr) {
         String method = restrictionDescr.getParameterText();
         if (method.equals("length")) {
             return leftValue + ".length()" + (restrictionDescr.isNegated() ? " != " : " == ") + rightValue;
@@ -69,10 +69,8 @@ public class PatternBuilderUtil {
         return (restrictionDescr.isNegated() ? "!" : "") + leftValue + "." + method + "(" + rightValue + ")";
     }
 
-    public static String normalizeEmptyKeyword( String expr, String operator ) {
-        return expr.startsWith("empty") && (operator.equals("==") || operator.equals("!=")) && !Character.isJavaIdentifierPart(expr.charAt(5)) ?
-                "isEmpty()" + expr.substring(5) :
-                expr;
+    public static String normalizeEmptyKeyword(String expr, String operator) {
+        return expr.startsWith("empty") && (operator.equals("==") || operator.equals("!=")) && !Character.isJavaIdentifierPart(expr.charAt(5)) ? "isEmpty()" + expr.substring(5) : expr;
     }
 
 }

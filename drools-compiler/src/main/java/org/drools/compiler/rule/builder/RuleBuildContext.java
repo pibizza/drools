@@ -70,10 +70,10 @@ public class RuleBuildContext extends PackageBuildContext {
      * Default constructor
      */
     public RuleBuildContext(final DroolsAssemblerContext kBuilder,
-                            final RuleDescr ruleDescr,
-                            final DialectCompiletimeRegistry dialectCompiletimeRegistry,
-                            final InternalKnowledgePackage pkg,
-                            final Dialect defaultDialect) {
+            final RuleDescr ruleDescr,
+            final DialectCompiletimeRegistry dialectCompiletimeRegistry,
+            final InternalKnowledgePackage pkg,
+            final Dialect defaultDialect) {
         this.ruleDescr = ruleDescr;
 
         if (ruleDescr instanceof QueryDescr) {
@@ -195,7 +195,7 @@ public class RuleBuildContext extends PackageBuildContext {
             boolean unitFound = false;
             Class<?> ruleUnitClass = ClassUtils.safeLoadClass(typeResolver.getClassLoader(), ruleUnitClassName);
             if (ruleUnitClass != null) {
-                unitFound = RuleUnitComponentFactory.get().isRuleUnitClass( ruleUnitClass );
+                unitFound = RuleUnitComponentFactory.get().isRuleUnitClass(ruleUnitClass);
                 if (unitFound && nameInferredFromResource) {
                     rule.setRuleUnitClassName(ruleUnitClassName);
                 }
@@ -203,7 +203,7 @@ public class RuleBuildContext extends PackageBuildContext {
 
             if (!unitFound && !nameInferredFromResource) {
                 addError(new RuleBuildError(rule, getParentDescr(), null,
-                                            ruleUnitClassName + " is not a valid RuleUnit class name"));
+                        ruleUnitClassName + " is not a valid RuleUnit class name"));
             }
         }
     }
@@ -212,8 +212,8 @@ public class RuleBuildContext extends PackageBuildContext {
         return getPkg().getRuleUnitDescriptionLoader().getDescription(getRule()).flatMap(ruDescr -> getEntryPointId(ruDescr, name));
     }
 
-    public Optional<EntryPointId> getEntryPointId( RuleUnitDescription ruDescr, String name ) {
-        return ruDescr.hasVar( name ) ? Optional.of( new EntryPointId( ruDescr.getEntryPointName(name) ) ) : Optional.empty();
+    public Optional<EntryPointId> getEntryPointId(RuleUnitDescription ruDescr, String name) {
+        return ruDescr.hasVar(name) ? Optional.of(new EntryPointId(ruDescr.getEntryPointName(name))) : Optional.empty();
     }
 
     private String extractClassNameFromSourcePath() {

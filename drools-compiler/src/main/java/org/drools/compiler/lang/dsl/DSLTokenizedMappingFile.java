@@ -41,9 +41,9 @@ public class DSLTokenizedMappingFile extends DSLMappingFile {
         super();
     }
 
-    private static String nl = System.getProperty( "line.separator" );
-    private static Pattern commentPat = Pattern.compile( "^\\s*((#/?|//).*)?$" );
-    private static Pattern entryPat   = Pattern.compile( "^\\s*\\[.+$" );
+    private static String nl = System.getProperty("line.separator");
+    private static Pattern commentPat = Pattern.compile("^\\s*((#/?|//).*)?$");
+    private static Pattern entryPat = Pattern.compile("^\\s*\\[.+$");
 
     // Original line lengths, for fixing error messages.
     private List<Integer> lineLengths;
@@ -55,53 +55,56 @@ public class DSLTokenizedMappingFile extends DSLMappingFile {
      * Split lines are joined, inserting a space for an EOL, but maintaining the
      * original number of lines by inserting EOLs. Options are recognized.
      * Keeps track of original line lengths for fixing parser error messages.
+     * 
      * @param reader for the DSL file data
      * @return the transformed DSL file
      * @throws IOException
      */
-    private String readFile( Reader reader ) throws IOException {
+    private String readFile(Reader reader) throws IOException {
         lineLengths = new ArrayList<Integer>();
-        lineLengths.add( null );
-        LineNumberReader lnr = new LineNumberReader( reader );
+        lineLengths.add(null);
+        LineNumberReader lnr = new LineNumberReader(reader);
         StringBuilder sb = new StringBuilder();
         int nlCount = 0;
         boolean inEntry = false;
         String line;
 
-        while( (line = lnr.readLine()) != null ){
-            lineLengths.add( line.length() );
-            Matcher commentMat = commentPat.matcher( line );
-            if( commentMat.matches() ){
-                if( inEntry ){
+        while ((line = lnr.readLine()) != null) {
+            lineLengths.add(line.length());
+            Matcher commentMat = commentPat.matcher(line);
+            if (commentMat.matches()) {
+                if (inEntry) {
                     nlCount++;
                 } else {
-                    sb.append( '\n' );
+                    sb.append('\n');
                 }
-                if( "#/".equals( commentMat.group( 2 ) ) ){
-                    String[] options = commentMat.group( 1 ).substring( 2 ).trim().split( "\\s+" );
-                    for( String option: options ){
-                        optionSet.add( option );
+                if ("#/".equals(commentMat.group(2))) {
+                    String[] options = commentMat.group(1).substring(2).trim().split("\\s+");
+                    for (String option : options) {
+                        optionSet.add(option);
                     }
                 }
                 continue;
             }
-            if( entryPat.matcher( line ).matches() ){
-                if( inEntry ){
-                    for( int i = 0; i < nlCount; i++ ) sb.append( '\n' );
+            if (entryPat.matcher(line).matches()) {
+                if (inEntry) {
+                    for (int i = 0; i < nlCount; i++)
+                        sb.append('\n');
                 }
-                sb.append( line );
+                sb.append(line);
                 nlCount = 1;
                 inEntry = true;
                 continue;
             }
-            sb.append( ' ').append( line );
+            sb.append(' ').append(line);
             nlCount++;
         }
-        if( inEntry ) sb.append( '\n' );
+        if (inEntry)
+            sb.append('\n');
 
         lnr.close();
-//        logger.info( "====== DSL definition:" );
-//        logger.info( sb.toString() );
+        //        logger.info( "====== DSL definition:" );
+        //        logger.info( sb.toString() );
 
         return sb.toString();
     }
@@ -109,33 +112,33 @@ public class DSLTokenizedMappingFile extends DSLMappingFile {
     @Override
     public boolean parseAndLoad(Reader dsl) throws IOException {
         List<ParserError> errors = new ArrayList<ParserError>();
-        String text = readFile( dsl );
-        dsl = new StringReader( text );
+        String text = readFile(dsl);
+        dsl = new StringReader(text);
 
-        try  {
+        try {
             DSLMapping mapping = buildFileMapping(errors, dsl);
-            mapping.setOptions( optionSet );
-            setMapping( mapping );
+            mapping.setOptions(optionSet);
+            setMapping(mapping);
             List<ParserError> moderr = new ArrayList<ParserError>();
-            for( ParserError err: errors ){
+            for (ParserError err : errors) {
                 int row = err.getRow();
                 int col = err.getCol();
-                if( row > 0 ){
+                if (row > 0) {
                     int len;
-                    while( (len = lineLengths.get( row )) < col ){
+                    while ((len = lineLengths.get(row)) < col) {
                         col -= len + 1;
                         row++;
                     }
                 }
-                moderr.add( new ParserError( err.getMessage(), row, col ) );
+                moderr.add(new ParserError(err.getMessage(), row, col));
             }
             errors = moderr;
-        } catch(Exception e){
+        } catch (Exception e) {
             final String msg = "Error parsing DSL mapping: " + e.getMessage();
-            ParserError parserError = new ParserError( msg, -1, 0 );
-            errors.add( parserError );
+            ParserError parserError = new ParserError(msg, -1, 0);
+            errors.add(parserError);
         }
-        setErrors( errors );
+        setErrors(errors);
 
         //        for( ParserError err: errors ){
         //            logger.error( "[" + err.getRow() + "," + err.getCol() + "]: " + err.getMessage() );
@@ -144,14 +147,14 @@ public class DSLTokenizedMappingFile extends DSLMappingFile {
         return errors.isEmpty();
     }
 
-    private DSLMapping buildFileMapping(final List<ParserError> errors, final Reader dsl) throws IOException, RecognitionException{
+    private DSLMapping buildFileMapping(final List<ParserError> errors, final Reader dsl) throws IOException, RecognitionException {
         ANTLRReaderStream reader = new ANTLRReaderStream(dsl);
         DSLMapWalker walker = buildFileMappingWalker(errors, reader);
         DSLMapping mapping = walker.mapping_file();
         return mapping;
     }
 
-    private DSLMapWalker buildFileMappingWalker(final List<ParserError> errors, CharStream stream) throws RecognitionException{
+    private DSLMapWalker buildFileMappingWalker(final List<ParserError> errors, CharStream stream) throws RecognitionException {
         DSLMapLexer lexer = new DSLMapLexer(stream);
         CommonTokenStream tokens = new CommonTokenStream();
         tokens.setTokenSource(lexer);
@@ -163,8 +166,8 @@ public class DSLTokenizedMappingFile extends DSLMappingFile {
         CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
         DSLMapWalker walker = new DSLMapWalker(nodes);
 
-        errors.addAll( lexer.getErrors() );
-        errors.addAll( parser.getErrors() );
+        errors.addAll(lexer.getErrors());
+        errors.addAll(parser.getErrors());
         return walker;
     }
 }

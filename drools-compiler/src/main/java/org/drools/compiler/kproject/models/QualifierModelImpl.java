@@ -31,7 +31,8 @@ public class QualifierModelImpl implements QualifierModel {
     private String value;
     private Map<String, String> arguments = new HashMap<String, String>();
 
-    public QualifierModelImpl() { }
+    public QualifierModelImpl() {
+    }
 
     public QualifierModelImpl(String type) {
         this.type = type;
@@ -95,15 +96,15 @@ public class QualifierModelImpl implements QualifierModel {
             if (value != null) {
                 qualifier.setValue(value);
             } else {
-                readNodes( reader, new AbstractXStreamConverter.NodeReader() {
+                readNodes(reader, new AbstractXStreamConverter.NodeReader() {
                     public void onNode(HierarchicalStreamReader reader,
-                                       String name,
-                                       String value) {
-                        if ( "arg".equals( name ) ) {
+                            String name,
+                            String value) {
+                        if ("arg".equals(name)) {
                             qualifier.addArgument(reader.getAttribute("key"), reader.getAttribute("value"));
                         }
                     }
-                } );
+                });
             }
 
             return qualifier;

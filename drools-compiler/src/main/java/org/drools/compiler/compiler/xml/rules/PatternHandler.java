@@ -33,53 +33,53 @@ import org.xml.sax.SAXParseException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class PatternHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public PatternHandler() {
 
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
 
-        final String objectType = attrs.getValue( "object-type" );
+        final String objectType = attrs.getValue("object-type");
 
-        if ( objectType == null || objectType.trim().equals( "" ) ) {
-            throw new SAXParseException( "<pattern> requires an 'object-type' attribute",
-                                         parser.getLocator() );
+        if (objectType == null || objectType.trim().equals("")) {
+            throw new SAXParseException("<pattern> requires an 'object-type' attribute",
+                    parser.getLocator());
         }
 
         PatternDescr patternDescr = null;
 
-        final String identifier = attrs.getValue( "identifier" );
-        if ( identifier == null || identifier.trim().equals( "" ) ) {
-            patternDescr = new PatternDescr( objectType );
+        final String identifier = attrs.getValue("identifier");
+        if (identifier == null || identifier.trim().equals("")) {
+            patternDescr = new PatternDescr(objectType);
         } else {
-            patternDescr = new PatternDescr( objectType,
-                                             identifier );
+            patternDescr = new PatternDescr(objectType,
+                    identifier);
         }
 
         return patternDescr;
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
         final PatternDescr patternDescr = (PatternDescr) parser.getCurrent();
 
         final Object parent = parser.getParent();
 
-        if ( parent instanceof PatternDestinationDescr ) {
+        if (parent instanceof PatternDestinationDescr) {
             final PatternDestinationDescr parentDescr = (PatternDestinationDescr) parent;
-            parentDescr.setInputPattern( patternDescr );
+            parentDescr.setInputPattern(patternDescr);
         } else {
             final ConditionalElementDescr parentDescr = (ConditionalElementDescr) parent;
-            parentDescr.addDescr( patternDescr );
+            parentDescr.addDescr(patternDescr);
         }
         return patternDescr;
     }

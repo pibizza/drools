@@ -21,10 +21,10 @@ import org.drools.core.definitions.rule.impl.RuleImpl;
 public class RuleInvokerErrorHandler extends RuleErrorHandler {
 
     public RuleInvokerErrorHandler(final BaseDescr ruleDescr,
-                                   final RuleImpl rule,
-                                   final String message) {
+            final RuleImpl rule,
+            final String message) {
         super(ruleDescr,
-              rule,
-              message);
+                rule,
+                message);
     }
 }

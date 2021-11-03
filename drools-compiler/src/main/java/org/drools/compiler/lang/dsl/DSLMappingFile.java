@@ -31,7 +31,7 @@ import java.util.List;
 public abstract class DSLMappingFile {
 
     private DSLMapping mapping;
-    private List       errors;
+    private List errors;
 
     public DSLMappingFile() {
         this.mapping = new DefaultDSLMapping();
@@ -40,6 +40,7 @@ public abstract class DSLMappingFile {
 
     /**
      * Returns the DSL mapping loaded from this file
+     * 
      * @return
      */
     public DSLMapping getMapping() {
@@ -47,7 +48,8 @@ public abstract class DSLMappingFile {
     }
 
     /**
-     * Sets the 
+     * Sets the
+     * 
      * @param mapping
      */
     public void setMapping(final DSLMapping mapping) {
@@ -56,10 +58,11 @@ public abstract class DSLMappingFile {
 
     /**
      * Returns the list of parsing errors
+     * 
      * @return
      */
     public List<KnowledgeBuilderResult> getErrors() {
-        return Collections.unmodifiableList( this.errors );
+        return Collections.unmodifiableList(this.errors);
     }
 
     protected void setErrors(List<? extends KnowledgeBuilderResult> errors) {
@@ -70,20 +73,21 @@ public abstract class DSLMappingFile {
      * Parses the file. Throws IOException in case there is any problem
      * reading the file;
      * 
-     * @return true in case no error was found parsing the file. false 
+     * @return true in case no error was found parsing the file. false
      *         otherwise. Use getErrors() to check for the actual errors.
      */
     public abstract boolean parseAndLoad(final Reader dsl) throws IOException;
 
     /**
      * Saves current mapping into a DSL mapping file
+     * 
      * @param out
      * @throws IOException
      */
     public void saveMapping(final Writer out) throws IOException {
-        for ( final Iterator it = this.mapping.getEntries().iterator(); it.hasNext(); ) {
-            out.write( it.next().toString() );
-            out.write( "\n" );
+        for (final Iterator it = this.mapping.getEntries().iterator(); it.hasNext();) {
+            out.write(it.next().toString());
+            out.write("\n");
         }
     }
 
@@ -95,7 +99,7 @@ public abstract class DSLMappingFile {
      * @throws IOException
      */
     public static void saveMapping(final Writer out,
-                                   final DSLMapping mapping) throws IOException {
+            final DSLMapping mapping) throws IOException {
         for (DSLMappingEntry dslMappingEntry : mapping.getEntries()) {
             out.write(dslMappingEntry.toString());
             out.write("\n");
@@ -104,6 +108,7 @@ public abstract class DSLMappingFile {
 
     /**
      * Method to return the current mapping as a String object
+     * 
      * @return
      */
     public String dumpFile() {

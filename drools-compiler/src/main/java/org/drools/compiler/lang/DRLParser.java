@@ -26,19 +26,25 @@ import java.util.List;
 public interface DRLParser {
 
     PackageDescr compilationUnit() throws RecognitionException;
+
     PackageDescr compilationUnit(Resource resource) throws RecognitionException;
 
     void enableEditorInterface();
+
     void disableEditorInterface();
+
     LinkedList<DroolsSentence> getEditorInterface();
 
     List<DroolsParserException> getErrors();
+
     boolean hasErrors();
+
     List<String> getErrorMessages();
 
-    void reportError( RecognitionException ex );
-    void reportError( Exception ex );
+    void reportError(RecognitionException ex);
 
-    String chunk( int leftDelimiter, int rightDelimiter, int location );
+    void reportError(Exception ex);
+
+    String chunk(int leftDelimiter, int rightDelimiter, int location);
 
 }

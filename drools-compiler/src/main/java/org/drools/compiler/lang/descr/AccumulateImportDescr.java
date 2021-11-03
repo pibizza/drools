@@ -22,22 +22,22 @@ package org.drools.compiler.lang.descr;
 public class AccumulateImportDescr extends ImportDescr {
 
     private static final long serialVersionUID = 510l;
-    
+
     private String functionName;
 
     public AccumulateImportDescr() {
     }
-    
+
     public String getFunctionName() {
         return functionName;
     }
-    
+
     public void setFunctionName(String functionName) {
         this.functionName = functionName;
     }
 
     public String toString() {
-        return "import acc " + this.getTarget()+ " " + functionName;
+        return "import acc " + this.getTarget() + " " + functionName;
     }
 
     @Override

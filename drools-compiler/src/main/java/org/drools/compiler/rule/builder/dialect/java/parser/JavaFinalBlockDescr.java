@@ -16,17 +16,15 @@
 package org.drools.compiler.rule.builder.dialect.java.parser;
 
 public class JavaFinalBlockDescr extends AbstractJavaContainerBlockDescr
-    implements
-    JavaBlockDescr,
-    JavaContainerBlockDescr {
-    private int                  start;
-    private int                  end;
-    private int                  textStart;
-
+        implements
+        JavaBlockDescr,
+        JavaContainerBlockDescr {
+    private int start;
+    private int end;
+    private int textStart;
 
     public JavaFinalBlockDescr() {
     }
-
 
     public int getStart() {
         return start;

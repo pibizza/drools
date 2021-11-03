@@ -19,11 +19,11 @@ package org.drools.compiler.lang.api;
 import org.drools.compiler.lang.descr.ForallDescr;
 
 /**
- *  A descriptor builder for Forall
+ * A descriptor builder for Forall
  */
 public interface ForallDescrBuilder<P extends DescrBuilder<?, ?>>
-    extends
-    PatternContainerDescrBuilder<ForallDescrBuilder<P>,ForallDescr>,
-    DescrBuilder<P, ForallDescr> {
+        extends
+        PatternContainerDescrBuilder<ForallDescrBuilder<P>, ForallDescr>,
+        DescrBuilder<P, ForallDescr> {
 
 }

@@ -26,6 +26,6 @@ public interface GuidedScoreCardProvider extends Service {
     String loadFromInputStream(InputStream is) throws IOException;
 
     KieBase getKieBaseFromInputStream(InputStream is) throws IOException;
-    
+
     String getPMMLStringFromInputStream(InputStream is) throws IOException;
 }

@@ -31,36 +31,35 @@ import org.xml.sax.SAXException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class ExprConstraintHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public ExprConstraintHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
 
         return "";
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
-        final String expression =((org.w3c.dom.Text)element.getChildNodes().item( 0 )).getWholeText();
-        emptyContentCheck( localName, expression, parser );
-        
-        
-        PatternDescr p = (PatternDescr) parser.getParent();
-        
-        ExprConstraintDescr descr = new ExprConstraintDescr( expression );
-        
-        p.getConstraint().addDescr( descr );
+        final String expression = ((org.w3c.dom.Text) element.getChildNodes().item(0)).getWholeText();
+        emptyContentCheck(localName, expression, parser);
 
-        return descr;   
+        PatternDescr p = (PatternDescr) parser.getParent();
+
+        ExprConstraintDescr descr = new ExprConstraintDescr(expression);
+
+        p.getConstraint().addDescr(descr);
+
+        return descr;
     }
 
     public Class generateNodeFor() {

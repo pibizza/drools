@@ -15,44 +15,44 @@
  */
 package org.drools.compiler.lang.descr;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotDescr extends AnnotatedBaseDescr
-    implements
-    ConditionalElementDescr {
+        implements
+        ConditionalElementDescr {
 
     private static final long serialVersionUID = 510l;
-    private final List<BaseDescr> descrs = new ArrayList<>( 1 );
+    private final List<BaseDescr> descrs = new ArrayList<>(1);
 
-    public NotDescr() { }
+    public NotDescr() {
+    }
 
     public NotDescr(final BaseDescr descr) {
-        addDescr( descr );
+        addDescr(descr);
     }
 
     public void addDescr(final BaseDescr baseDescr) {
-        this.descrs.add( baseDescr );
+        this.descrs.add(baseDescr);
     }
-    
-    public void insertBeforeLast(final Class clazz ,final BaseDescr baseDescr ) {
-        throw new UnsupportedOperationException( "Can't add descriptors to " + this.getClass().getName() );
+
+    public void insertBeforeLast(final Class clazz, final BaseDescr baseDescr) {
+        throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
     public List<BaseDescr> getDescrs() {
         return this.descrs;
     }
 
-     public boolean removeDescr(BaseDescr baseDescr) {
+    public boolean removeDescr(BaseDescr baseDescr) {
         return baseDescr == null ? false : descrs.remove(baseDescr);
     }
 
     public void addOrMerge(BaseDescr baseDescr) {
-        if( baseDescr instanceof NotDescr ) {
-            this.descrs.addAll( ((NotDescr)baseDescr).getDescrs() );
+        if (baseDescr instanceof NotDescr) {
+            this.descrs.addAll(((NotDescr) baseDescr).getDescrs());
         } else {
-            this.descrs.add( baseDescr );
+            this.descrs.add(baseDescr);
         }
     }
 

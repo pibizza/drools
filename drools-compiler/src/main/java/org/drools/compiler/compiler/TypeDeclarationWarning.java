@@ -20,7 +20,7 @@ import org.kie.internal.builder.ResultSeverity;
 
 public class TypeDeclarationWarning extends BaseKnowledgeBuilderResultImpl {
     private String message;
-    private int[]  line;
+    private int[] line;
 
     public TypeDeclarationWarning(final String message, final int line) {
         super(null);

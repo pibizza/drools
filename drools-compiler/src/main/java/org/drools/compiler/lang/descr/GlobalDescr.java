@@ -23,16 +23,16 @@ public class GlobalDescr extends BaseDescr {
 
     private static final long serialVersionUID = 510l;
 
-    private String            identifier;
-    private String            type;
+    private String identifier;
+    private String type;
 
     public GlobalDescr() {
-        this( null,
-              null );
+        this(null,
+                null);
     }
 
     public GlobalDescr(final String identifier,
-                       final String type) {
+            final String type) {
         this.identifier = identifier;
         this.type = type;
     }

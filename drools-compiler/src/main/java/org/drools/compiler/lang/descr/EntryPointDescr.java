@@ -17,7 +17,6 @@
  */
 package org.drools.compiler.lang.descr;
 
-
 import org.kie.internal.ruleunit.RuleUnitUtil;
 
 /**
@@ -28,26 +27,26 @@ public class EntryPointDescr extends PatternSourceDescr {
 
     private static final long serialVersionUID = 150l;
 
-    public static final EntryPointDescr RULE_UNIT_ENTRY_POINT_DESCR = new EntryPointDescr( RuleUnitUtil.RULE_UNIT_ENTRY_POINT );
+    public static final EntryPointDescr RULE_UNIT_ENTRY_POINT_DESCR = new EntryPointDescr(RuleUnitUtil.RULE_UNIT_ENTRY_POINT);
 
     public EntryPointDescr() {
     }
-    
-    public EntryPointDescr( String id ) {
-        this.setText( id );
+
+    public EntryPointDescr(String id) {
+        this.setText(id);
     }
-    
-    public void setEntryId( String id ) {
-        this.setText( id );
+
+    public void setEntryId(String id) {
+        this.setText(id);
     }
-    
+
     public String getEntryId() {
         return this.getText();
     }
-    
+
     @Override
     public String toString() {
-        return "from entry-point \""+getEntryId()+"\"";
+        return "from entry-point \"" + getEntryId() + "\"";
     }
 
 }

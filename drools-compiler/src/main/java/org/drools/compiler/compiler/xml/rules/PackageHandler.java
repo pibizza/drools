@@ -35,84 +35,83 @@ import org.xml.sax.SAXParseException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class PackageHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public PackageHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
 
-        final String ruleSetName = attrs.getValue( "name" );
+        final String ruleSetName = attrs.getValue("name");
 
-        if ( ruleSetName == null || ruleSetName.trim().equals( "" ) ) {
-            throw new SAXParseException( "<package> requires a 'name' attribute",
-                                         parser.getLocator() );
+        if (ruleSetName == null || ruleSetName.trim().equals("")) {
+            throw new SAXParseException("<package> requires a 'name' attribute",
+                    parser.getLocator());
         }
 
-        final PackageDescr packageDescr = new PackageDescr( ruleSetName.trim() );
+        final PackageDescr packageDescr = new PackageDescr(ruleSetName.trim());
 
-        parser.setData( packageDescr );
+        parser.setData(packageDescr);
         return packageDescr;
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
-        final PackageDescr packageDescr = ( PackageDescr ) parser.getData();
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
+        final PackageDescr packageDescr = (PackageDescr) parser.getData();
         final Element element = parser.endElementBuilder();
 
-        
-        NodeList imports = element.getElementsByTagName( "import" );
+        NodeList imports = element.getElementsByTagName("import");
 
-        for ( int i = 0, length = imports.getLength(); i < length; i++ ) {
-            final String importEntry = ((Element)imports.item(i)).getAttribute( "name" );
+        for (int i = 0, length = imports.getLength(); i < length; i++) {
+            final String importEntry = ((Element) imports.item(i)).getAttribute("name");
 
-            if ( importEntry == null || importEntry.trim().equals( "" ) ) {
-                throw new SAXParseException( "<import> cannot be blank",
-                                             parser.getLocator() );
+            if (importEntry == null || importEntry.trim().equals("")) {
+                throw new SAXParseException("<import> cannot be blank",
+                        parser.getLocator());
             }
-            packageDescr.addImport( new ImportDescr( importEntry ) );
+            packageDescr.addImport(new ImportDescr(importEntry));
         }
-        
-        NodeList importfunctions = element.getElementsByTagName( "importfunction" );
 
-        for ( int i = 0, length = importfunctions.getLength(); i < length; i++ ) {
-            final String importfunctionEntry = ((Element)importfunctions.item(i)).getAttribute( "name" );
+        NodeList importfunctions = element.getElementsByTagName("importfunction");
 
-            if ( importfunctionEntry == null || importfunctionEntry.trim().equals( "" ) ) {
-                throw new SAXParseException( "<importfunction> cannot be blank",
-                                             parser.getLocator() );
+        for (int i = 0, length = importfunctions.getLength(); i < length; i++) {
+            final String importfunctionEntry = ((Element) importfunctions.item(i)).getAttribute("name");
+
+            if (importfunctionEntry == null || importfunctionEntry.trim().equals("")) {
+                throw new SAXParseException("<importfunction> cannot be blank",
+                        parser.getLocator());
             }
-            
+
             FunctionImportDescr funcdescr = new FunctionImportDescr();
-            funcdescr.setTarget( importfunctionEntry );
-            
+            funcdescr.setTarget(importfunctionEntry);
+
             packageDescr.addFunctionImport(funcdescr);
         }
-        
-        NodeList globals = element.getElementsByTagName( "global" );
 
-        for ( int i = 0, length = globals.getLength(); i < length; i++ ) {
-            final String identifier = ((Element)globals.item(i)).getAttribute( "identifier" );
+        NodeList globals = element.getElementsByTagName("global");
 
-            if ( identifier == null || identifier.trim().equals( "" ) ) {
-                throw new SAXParseException( "<global> must have an identifier",
-                                             parser.getLocator() );
+        for (int i = 0, length = globals.getLength(); i < length; i++) {
+            final String identifier = ((Element) globals.item(i)).getAttribute("identifier");
+
+            if (identifier == null || identifier.trim().equals("")) {
+                throw new SAXParseException("<global> must have an identifier",
+                        parser.getLocator());
             }
 
-            final String type = ((Element)globals.item(i)).getAttribute( "type" );
-            if ( type == null || type.trim().equals( "" ) ) {
-                throw new SAXParseException( "<global> must have specify a type",
-                                             parser.getLocator() );
+            final String type = ((Element) globals.item(i)).getAttribute("type");
+            if (type == null || type.trim().equals("")) {
+                throw new SAXParseException("<global> must have specify a type",
+                        parser.getLocator());
             }
-            final GlobalDescr global = new GlobalDescr( identifier,
-                                                        type );
-            packageDescr.addGlobal( global );
+            final GlobalDescr global = new GlobalDescr(identifier,
+                    type);
+            packageDescr.addGlobal(global);
         }
 
         return packageDescr;

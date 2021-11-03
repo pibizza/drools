@@ -28,8 +28,8 @@ import org.drools.core.addon.TypeResolver;
 public interface FunctionBuilder extends EngineElementBuilder {
 
     public String build(final InternalKnowledgePackage pkg,
-                        final FunctionDescr functionDescr,
-                        final TypeResolver typeResolver,
-                        final Map<String, LineMappings> lineMappings,
-                        final List<KnowledgeBuilderResult> errors);
+            final FunctionDescr functionDescr,
+            final TypeResolver typeResolver,
+            final Map<String, LineMappings> lineMappings,
+            final List<KnowledgeBuilderResult> errors);
 }

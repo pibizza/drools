@@ -20,22 +20,22 @@ package org.drools.compiler.lang;
  * error messages during parsing.
  */
 public enum DroolsParaphraseTypes {
-    PACKAGE, 
+    PACKAGE,
     UNIT,
     IMPORT,
-    FUNCTION_IMPORT, 
-    ACCUMULATE_IMPORT, 
-    GLOBAL, 
-    FUNCTION, 
-    QUERY, 
-    TEMPLATE, 
-    RULE, 
-    RULE_ATTRIBUTE, 
-    PATTERN, 
-    TYPE_DECLARE, 
-    EVAL, 
-    ENTRYPOINT_DECLARE, 
+    FUNCTION_IMPORT,
+    ACCUMULATE_IMPORT,
+    GLOBAL,
+    FUNCTION,
+    QUERY,
+    TEMPLATE,
+    RULE,
+    RULE_ATTRIBUTE,
+    PATTERN,
+    TYPE_DECLARE,
+    EVAL,
+    ENTRYPOINT_DECLARE,
     WINDOW_DECLARE,
-	ENUM_DECLARE;
+    ENUM_DECLARE;
 
 }

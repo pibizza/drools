@@ -24,23 +24,25 @@ public class ExprConstraintDescr extends BaseDescr implements ExpressionDescr {
     private static final long serialVersionUID = 520l;
 
     public static enum Type {
-        NAMED, POSITIONAL;
+        NAMED,
+        POSITIONAL;
     }
-    
+
     private Type type = Type.NAMED;
     private int position = -1;
 
-    public ExprConstraintDescr() { }
-    
+    public ExprConstraintDescr() {
+    }
+
     public ExprConstraintDescr(final String expr) {
-        setText( expr );
+        setText(expr);
     }
-    
-    public void setExpression( final String expr ) {
-        setText( expr );
+
+    public void setExpression(final String expr) {
+        setText(expr);
     }
-    
-    public String getExpression( ) {
+
+    public String getExpression() {
         return getText();
     }
 
@@ -54,7 +56,7 @@ public class ExprConstraintDescr extends BaseDescr implements ExpressionDescr {
     /**
      * @param type the type to set
      */
-    public void setType( Type type ) {
+    public void setType(Type type) {
         this.type = type;
     }
 
@@ -68,10 +70,10 @@ public class ExprConstraintDescr extends BaseDescr implements ExpressionDescr {
     /**
      * @param position the position to set
      */
-    public void setPosition( int position ) {
+    public void setPosition(int position) {
         this.position = position;
     }
-    
+
     @Override
     public String toString() {
         return getText();

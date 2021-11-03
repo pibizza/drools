@@ -35,13 +35,13 @@ import org.drools.compiler.lang.descr.ExistsDescr;
 /**
  * An implementation for the CEDescrBuilder
  */
-public class CEDescrBuilderImpl<P extends DescrBuilder< ? , ? >, T extends AnnotatedBaseDescr> extends BaseDescrBuilderImpl<P, T>
-    implements
+public class CEDescrBuilderImpl<P extends DescrBuilder<?, ?>, T extends AnnotatedBaseDescr> extends BaseDescrBuilderImpl<P, T>
+        implements
         CEDescrBuilder<P, T> {
 
     public CEDescrBuilderImpl(P parent,
-                              T descr) {
-        super( parent, descr );
+            T descr) {
+        super(parent, descr);
     }
 
     /**
@@ -49,8 +49,8 @@ public class CEDescrBuilderImpl<P extends DescrBuilder< ? , ? >, T extends Annot
      */
     public CEDescrBuilder<CEDescrBuilder<P, T>, AndDescr> and() {
         AndDescr andDescr = new AndDescr();
-        ((ConditionalElementDescr) descr).addDescr( andDescr );
-        return new CEDescrBuilderImpl<CEDescrBuilder<P, T>, AndDescr>( this, andDescr );
+        ((ConditionalElementDescr) descr).addDescr(andDescr);
+        return new CEDescrBuilderImpl<CEDescrBuilder<P, T>, AndDescr>(this, andDescr);
     }
 
     /**
@@ -58,16 +58,16 @@ public class CEDescrBuilderImpl<P extends DescrBuilder< ? , ? >, T extends Annot
      */
     public CEDescrBuilder<CEDescrBuilder<P, T>, OrDescr> or() {
         OrDescr orDescr = new OrDescr();
-        ((ConditionalElementDescr) descr).addDescr( orDescr );
-        return new CEDescrBuilderImpl<CEDescrBuilder<P, T>, OrDescr>( this, orDescr );
+        ((ConditionalElementDescr) descr).addDescr(orDescr);
+        return new CEDescrBuilderImpl<CEDescrBuilder<P, T>, OrDescr>(this, orDescr);
     }
 
     /**
      * {@inheritDoc}
      */
     public CEDescrBuilder<CEDescrBuilder<P, T>, NotDescr> not() {
-        CEDescrBuilder<CEDescrBuilder<P, T>, NotDescr> not = new CEDescrBuilderImpl<CEDescrBuilder<P, T>, NotDescr>( this, new NotDescr() );
-        ((ConditionalElementDescr) descr).addDescr( not.getDescr() );
+        CEDescrBuilder<CEDescrBuilder<P, T>, NotDescr> not = new CEDescrBuilderImpl<CEDescrBuilder<P, T>, NotDescr>(this, new NotDescr());
+        ((ConditionalElementDescr) descr).addDescr(not.getDescr());
         return not;
     }
 
@@ -75,8 +75,8 @@ public class CEDescrBuilderImpl<P extends DescrBuilder< ? , ? >, T extends Annot
      * {@inheritDoc}
      */
     public CEDescrBuilder<CEDescrBuilder<P, T>, ExistsDescr> exists() {
-        CEDescrBuilder<CEDescrBuilder<P, T>, ExistsDescr> exists = new CEDescrBuilderImpl<CEDescrBuilder<P, T>, ExistsDescr>( this, new ExistsDescr() );
-        ((ConditionalElementDescr) descr).addDescr( exists.getDescr() );
+        CEDescrBuilder<CEDescrBuilder<P, T>, ExistsDescr> exists = new CEDescrBuilderImpl<CEDescrBuilder<P, T>, ExistsDescr>(this, new ExistsDescr());
+        ((ConditionalElementDescr) descr).addDescr(exists.getDescr());
         return exists;
     }
 
@@ -84,8 +84,8 @@ public class CEDescrBuilderImpl<P extends DescrBuilder< ? , ? >, T extends Annot
      * {@inheritDoc}
      */
     public ForallDescrBuilder<CEDescrBuilder<P, T>> forall() {
-        ForallDescrBuilder<CEDescrBuilder<P, T>> forall = new ForallDescrBuilderImpl<CEDescrBuilder<P, T>>( this );
-        ((ConditionalElementDescr) descr).addDescr( forall.getDescr() );
+        ForallDescrBuilder<CEDescrBuilder<P, T>> forall = new ForallDescrBuilderImpl<CEDescrBuilder<P, T>>(this);
+        ((ConditionalElementDescr) descr).addDescr(forall.getDescr());
         return forall;
     }
 
@@ -97,13 +97,13 @@ public class CEDescrBuilderImpl<P extends DescrBuilder< ? , ? >, T extends Annot
         // whose result pattern is Object[]
 
         // create a linked Object[] pattern and set it to query false
-        PatternDescrBuilder<CEDescrBuilder<P,T>> pdb = pattern("Object[]").isQuery( false );
+        PatternDescrBuilder<CEDescrBuilder<P, T>> pdb = pattern("Object[]").isQuery(false);
 
         // create the accumulate builder with this CE as its parent
         AccumulateDescrBuilder<CEDescrBuilder<P, T>> accumulate = new AccumulateDescrBuilderImpl<CEDescrBuilder<P, T>>(this);
 
         // set the accumulate descriptor as the source of that pattern descr
-        pdb.getDescr().setSource( accumulate.getDescr() );
+        pdb.getDescr().setSource(accumulate.getDescr());
 
         // return the accumulate builder, that has the properly set parent
         return accumulate;
@@ -113,17 +113,17 @@ public class CEDescrBuilderImpl<P extends DescrBuilder< ? , ? >, T extends Annot
      * {@inheritDoc}
      */
     public EvalDescrBuilder<CEDescrBuilder<P, T>> eval() {
-        EvalDescrBuilder<CEDescrBuilder<P, T>> eval = new EvalDescrBuilderImpl<CEDescrBuilder<P, T>>( this );
-        ((ConditionalElementDescr) descr).addDescr( eval.getDescr() );
+        EvalDescrBuilder<CEDescrBuilder<P, T>> eval = new EvalDescrBuilderImpl<CEDescrBuilder<P, T>>(this);
+        ((ConditionalElementDescr) descr).addDescr(eval.getDescr());
         return eval;
     }
 
     /**
      * {@inheritDoc}
      */
-    public PatternDescrBuilder<CEDescrBuilder<P, T>> pattern( String type ) {
-        PatternDescrBuilder<CEDescrBuilder<P, T>> pattern = new PatternDescrBuilderImpl<CEDescrBuilder<P, T>>( this, type );
-        ((ConditionalElementDescr) descr).addDescr( pattern.getDescr() );
+    public PatternDescrBuilder<CEDescrBuilder<P, T>> pattern(String type) {
+        PatternDescrBuilder<CEDescrBuilder<P, T>> pattern = new PatternDescrBuilderImpl<CEDescrBuilder<P, T>>(this, type);
+        ((ConditionalElementDescr) descr).addDescr(pattern.getDescr());
         return pattern;
     }
 
@@ -131,16 +131,16 @@ public class CEDescrBuilderImpl<P extends DescrBuilder< ? , ? >, T extends Annot
      * {@inheritDoc}
      */
     public PatternDescrBuilder<CEDescrBuilder<P, T>> pattern() {
-        PatternDescrBuilder<CEDescrBuilder<P, T>> pattern = new PatternDescrBuilderImpl<CEDescrBuilder<P, T>>( this );
-        ((ConditionalElementDescr) descr).addDescr( pattern.getDescr() );
+        PatternDescrBuilder<CEDescrBuilder<P, T>> pattern = new PatternDescrBuilderImpl<CEDescrBuilder<P, T>>(this);
+        ((ConditionalElementDescr) descr).addDescr(pattern.getDescr());
         return pattern;
     }
 
     /**
      * {@inheritDoc}
      */
-    public AnnotationDescrBuilder<CEDescrBuilder<P, T>> newAnnotation( String name ) {
-        AnnotationDescrBuilder<CEDescrBuilder<P, T>> annotation = new AnnotationDescrBuilderImpl<CEDescrBuilder<P, T>>( this, name );
+    public AnnotationDescrBuilder<CEDescrBuilder<P, T>> newAnnotation(String name) {
+        AnnotationDescrBuilder<CEDescrBuilder<P, T>> annotation = new AnnotationDescrBuilderImpl<CEDescrBuilder<P, T>>(this, name);
         descr.addAnnotation(annotation.getDescr());
         return annotation;
     }
@@ -149,7 +149,7 @@ public class CEDescrBuilderImpl<P extends DescrBuilder< ? , ? >, T extends Annot
      * {@inheritDoc}
      */
     public NamedConsequenceDescrBuilder<CEDescrBuilder<P, T>> namedConsequence() {
-        NamedConsequenceDescrBuilder<CEDescrBuilder<P, T>> namedConsequence = new NamedConsequenceDescrBuilderImpl<CEDescrBuilder<P, T>>( this );
+        NamedConsequenceDescrBuilder<CEDescrBuilder<P, T>> namedConsequence = new NamedConsequenceDescrBuilderImpl<CEDescrBuilder<P, T>>(this);
         ((ConditionalElementDescr) descr).addDescr(namedConsequence.getDescr());
         return namedConsequence;
     }
@@ -158,7 +158,7 @@ public class CEDescrBuilderImpl<P extends DescrBuilder< ? , ? >, T extends Annot
      * {@inheritDoc}
      */
     public ConditionalBranchDescrBuilder<CEDescrBuilder<P, T>> conditionalBranch() {
-        ConditionalBranchDescrBuilder<CEDescrBuilder<P, T>> conditionalBranch = new ConditionalBranchDescrBuilderImpl<CEDescrBuilder<P, T>>( this );
+        ConditionalBranchDescrBuilder<CEDescrBuilder<P, T>> conditionalBranch = new ConditionalBranchDescrBuilderImpl<CEDescrBuilder<P, T>>(this);
         ((ConditionalElementDescr) descr).addDescr(conditionalBranch.getDescr());
         return conditionalBranch;
     }

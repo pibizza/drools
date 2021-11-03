@@ -25,15 +25,16 @@ import java.util.List;
  * time window, event window, distinct, etc
  */
 public class BehaviorDescr extends BaseDescr {
-    
+
     private String subtype;
     private List<String> params;
-    
+
     /**
      * @param type
      */
-    public BehaviorDescr() { }
-    
+    public BehaviorDescr() {
+    }
+
     /**
      * @param type
      */
@@ -52,14 +53,14 @@ public class BehaviorDescr extends BaseDescr {
      * @param type the type to set
      */
     public void setType(String type) {
-        setText( type );
+        setText(type);
     }
 
-    public void setSubType( String subtype ) {
+    public void setSubType(String subtype) {
         this.subtype = subtype;
     }
-    
-    public void setParameters( List<String> params ) {
+
+    public void setParameters(List<String> params) {
         this.params = params;
     }
 

@@ -16,26 +16,26 @@ public final class BuilderResultUtils {
      * Appends compilation problems to summary message if object is an array of {@link CompilationProblem}
      * separated with backspaces
      *
-     * @param object  object with compilation results
+     * @param object object with compilation results
      * @param summary summary message
      * @return summary message with changes
      */
     public static String getProblemMessage(Object object, String summary) {
-        return getProblemMessage( object, summary, DEFAULT_SEPARATOR );
+        return getProblemMessage(object, summary, DEFAULT_SEPARATOR);
     }
 
     /**
      * Appends compilation problems to summary message if object is an array of {@link CompilationProblem}
      * with custom separator
      *
-     * @param object    object with compilation results
-     * @param summary   summary message
+     * @param object object with compilation results
+     * @param summary summary message
      * @param separator custom messages separator
      * @return summary message with changes
      */
     public static String getProblemMessage(Object object, String summary, String separator) {
         if (object instanceof CompilationProblem[]) {
-            return fillSummary( (CompilationProblem[]) object, summary, separator );
+            return fillSummary((CompilationProblem[]) object, summary, separator);
         }
         return summary;
     }
@@ -44,7 +44,7 @@ public final class BuilderResultUtils {
      * Appends compilation problems to builder if object is an array of {@link CompilationProblem}
      * or object itself if not
      *
-     * @param object  object with compilation results
+     * @param object object with compilation results
      * @param builder message builder
      * @return builder
      */
@@ -53,8 +53,8 @@ public final class BuilderResultUtils {
             final CompilationProblem[] problem = (CompilationProblem[]) object;
             for (CompilationProblem aProblem : problem) {
                 builder.append("\t")
-                       .append(aProblem)
-                       .append("\n");
+                        .append(aProblem)
+                        .append("\n");
             }
         } else if (object != null) {
             builder.append(object);
@@ -68,7 +68,7 @@ public final class BuilderResultUtils {
                 .append(problem[0].getMessage());
         for (int i = 1; i < problem.length; i++) {
             builder.append(separator)
-                   .append(problem[i].getMessage());
+                    .append(problem[i].getMessage());
         }
         return builder.toString();
     }

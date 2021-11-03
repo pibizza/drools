@@ -27,7 +27,7 @@ public class QualifiedName implements Serializable {
     private String namespace;
 
     public QualifiedName(String name) {
-        setName( name );
+        setName(name);
     }
 
     public QualifiedName(String name, String namespace) {
@@ -40,12 +40,12 @@ public class QualifiedName implements Serializable {
     }
 
     public void setName(String name) {
-        int pos = name.lastIndexOf( '.' );
-        if ( pos < 0 ) {
+        int pos = name.lastIndexOf('.');
+        if (pos < 0) {
             this.name = name;
         } else {
-            this.name = name.substring( pos + 1 );
-            this.namespace = name.substring( 0, pos );
+            this.name = name.substring(pos + 1);
+            this.namespace = name.substring(0, pos);
         }
     }
 
@@ -57,14 +57,16 @@ public class QualifiedName implements Serializable {
         this.namespace = namespace;
     }
 
-
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         QualifiedName that = (QualifiedName) o;
 
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null)
+            return false;
         return !(namespace != null ? !namespace.equals(that.namespace) : that.namespace != null);
     }
 
@@ -75,7 +77,7 @@ public class QualifiedName implements Serializable {
     }
 
     public String getFullName() {
-        if ( StringUtils.isEmpty(namespace) ) {
+        if (StringUtils.isEmpty(namespace)) {
             return name;
         } else {
             return namespace + "." + name;
@@ -87,6 +89,6 @@ public class QualifiedName implements Serializable {
     }
 
     public boolean isFullyQualified() {
-        return ! StringUtils.isEmpty( namespace );
+        return !StringUtils.isEmpty(namespace);
     }
 }

@@ -24,13 +24,13 @@ import org.drools.core.definitions.InternalKnowledgePackage;
  * This Class api is subject to change.
  */
 public interface DialectConfiguration {
-    
+
     void init(KnowledgeBuilderConfigurationImpl configuration);
-    
+
     Dialect newDialect(ClassLoader rootClassLoader,
-                       KnowledgeBuilderConfigurationImpl pkgConf,
-                       PackageRegistry pkgRegistry,
-                       InternalKnowledgePackage pkg);
-    
+            KnowledgeBuilderConfigurationImpl pkgConf,
+            PackageRegistry pkgRegistry,
+            InternalKnowledgePackage pkg);
+
     KnowledgeBuilderConfigurationImpl getPackageBuilderConfiguration();
 }

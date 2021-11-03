@@ -35,22 +35,24 @@ public class DialectCompiletimeRegistry {
 
     /**
      * Add a DialectConfiguration to the registry
+     * 
      * @param name
      * @param dialect
      */
     public void addDialect(final String name,
-                           final Dialect dialect) {
-        this.map.put( name,
-                      dialect );
+            final Dialect dialect) {
+        this.map.put(name,
+                dialect);
     }
 
     /**
      * Get a DialectConfiguration for a named dialect
+     * 
      * @param name
      * @return
      */
     public Dialect getDialect(final String name) {
-        return this.map.get( name );
+        return this.map.get(name);
     }
 
     /**
@@ -64,6 +66,7 @@ public class DialectCompiletimeRegistry {
 
     /**
      * Return an Iterator of DialectConfigurations
+     * 
      * @return
      */
     public Iterator iterator() {
@@ -72,16 +75,17 @@ public class DialectCompiletimeRegistry {
 
     /**
      * Add all registered Dialect results to the provided List.
+     * 
      * @param list
      * @return
      */
     public List<KnowledgeBuilderResult> addResults(List<KnowledgeBuilderResult> list) {
-        if ( list == null ) {
+        if (list == null) {
             list = new ArrayList<KnowledgeBuilderResult>();
         }
         for (Dialect dialect : map.values()) {
             List<KnowledgeBuilderResult> results = dialect.getResults();
-            if ( results != null ) {
+            if (results != null) {
                 for (KnowledgeBuilderResult result : results) {
                     if (!list.contains(result)) {
                         list.add(result);
@@ -95,6 +99,7 @@ public class DialectCompiletimeRegistry {
 
     /**
      * Iterates all registered dialects, informing them of an import added to the PackageBuilder
+     * 
      * @param importEntry
      */
     public void addImport(ImportDescr importDescr) {
@@ -105,6 +110,7 @@ public class DialectCompiletimeRegistry {
 
     /**
      * Iterates all registered dialects, informing them of a static imports added to the PackageBuilder
+     * 
      * @param staticImportEntry
      */
     public void addStaticImport(ImportDescr importDescr) {
@@ -112,5 +118,5 @@ public class DialectCompiletimeRegistry {
             dialect.addStaticImport(importDescr);
         }
     }
-    
+
 }

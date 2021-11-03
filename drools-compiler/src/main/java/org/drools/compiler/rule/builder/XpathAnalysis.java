@@ -24,7 +24,7 @@ public class XpathAnalysis implements Iterable<XpathAnalysis.XpathPart> {
     private final List<XpathPart> parts;
     private final String error;
 
-    public XpathAnalysis( List<XpathPart> parts, String error ) {
+    public XpathAnalysis(List<XpathPart> parts, String error) {
         this.parts = parts;
         this.error = error;
     }
@@ -46,8 +46,8 @@ public class XpathAnalysis implements Iterable<XpathAnalysis.XpathPart> {
         return parts;
     }
 
-    public XpathPart getPart( int i) {
-        return parts.get( i );
+    public XpathPart getPart(int i) {
+        return parts.get(i);
     }
 
     public boolean isSinglePart() {
@@ -101,26 +101,26 @@ public class XpathAnalysis implements Iterable<XpathAnalysis.XpathPart> {
             return start;
         }
 
-        public void addInlineCastConstraint( Class<?> clazz ) {
+        public void addInlineCastConstraint(Class<?> clazz) {
             constraints.add(0, "this instanceof " + clazz.getCanonicalName());
         }
 
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder( field );
+            StringBuilder sb = new StringBuilder(field);
             if (inlineCast != null) {
-                sb.append( "#" ).append( inlineCast );
+                sb.append("#").append(inlineCast);
             }
             if (index >= 0) {
-                sb.append( "[" ).append( index ).append( "]" );
+                sb.append("[").append(index).append("]");
             }
             if (!constraints.isEmpty()) {
-                sb.append( "[ " );
-                sb.append( constraints.get(0) );
+                sb.append("[ ");
+                sb.append(constraints.get(0));
                 for (int i = 1; i < constraints.size(); i++) {
-                    sb.append( ", " ).append( constraints.get( i ) );
+                    sb.append(", ").append(constraints.get(i));
                 }
-                sb.append( " ]" );
+                sb.append(" ]");
             }
             return sb.toString();
         }
@@ -161,16 +161,16 @@ public class XpathAnalysis implements Iterable<XpathAnalysis.XpathPart> {
                 case '.':
                     if (!isQuoted && nestedParam == 0 && nestedSquare == 0) {
                         if (field == null) {
-                            field = xpath.substring(lastStart, xpath.charAt(i-1) == '?' ? i-1 : i).trim();
+                            field = xpath.substring(lastStart, xpath.charAt(i - 1) == '?' ? i - 1 : i).trim();
                         } else if (isInlineCast) {
-                            inlineCast = xpath.substring(lastStart, xpath.charAt(i-1) == '?' ? i-1 : i).trim();
+                            inlineCast = xpath.substring(lastStart, xpath.charAt(i - 1) == '?' ? i - 1 : i).trim();
                             isInlineCast = false;
                         }
                         parts.add(new XpathPart(field, iterate, lazyPath, constraints, inlineCast, index, partStart));
                         partStart = i;
 
                         iterate = xpath.charAt(i) == '/';
-                        if (xpath.charAt(i-1) == '?') {
+                        if (xpath.charAt(i - 1) == '?') {
                             if (lazyPath) {
                                 error = "It is not possible to have 2 non-reactive parts in the same oopath";
                                 break;
@@ -201,9 +201,9 @@ public class XpathAnalysis implements Iterable<XpathAnalysis.XpathPart> {
                 case '#':
                     if (!isQuoted && nestedParam == 0 && nestedSquare == 0) {
                         if (field == null) {
-                            field = xpath.substring( lastStart, i ).trim();
+                            field = xpath.substring(lastStart, i).trim();
                         }
-                        lastStart = i+1;
+                        lastStart = i + 1;
                         isInlineCast = true;
                     }
                     break;
@@ -211,12 +211,12 @@ public class XpathAnalysis implements Iterable<XpathAnalysis.XpathPart> {
                     if (!isQuoted && nestedParam == 0) {
                         if (nestedSquare == 0) {
                             if (field == null) {
-                                field = xpath.substring( lastStart, i ).trim();
+                                field = xpath.substring(lastStart, i).trim();
                             } else if (isInlineCast) {
-                                inlineCast = xpath.substring( lastStart, i ).trim();
+                                inlineCast = xpath.substring(lastStart, i).trim();
                                 isInlineCast = false;
                             }
-                            lastStart = i+1;
+                            lastStart = i + 1;
                         }
                         nestedSquare++;
                     }
@@ -225,15 +225,15 @@ public class XpathAnalysis implements Iterable<XpathAnalysis.XpathPart> {
                     if (!isQuoted && nestedParam == 0) {
                         nestedSquare--;
                         if (nestedSquare == 0) {
-                            String constraint = xpath.substring( lastStart, i ).trim();
-                            if ( Character.isDigit(constraint.charAt( 0 )) ) {
+                            String constraint = xpath.substring(lastStart, i).trim();
+                            if (Character.isDigit(constraint.charAt(0))) {
                                 try {
-                                    index = Integer.parseInt( constraint );
+                                    index = Integer.parseInt(constraint);
                                 } catch (Exception e) {
-                                    constraints.add( constraint );
+                                    constraints.add(constraint);
                                 }
                             } else {
-                                constraints.add( constraint );
+                                constraints.add(constraint);
                             }
                         } else if (nestedSquare < 0) {
                             error = "Unbalanced square brackets";
@@ -244,7 +244,7 @@ public class XpathAnalysis implements Iterable<XpathAnalysis.XpathPart> {
                     if (!isQuoted && nestedParam == 0 && nestedSquare == 1) {
                         String constraint = xpath.substring(lastStart, i).trim();
                         constraints.add(constraint);
-                        lastStart = i+1;
+                        lastStart = i + 1;
                     }
                     break;
                 case '"':

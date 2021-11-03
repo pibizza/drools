@@ -26,14 +26,16 @@ public class JavaDialectConfiguration extends JavaConfiguration implements Diale
     private static final Logger logger = LoggerFactory.getLogger(JavaDialectConfiguration.class);
 
     private static final JavaDialectConfiguration DEFAULT_JAVA_CONFIGURATION = new JavaDialectConfiguration(new KnowledgeBuilderConfigurationImpl(JavaConfiguration.class.getClassLoader()));
-    private static final String DEFAULT_JAVA_VERSION = findJavaVersion(DEFAULT_JAVA_CONFIGURATION.conf.getChainedProperties().getProperty(JAVA_LANG_LEVEL_PROPERTY, System.getProperty("java.version")));
+    private static final String DEFAULT_JAVA_VERSION =
+            findJavaVersion(DEFAULT_JAVA_CONFIGURATION.conf.getChainedProperties().getProperty(JAVA_LANG_LEVEL_PROPERTY, System.getProperty("java.version")));
 
     private KnowledgeBuilderConfigurationImpl conf;
 
-    public JavaDialectConfiguration() { }
+    public JavaDialectConfiguration() {
+    }
 
     public JavaDialectConfiguration(KnowledgeBuilderConfigurationImpl conf) {
-        init( conf );
+        init(conf);
     }
 
     public static CompilerType getDefaultCompilerType() {
@@ -60,9 +62,9 @@ public class JavaDialectConfiguration extends JavaConfiguration implements Diale
     public void init(final KnowledgeBuilderConfigurationImpl conf) {
         this.conf = conf;
 
-        setCompiler( getDefaultCompiler() );
+        setCompiler(getDefaultCompiler());
 
-        setJavaLanguageLevel( findJavaVersion(conf.getChainedProperties().getProperty(JAVA_LANG_LEVEL_PROPERTY, System.getProperty("java.version"))) );
+        setJavaLanguageLevel(findJavaVersion(conf.getChainedProperties().getProperty(JAVA_LANG_LEVEL_PROPERTY, System.getProperty("java.version"))));
     }
 
     @Override
@@ -77,9 +79,9 @@ public class JavaDialectConfiguration extends JavaConfiguration implements Diale
 
     public boolean hasEclipseCompiler() {
         try {
-            Class.forName( CompilerType.ECLIPSE.getImplClassName(), true, this.conf.getClassLoader() );
+            Class.forName(CompilerType.ECLIPSE.getImplClassName(), true, this.conf.getClassLoader());
             return true;
-        } catch ( ClassNotFoundException e ) {
+        } catch (ClassNotFoundException e) {
             return false;
         }
     }
@@ -91,22 +93,22 @@ public class JavaDialectConfiguration extends JavaConfiguration implements Diale
      */
     private CompilerType getDefaultCompiler() {
         try {
-            final String prop = this.conf.getChainedProperties().getProperty( JAVA_COMPILER_PROPERTY, hasEclipseCompiler() ? "ECLIPSE" : "NATIVE" );
+            final String prop = this.conf.getChainedProperties().getProperty(JAVA_COMPILER_PROPERTY, hasEclipseCompiler() ? "ECLIPSE" : "NATIVE");
             if (logger.isDebugEnabled()) {
-                logger.debug( "Selected compiler " + prop + " [drools.dialect.java.compiler:" +
-                        this.conf.getChainedProperties().getProperty( JAVA_COMPILER_PROPERTY, null ) + ", hasEclipseCompiler:" + hasEclipseCompiler() + "]" );
+                logger.debug("Selected compiler " + prop + " [drools.dialect.java.compiler:" +
+                        this.conf.getChainedProperties().getProperty(JAVA_COMPILER_PROPERTY, null) + ", hasEclipseCompiler:" + hasEclipseCompiler() + "]");
             }
 
-            if ( prop.equalsIgnoreCase( "NATIVE" ) ) {
+            if (prop.equalsIgnoreCase("NATIVE")) {
                 return CompilerType.NATIVE;
-            } else if ( prop.equalsIgnoreCase( "ECLIPSE" ) ) {
+            } else if (prop.equalsIgnoreCase("ECLIPSE")) {
                 return CompilerType.ECLIPSE;
             } else {
-                logger.error( "Drools config: unable to use the drools.compiler property. Using default. It was set to:" + prop );
+                logger.error("Drools config: unable to use the drools.compiler property. Using default. It was set to:" + prop);
                 return CompilerType.ECLIPSE;
             }
-        } catch ( final SecurityException e ) {
-            logger.error( "Drools config: unable to read the drools.compiler property. Using default.", e);
+        } catch (final SecurityException e) {
+            logger.error("Drools config: unable to read the drools.compiler property. Using default.", e);
             return CompilerType.ECLIPSE;
         }
     }

@@ -27,8 +27,8 @@ public class RuleErrorHandler extends ErrorHandler {
     private RuleImpl rule;
 
     public RuleErrorHandler(final BaseDescr ruleDescr,
-                            final RuleImpl rule,
-                            final String message) {
+            final RuleImpl rule,
+            final String message) {
         this.descr = ruleDescr;
         this.rule = rule;
         this.message = message;
@@ -36,9 +36,9 @@ public class RuleErrorHandler extends ErrorHandler {
 
     public DroolsError getError() {
         return new RuleBuildError(this.rule,
-                                  this.descr,
-                                  collectCompilerProblems(),
-                                  this.message);
+                this.descr,
+                collectCompilerProblems(),
+                this.message);
     }
 
 }

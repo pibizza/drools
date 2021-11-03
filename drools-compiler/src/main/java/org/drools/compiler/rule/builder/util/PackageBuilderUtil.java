@@ -37,8 +37,8 @@ public class PackageBuilderUtil {
      * @return
      */
     public static boolean isReadLocalsFromTuple(final RuleBuildContext context,
-                                                final AccumulateDescr accumDescr,
-                                                final RuleConditionElement source) {
+            final AccumulateDescr accumDescr,
+            final RuleConditionElement source) {
         if (accumDescr.isMultiPattern()) {
             return true;
         }
@@ -46,28 +46,28 @@ public class PackageBuilderUtil {
         PatternDescr inputPattern = accumDescr.getInputPattern();
         if (inputPattern == null) {
             context.addError(new DescrBuildError(context.getParentDescr(),
-                                                 accumDescr,
-                                                 null,
-                                                 "Invalid accumulate pattern in rule '" + context.getRule().getName() + "'."));
+                    accumDescr,
+                    null,
+                    "Invalid accumulate pattern in rule '" + context.getRule().getName() + "'."));
             return true;
         }
 
         if (source instanceof Pattern) {
-            if ( ((Pattern) source).hasXPath() ) {
+            if (((Pattern) source).hasXPath()) {
                 return true;
             }
-            if ( ((Pattern) source).getSource() instanceof EntryPointId ) {
+            if (((Pattern) source).getSource() instanceof EntryPointId) {
                 return false;
             }
         }
 
-        if ( inputPattern.getSource() != null &&
-                !( inputPattern.getSource() instanceof WindowReferenceDescr ) &&
-                !( inputPattern.getSource() instanceof EntryPointDescr ) ) {
+        if (inputPattern.getSource() != null &&
+                !(inputPattern.getSource() instanceof WindowReferenceDescr) &&
+                !(inputPattern.getSource() instanceof EntryPointDescr)) {
             return true;
         }
 
         return source instanceof QueryElement ||
-               ( source.getNestedElements().size() == 1 && source.getNestedElements().get( 0 ) instanceof QueryElement );
+                (source.getNestedElements().size() == 1 && source.getNestedElements().get(0) instanceof QueryElement);
     }
 }

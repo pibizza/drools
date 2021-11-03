@@ -34,11 +34,11 @@ import java.util.List;
  */
 public abstract class ErrorHandler {
 
-    private final List errors  = new ArrayList();
+    private final List errors = new ArrayList();
 
-    protected String   message;
+    protected String message;
 
-    private boolean    inError = false;
+    private boolean inError = false;
 
     /** This needes to be checked if there is infact an error */
     public boolean isInError() {

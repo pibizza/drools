@@ -25,7 +25,7 @@ public interface CompilationCacheProvider {
         private static final CompilationCacheProvider INSTANCE = getCompilationCacheProvider();
 
         private static CompilationCacheProvider getCompilationCacheProvider() {
-            CompilationCacheProvider provider = ServiceRegistry.getService( CompilationCacheProvider.class );
+            CompilationCacheProvider provider = ServiceRegistry.getService(CompilationCacheProvider.class);
             return provider != null ? provider : DefaultCompilationCacheProvider.INSTANCE;
         }
     }
@@ -34,7 +34,7 @@ public interface CompilationCacheProvider {
         return Holder.INSTANCE;
     }
 
-    InternalKieModule.CompilationCache getCompilationCache( AbstractKieModule kieModule, Map<String, InternalKieModule.CompilationCache> compilationCache, String kbaseName);
+    InternalKieModule.CompilationCache getCompilationCache(AbstractKieModule kieModule, Map<String, InternalKieModule.CompilationCache> compilationCache, String kbaseName);
 
     void writeKieModuleMetaInfo(InternalKieModule kModule, ResourceStore trgMfs);
 
@@ -42,13 +42,13 @@ public interface CompilationCacheProvider {
         INSTANCE;
 
         @Override
-        public InternalKieModule.CompilationCache getCompilationCache( AbstractKieModule kieModule, Map<String, InternalKieModule.CompilationCache> compilationCache, String kbaseName ) {
+        public InternalKieModule.CompilationCache getCompilationCache(AbstractKieModule kieModule, Map<String, InternalKieModule.CompilationCache> compilationCache, String kbaseName) {
             return null;
         }
 
         @Override
         public void writeKieModuleMetaInfo(InternalKieModule kModule, ResourceStore trgMfs) {
-            new KieMetaInfoBuilder( kModule ).writeKieModuleMetaInfo( trgMfs );
+            new KieMetaInfoBuilder(kModule).writeKieModuleMetaInfo(trgMfs);
         }
     }
 }

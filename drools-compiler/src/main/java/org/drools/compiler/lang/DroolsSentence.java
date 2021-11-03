@@ -55,7 +55,7 @@ public class DroolsSentence {
      * setter of sentence type
      *
      * @param type
-     *            sentence type
+     *        sentence type
      * @see DroolsSentenceType
      */
     public void setType(DroolsSentenceType type) {
@@ -75,7 +75,7 @@ public class DroolsSentence {
      * setter for start char offset
      *
      * @param startOffset
-     *            start char offset
+     *        start char offset
      */
     public void setStartOffset(int startOffset) {
         this.startOffset = startOffset;
@@ -94,7 +94,7 @@ public class DroolsSentence {
      * setter for end char offset
      *
      * @param endOffset
-     *            end char offset
+     *        end char offset
      */
     public void setEndOffset(int endOffset) {
         this.endOffset = endOffset;
@@ -120,7 +120,7 @@ public class DroolsSentence {
      * Add a token to the content and sets char offset info
      *
      * @param token
-     *            token to be stored
+     *        token to be stored
      */
     public void addContent(DroolsToken token) {
         if (startOffset == -1) {
@@ -134,7 +134,7 @@ public class DroolsSentence {
      * Add a location to the content
      *
      * @param contextInfo
-     *            location identifier
+     *        location identifier
      * @see Location
      */
     public void addContent(int contextInfo) {

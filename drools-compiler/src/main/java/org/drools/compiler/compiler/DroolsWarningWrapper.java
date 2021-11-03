@@ -21,7 +21,7 @@ public class DroolsWarningWrapper extends DroolsWarning {
 
     KnowledgeBuilderResult backingProblem;
 
-    public DroolsWarningWrapper (KnowledgeBuilderResult problem) {
+    public DroolsWarningWrapper(KnowledgeBuilderResult problem) {
         super(problem.getResource());
         this.backingProblem = problem;
     }

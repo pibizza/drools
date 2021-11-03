@@ -27,54 +27,54 @@ import org.drools.core.rule.Declaration;
 import static org.drools.core.factmodel.GenericTypeDefinition.parseType;
 
 public class PatternDescr extends AnnotatedBaseDescr
-    implements
-    Cloneable {
-    private static final long       serialVersionUID     = 510l;
-    private String                  objectType;
-    private String                  identifier;
-    private boolean                 unification;
-    private ConditionalElementDescr constraint           = new AndDescr();
-    private int                     leftParentCharacter  = -1;
-    private int                     rightParentCharacter = -1;
-    private PatternSourceDescr      source;
-    private List<BehaviorDescr>     behaviors;
-    private boolean                 query;
-    private Declaration             xpathStartDeclaration;
+        implements
+        Cloneable {
+    private static final long serialVersionUID = 510l;
+    private String objectType;
+    private String identifier;
+    private boolean unification;
+    private ConditionalElementDescr constraint = new AndDescr();
+    private int leftParentCharacter = -1;
+    private int rightParentCharacter = -1;
+    private PatternSourceDescr source;
+    private List<BehaviorDescr> behaviors;
+    private boolean query;
+    private Declaration xpathStartDeclaration;
     private GenericTypeDefinition genericType;
 
     public PatternDescr() {
-        this( null,
-              null );
+        this(null,
+                null);
     }
 
     public PatternDescr(final String objectType) {
-        this( objectType,
-              null );
+        this(objectType,
+                null);
     }
 
     public PatternDescr(final String objectType,
-                        final String identifier) {
+            final String identifier) {
         this.objectType = objectType;
         this.identifier = identifier;
     }
 
     public PatternDescr(final String objectType,
-                        final String identifier,
-                        final boolean isQuery ) {
+            final String identifier,
+            final boolean isQuery) {
         this.objectType = objectType;
         this.identifier = identifier;
-        this.query = isQuery; 
+        this.query = isQuery;
     }
 
-    public void setIdentifier( final String identifier ) {
+    public void setIdentifier(final String identifier) {
         this.identifier = identifier;
     }
 
-    public void setObjectType( final String objectType ) {
+    public void setObjectType(final String objectType) {
         this.objectType = objectType;
     }
 
-    public void setQuery( boolean query ) {
+    public void setQuery(boolean query) {
         this.query = query;
     }
 
@@ -82,7 +82,7 @@ public class PatternDescr extends AnnotatedBaseDescr
         return this.objectType;
     }
 
-    public boolean resolveObjectType( Function<String, String> resolver ) {
+    public boolean resolveObjectType(Function<String, String> resolver) {
         if (genericType == null) {
             genericType = parseType(objectType, resolver);
         }
@@ -100,13 +100,13 @@ public class PatternDescr extends AnnotatedBaseDescr
     public List<String> getAllBoundIdentifiers() {
         List<String> identifiers = new ArrayList<>();
         if (this.identifier != null) {
-            identifiers.add( this.identifier );
+            identifiers.add(this.identifier);
         }
         for (BaseDescr descr : getDescrs()) {
             String descrText = descr.getText();
-            int colonPos = descrText.indexOf( ':' );
+            int colonPos = descrText.indexOf(':');
             if (colonPos > 0) {
-                identifiers.add(descrText.substring( 0, colonPos ).trim());
+                identifiers.add(descrText.substring(0, colonPos).trim());
             }
         }
         return identifiers;
@@ -118,22 +118,22 @@ public class PatternDescr extends AnnotatedBaseDescr
 
     public boolean isPassive(RuleBuildContext context) {
         // when the source is a FromDesc also check that it isn't the datasource of a ruleunit
-        return query || ( source instanceof FromDescr && !context.getEntryPointId( ( (FromDescr) source ).getDataSource().getText() ).isPresent() );
+        return query || (source instanceof FromDescr && !context.getEntryPointId(((FromDescr) source).getDataSource().getText()).isPresent());
     }
 
-    public List< ? extends BaseDescr> getDescrs() {
+    public List<? extends BaseDescr> getDescrs() {
         return this.constraint.getDescrs();
     }
 
-    public void addConstraint( BaseDescr base ) {
-        this.constraint.addDescr( base );
+    public void addConstraint(BaseDescr base) {
+        this.constraint.addDescr(base);
     }
 
     public void removeAllConstraint() {
-        constraint= new AndDescr();
+        constraint = new AndDescr();
     }
 
-    public boolean removeConstraint( BaseDescr base ) {
+    public boolean removeConstraint(BaseDescr base) {
         return this.constraint.removeDescr(base);
     }
 
@@ -142,31 +142,31 @@ public class PatternDescr extends AnnotatedBaseDescr
     }
 
     public PatternDescr negateConstraint() {
-        this.constraint = (ConditionalElementDescr) ((BaseDescr)this.constraint).negate();
+        this.constraint = (ConditionalElementDescr) ((BaseDescr) this.constraint).negate();
         return this;
     }
 
-    public List< ? extends BaseDescr> getPositionalConstraints() {
+    public List<? extends BaseDescr> getPositionalConstraints() {
         return this.doGetConstraints(ExprConstraintDescr.Type.POSITIONAL);
     }
 
-    public List< ? extends BaseDescr> getSlottedConstraints() {
+    public List<? extends BaseDescr> getSlottedConstraints() {
         return this.doGetConstraints(ExprConstraintDescr.Type.NAMED);
     }
 
-    private List< ? extends BaseDescr> doGetConstraints(ExprConstraintDescr.Type type) {
+    private List<? extends BaseDescr> doGetConstraints(ExprConstraintDescr.Type type) {
         List<BaseDescr> returnList = new ArrayList<BaseDescr>();
-        for(BaseDescr descr : this.constraint.getDescrs()) {
+        for (BaseDescr descr : this.constraint.getDescrs()) {
 
             // if it is a ExprConstraintDescr - check the type
-            if(descr instanceof ExprConstraintDescr) {
+            if (descr instanceof ExprConstraintDescr) {
                 ExprConstraintDescr desc = (ExprConstraintDescr) descr;
-                if(desc.getType().equals(type)) {
+                if (desc.getType().equals(type)) {
                     returnList.add(desc);
                 }
             } else {
                 // otherwise, assume 'NAMED'
-                if(type.equals(ExprConstraintDescr.Type.NAMED)) {
+                if (type.equals(ExprConstraintDescr.Type.NAMED)) {
                     returnList.add(descr);
                 }
             }
@@ -177,7 +177,7 @@ public class PatternDescr extends AnnotatedBaseDescr
 
     public boolean isInternalFact(RuleBuildContext context) {
         return !(source == null || source instanceof EntryPointDescr ||
-                 (source instanceof FromDescr) && context.getEntryPointId(((FromDescr) source).getExpression()).isPresent());
+                (source instanceof FromDescr) && context.getEntryPointId(((FromDescr) source).getExpression()).isPresent());
     }
 
     public String toString() {
@@ -194,7 +194,7 @@ public class PatternDescr extends AnnotatedBaseDescr
     /**
      * @param leftParentCharacter the leftParentCharacter to set
      */
-    public void setLeftParentCharacter( final int leftParentCharacter ) {
+    public void setLeftParentCharacter(final int leftParentCharacter) {
         this.leftParentCharacter = leftParentCharacter;
     }
 
@@ -208,7 +208,7 @@ public class PatternDescr extends AnnotatedBaseDescr
     /**
      * @param rightParentCharacter the rightParentCharacter to set
      */
-    public void setRightParentCharacter( final int rightParentCharacter ) {
+    public void setRightParentCharacter(final int rightParentCharacter) {
         this.rightParentCharacter = rightParentCharacter;
     }
 
@@ -216,7 +216,7 @@ public class PatternDescr extends AnnotatedBaseDescr
         return source;
     }
 
-    public void setSource( PatternSourceDescr source ) {
+    public void setSource(PatternSourceDescr source) {
         this.source = source;
     }
 
@@ -230,7 +230,7 @@ public class PatternDescr extends AnnotatedBaseDescr
      * @return the behaviors
      */
     public List<BehaviorDescr> getBehaviors() {
-        if ( behaviors == null ) {
+        if (behaviors == null) {
             return Collections.emptyList();
         }
         return behaviors;
@@ -239,15 +239,15 @@ public class PatternDescr extends AnnotatedBaseDescr
     /**
      * @param behaviors the behaviors to set
      */
-    public void setBehaviors( List<BehaviorDescr> behaviors ) {
+    public void setBehaviors(List<BehaviorDescr> behaviors) {
         this.behaviors = behaviors;
     }
 
-    public void addBehavior( BehaviorDescr behavior ) {
-        if ( this.behaviors == null ) {
+    public void addBehavior(BehaviorDescr behavior) {
+        if (this.behaviors == null) {
             this.behaviors = new ArrayList<BehaviorDescr>();
         }
-        this.behaviors.add( behavior );
+        this.behaviors.add(behavior);
     }
 
     /**
@@ -260,7 +260,7 @@ public class PatternDescr extends AnnotatedBaseDescr
     /**
      * @param unification the unification to set
      */
-    public void setUnification( boolean unification ) {
+    public void setUnification(boolean unification) {
         this.unification = unification;
     }
 
@@ -268,34 +268,34 @@ public class PatternDescr extends AnnotatedBaseDescr
         return xpathStartDeclaration;
     }
 
-    public void setXpathStartDeclaration( Declaration xpathStartDeclaration ) {
+    public void setXpathStartDeclaration(Declaration xpathStartDeclaration) {
         this.xpathStartDeclaration = xpathStartDeclaration;
     }
 
     public PatternDescr clone() {
-        PatternDescr clone = new PatternDescr( this.objectType,
-                                               this.identifier );
-        clone.setQuery( this.query );
-        clone.setUnification( unification );
-        clone.setLeftParentCharacter( this.leftParentCharacter );
-        clone.setRightParentCharacter( this.rightParentCharacter );
-        clone.setSource( this.source );
-        clone.setStartCharacter( this.getStartCharacter() );
-        clone.setEndCharacter( this.getEndCharacter() );
-        clone.setLocation( this.getLine(),
-                           this.getColumn() );
-        clone.setEndLocation( this.getEndLine(),
-                              this.getEndColumn() );
-        clone.setText( this.getText() );
-        for ( BaseDescr constraint : this.getDescrs() ) {
-            clone.addConstraint( constraint );
+        PatternDescr clone = new PatternDescr(this.objectType,
+                this.identifier);
+        clone.setQuery(this.query);
+        clone.setUnification(unification);
+        clone.setLeftParentCharacter(this.leftParentCharacter);
+        clone.setRightParentCharacter(this.rightParentCharacter);
+        clone.setSource(this.source);
+        clone.setStartCharacter(this.getStartCharacter());
+        clone.setEndCharacter(this.getEndCharacter());
+        clone.setLocation(this.getLine(),
+                this.getColumn());
+        clone.setEndLocation(this.getEndLine(),
+                this.getEndColumn());
+        clone.setText(this.getText());
+        for (BaseDescr constraint : this.getDescrs()) {
+            clone.addConstraint(constraint);
         }
-        if ( behaviors != null ) {
-            for ( BehaviorDescr behavior : behaviors ) {
-                clone.addBehavior( behavior );
+        if (behaviors != null) {
+            for (BehaviorDescr behavior : behaviors) {
+                clone.addBehavior(behavior);
             }
         }
-        clone.setXpathStartDeclaration( xpathStartDeclaration );
+        clone.setXpathStartDeclaration(xpathStartDeclaration);
         return clone;
     }
 

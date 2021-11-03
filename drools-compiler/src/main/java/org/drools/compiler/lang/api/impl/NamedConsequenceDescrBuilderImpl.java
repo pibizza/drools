@@ -22,7 +22,7 @@ import org.drools.compiler.lang.descr.NamedConsequenceDescr;
 /**
  * A builder implementation for NamedConsequenceDescr using a fluent API.
  */
-public class NamedConsequenceDescrBuilderImpl<P extends DescrBuilder< ?, ? >>
+public class NamedConsequenceDescrBuilderImpl<P extends DescrBuilder<?, ?>>
         extends BaseDescrBuilderImpl<P, NamedConsequenceDescr>
         implements NamedConsequenceDescrBuilder<P> {
 
@@ -30,13 +30,13 @@ public class NamedConsequenceDescrBuilderImpl<P extends DescrBuilder< ?, ? >>
         super(parent, new NamedConsequenceDescr());
     }
 
-    public NamedConsequenceDescrBuilder<P> name( String name ) {
-        getDescr().setName( name );
+    public NamedConsequenceDescrBuilder<P> name(String name) {
+        getDescr().setName(name);
         return this;
     }
 
-    public NamedConsequenceDescrBuilder<P> breaking( boolean breaking ) {
-        getDescr().setBreaking( breaking );
+    public NamedConsequenceDescrBuilder<P> breaking(boolean breaking) {
+        getDescr().setBreaking(breaking);
         return this;
     }
 }

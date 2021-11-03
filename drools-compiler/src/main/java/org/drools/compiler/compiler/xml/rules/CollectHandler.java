@@ -28,37 +28,37 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class CollectHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
 
     public CollectHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
         final CollectDescr collectDescr = new CollectDescr();
         return collectDescr;
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
 
         final Element element = parser.endElementBuilder();
         final CollectDescr collectDescr = (CollectDescr) parser.getCurrent();
 
         final Object parent = parser.getParent();
 
-        if ( parent.getClass().getName().equals( FromDescr.class.getName() ) ) {
-            final PatternDescr resultPattern = (PatternDescr) parser.getParent( 1 );
-            resultPattern.setSource( collectDescr );
-        } else if ( parent instanceof ConditionalElementDescr ) {
+        if (parent.getClass().getName().equals(FromDescr.class.getName())) {
+            final PatternDescr resultPattern = (PatternDescr) parser.getParent(1);
+            resultPattern.setSource(collectDescr);
+        } else if (parent instanceof ConditionalElementDescr) {
             final ConditionalElementDescr parentDescr = (ConditionalElementDescr) parent;
-            parentDescr.addDescr( collectDescr );
+            parentDescr.addDescr(collectDescr);
         }
 
         return collectDescr;

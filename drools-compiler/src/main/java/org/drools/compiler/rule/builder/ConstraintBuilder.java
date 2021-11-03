@@ -15,7 +15,6 @@
 
 package org.drools.compiler.rule.builder;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +41,6 @@ import org.drools.core.spi.ObjectType;
 import org.drools.core.time.TimerExpression;
 import org.kie.api.internal.utils.ServiceRegistry;
 
-
 public interface ConstraintBuilder {
 
     class Holder {
@@ -65,64 +63,63 @@ public interface ConstraintBuilder {
     boolean isMvelOperator(String operator);
 
     Constraint buildVariableConstraint(RuleBuildContext context,
-                                       Pattern pattern,
-                                       String expression,
-                                       Declaration[] declarations,
-                                       String leftValue,
-                                       OperatorDescr operator,
-                                       String rightValue,
-                                       InternalReadAccessor extractor,
-                                       Declaration requiredDeclaration,
-                                       RelationalExprDescr relDescr,
-                                       Map<String, OperatorDescr> aliases);
+            Pattern pattern,
+            String expression,
+            Declaration[] declarations,
+            String leftValue,
+            OperatorDescr operator,
+            String rightValue,
+            InternalReadAccessor extractor,
+            Declaration requiredDeclaration,
+            RelationalExprDescr relDescr,
+            Map<String, OperatorDescr> aliases);
 
     Constraint buildLiteralConstraint(RuleBuildContext context,
-                                      Pattern pattern,
-                                      ValueType vtype,
-                                      FieldValue field,
-                                      String expression,
-                                      String leftValue,
-                                      String operator,
-                                      boolean negated,
-                                      String rightValue,
-                                      InternalReadAccessor extractor,
-                                      LiteralRestrictionDescr restrictionDescr,
-                                      Map<String, OperatorDescr> aliases);
+            Pattern pattern,
+            ValueType vtype,
+            FieldValue field,
+            String expression,
+            String leftValue,
+            String operator,
+            boolean negated,
+            String rightValue,
+            InternalReadAccessor extractor,
+            LiteralRestrictionDescr restrictionDescr,
+            Map<String, OperatorDescr> aliases);
 
+    Evaluator getEvaluator(RuleBuildContext context,
+            BaseDescr descr,
+            ValueType valueType,
+            String evaluatorString,
+            boolean isNegated,
+            String parameters,
+            EvaluatorDefinition.Target left,
+            EvaluatorDefinition.Target right);
 
-    Evaluator getEvaluator( RuleBuildContext context,
-                            BaseDescr descr,
-                            ValueType valueType,
-                            String evaluatorString,
-                            boolean isNegated,
-                            String parameters,
-                            EvaluatorDefinition.Target left,
-                            EvaluatorDefinition.Target right );
-    
-    EvaluatorWrapper wrapEvaluator( Evaluator evaluator,
-                                    Declaration left,
-                                    Declaration right );
+    EvaluatorWrapper wrapEvaluator(Evaluator evaluator,
+            Declaration left,
+            Declaration right);
 
-    Constraint buildMvelConstraint( String packageName,
-                                    String expression,
-                                    Declaration[] declarations,
-                                    EvaluatorWrapper[] operators,
-                                    RuleBuildContext context,
-                                    Declaration[] previousDeclarations,
-                                    Declaration[] localDeclarations,
-                                    PredicateDescr predicateDescr,
-                                    AnalysisResult analysis,
-                                    boolean isIndexable );
+    Constraint buildMvelConstraint(String packageName,
+            String expression,
+            Declaration[] declarations,
+            EvaluatorWrapper[] operators,
+            RuleBuildContext context,
+            Declaration[] previousDeclarations,
+            Declaration[] localDeclarations,
+            PredicateDescr predicateDescr,
+            AnalysisResult analysis,
+            boolean isIndexable);
 
-    TimerExpression buildTimerExpression( String expression, RuleBuildContext context );
+    TimerExpression buildTimerExpression(String expression, RuleBuildContext context);
 
     AnalysisResult analyzeExpression(Class<?> thisClass, String expr);
 
-    InternalReadAccessor buildMvelFieldReadAccessor( RuleBuildContext context, BaseDescr descr, Pattern pattern,
-                                                     ObjectType objectType, String fieldName, boolean reportError);
+    InternalReadAccessor buildMvelFieldReadAccessor(RuleBuildContext context, BaseDescr descr, Pattern pattern,
+            ObjectType objectType, String fieldName, boolean reportError);
 
     void setExprInputs(RuleBuildContext context, PatternBuilder.ExprBindings descrBranch,
-                       Class<?> thisClass, String expr);
+            Class<?> thisClass, String expr);
 
     FieldValue getMvelFieldValue(RuleBuildContext context, ValueType vtype, String value);
 
@@ -144,57 +141,61 @@ public interface ConstraintBuilder {
         }
 
         @Override
-        public AnalysisResult analyzeExpression( Class<?> thisClass, String expr ) {
+        public AnalysisResult analyzeExpression(Class<?> thisClass, String expr) {
             return null;
         }
 
         @Override
-        public boolean isMvelOperator( String operator ) {
+        public boolean isMvelOperator(String operator) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public Constraint buildVariableConstraint( RuleBuildContext context, Pattern pattern, String expression, Declaration[] declarations, String leftValue, OperatorDescr operator, String rightValue, InternalReadAccessor extractor, Declaration requiredDeclaration, RelationalExprDescr relDescr, Map<String, OperatorDescr> aliases ) {
+        public Constraint buildVariableConstraint(RuleBuildContext context, Pattern pattern, String expression, Declaration[] declarations, String leftValue, OperatorDescr operator, String rightValue,
+                InternalReadAccessor extractor, Declaration requiredDeclaration, RelationalExprDescr relDescr, Map<String, OperatorDescr> aliases) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public Constraint buildLiteralConstraint( RuleBuildContext context, Pattern pattern, ValueType vtype, FieldValue field, String expression, String leftValue, String operator, boolean negated, String rightValue, InternalReadAccessor extractor, LiteralRestrictionDescr restrictionDescr, Map<String, OperatorDescr> aliases ) {
+        public Constraint buildLiteralConstraint(RuleBuildContext context, Pattern pattern, ValueType vtype, FieldValue field, String expression, String leftValue, String operator, boolean negated,
+                String rightValue, InternalReadAccessor extractor, LiteralRestrictionDescr restrictionDescr, Map<String, OperatorDescr> aliases) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public Evaluator getEvaluator( RuleBuildContext context, BaseDescr descr, ValueType valueType, String evaluatorString, boolean isNegated, String parameters, EvaluatorDefinition.Target left, EvaluatorDefinition.Target right ) {
+        public Evaluator getEvaluator(RuleBuildContext context, BaseDescr descr, ValueType valueType, String evaluatorString, boolean isNegated, String parameters, EvaluatorDefinition.Target left,
+                EvaluatorDefinition.Target right) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public EvaluatorWrapper wrapEvaluator( Evaluator evaluator, Declaration left, Declaration right ) {
+        public EvaluatorWrapper wrapEvaluator(Evaluator evaluator, Declaration left, Declaration right) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public Constraint buildMvelConstraint( String packageName, String expression, Declaration[] declarations, EvaluatorWrapper[] operators, RuleBuildContext context, Declaration[] previousDeclarations, Declaration[] localDeclarations, PredicateDescr predicateDescr, AnalysisResult analysis, boolean isIndexable ) {
+        public Constraint buildMvelConstraint(String packageName, String expression, Declaration[] declarations, EvaluatorWrapper[] operators, RuleBuildContext context,
+                Declaration[] previousDeclarations, Declaration[] localDeclarations, PredicateDescr predicateDescr, AnalysisResult analysis, boolean isIndexable) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public TimerExpression buildTimerExpression( String expression, RuleBuildContext context ) {
+        public TimerExpression buildTimerExpression(String expression, RuleBuildContext context) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public InternalReadAccessor buildMvelFieldReadAccessor( RuleBuildContext context, BaseDescr descr, Pattern pattern, ObjectType objectType, String fieldName, boolean reportError ) {
+        public InternalReadAccessor buildMvelFieldReadAccessor(RuleBuildContext context, BaseDescr descr, Pattern pattern, ObjectType objectType, String fieldName, boolean reportError) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public void setExprInputs( RuleBuildContext context, PatternBuilder.ExprBindings descrBranch, Class<?> thisClass, String expr ) {
+        public void setExprInputs(RuleBuildContext context, PatternBuilder.ExprBindings descrBranch, Class<?> thisClass, String expr) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public FieldValue getMvelFieldValue( RuleBuildContext context, ValueType vtype, String value ) {
+        public FieldValue getMvelFieldValue(RuleBuildContext context, ValueType vtype, String value) {
             throw new UnsupportedOperationException();
         }
 
@@ -204,7 +205,7 @@ public interface ConstraintBuilder {
         }
 
         @Override
-        public BeanCreator createMVELBeanCreator( Map<String, Object> parameters) {
+        public BeanCreator createMVELBeanCreator(Map<String, Object> parameters) {
             throw new UnsupportedOperationException();
         }
     }

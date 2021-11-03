@@ -20,7 +20,7 @@ import org.drools.compiler.lang.descr.ImportDescr;
 
 public class ImportError extends DroolsError {
     private final ImportDescr importDescr;
-    private int[]  line;
+    private int[] line;
 
     public ImportError(final ImportDescr importDescr, final int line) {
         super(importDescr.getResource());
@@ -44,7 +44,7 @@ public class ImportError extends DroolsError {
     public String getMessage() {
         return "Error importing : '" + getGlobal() + "'";
     }
-    
+
     public String toString() {
         return getMessage();
     }

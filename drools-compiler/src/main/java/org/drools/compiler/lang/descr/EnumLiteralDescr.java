@@ -23,42 +23,39 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 public class EnumLiteralDescr extends AnnotatedBaseDescr
-    implements
-    Comparable<EnumLiteralDescr> {
+        implements
+        Comparable<EnumLiteralDescr> {
 
-    private static final long            serialVersionUID = 510l;
-    private int                          index            = -1;
-    private String                       name;
-    private List<String>                 constructorArgs  = Collections.emptyList();
+    private static final long serialVersionUID = 510l;
+    private int index = -1;
+    private String name;
+    private List<String> constructorArgs = Collections.emptyList();
 
     public EnumLiteralDescr() {
-        this( null );
+        this(null);
     }
 
-    public EnumLiteralDescr( final String name ) {
+    public EnumLiteralDescr(final String name) {
         this.name = name;
     }
 
-
     @Override
-    public void readExternal( ObjectInput in ) throws IOException,
-                                              ClassNotFoundException {
-        super.readExternal( in );
+    public void readExternal(ObjectInput in) throws IOException,
+            ClassNotFoundException {
+        super.readExternal(in);
         index = in.readInt();
         name = (String) in.readObject();
         constructorArgs = (List<String>) in.readObject();
     }
-    
+
     @Override
-    public void writeExternal( ObjectOutput out ) throws IOException {
+    public void writeExternal(ObjectOutput out) throws IOException {
         super.writeExternal(out);
         out.writeInt(index);
-        out.writeObject( name );
-        out.writeObject( constructorArgs );
+        out.writeObject(name);
+        out.writeObject(constructorArgs);
     }
-
 
     public String getName() {
         return name;
@@ -75,12 +72,12 @@ public class EnumLiteralDescr extends AnnotatedBaseDescr
     public void setConstructorArgs(List<String> constructorArgs) {
         this.constructorArgs = constructorArgs;
     }
-    
-    public void addConstructorArg( String arg ) {
-        if ( constructorArgs == Collections.EMPTY_LIST ) {
+
+    public void addConstructorArg(String arg) {
+        if (constructorArgs == Collections.EMPTY_LIST) {
             constructorArgs = new ArrayList<String>();
         }
-        constructorArgs.add( arg );
+        constructorArgs.add(arg);
     }
 
     @Override
@@ -92,7 +89,7 @@ public class EnumLiteralDescr extends AnnotatedBaseDescr
                 "} " + super.toString();
     }
 
-    public int compareTo( EnumLiteralDescr other ) {
+    public int compareTo(EnumLiteralDescr other) {
         return (this.index - other.index);
     }
 
@@ -100,9 +97,8 @@ public class EnumLiteralDescr extends AnnotatedBaseDescr
         return index;
     }
 
-    public void setIndex( int index ) {
+    public void setIndex(int index) {
         this.index = index;
     }
-
 
 }

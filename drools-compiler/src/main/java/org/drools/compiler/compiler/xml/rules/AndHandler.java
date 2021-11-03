@@ -34,41 +34,41 @@ import org.xml.sax.SAXException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class AndHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public AndHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
         final AndDescr andDescr = new AndDescr();
 
         return andDescr;
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
 
         final AndDescr andDescr = (AndDescr) parser.getCurrent();
 
         final Object parent = parser.getParent();
 
-        if ( !andDescr.getDescrs().isEmpty() ) {
-            if ( parent instanceof RuleDescr || parent instanceof QueryDescr ) {
+        if (!andDescr.getDescrs().isEmpty()) {
+            if (parent instanceof RuleDescr || parent instanceof QueryDescr) {
                 final RuleDescr ruleDescr = (RuleDescr) parent;
-                ruleDescr.setLhs( andDescr );
-            } else if ( parent instanceof MultiPatternDestinationDescr ) {
+                ruleDescr.setLhs(andDescr);
+            } else if (parent instanceof MultiPatternDestinationDescr) {
                 final MultiPatternDestinationDescr mpDescr = (MultiPatternDestinationDescr) parent;
-                mpDescr.setInput( andDescr );
-            } else if ( parent instanceof ConditionalElementDescr ) {
+                mpDescr.setInput(andDescr);
+            } else if (parent instanceof ConditionalElementDescr) {
                 final ConditionalElementDescr ceDescr = (ConditionalElementDescr) parent;
-                ceDescr.addDescr( andDescr );
+                ceDescr.addDescr(andDescr);
             }
         }
 

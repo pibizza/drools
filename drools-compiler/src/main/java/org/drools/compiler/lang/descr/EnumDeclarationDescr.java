@@ -25,46 +25,37 @@ import java.util.Collections;
 
 public class EnumDeclarationDescr extends AbstractClassTypeDeclarationDescr {
 
-    private List<EnumLiteralDescr>       literals   = Collections.emptyList();
-
+    private List<EnumLiteralDescr> literals = Collections.emptyList();
 
     public EnumDeclarationDescr() {
-        this( null );
+        this(null);
     }
 
     public EnumDeclarationDescr(final String typeName) {
-        super( typeName );
+        super(typeName);
     }
 
     public EnumDeclarationDescr(final String typeName, final String typeNamespace) {
-        super( typeName, typeNamespace );
+        super(typeName, typeNamespace);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void readExternal( ObjectInput in ) throws IOException,
+    public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
-        super.readExternal( in );
+        super.readExternal(in);
         this.literals = (List<EnumLiteralDescr>) in.readObject();
     }
 
     @Override
-    public void writeExternal( ObjectOutput out ) throws IOException {
+    public void writeExternal(ObjectOutput out) throws IOException {
         super.writeExternal(out);
-        out.writeObject( literals );
+        out.writeObject(literals);
     }
-
-
-
-
-
 
     public String toString() {
         return "EnumDeclaration[ " + this.getType().getFullName() + " ]";
     }
-
-
-
 
     public List<EnumLiteralDescr> getLiterals() {
         return this.literals;
@@ -73,17 +64,16 @@ public class EnumDeclarationDescr extends AbstractClassTypeDeclarationDescr {
     /**
      * @param literals the fields to set
      */
-    public void setLiterals( List<EnumLiteralDescr> literals ) {
+    public void setLiterals(List<EnumLiteralDescr> literals) {
         this.literals = literals;
     }
 
-    public void addLiteral( EnumLiteralDescr lit ) {
-        if ( this.literals == Collections.EMPTY_LIST ) {
+    public void addLiteral(EnumLiteralDescr lit) {
+        if (this.literals == Collections.EMPTY_LIST) {
             this.literals = new ArrayList<EnumLiteralDescr>();
         }
-        this.literals.add( lit );
+        this.literals.add(lit);
     }
-
 
     public String getSuperTypeName() {
         return "Enum";
@@ -98,10 +88,9 @@ public class EnumDeclarationDescr extends AbstractClassTypeDeclarationDescr {
     }
 
     public List<QualifiedName> getSuperTypes() {
-        List<QualifiedName> l = new ArrayList<QualifiedName>( 1 );
-        l.add( new QualifiedName( "Enum", "java.lang" ) );
+        List<QualifiedName> l = new ArrayList<QualifiedName>(1);
+        l.add(new QualifiedName("Enum", "java.lang"));
         return l;
     }
-
 
 }

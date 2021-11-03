@@ -29,26 +29,26 @@ import java.util.List;
  * A descr class for accumulate node
  */
 public class AccumulateDescr extends PatternSourceDescr
-    implements
-    ConditionalElementDescr,
-    PatternDestinationDescr,
-    MultiPatternDestinationDescr {
+        implements
+        ConditionalElementDescr,
+        PatternDestinationDescr,
+        MultiPatternDestinationDescr {
 
-    private static final long                 serialVersionUID = 510l;
+    private static final long serialVersionUID = 510l;
 
-    private BaseDescr                         input;
-    private String                            initCode;
-    private String                            actionCode;
-    private String                            reverseCode;
-    private String                            resultCode;
-    private String[]                          declarations;
-    private String                            className;
-    private List<AccumulateFunctionCallDescr> functions        = null;
+    private BaseDescr input;
+    private String initCode;
+    private String actionCode;
+    private String reverseCode;
+    private String resultCode;
+    private String[] declarations;
+    private String className;
+    private List<AccumulateFunctionCallDescr> functions = null;
 
     @SuppressWarnings("unchecked")
-    public void readExternal( ObjectInput in ) throws IOException,
-                                              ClassNotFoundException {
-        super.readExternal( in );
+    public void readExternal(ObjectInput in) throws IOException,
+            ClassNotFoundException {
+        super.readExternal(in);
         input = (BaseDescr) in.readObject();
         initCode = (String) in.readObject();
         actionCode = (String) in.readObject();
@@ -59,16 +59,16 @@ public class AccumulateDescr extends PatternSourceDescr
         functions = (List<AccumulateDescr.AccumulateFunctionCallDescr>) in.readObject();
     }
 
-    public void writeExternal( ObjectOutput out ) throws IOException {
-        super.writeExternal( out );
-        out.writeObject( input );
-        out.writeObject( initCode );
-        out.writeObject( actionCode );
-        out.writeObject( reverseCode );
-        out.writeObject( resultCode );
-        out.writeObject( declarations );
-        out.writeObject( className );
-        out.writeObject( functions );
+    public void writeExternal(ObjectOutput out) throws IOException {
+        super.writeExternal(out);
+        out.writeObject(input);
+        out.writeObject(initCode);
+        out.writeObject(actionCode);
+        out.writeObject(reverseCode);
+        out.writeObject(resultCode);
+        out.writeObject(declarations);
+        out.writeObject(className);
+        out.writeObject(functions);
     }
 
     public int getLine() {
@@ -79,7 +79,7 @@ public class AccumulateDescr extends PatternSourceDescr
         return this.className;
     }
 
-    public void setClassName( final String classMethodName ) {
+    public void setClassName(final String classMethodName) {
         this.className = classMethodName;
     }
 
@@ -87,7 +87,7 @@ public class AccumulateDescr extends PatternSourceDescr
         return this.declarations;
     }
 
-    public void setDeclarations( final String[] declarations ) {
+    public void setDeclarations(final String[] declarations) {
         this.declarations = declarations;
     }
 
@@ -95,7 +95,7 @@ public class AccumulateDescr extends PatternSourceDescr
         return this.actionCode;
     }
 
-    public void setActionCode( final String actionCode ) {
+    public void setActionCode(final String actionCode) {
         this.actionCode = actionCode;
     }
 
@@ -103,7 +103,7 @@ public class AccumulateDescr extends PatternSourceDescr
         return this.initCode;
     }
 
-    public void setInitCode( final String initCode ) {
+    public void setInitCode(final String initCode) {
         this.initCode = initCode;
     }
 
@@ -111,7 +111,7 @@ public class AccumulateDescr extends PatternSourceDescr
         return this.resultCode;
     }
 
-    public void setResultCode( final String resultCode ) {
+    public void setResultCode(final String resultCode) {
         this.resultCode = resultCode;
     }
 
@@ -119,17 +119,17 @@ public class AccumulateDescr extends PatternSourceDescr
         return "[Accumulate: input=" + this.input.toString() + "]";
     }
 
-    public void addDescr( final BaseDescr patternDescr ) {
-        throw new UnsupportedOperationException( "Can't add descriptors to " + this.getClass().getName() );
+    public void addDescr(final BaseDescr patternDescr) {
+        throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
     public boolean removeDescr(BaseDescr baseDescr) {
-        throw new UnsupportedOperationException("Can't remove descriptors from "+this.getClass().getName());
+        throw new UnsupportedOperationException("Can't remove descriptors from " + this.getClass().getName());
     }
 
-    public void insertBeforeLast( final Class< ? > clazz,
-                                  final BaseDescr baseDescr ) {
-        throw new UnsupportedOperationException( "Can't add descriptors to " + this.getClass().getName() );
+    public void insertBeforeLast(final Class<?> clazz,
+            final BaseDescr baseDescr) {
+        throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
     public List<BaseDescr> getDescrs() {
@@ -137,43 +137,43 @@ public class AccumulateDescr extends PatternSourceDescr
         return Collections.emptyList();
     }
 
-    public void addOrMerge( BaseDescr baseDescr ) {
-        throw new UnsupportedOperationException( "Can't add descriptors to " + this.getClass().getName() );
+    public void addOrMerge(BaseDescr baseDescr) {
+        throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
     public String getReverseCode() {
         return reverseCode;
     }
 
-    public void setReverseCode( String reverseCode ) {
+    public void setReverseCode(String reverseCode) {
         this.reverseCode = reverseCode;
     }
 
     public List<AccumulateFunctionCallDescr> getFunctions() {
-        if ( functions == null ) {
+        if (functions == null) {
             return Collections.emptyList();
         }
         return functions;
     }
 
-    public void addFunction( String function,
-                             String bind,
-                             boolean unify,
-                             String[] params ) {
-        addFunction( new AccumulateFunctionCallDescr( function,
-                                                      bind,
-                                                      unify,
-                                                      params ) );
+    public void addFunction(String function,
+            String bind,
+            boolean unify,
+            String[] params) {
+        addFunction(new AccumulateFunctionCallDescr(function,
+                bind,
+                unify,
+                params));
     }
 
-    public void addFunction( AccumulateFunctionCallDescr function ) {
-        if ( functions == null ) {
+    public void addFunction(AccumulateFunctionCallDescr function) {
+        if (functions == null) {
             functions = new ArrayList<AccumulateDescr.AccumulateFunctionCallDescr>();
         }
-        this.functions.add( function );
+        this.functions.add(function);
     }
 
-    public boolean removeFunction( AccumulateFunctionCallDescr function ) {
+    public boolean removeFunction(AccumulateFunctionCallDescr function) {
         return functions != null && functions.remove(function);
     }
 
@@ -182,18 +182,18 @@ public class AccumulateDescr extends PatternSourceDescr
     }
 
     public PatternDescr getInputPattern() {
-        if ( isSinglePattern() ) {
-            if( this.input instanceof PatternDescr ) {
+        if (isSinglePattern()) {
+            if (this.input instanceof PatternDescr) {
                 return (PatternDescr) this.input;
             } else {
-                BaseDescr firstDescr = ((AndDescr)this.input).getDescrs().get( 0 );
+                BaseDescr firstDescr = ((AndDescr) this.input).getDescrs().get(0);
                 return firstDescr instanceof PatternDescr ? (PatternDescr) firstDescr : null;
             }
         }
         return null;
     }
 
-    public void setInputPattern( final PatternDescr inputPattern ) {
+    public void setInputPattern(final PatternDescr inputPattern) {
         this.input = inputPattern;
     }
 
@@ -201,7 +201,7 @@ public class AccumulateDescr extends PatternSourceDescr
         return input;
     }
 
-    public void setInput( BaseDescr input ) {
+    public void setInput(BaseDescr input) {
         this.input = input;
     }
 
@@ -223,19 +223,19 @@ public class AccumulateDescr extends PatternSourceDescr
     }
 
     public static class AccumulateFunctionCallDescr
-        implements
-        Serializable {
+            implements
+            Serializable {
         private static final long serialVersionUID = 520l;
 
-        private final String      function;
-        private final String      bind;
-        private final boolean     unification;
-        private final String[]    params;
+        private final String function;
+        private final String bind;
+        private final boolean unification;
+        private final String[] params;
 
         public AccumulateFunctionCallDescr(String function,
-                                           String bind,
-                                           boolean unify,
-                                           String[] params) {
+                String bind,
+                boolean unify,
+                String[] params) {
             this.function = function;
             this.bind = bind;
             this.unification = unify;
@@ -245,7 +245,7 @@ public class AccumulateDescr extends PatternSourceDescr
         public String getFunction() {
             return function;
         }
-        
+
         public String getBind() {
             return bind;
         }
@@ -264,28 +264,33 @@ public class AccumulateDescr extends PatternSourceDescr
             int result = 1;
             result = prime * result + ((function == null) ? 0 : function.hashCode());
             result = prime * result + ((bind == null) ? 0 : bind.hashCode());
-            result = prime * result + Arrays.hashCode( params );
+            result = prime * result + Arrays.hashCode(params);
             return result;
         }
 
         @Override
-        public boolean equals( Object obj ) {
-            if ( this == obj ) return true;
-            if ( obj == null ) return false;
-            if ( getClass() != obj.getClass() ) return false;
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
             AccumulateFunctionCallDescr other = (AccumulateFunctionCallDescr) obj;
-            if ( function == null ) {
-                if ( other.function != null ) return false;
-            } else if ( !function.equals( other.function ) ) return false;
+            if (function == null) {
+                if (other.function != null)
+                    return false;
+            } else if (!function.equals(other.function))
+                return false;
 
-
-            if ( bind == null ) {
-                if ( other.bind != null ) return false;
-            } else if ( !bind.equals( other.bind ) ) {
+            if (bind == null) {
+                if (other.bind != null)
+                    return false;
+            } else if (!bind.equals(other.bind)) {
                 return false;
             }
 
-            return Arrays.equals( params, other.params );
+            return Arrays.equals(params, other.params);
         }
     }
 

@@ -23,10 +23,10 @@ import org.drools.core.rule.ReturnValueRestriction;
 
 public interface ReturnValueBuilder {
     public void build(final RuleBuildContext context,
-                      final BoundIdentifiers usedIdentifiers,
-                      final Declaration[] previousDeclarations,
-                      final Declaration[] localDeclarations,
-                      final ReturnValueRestriction returnValueRestriction,
-                      final ReturnValueRestrictionDescr returnValueRestrictionDescr, 
-                      final AnalysisResult analysis);
+            final BoundIdentifiers usedIdentifiers,
+            final Declaration[] previousDeclarations,
+            final Declaration[] localDeclarations,
+            final ReturnValueRestriction returnValueRestriction,
+            final ReturnValueRestrictionDescr returnValueRestrictionDescr,
+            final AnalysisResult analysis);
 }

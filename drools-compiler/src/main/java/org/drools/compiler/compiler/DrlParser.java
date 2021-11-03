@@ -45,12 +45,12 @@ import static org.drools.compiler.compiler.DRLFactory.buildParser;
 public class DrlParser {
 
     // TODO: REMOVE THIS GENERIC MESSAGE ASAP
-    private static final String     GENERIC_ERROR_MESSAGE = "Unexpected exception raised while parsing. This is a bug. Please contact the Development team :\n";
-    private final List<DroolsError> results               = new ArrayList<DroolsError>();
-    private List<DroolsSentence>    editorSentences       = null;
-    private Location                location              = new Location( Location.LOCATION_UNKNOWN );
-    private DRLLexer                lexer                 = null;
-    private Resource                resource              = null;
+    private static final String GENERIC_ERROR_MESSAGE = "Unexpected exception raised while parsing. This is a bug. Please contact the Development team :\n";
+    private final List<DroolsError> results = new ArrayList<DroolsError>();
+    private List<DroolsSentence> editorSentences = null;
+    private Location location = new Location(Location.LOCATION_UNKNOWN);
+    private DRLLexer lexer = null;
+    private Resource resource = null;
 
     public static final LanguageLevelOption DEFAULT_LANGUAGE_LEVEL = LanguageLevelOption.DRL6;
     private final LanguageLevelOption languageLevel;
@@ -70,16 +70,16 @@ public class DrlParser {
     }
 
     public PackageDescr parse(final boolean isEditor,
-                              final String text) throws DroolsParserException {
+            final String text) throws DroolsParserException {
         lexer = buildLexer(text, languageLevel);
         DRLParser parser = buildParser(lexer, languageLevel);
         return compile(isEditor, parser);
     }
 
     public PackageDescr parse(final boolean isEditor,
-                              final Reader reader) throws DroolsParserException {
+            final Reader reader) throws DroolsParserException {
         lexer = buildLexer(reader, languageLevel);
-        DRLParser parser = buildParser( lexer, languageLevel );
+        DRLParser parser = buildParser(lexer, languageLevel);
         return compile(isEditor, parser);
     }
 
@@ -97,17 +97,17 @@ public class DrlParser {
      * language.
      */
     public PackageDescr parse(final Reader drl,
-                              final Reader dsl) throws DroolsParserException,
-                                               IOException {
+            final Reader dsl) throws DroolsParserException,
+            IOException {
         return parse(false,
                 drl,
                 dsl);
     }
 
     public PackageDescr parse(boolean isEditor,
-                              final Reader drl,
-                              final Reader dsl) throws DroolsParserException,
-                                               IOException {
+            final Reader drl,
+            final Reader dsl) throws DroolsParserException,
+            IOException {
         final StringBuilder text = getDRLText(drl);
         return parse(text.toString(), dsl);
     }
@@ -117,26 +117,26 @@ public class DrlParser {
      * language.
      * 
      * @param source
-     *            As Text.
+     *        As Text.
      * @param dsl
      * @return
      * @throws DroolsParserException
      */
     public PackageDescr parse(boolean isEditor,
-                              final String source,
-                              final Reader dsl) throws DroolsParserException {
+            final String source,
+            final Reader dsl) throws DroolsParserException {
         DefaultExpanderResolver resolver = getDefaultResolver(dsl);
 
-        final Expander expander = resolver.get( "*", null );
-        final String expanded = expander.expand( source );
-        if ( expander.hasErrors() ) {
-            this.results.addAll( expander.getErrors() );
+        final Expander expander = resolver.get("*", null);
+        final String expanded = expander.expand(source);
+        if (expander.hasErrors()) {
+            this.results.addAll(expander.getErrors());
         }
         return this.parse(isEditor, expanded);
     }
 
     public PackageDescr parse(final String source,
-                              final Reader dsl) throws DroolsParserException {
+            final Reader dsl) throws DroolsParserException {
         return this.parse(false, source, dsl);
     }
 
@@ -145,20 +145,20 @@ public class DrlParser {
     }
 
     public PackageDescr parse(final Resource resource,
-                              final InputStream is) throws DroolsParserException, IOException {
+            final InputStream is) throws DroolsParserException, IOException {
         return parse(false, resource, is);
     }
 
     public PackageDescr parse(final boolean isEditor,
-                              final Resource resource) throws DroolsParserException, IOException {
+            final Resource resource) throws DroolsParserException, IOException {
         try (InputStream is = resource.getInputStream()) {
-            return parse( isEditor, resource, is );
+            return parse(isEditor, resource, is);
         }
     }
 
     public PackageDescr parse(final boolean isEditor,
-                              final Resource resource,
-                              final InputStream is) throws DroolsParserException, IOException {
+            final Resource resource,
+            final InputStream is) throws DroolsParserException, IOException {
         this.resource = resource;
         String encoding = resource instanceof InternalResource ? ((InternalResource) resource).getEncoding() : null;
 
@@ -171,14 +171,14 @@ public class DrlParser {
      * This will expand the DRL. useful for debugging.
      * 
      * @param source -
-     *            the source which use a DSL
+     *        the source which use a DSL
      * @param dsl -
-     *            the DSL itself.
+     *        the DSL itself.
      * @throws DroolsParserException
-     *             If unable to expand in any way.
+     *         If unable to expand in any way.
      */
     public String getExpandedDRL(final String source,
-                                 final Reader dsl) throws DroolsParserException {
+            final Reader dsl) throws DroolsParserException {
         DefaultExpanderResolver resolver = getDefaultResolver(dsl);
         return getExpandedDRL(source,
                 resolver);
@@ -189,25 +189,25 @@ public class DrlParser {
      * debugging.
      * 
      * @param source -
-     *            the source which use a DSL
+     *        the source which use a DSL
      * @param resolver -
-     *            the DSL expander resolver itself.
+     *        the DSL expander resolver itself.
      * @throws DroolsParserException
-     *             If unable to expand in any way.
+     *         If unable to expand in any way.
      */
     public String getExpandedDRL(final String source,
-                                 final DefaultExpanderResolver resolver) throws DroolsParserException {
+            final DefaultExpanderResolver resolver) throws DroolsParserException {
 
         final Expander expander = resolver.get("*",
                 null);
-        final String expanded = expander.expand( source );
-        if ( expander.hasErrors() ) {
+        final String expanded = expander.expand(source);
+        if (expander.hasErrors()) {
             String err = "";
-            for ( ExpanderException ex : expander.getErrors() ) {
+            for (ExpanderException ex : expander.getErrors()) {
                 err = err + "\n Line:[" + ex.getLine() + "] " + ex.getMessage();
 
             }
-            throw new DroolsParserException( err );
+            throw new DroolsParserException(err);
         }
         return expanded;
     }
@@ -218,10 +218,10 @@ public class DrlParser {
         final char[] buf = new char[1024];
         int len;
 
-        while ( (len = reader.read( buf )) >= 0 ) {
-            text.append( buf,
-                         0,
-                         len );
+        while ((len = reader.read(buf)) >= 0) {
+            text.append(buf,
+                    0,
+                    len);
         }
         return text;
     }
@@ -241,51 +241,51 @@ public class DrlParser {
     }
 
     private PackageDescr compile(boolean isEditor,
-                                  final DRLParser parser ) throws DroolsParserException {
+            final DRLParser parser) throws DroolsParserException {
         PackageDescr pkgDescr = null;
         try {
-            if ( isEditor ) {
+            if (isEditor) {
                 parser.enableEditorInterface();
             }
             pkgDescr = parser.compilationUnit(resource);
             editorSentences = parser.getEditorInterface();
-            makeErrorList( parser );
-            if ( isEditor || !this.hasErrors() ) {
+            makeErrorList(parser);
+            if (isEditor || !this.hasErrors()) {
                 return pkgDescr;
             } else {
                 return null;
             }
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             e.printStackTrace();
-            final ParserError err = new ParserError( resource,
-                                                     GENERIC_ERROR_MESSAGE + e.toString()+"\n"+ Arrays.toString( e.getStackTrace() ),
-                                                     -1,
-                                                     0 );
-            this.results.add( err );
-            if ( isEditor ) {
+            final ParserError err = new ParserError(resource,
+                    GENERIC_ERROR_MESSAGE + e.toString() + "\n" + Arrays.toString(e.getStackTrace()),
+                    -1,
+                    0);
+            this.results.add(err);
+            if (isEditor) {
                 return pkgDescr;
             } else {
-                throw new DroolsParserException( GENERIC_ERROR_MESSAGE + e.getMessage(),
-                                                 e );
+                throw new DroolsParserException(GENERIC_ERROR_MESSAGE + e.getMessage(),
+                        e);
             }
         }
     }
 
     /** Convert the antlr exceptions to drools parser exceptions */
-    private void makeErrorList( final DRLParser parser ) {
-        for ( final DroolsParserException recogErr : lexer.getErrors() ) {
-            final ParserError err = new ParserError( resource,
-                                                     recogErr.getMessage(),
-                                                     recogErr.getLineNumber(),
-                                                     recogErr.getColumn() );
-            this.results.add( err );
+    private void makeErrorList(final DRLParser parser) {
+        for (final DroolsParserException recogErr : lexer.getErrors()) {
+            final ParserError err = new ParserError(resource,
+                    recogErr.getMessage(),
+                    recogErr.getLineNumber(),
+                    recogErr.getColumn());
+            this.results.add(err);
         }
-        for ( final DroolsParserException recogErr : parser.getErrors() ) {
-            final ParserError err = new ParserError( resource,
-                                                     recogErr.getMessage(),
-                                                     recogErr.getLineNumber(),
-                                                     recogErr.getColumn() );
-            this.results.add( err );
+        for (final DroolsParserException recogErr : parser.getErrors()) {
+            final ParserError err = new ParserError(resource,
+                    recogErr.getMessage(),
+                    recogErr.getLineNumber(),
+                    recogErr.getColumn());
+            this.results.add(err);
         }
     }
 
@@ -296,10 +296,10 @@ public class DrlParser {
     public DefaultExpanderResolver getDefaultResolver(final Reader dsl) throws DroolsParserException {
         DefaultExpanderResolver resolver;
         try {
-            resolver = new DefaultExpanderResolver( dsl );
-        } catch ( final IOException e ) {
-            throw new DroolsParserException( "Error parsing the DSL.",
-                                             e );
+            resolver = new DefaultExpanderResolver(dsl);
+        } catch (final IOException e) {
+            throw new DroolsParserException("Error parsing the DSL.",
+                    e);
         }
         return resolver;
     }

@@ -29,16 +29,16 @@ import java.util.Set;
  * capable of storing a list of DSLMappingEntries and managing it.
  */
 public class DefaultDSLMapping
-    implements
-    DSLMapping {
+        implements
+        DSLMapping {
 
-    private String                identifier;
-    private String                description;
+    private String identifier;
+    private String description;
     private List<DSLMappingEntry> entries;
-    private Set<String>           options;
+    private Set<String> options;
 
     public DefaultDSLMapping() {
-        this( "" );
+        this("");
     }
 
     public DefaultDSLMapping(final String identifier) {
@@ -49,38 +49,41 @@ public class DefaultDSLMapping
 
     /**
      * Add one entry to the list of the entries
+     * 
      * @param entry
      */
     public void addEntry(final DSLMappingEntry entry) {
-        this.entries.add( entry );
+        this.entries.add(entry);
     }
 
     /**
      * Adds all entries in the given list to this DSL Mapping
+     * 
      * @param entries
      */
     public void addEntries(final List<DSLMappingEntry> entries) {
-        this.entries.addAll( entries );
+        this.entries.addAll(entries);
     }
 
     /**
      * Returns an unmodifiable list of entries
      */
     public List<DSLMappingEntry> getEntries() {
-        return Collections.unmodifiableList( this.entries );
+        return Collections.unmodifiableList(this.entries);
     }
 
     /**
-     * Returns the list of mappings for the given section 
+     * Returns the list of mappings for the given section
+     * 
      * @param section
      * @return
      */
     public List<DSLMappingEntry> getEntries(final DSLMappingEntry.Section section) {
         final List<DSLMappingEntry> list = new ArrayList<DSLMappingEntry>();
-        for ( final Iterator<DSLMappingEntry> it = this.entries.iterator(); it.hasNext(); ) {
+        for (final Iterator<DSLMappingEntry> it = this.entries.iterator(); it.hasNext();) {
             final DSLMappingEntry entry = it.next();
-            if ( entry.getSection().equals( section ) ) {
-                list.add( entry );
+            if (entry.getSection().equals(section)) {
+                list.add(entry);
             }
         }
         return list;
@@ -97,7 +100,7 @@ public class DefaultDSLMapping
      * @inheritDoc
      */
     public void removeEntry(final DSLMappingEntry entry) {
-        this.entries.remove( entry );
+        this.entries.remove(entry);
     }
 
     /**
@@ -120,19 +123,19 @@ public class DefaultDSLMapping
     public void setIdentifier(final String identifier) {
         this.identifier = identifier;
     }
-    
+
     /**
      * @inheritDoc
      */
-    public void setOptions( Collection<String> option ){
+    public void setOptions(Collection<String> option) {
         this.options.addAll(option);
     }
-    
+
     /**
      * @inheritDoc
      */
-    public boolean getOption( String option ){
-        return this.options.contains( option );
+    public boolean getOption(String option) {
+        return this.options.contains(option);
     }
 
 }

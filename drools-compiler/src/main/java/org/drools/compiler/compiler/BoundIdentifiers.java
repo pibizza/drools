@@ -28,38 +28,38 @@ import org.drools.core.rule.Pattern;
 import org.drools.core.rule.XpathBackReference;
 
 public class BoundIdentifiers {
-    private Map<String, Class< ? >>       declrClasses;
-    private Map<String, Class< ? >>       globals;
+    private Map<String, Class<?>> declrClasses;
+    private Map<String, Class<?>> globals;
     private Map<String, EvaluatorWrapper> operators;
-    private Class< ? >                    thisClass;
-    private PackageBuildContext           context;
+    private Class<?> thisClass;
+    private PackageBuildContext context;
 
-    public BoundIdentifiers(Class< ? > thisClass) {
-        this( Collections.EMPTY_MAP, null, Collections.EMPTY_MAP, thisClass );
+    public BoundIdentifiers(Class<?> thisClass) {
+        this(Collections.EMPTY_MAP, null, Collections.EMPTY_MAP, thisClass);
     }
 
-    public BoundIdentifiers(Map<String, Class< ? >> declarations,
-                            PackageBuildContext context) {
-        this( declarations, context, Collections.EMPTY_MAP, null );
+    public BoundIdentifiers(Map<String, Class<?>> declarations,
+            PackageBuildContext context) {
+        this(declarations, context, Collections.EMPTY_MAP, null);
     }
 
-    public BoundIdentifiers(Map<String, Class< ? >> declarations,
-                            PackageBuildContext context,
-                            Map<String, EvaluatorWrapper> operators) {
-        this( declarations, context, operators, null );
+    public BoundIdentifiers(Map<String, Class<?>> declarations,
+            PackageBuildContext context,
+            Map<String, EvaluatorWrapper> operators) {
+        this(declarations, context, operators, null);
     }
 
     public BoundIdentifiers(Pattern pattern,
-                            PackageBuildContext context,
-                            Map<String, EvaluatorWrapper> operators,
-                            Class< ? > thisClass) {
-        this(getDeclarationsMap( pattern, context ), context, operators, thisClass);
+            PackageBuildContext context,
+            Map<String, EvaluatorWrapper> operators,
+            Class<?> thisClass) {
+        this(getDeclarationsMap(pattern, context), context, operators, thisClass);
     }
 
-    public BoundIdentifiers(Map<String, Class< ? >> declarations,
-                            PackageBuildContext context,
-                            Map<String, EvaluatorWrapper> operators,
-                            Class< ? > thisClass) {
+    public BoundIdentifiers(Map<String, Class<?>> declarations,
+            PackageBuildContext context,
+            Map<String, EvaluatorWrapper> operators,
+            Class<?> thisClass) {
         this.declrClasses = declarations;
         this.context = context;
         this.globals = context != null ? context.getKnowledgeBuilder().getGlobals() : Collections.EMPTY_MAP;
@@ -71,15 +71,15 @@ public class BoundIdentifiers {
         return context;
     }
 
-    public Map<String, Class< ? >> getDeclrClasses() {
+    public Map<String, Class<?>> getDeclrClasses() {
         return declrClasses;
     }
 
-    public Map<String, Class< ? >> getGlobals() {
+    public Map<String, Class<?>> getGlobals() {
         return globals;
     }
 
-    public void setGlobals( Map<String, Class<?>> globals ) {
+    public void setGlobals(Map<String, Class<?>> globals) {
         this.globals = globals;
     }
 
@@ -87,47 +87,47 @@ public class BoundIdentifiers {
         return operators != null ? operators : Collections.EMPTY_MAP;
     }
 
-    public Class< ? > getThisClass() {
+    public Class<?> getThisClass() {
         return thisClass;
     }
 
-    public Class< ? > resolveType(String identifier) {
-        Class< ? > cls = declrClasses.get( identifier );
+    public Class<?> resolveType(String identifier) {
+        Class<?> cls = declrClasses.get(identifier);
 
-        if ( cls == null ) {
+        if (cls == null) {
             cls = resolveVarType(identifier);
         }
 
-        if ( cls == null && operators.containsKey( identifier )) {
+        if (cls == null && operators.containsKey(identifier)) {
             cls = context.getConfiguration().getComponentFactory().getExpressionProcessor().getEvaluatorWrapperClass();
         }
 
         return cls;
     }
 
-    public Class< ? > resolveVarType(String identifier) {
+    public Class<?> resolveVarType(String identifier) {
         return context == null ? null : context.resolveVarType(identifier);
     }
 
     public String toString() {
-        return ( "thisClass: " + thisClass + "\n" ) + "declarations:" + declrClasses + "\n" + "globals:" + globals + "\n" + "operators:" + operators + "\n";
+        return ("thisClass: " + thisClass + "\n") + "declarations:" + declrClasses + "\n" + "globals:" + globals + "\n" + "operators:" + operators + "\n";
     }
 
-    private static Map<String, Class< ? >> getDeclarationsMap( Pattern pattern, PackageBuildContext context ) {
-        Map<String, Class< ? >> declarations = new HashMap<>();
+    private static Map<String, Class<?>> getDeclarationsMap(Pattern pattern, PackageBuildContext context) {
+        Map<String, Class<?>> declarations = new HashMap<>();
         if (context instanceof RuleBuildContext) {
-            RuleBuildContext ruleContext = ( (RuleBuildContext) context );
-            for ( Map.Entry<String, Declaration> entry : ruleContext.getDeclarationResolver().getDeclarations( ruleContext.getRule() ).entrySet() ) {
-                if ( entry.getValue().getExtractor() != null ) {
-                    declarations.put( entry.getKey(),
-                                      entry.getValue().getDeclarationClass() );
+            RuleBuildContext ruleContext = ((RuleBuildContext) context);
+            for (Map.Entry<String, Declaration> entry : ruleContext.getDeclarationResolver().getDeclarations(ruleContext.getRule()).entrySet()) {
+                if (entry.getValue().getExtractor() != null) {
+                    declarations.put(entry.getKey(),
+                            entry.getValue().getDeclarationClass());
                 }
             }
 
-            if ( pattern != null ) {
+            if (pattern != null) {
                 List<Class<?>> xpathBackReferenceClasses = pattern.getXpathBackReferenceClasses();
-                for ( int i = 0; i < xpathBackReferenceClasses.size(); i++ ) {
-                    declarations.put( XpathBackReference.BACK_REFERENCE_HEAD + i, xpathBackReferenceClasses.get( i ) );
+                for (int i = 0; i < xpathBackReferenceClasses.size(); i++) {
+                    declarations.put(XpathBackReference.BACK_REFERENCE_HEAD + i, xpathBackReferenceClasses.get(i));
                 }
             }
         }

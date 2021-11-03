@@ -20,17 +20,16 @@ import java.io.InputStream;
 
 import org.kie.memorycompiler.resources.KiePath;
 
-
 public interface File extends FileSystemItem {
     String getName();
-    
-    boolean exists();    
+
+    boolean exists();
 
     InputStream getContents() throws IOException;
-    
+
     void setContents(InputStream is) throws IOException;
 
     void create(InputStream is) throws IOException;
-    
+
     KiePath getPath();
 }

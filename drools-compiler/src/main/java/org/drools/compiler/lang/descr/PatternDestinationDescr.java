@@ -14,7 +14,8 @@
  * limitations under the License.
  *
  * Created on Jun 25, 2007
- */package org.drools.compiler.lang.descr;
+ */
+package org.drools.compiler.lang.descr;
 
 /**
  * An interface to represent pattern destinations
@@ -22,5 +23,6 @@
 public interface PatternDestinationDescr {
 
     public PatternDescr getInputPattern();
+
     public void setInputPattern(PatternDescr patternDescr);
 }

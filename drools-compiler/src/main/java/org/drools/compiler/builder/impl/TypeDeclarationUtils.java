@@ -90,14 +90,14 @@ public class TypeDeclarationUtils {
      * declarations and previous declarations. Means that a class can't extend
      * another class declared in package that has not been loaded yet.
      *
-     * @param klass        the simple name of the class
+     * @param klass the simple name of the class
      * @param packageDescr the descriptor of the package the base class is declared in
-     * @param pkgRegistry  the current package registry
+     * @param pkgRegistry the current package registry
      * @return the fully qualified name of the superclass
      */
     public static String resolveType(String klass,
-                                     PackageDescr packageDescr,
-                                     PackageRegistry pkgRegistry) {
+            PackageDescr packageDescr,
+            PackageRegistry pkgRegistry) {
 
         String arraySuffix = "";
         int arrayIndex = klass.indexOf("[");
@@ -212,7 +212,7 @@ public class TypeDeclarationUtils {
     }
 
     public static String rewriteInitExprWithImports(String expr,
-                                                    TypeResolver typeResolver) {
+            TypeResolver typeResolver) {
         if (expr == null) {
             return null;
         }
@@ -257,7 +257,7 @@ public class TypeDeclarationUtils {
     }
 
     private static String getFullTypeName(String type,
-                                          TypeResolver typeResolver) {
+            TypeResolver typeResolver) {
         if (isLiteralOrKeyword(type)) {
             return type;
         }
@@ -282,7 +282,7 @@ public class TypeDeclarationUtils {
 
         String coreType = arrayDim == 0 ? className : className.substring(0, className.indexOf("["));
         if (loader != null) {
-            coreType = typeName2ClassName( coreType, loader );
+            coreType = typeName2ClassName(coreType, loader);
         }
 
         if (arrayDim > 0) {
@@ -298,7 +298,7 @@ public class TypeDeclarationUtils {
     }
 
     public static void processModifiedProps(Class<?> cls,
-                                      ClassDefinition clsDef) {
+            ClassDefinition clsDef) {
         for (Method method : cls.getDeclaredMethods()) {
             Modifies modifies = method.getAnnotation(Modifies.class);
             if (modifies != null) {
@@ -308,7 +308,7 @@ public class TypeDeclarationUtils {
                     properties.add(prop.trim());
                 }
                 clsDef.addModifiedPropsByMethod(method,
-                                                properties);
+                        properties);
             }
         }
     }

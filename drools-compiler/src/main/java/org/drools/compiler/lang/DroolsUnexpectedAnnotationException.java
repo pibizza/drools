@@ -29,6 +29,6 @@ public class DroolsUnexpectedAnnotationException extends RecognitionException {
 
     @Override
     public String toString() {
-        return "DroolsUnexpectedAnnotationException( @"+ annotationName +" )";
+        return "DroolsUnexpectedAnnotationException( @" + annotationName + " )";
     }
 }

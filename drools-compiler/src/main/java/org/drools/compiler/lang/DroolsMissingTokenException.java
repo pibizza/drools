@@ -24,22 +24,21 @@ import org.antlr.runtime.MissingTokenException;
  */
 public class DroolsMissingTokenException extends MissingTokenException {
     private static final long serialVersionUID = -3708332833521751402L;
-    private String            tokenText;
+    private String tokenText;
 
     public DroolsMissingTokenException() {
         super();
     }
 
     public DroolsMissingTokenException(int expecting,
-                                       String text,
-                                       IntStream input,
-                                       Object inserted) {
-        super( expecting,
-               input,
-               inserted );
+            String text,
+            IntStream input,
+            Object inserted) {
+        super(expecting,
+                input,
+                inserted);
         this.tokenText = text;
     }
-
 
     public String getTokenText() {
         return tokenText;
@@ -47,6 +46,6 @@ public class DroolsMissingTokenException extends MissingTokenException {
 
     @Override
     public String toString() {
-        return "Drools"+super.toString();
+        return "Drools" + super.toString();
     }
 }

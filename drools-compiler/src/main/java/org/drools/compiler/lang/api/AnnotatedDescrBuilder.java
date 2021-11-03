@@ -19,8 +19,8 @@ package org.drools.compiler.lang.api;
 /**
  * An interface for DescrBuilders that support annotations
  */
-public interface AnnotatedDescrBuilder<P extends DescrBuilder<?,?>> {
+public interface AnnotatedDescrBuilder<P extends DescrBuilder<?, ?>> {
 
-    public AnnotationDescrBuilder<P> newAnnotation( String name );
+    public AnnotationDescrBuilder<P> newAnnotation(String name);
 
 }

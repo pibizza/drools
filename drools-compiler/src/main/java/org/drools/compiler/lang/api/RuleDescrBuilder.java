@@ -20,13 +20,13 @@ import org.drools.compiler.lang.descr.AndDescr;
 import org.drools.compiler.lang.descr.RuleDescr;
 
 /**
- *  A descriptor builder for rules
+ * A descriptor builder for rules
  */
 public interface RuleDescrBuilder
-    extends
-    AnnotatedDescrBuilder<RuleDescrBuilder>,
-    AttributeSupportBuilder<RuleDescrBuilder>,
-    DescrBuilder<PackageDescrBuilder, RuleDescr> {
+        extends
+        AnnotatedDescrBuilder<RuleDescrBuilder>,
+        AttributeSupportBuilder<RuleDescrBuilder>,
+        DescrBuilder<PackageDescrBuilder, RuleDescr> {
 
     /**
      * The name of the rule. Best practice is to keep rule names relatively short,
@@ -36,7 +36,7 @@ public interface RuleDescrBuilder
      * 
      * @return itself
      */
-    RuleDescrBuilder name( String name );
+    RuleDescrBuilder name(String name);
 
     /**
      * Defines the name of the rule this rule extends. It will cause the rule
@@ -46,7 +46,7 @@ public interface RuleDescrBuilder
      * 
      * @return itself
      */
-    RuleDescrBuilder extendsRule( String name );
+    RuleDescrBuilder extendsRule(String name);
 
     /**
      * The default right hand side (consequence) of the rule. This is a code block
@@ -54,11 +54,11 @@ public interface RuleDescrBuilder
      * the deprecated '#' character, that was used for one line comments is not supported.
      * For one line comments, please use standard '//'.
      * 
-     * @param rhs the code block 
+     * @param rhs the code block
      * 
      * @return itself
      */
-    RuleDescrBuilder rhs( String rhs );
+    RuleDescrBuilder rhs(String rhs);
 
     /**
      * An additional named right hand side (consequence) of the rule. This is a code block
@@ -71,7 +71,7 @@ public interface RuleDescrBuilder
      *
      * @return itself
      */
-    RuleDescrBuilder namedRhs( String name, String rhs );
+    RuleDescrBuilder namedRhs(String name, String rhs);
 
     /**
      * Defines the LHS (condition) of the rule.

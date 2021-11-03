@@ -24,7 +24,7 @@ import org.kie.internal.builder.KnowledgeBuilderResult;
 
 public class IncrementalResultsImpl implements IncrementalResults {
 
-    private long          idGenerator = 1L;
+    private long idGenerator = 1L;
 
     private List<Message> addedMessages = new ArrayList<Message>();
     private List<Message> removedMessages = new ArrayList<Message>();
@@ -39,7 +39,7 @@ public class IncrementalResultsImpl implements IncrementalResults {
         return removedMessages;
     }
 
-    public void addMessage(KnowledgeBuilderResult result, String kieBaseName ) {
+    public void addMessage(KnowledgeBuilderResult result, String kieBaseName) {
         addedMessages.add(result.asMessage(idGenerator++).setKieBaseName(kieBaseName));
     }
 

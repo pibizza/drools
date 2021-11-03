@@ -19,66 +19,66 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrDescr extends AnnotatedBaseDescr
-    implements
-    ConditionalElementDescr {
+        implements
+        ConditionalElementDescr {
 
     private static final long serialVersionUID = 510l;
-    private List<BaseDescr>   descrs           = new ArrayList<BaseDescr>();
+    private List<BaseDescr> descrs = new ArrayList<BaseDescr>();
 
-    public OrDescr() { }
+    public OrDescr() {
+    }
 
     private OrDescr(BaseDescr baseDescr) {
         addDescr(baseDescr);
     }
 
-    public void insertBeforeLast( final Class<?> clazz,
-                                  final BaseDescr baseDescr ) {
-        if ( clazz.isInstance( baseDescr ) ) {
-            if ( this.descrs.isEmpty() ) {
-                addDescr( baseDescr );
+    public void insertBeforeLast(final Class<?> clazz,
+            final BaseDescr baseDescr) {
+        if (clazz.isInstance(baseDescr)) {
+            if (this.descrs.isEmpty()) {
+                addDescr(baseDescr);
                 return;
             }
-            for ( int i = this.descrs.size() - 1; i >= 0; i-- ) {
-                if ( clazz.isInstance( this.descrs.get( i ) ) ) {
-                    insertDescr( i - 1,
-                                 baseDescr );
+            for (int i = this.descrs.size() - 1; i >= 0; i--) {
+                if (clazz.isInstance(this.descrs.get(i))) {
+                    insertDescr(i - 1,
+                            baseDescr);
                     return;
                 }
             }
         }
-        addDescr( baseDescr );
+        addDescr(baseDescr);
     }
 
-    public void insertDescr( int index,
-                             final BaseDescr baseDescr ) {
-        this.descrs.add( index,
-                         baseDescr );
+    public void insertDescr(int index,
+            final BaseDescr baseDescr) {
+        this.descrs.add(index,
+                baseDescr);
     }
 
-    public void addDescr( final BaseDescr baseDescr ) {
-        this.descrs.add( baseDescr );
+    public void addDescr(final BaseDescr baseDescr) {
+        this.descrs.add(baseDescr);
     }
 
     public List<BaseDescr> getDescrs() {
         return this.descrs;
     }
 
-    public void addOrMerge( final BaseDescr baseDescr ) {
-        if ( baseDescr instanceof OrDescr ) {
-            this.descrs.addAll( ((OrDescr) baseDescr).getDescrs() );
+    public void addOrMerge(final BaseDescr baseDescr) {
+        if (baseDescr instanceof OrDescr) {
+            this.descrs.addAll(((OrDescr) baseDescr).getDescrs());
         } else {
-            this.descrs.add( baseDescr );
+            this.descrs.add(baseDescr);
         }
     }
 
-
-     public boolean removeDescr(BaseDescr baseDescr) {
+    public boolean removeDescr(BaseDescr baseDescr) {
         return baseDescr == null ? false : descrs.remove(baseDescr);
     }
 
     @Override
     public String toString() {
-        return "[OR "+descrs+" ]";
+        return "[OR " + descrs + " ]";
     }
 
     @Override
@@ -89,7 +89,7 @@ public class OrDescr extends AnnotatedBaseDescr
     @Override
     public BaseDescr negate() {
         if (descrs.isEmpty()) {
-            return new OrDescr(new ExprConstraintDescr( "false" ));
+            return new OrDescr(new ExprConstraintDescr("false"));
         }
 
         if (descrs.size() == 1) {
@@ -98,7 +98,7 @@ public class OrDescr extends AnnotatedBaseDescr
 
         AndDescr and = new AndDescr();
         for (BaseDescr descr : descrs) {
-            and.addDescr( descr.negate() );
+            and.addDescr(descr.negate());
         }
         return and;
     }

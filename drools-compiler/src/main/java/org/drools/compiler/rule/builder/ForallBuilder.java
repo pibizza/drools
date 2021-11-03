@@ -27,25 +27,25 @@ import org.drools.core.rule.Pattern;
 import org.drools.core.rule.RuleConditionElement;
 
 public class ForallBuilder
-    implements
-    RuleConditionBuilder {
+        implements
+        RuleConditionBuilder {
 
     public RuleConditionElement build(final RuleBuildContext context,
-                                    final BaseDescr descr,
-                                      final Pattern prefixPattern) {
-        return build( context, descr );
+            final BaseDescr descr,
+            final Pattern prefixPattern) {
+        return build(context, descr);
     }
 
     public RuleConditionElement build(final RuleBuildContext context,
-                                      final BaseDescr descr) {
+            final BaseDescr descr) {
         final ForallDescr forallDescr = (ForallDescr) descr;
 
         if (forallDescr.isSinglePattern()) {
             PatternDescr pattern = (PatternDescr) forallDescr.getDescrs().get(0);
-            NotDescr notDescr = new NotDescr( pattern.negateConstraint() );
+            NotDescr notDescr = new NotDescr(pattern.negateConstraint());
 
-            RuleConditionBuilder builder = (RuleConditionBuilder) context.getDialect().getBuilder( notDescr.getClass() );
-            return builder.build( context, notDescr );
+            RuleConditionBuilder builder = (RuleConditionBuilder) context.getDialect().getBuilder(notDescr.getClass());
+            return builder.build(context, notDescr);
         }
 
         BaseDescr selfJoin = forallDescr.getSelfJoinConstraint();
@@ -60,50 +60,49 @@ public class ForallBuilder
             PatternDescr p1 = (PatternDescr) forallDescr.getDescrs().get(0);
             PatternDescr p2 = (PatternDescr) forallDescr.getDescrs().get(1);
 
-            ExistsDescr existDescr = new ExistsDescr( p1 );
-            RuleConditionBuilder existsBuilder = (RuleConditionBuilder) context.getDialect().getBuilder( existDescr.getClass() );
-            transformedForall.addChild( existsBuilder.build( context, existDescr ) );
+            ExistsDescr existDescr = new ExistsDescr(p1);
+            RuleConditionBuilder existsBuilder = (RuleConditionBuilder) context.getDialect().getBuilder(existDescr.getClass());
+            transformedForall.addChild(existsBuilder.build(context, existDescr));
 
-            NotDescr notDescr = new NotDescr( p1 );
-            p2.removeConstraint( selfJoin );
-            p2.negateConstraint().getConstraint().getDescrs().forEach( p1::addConstraint );
+            NotDescr notDescr = new NotDescr(p1);
+            p2.removeConstraint(selfJoin);
+            p2.negateConstraint().getConstraint().getDescrs().forEach(p1::addConstraint);
 
-            RuleConditionBuilder notBuilder = (RuleConditionBuilder) context.getDialect().getBuilder( notDescr.getClass() );
-            transformedForall.addChild( notBuilder.build( context, notDescr ) );
+            RuleConditionBuilder notBuilder = (RuleConditionBuilder) context.getDialect().getBuilder(notDescr.getClass());
+            transformedForall.addChild(notBuilder.build(context, notDescr));
 
             return transformedForall;
         }
 
-        final PatternBuilder patternBuilder = (PatternBuilder) context.getDialect().getBuilder( PatternDescr.class );
-        final Pattern basePattern = (Pattern) patternBuilder.build( context,
-                                                                    forallDescr.getBasePattern() );
+        final PatternBuilder patternBuilder = (PatternBuilder) context.getDialect().getBuilder(PatternDescr.class);
+        final Pattern basePattern = (Pattern) patternBuilder.build(context,
+                forallDescr.getBasePattern());
 
-        if ( basePattern == null ) {
+        if (basePattern == null) {
             return null;
         }
 
-        final Forall forall = new Forall( basePattern );
+        final Forall forall = new Forall(basePattern);
 
         // adding the newly created forall CE to the build stack
         // this is necessary in case of local declaration usage
-        context.getDeclarationResolver().pushOnBuildStack( forall );
+        context.getDeclarationResolver().pushOnBuildStack(forall);
 
-        for ( BaseDescr baseDescr : forallDescr.getRemainingPatterns() ) {
-            final Pattern anotherPattern = (Pattern) patternBuilder.build( context,
-                                                                           (PatternDescr) baseDescr );
-            forall.addRemainingPattern( anotherPattern );
+        for (BaseDescr baseDescr : forallDescr.getRemainingPatterns()) {
+            final Pattern anotherPattern = (Pattern) patternBuilder.build(context,
+                    (PatternDescr) baseDescr);
+            forall.addRemainingPattern(anotherPattern);
         }
-        
-        
-        if ( forallDescr.getDescrs().size() == 1 ) {
+
+        if (forallDescr.getDescrs().size() == 1) {
             // An optimization for unlinking, where we allow unlinking if the resulting 'not' node has no constraints
             // we need to record this here, due to getRemainingPatterns injecting "this == " + BASE_IDENTIFIER $__forallBaseIdentifier 
             // which we wish to ignore
-            PatternDescr p = ( PatternDescr ) forallDescr.getDescrs().get( 0 );
-            if ( p.getConstraint().getDescrs().isEmpty() ) {
-                forall.setEmptyBetaConstraints( true );
+            PatternDescr p = (PatternDescr) forallDescr.getDescrs().get(0);
+            if (p.getConstraint().getDescrs().isEmpty()) {
+                forall.setEmptyBetaConstraints(true);
             }
-        }        
+        }
 
         // poping the forall
         context.getDeclarationResolver().popBuildStack();

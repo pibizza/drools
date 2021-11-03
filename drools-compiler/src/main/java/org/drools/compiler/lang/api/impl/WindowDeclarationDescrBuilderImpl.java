@@ -23,36 +23,36 @@ import org.drools.compiler.lang.api.WindowDeclarationDescrBuilder;
 import org.drools.compiler.lang.descr.WindowDeclarationDescr;
 
 public class WindowDeclarationDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBuilder, WindowDeclarationDescr>
-    implements
-    WindowDeclarationDescrBuilder {
+        implements
+        WindowDeclarationDescrBuilder {
 
     protected WindowDeclarationDescrBuilderImpl(PackageDescrBuilder parent) {
-        super( parent,
-               new WindowDeclarationDescr() );
+        super(parent,
+                new WindowDeclarationDescr());
     }
 
-    public WindowDeclarationDescrBuilder name( String name ) {
-        descr.setName( name );
+    public WindowDeclarationDescrBuilder name(String name) {
+        descr.setName(name);
         return this;
     }
 
-    public AnnotationDescrBuilder<WindowDeclarationDescrBuilder> newAnnotation( String name ) {
-        AnnotationDescrBuilder<WindowDeclarationDescrBuilder> annotation = new AnnotationDescrBuilderImpl<WindowDeclarationDescrBuilder>( this,
-                                                                                                                                          name );
-        descr.addAnnotation( annotation.getDescr() );
+    public AnnotationDescrBuilder<WindowDeclarationDescrBuilder> newAnnotation(String name) {
+        AnnotationDescrBuilder<WindowDeclarationDescrBuilder> annotation = new AnnotationDescrBuilderImpl<WindowDeclarationDescrBuilder>(this,
+                name);
+        descr.addAnnotation(annotation.getDescr());
         return annotation;
     }
 
-    public PatternDescrBuilder<WindowDeclarationDescrBuilder> pattern( String type ) {
-        PatternDescrBuilder<WindowDeclarationDescrBuilder> pattern = new PatternDescrBuilderImpl<WindowDeclarationDescrBuilder>( this,
-                                                                                                                                 type );
-        descr.setPattern( pattern.getDescr() );
+    public PatternDescrBuilder<WindowDeclarationDescrBuilder> pattern(String type) {
+        PatternDescrBuilder<WindowDeclarationDescrBuilder> pattern = new PatternDescrBuilderImpl<WindowDeclarationDescrBuilder>(this,
+                type);
+        descr.setPattern(pattern.getDescr());
         return pattern;
     }
 
     public PatternDescrBuilder<WindowDeclarationDescrBuilder> pattern() {
-        PatternDescrBuilder<WindowDeclarationDescrBuilder> pattern = new PatternDescrBuilderImpl<WindowDeclarationDescrBuilder>( this );
-        descr.setPattern( pattern.getDescr() );
+        PatternDescrBuilder<WindowDeclarationDescrBuilder> pattern = new PatternDescrBuilderImpl<WindowDeclarationDescrBuilder>(this);
+        descr.setPattern(pattern.getDescr());
         return pattern;
     }
 

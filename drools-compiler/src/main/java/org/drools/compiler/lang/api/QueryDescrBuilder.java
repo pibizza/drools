@@ -20,15 +20,15 @@ import org.drools.compiler.lang.descr.AndDescr;
 import org.drools.compiler.lang.descr.QueryDescr;
 
 /**
- *  A descriptor builder for queries
+ * A descriptor builder for queries
  */
 public interface QueryDescrBuilder
-    extends
-    AnnotatedDescrBuilder<QueryDescrBuilder>,
-    ParameterSupportBuilder<QueryDescrBuilder>,
-    DescrBuilder<PackageDescrBuilder, QueryDescr> {
+        extends
+        AnnotatedDescrBuilder<QueryDescrBuilder>,
+        ParameterSupportBuilder<QueryDescrBuilder>,
+        DescrBuilder<PackageDescrBuilder, QueryDescr> {
 
-    public QueryDescrBuilder name( String name );
+    public QueryDescrBuilder name(String name);
 
     public CEDescrBuilder<QueryDescrBuilder, AndDescr> lhs();
 

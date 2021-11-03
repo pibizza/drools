@@ -27,10 +27,10 @@ import org.drools.core.rule.RuleConditionElement;
 public interface RuleConditionBuilder<T extends BaseDescr> extends EngineElementBuilder {
 
     RuleConditionElement build(final RuleBuildContext context,
-                               final T descr);
-    
+            final T descr);
+
     RuleConditionElement build(final RuleBuildContext context,
-                               final T descr,
-                               final Pattern prefixPattern);
+            final T descr,
+            final Pattern prefixPattern);
 
 }

@@ -28,8 +28,8 @@ public class KieBaseUpdatersContext {
     private final ClassLoader classLoader;
 
     public KieBaseUpdatersContext(KieBaseUpdaterOptions options,
-                                  Rete rete,
-                                  ClassLoader classLoader) {
+            Rete rete,
+            ClassLoader classLoader) {
         this.options = options;
         this.rete = rete;
         this.classLoader = classLoader;

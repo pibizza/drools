@@ -24,26 +24,27 @@ import java.util.List;
 public class OperatorDescr extends BaseDescr {
     private static final long serialVersionUID = 520l;
 
-    private String            operator;
-    private boolean           negated;
-    private List<String>      parameters;
+    private String operator;
+    private boolean negated;
+    private List<String> parameters;
 
     // the alias is used during dumps to MVEL where the operator
     // is rewritten into a function call using an alias ID. The
     // left and right strings are caches of the parameters in
     // string format for analysis during compilation
-    private String            alias;
-    private String            leftString;
-    private String            rightString;
-    private boolean           leftIsHandle;
-    private boolean           rightIsHandle;
+    private String alias;
+    private String leftString;
+    private String rightString;
+    private boolean leftIsHandle;
+    private boolean rightIsHandle;
 
-    public OperatorDescr() { }
+    public OperatorDescr() {
+    }
 
     public OperatorDescr(String operator,
-                         boolean negated,
-                         List<String> parameters) {
-        setOperator( operator );
+            boolean negated,
+            List<String> parameters) {
+        setOperator(operator);
         this.negated = negated;
         this.parameters = parameters;
     }
@@ -52,7 +53,7 @@ public class OperatorDescr extends BaseDescr {
         return operator;
     }
 
-    public void setOperator( String operator ) {
+    public void setOperator(String operator) {
         this.operator = operator.trim();
     }
 
@@ -60,7 +61,7 @@ public class OperatorDescr extends BaseDescr {
         return negated;
     }
 
-    public void setNegated( boolean negated ) {
+    public void setNegated(boolean negated) {
         this.negated = negated;
     }
 
@@ -69,23 +70,23 @@ public class OperatorDescr extends BaseDescr {
     }
 
     public String getParametersText() {
-        if ( parameters != null ) {
+        if (parameters != null) {
             StringBuilder builder = new StringBuilder();
             boolean first = true;
-            for ( String param : parameters ) {
-                if ( first ) {
+            for (String param : parameters) {
+                if (first) {
                     first = false;
                 } else {
-                    builder.append( "," );
+                    builder.append(",");
                 }
-                builder.append( param );
+                builder.append(param);
             }
             return builder.toString();
         }
         return null;
     }
 
-    public void setParameters( List<String> parameters ) {
+    public void setParameters(List<String> parameters) {
         this.parameters = parameters;
     }
 
@@ -99,7 +100,7 @@ public class OperatorDescr extends BaseDescr {
     /**
      * @param alias the alias to set
      */
-    public void setAlias( String alias ) {
+    public void setAlias(String alias) {
         this.alias = alias;
     }
 
@@ -110,27 +111,27 @@ public class OperatorDescr extends BaseDescr {
 
     /**
      * This is an internal cache of the left string parameter that is set during the rewrite
-     * into MVEL, allowing for further analysis of the parameter type. 
+     * into MVEL, allowing for further analysis of the parameter type.
      * 
      * @param left
      */
-    public void setLeftString( String left ) {
+    public void setLeftString(String left) {
         this.leftString = left;
     }
 
     /**
      * This is an internal cache of the right string parameter that is set during the rewrite
-     * into MVEL, allowing for further analysis of the parameter type. 
+     * into MVEL, allowing for further analysis of the parameter type.
      * 
      * @param right
      */
-    public void setRightString( String right ) {
+    public void setRightString(String right) {
         this.rightString = right;
     }
 
     /**
      * This is an internal cache of the left string parameter that is set during the rewrite
-     * into MVEL, allowing for further analysis of the parameter type. 
+     * into MVEL, allowing for further analysis of the parameter type.
      * 
      * @return the leftString
      */
@@ -141,7 +142,7 @@ public class OperatorDescr extends BaseDescr {
     /**
      * This is an internal cache of the right string parameter that is set during the rewrite
      * into MVEL, allowing for further analysis of the parameter type.
-     *  
+     * 
      * @return the rightString
      */
     public String getRightString() {
@@ -158,7 +159,7 @@ public class OperatorDescr extends BaseDescr {
     /**
      * @param leftIsHandle the leftIsHandle to set
      */
-    public void setLeftIsHandle( boolean leftIsHandle ) {
+    public void setLeftIsHandle(boolean leftIsHandle) {
         this.leftIsHandle = leftIsHandle;
     }
 
@@ -172,7 +173,7 @@ public class OperatorDescr extends BaseDescr {
     /**
      * @param rightIsHandle the rightIsHandle to set
      */
-    public void setRightIsHandle( boolean rightIsHandle ) {
+    public void setRightIsHandle(boolean rightIsHandle) {
         this.rightIsHandle = rightIsHandle;
     }
 

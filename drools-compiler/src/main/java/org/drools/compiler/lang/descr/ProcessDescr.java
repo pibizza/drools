@@ -19,8 +19,8 @@ import org.drools.core.rule.Dialectable;
 import org.kie.api.io.Resource;
 
 public class ProcessDescr extends BaseDescr
-    implements
-    Dialectable {
+        implements
+        Dialectable {
 
     private String dialect;
     private String name;
@@ -28,12 +28,13 @@ public class ProcessDescr extends BaseDescr
     private String processId;
     private Resource resource;
 
-    public ProcessDescr() { }
+    public ProcessDescr() {
+    }
 
     public ProcessDescr(String name) {
         this.name = name;
     }
-    
+
     public Resource getResource() {
         return resource;
     }
@@ -73,8 +74,8 @@ public class ProcessDescr extends BaseDescr
     public void setProcessId(String processId) {
         this.processId = processId;
     }
-    
+
     public String toString() {
-    	return "Process " + name + "(" + processId + ")";
+        return "Process " + name + "(" + processId + ")";
     }
 }

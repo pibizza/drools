@@ -26,10 +26,9 @@ import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-
 public class ExpressionHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
 
     public ExpressionHandler() {
     }
@@ -39,26 +38,26 @@ public class ExpressionHandler extends BaseAbstractHandler
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
 
         return new BaseDescr();
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
 
-        final String expression =((org.w3c.dom.Text)element.getChildNodes().item( 0 )).getWholeText();
-        
-        emptyContentCheck( localName, expression, parser );
+        final String expression = ((org.w3c.dom.Text) element.getChildNodes().item(0)).getWholeText();
+
+        emptyContentCheck(localName, expression, parser);
 
         FromDescr parent = (FromDescr) parser.getParent();
-        parent.setDataSource( new MVELExprDescr( expression.trim() ) );
+        parent.setDataSource(new MVELExprDescr(expression.trim()));
         return null;
     }
 }

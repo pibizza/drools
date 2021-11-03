@@ -23,11 +23,11 @@ import org.drools.core.rule.Pattern;
 public class NamedConsequenceBuilder implements RuleConditionBuilder {
 
     public NamedConsequence build(RuleBuildContext context, BaseDescr descr) {
-        return build( context, descr, null );
+        return build(context, descr, null);
     }
 
     public NamedConsequence build(RuleBuildContext context, BaseDescr descr, Pattern prefixPattern) {
         NamedConsequenceDescr namedConsequence = (NamedConsequenceDescr) descr;
-        return new NamedConsequence( namedConsequence.getName(), namedConsequence.isBreaking() );
+        return new NamedConsequence(namedConsequence.getName(), namedConsequence.isBreaking());
     }
 }

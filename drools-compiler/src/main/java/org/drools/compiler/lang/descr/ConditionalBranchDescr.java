@@ -28,15 +28,15 @@ public class ConditionalBranchDescr extends BaseDescr {
 
     public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
-        super.readExternal( in );
+        super.readExternal(in);
         condition = (EvalDescr) in.readObject();
         consequence = (NamedConsequenceDescr) in.readObject();
     }
 
     public void writeExternal(ObjectOutput out) throws IOException {
         super.writeExternal(out);
-        out.writeObject( condition );
-        out.writeObject( consequence );
+        out.writeObject(condition);
+        out.writeObject(consequence);
     }
 
     public EvalDescr getCondition() {

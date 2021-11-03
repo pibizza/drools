@@ -21,38 +21,36 @@ import org.drools.compiler.lang.api.EnumDeclarationDescrBuilder;
 import org.drools.compiler.lang.api.EnumLiteralDescrBuilder;
 import org.drools.compiler.lang.descr.EnumLiteralDescr;
 
-
 public class EnumLiteralDescrBuilderImpl extends BaseDescrBuilderImpl<EnumDeclarationDescrBuilder, EnumLiteralDescr>
-    implements
+        implements
         EnumLiteralDescrBuilder {
 
-
-    protected EnumLiteralDescrBuilderImpl( final EnumDeclarationDescrBuilder parent ) {
-        super(parent, new EnumLiteralDescr() );
+    protected EnumLiteralDescrBuilderImpl(final EnumDeclarationDescrBuilder parent) {
+        super(parent, new EnumLiteralDescr());
     }
 
-    protected EnumLiteralDescrBuilderImpl( final EnumDeclarationDescrBuilder parent, final EnumLiteralDescr descr ) {
+    protected EnumLiteralDescrBuilderImpl(final EnumDeclarationDescrBuilder parent, final EnumLiteralDescr descr) {
         super(parent, descr);
     }
 
     public EnumLiteralDescrBuilder index(int index) {
-        descr.setIndex( index );
+        descr.setIndex(index);
         return this;
     }
 
     public EnumLiteralDescrBuilder name(String name) {
-        descr.setName( name );
+        descr.setName(name);
         return this;
     }
 
-    public EnumLiteralDescrBuilder constructorArg( String expr ) {
-        descr.addConstructorArg( expr );
+    public EnumLiteralDescrBuilder constructorArg(String expr) {
+        descr.addConstructorArg(expr);
         return this;
     }
 
-    public AnnotationDescrBuilder<EnumLiteralDescrBuilder> newAnnotation( String name ) {
-        AnnotationDescrBuilder<EnumLiteralDescrBuilder> annotation = new AnnotationDescrBuilderImpl<EnumLiteralDescrBuilder>( this, name );
-        descr.addAnnotation( annotation.getDescr() );
+    public AnnotationDescrBuilder<EnumLiteralDescrBuilder> newAnnotation(String name) {
+        AnnotationDescrBuilder<EnumLiteralDescrBuilder> annotation = new AnnotationDescrBuilderImpl<EnumLiteralDescrBuilder>(this, name);
+        descr.addAnnotation(annotation.getDescr());
         return annotation;
     }
 }

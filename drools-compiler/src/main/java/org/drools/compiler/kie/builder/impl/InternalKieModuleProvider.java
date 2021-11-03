@@ -31,36 +31,36 @@ public interface InternalKieModuleProvider {
         return null;
     }
 
-    InternalKieModule createKieModule( ReleaseId releaseId, KieModuleModel kieProject, File file );
+    InternalKieModule createKieModule(ReleaseId releaseId, KieModuleModel kieProject, File file);
 
-    InternalKieModule createKieModule( ReleaseId releaseId, KieModuleModel kieProject, MemoryFileSystem mfs );
+    InternalKieModule createKieModule(ReleaseId releaseId, KieModuleModel kieProject, MemoryFileSystem mfs);
 
     class DrlBasedKieModuleProvider implements InternalKieModuleProvider {
 
-        private static final Logger log = LoggerFactory.getLogger( InternalKieModuleProvider.class );
+        private static final Logger log = LoggerFactory.getLogger(InternalKieModuleProvider.class);
 
         @Override
-        public InternalKieModule createKieModule( ReleaseId releaseId, KieModuleModel kieProject, File file ) {
+        public InternalKieModule createKieModule(ReleaseId releaseId, KieModuleModel kieProject, File file) {
             if (log.isInfoEnabled()) {
-                log.info( "Creating KieModule for artifact " + releaseId );
+                log.info("Creating KieModule for artifact " + releaseId);
             }
-            return file.isDirectory() ? new FileKieModule( releaseId, kieProject, file ) : new ZipKieModule( releaseId, kieProject, file );
+            return file.isDirectory() ? new FileKieModule(releaseId, kieProject, file) : new ZipKieModule(releaseId, kieProject, file);
         }
 
         @Override
-        public InternalKieModule createKieModule( ReleaseId releaseId, KieModuleModel kieProject, MemoryFileSystem mfs ) {
+        public InternalKieModule createKieModule(ReleaseId releaseId, KieModuleModel kieProject, MemoryFileSystem mfs) {
             if (log.isInfoEnabled()) {
-                log.info( "Creating in memory KieModule for artifact " + releaseId );
+                log.info("Creating in memory KieModule for artifact " + releaseId);
             }
             return new MemoryKieModule(releaseId, kieProject, mfs);
         }
     }
 
-    static InternalKieModule get( ReleaseId releaseId, KieModuleModel kieProject, File file ) {
+    static InternalKieModule get(ReleaseId releaseId, KieModuleModel kieProject, File file) {
         return Factory.get().createKieModule(releaseId, kieProject, file);
     }
 
-    static InternalKieModule get( ReleaseId releaseId, KieModuleModel kieProject, MemoryFileSystem mfs ) {
+    static InternalKieModule get(ReleaseId releaseId, KieModuleModel kieProject, MemoryFileSystem mfs) {
         return Factory.get().createKieModule(releaseId, kieProject, mfs);
     }
 

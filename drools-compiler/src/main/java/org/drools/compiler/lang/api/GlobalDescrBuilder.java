@@ -19,11 +19,11 @@ package org.drools.compiler.lang.api;
 import org.drools.compiler.lang.descr.GlobalDescr;
 
 /**
- *  A descriptor builder for Globals
+ * A descriptor builder for Globals
  */
 public interface GlobalDescrBuilder
-    extends
-    DescrBuilder<PackageDescrBuilder, GlobalDescr> {
+        extends
+        DescrBuilder<PackageDescrBuilder, GlobalDescr> {
 
     /**
      * Sets the type of the global. E.g.: java.util.List
@@ -32,7 +32,7 @@ public interface GlobalDescrBuilder
      * 
      * @return itself
      */
-    public GlobalDescrBuilder type( String type );
+    public GlobalDescrBuilder type(String type);
 
     /**
      * Sets the identifier for the global. E.g.: list
@@ -41,6 +41,6 @@ public interface GlobalDescrBuilder
      * 
      * @return itself
      */
-    public GlobalDescrBuilder identifier( String identifier );
+    public GlobalDescrBuilder identifier(String identifier);
 
 }

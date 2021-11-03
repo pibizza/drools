@@ -33,41 +33,41 @@ import org.xml.sax.SAXParseException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class QueryHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public QueryHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
 
-        final String queryName = attrs.getValue( "name" );
-        emptyAttributeCheck( localName, "name", queryName, parser );
+        final String queryName = attrs.getValue("name");
+        emptyAttributeCheck(localName, "name", queryName, parser);
 
-        final QueryDescr queryDescr = new QueryDescr( queryName.trim() );
+        final QueryDescr queryDescr = new QueryDescr(queryName.trim());
 
         return queryDescr;
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
 
         final QueryDescr queryDescr = (QueryDescr) parser.getCurrent();
 
         final AndDescr lhs = queryDescr.getLhs();
 
-        if ( lhs == null || lhs.getDescrs().isEmpty() ) {
-            throw new SAXParseException( "<query> requires a LHS",
-                                         parser.getLocator() );
+        if (lhs == null || lhs.getDescrs().isEmpty()) {
+            throw new SAXParseException("<query> requires a LHS",
+                    parser.getLocator());
         }
 
-        (( PackageDescr ) parser.getData()).addRule( queryDescr );
+        ((PackageDescr) parser.getData()).addRule(queryDescr);
 
         return queryDescr;
     }

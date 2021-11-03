@@ -26,29 +26,29 @@ import org.drools.core.rule.WindowReference;
  * A class capable of building window source references
  */
 public class WindowReferenceBuilder
-    implements
-    RuleConditionBuilder {
+        implements
+        RuleConditionBuilder {
 
     public RuleConditionElement build(RuleBuildContext context,
-                                      BaseDescr descr) {
-        return build( context,
-                      descr,
-                      null );
+            BaseDescr descr) {
+        return build(context,
+                descr,
+                null);
     }
 
     public RuleConditionElement build(RuleBuildContext context,
-                                      BaseDescr descr,
-                                      Pattern prefixPattern) {
+            BaseDescr descr,
+            Pattern prefixPattern) {
         final WindowReferenceDescr window = (WindowReferenceDescr) descr;
 
-        if ( !context.getPkg().getWindowDeclarations().containsKey( window.getName() ) ) {
+        if (!context.getPkg().getWindowDeclarations().containsKey(window.getName())) {
             context.addError(new DescrBuildError(context.getParentDescr(),
-                                                 descr,
-                                                 null,
-                                                 "Unknown window " + window.getName()));
+                    descr,
+                    null,
+                    "Unknown window " + window.getName()));
         }
 
-        return new WindowReference( window.getName() );
+        return new WindowReference(window.getName());
     }
 
 }

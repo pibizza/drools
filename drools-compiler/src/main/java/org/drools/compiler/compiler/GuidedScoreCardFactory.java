@@ -29,11 +29,11 @@ public class GuidedScoreCardFactory {
     }
 
     public static KieBase getKieBaseFromInputStream(InputStream is) throws IOException {
-    	return getGuidedScoreCardProvider().getKieBaseFromInputStream(is);
+        return getGuidedScoreCardProvider().getKieBaseFromInputStream(is);
     }
 
     public static String getPMMLStringFromInputStream(InputStream is) throws IOException {
-    	return getGuidedScoreCardProvider().getPMMLStringFromInputStream(is);
+        return getGuidedScoreCardProvider().getPMMLStringFromInputStream(is);
     }
 
     public static synchronized GuidedScoreCardProvider getGuidedScoreCardProvider() {

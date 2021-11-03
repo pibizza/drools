@@ -92,7 +92,8 @@ public abstract class AbstractKieModule
 
     private Collection<ReleaseId> unresolvedDependencies;
 
-    public AbstractKieModule() { }
+    public AbstractKieModule() {
+    }
 
     public AbstractKieModule(ReleaseId releaseId, KieModuleModel kModuleModel) {
         this.releaseId = releaseId;
@@ -114,12 +115,12 @@ public abstract class AbstractKieModule
         kieDependencies.put(dependency.getReleaseId(), dependency);
     }
 
-    public Collection<ReleaseId> getJarDependencies(DependencyFilter filter ) {
-        if( pomModel == null ) {
+    public Collection<ReleaseId> getJarDependencies(DependencyFilter filter) {
+        if (pomModel == null) {
             getPomModel();
         }
         Collection<ReleaseId> deps = null;
-        if( pomModel != null ) {
+        if (pomModel != null) {
             deps = pomModel.getDependencies(filter);
         }
         return deps == null ? Collections.<ReleaseId> emptyList() : deps;
@@ -139,16 +140,16 @@ public abstract class AbstractKieModule
 
     @Override
     public ClassLoader getModuleClassLoader() {
-        return kBuilders.isEmpty() ? null : (( InternalKnowledgeBuilder ) kBuilders.values().iterator().next()).getRootClassLoader();
+        return kBuilders.isEmpty() ? null : ((InternalKnowledgeBuilder) kBuilders.values().iterator().next()).getRootClassLoader();
     }
 
-    public KnowledgeBuilder getKnowledgeBuilderForKieBase( String kieBaseName) {
+    public KnowledgeBuilder getKnowledgeBuilderForKieBase(String kieBaseName) {
         return kBuilders.get(kieBaseName);
     }
 
     public InternalKnowledgePackage getPackage(String packageName) {
         for (KnowledgeBuilder kbuilder : kBuilders.values()) {
-            InternalKnowledgePackage pkg = (( InternalKnowledgeBuilder ) kbuilder).getPackage( packageName );
+            InternalKnowledgePackage pkg = ((InternalKnowledgeBuilder) kbuilder).getPackage(packageName);
             if (pkg != null) {
                 return pkg;
             }
@@ -187,9 +188,9 @@ public abstract class AbstractKieModule
     public KnowledgePackagesBuildResult buildKnowledgePackages(KieBaseModelImpl kBaseModel, KieProject kieProject, BuildContext buildContext) {
         Collection<KiePackage> pkgs = getKnowledgePackagesForKieBase(kBaseModel.getName());
 
-        if ( pkgs == null ) {
+        if (pkgs == null) {
             KnowledgeBuilder kbuilder = kieProject.buildKnowledgePackages(kBaseModel, buildContext);
-            if ( kbuilder.hasErrors() ) {
+            if (kbuilder.hasErrors()) {
                 // Messages already populated by the buildKnowlegePackages
                 return new KnowledgePackagesBuildResult(true, pkgs);
             }
@@ -199,33 +200,33 @@ public abstract class AbstractKieModule
         return new KnowledgePackagesBuildResult(false, pkgs);
     }
 
-    public InternalKnowledgeBase createKieBase( KieBaseModelImpl kBaseModel, KieProject kieProject, BuildContext buildContext, KieBaseConfiguration conf ) {
+    public InternalKnowledgeBase createKieBase(KieBaseModelImpl kBaseModel, KieProject kieProject, BuildContext buildContext, KieBaseConfiguration conf) {
         KnowledgePackagesBuildResult knowledgePackagesBuildResult = buildKnowledgePackages(kBaseModel, kieProject, buildContext);
-        if(knowledgePackagesBuildResult.hasErrors()) {
+        if (knowledgePackagesBuildResult.hasErrors()) {
             return null;
         }
 
         Collection<KiePackage> pkgs = knowledgePackagesBuildResult.getPkgs();
-        checkStreamMode( kBaseModel, conf, pkgs );
+        checkStreamMode(kBaseModel, conf, pkgs);
 
         ClassLoader cl = kieProject.getClassLoader();
         if (conf == null) {
             conf = getKnowledgeBaseConfiguration(kBaseModel, cl);
-        } else if (conf instanceof RuleBaseConfiguration ) {
-            ((RuleBaseConfiguration)conf).setClassLoader(cl);
+        } else if (conf instanceof RuleBaseConfiguration) {
+            ((RuleBaseConfiguration) conf).setClassLoader(cl);
         }
 
-        InternalKnowledgeBase kBase = KnowledgeBaseFactory.newKnowledgeBase(kBaseModel.getName(), conf );
-        kBase.addPackages( pkgs );
+        InternalKnowledgeBase kBase = KnowledgeBaseFactory.newKnowledgeBase(kBaseModel.getName(), conf);
+        kBase.addPackages(pkgs);
         return kBase;
     }
 
-    public static void checkStreamMode( KieBaseModelImpl kBaseModel, KieBaseConfiguration conf, Collection<? extends KiePackage> pkgs ) {
-        if ( kBaseModel.getEventProcessingMode() == EventProcessingOption.CLOUD &&
-             (conf == null || conf.getOption(EventProcessingOption.class) == EventProcessingOption.CLOUD ) ) {
+    public static void checkStreamMode(KieBaseModelImpl kBaseModel, KieBaseConfiguration conf, Collection<? extends KiePackage> pkgs) {
+        if (kBaseModel.getEventProcessingMode() == EventProcessingOption.CLOUD &&
+                (conf == null || conf.getOption(EventProcessingOption.class) == EventProcessingOption.CLOUD)) {
             for (KiePackage kpkg : pkgs) {
-                if ( ((KnowledgePackageImpl ) kpkg).needsStreamMode() ) {
-                    throw new RuntimeException( "The requested KieBase \"" + kBaseModel.getName() + "\" has been set to run in CLOUD mode but requires features only available in STREAM mode" );
+                if (((KnowledgePackageImpl) kpkg).needsStreamMode()) {
+                    throw new RuntimeException("The requested KieBase \"" + kBaseModel.getName() + "\" has been set to run in CLOUD mode but requires features only available in STREAM mode");
                 }
             }
         }
@@ -241,14 +242,14 @@ public abstract class AbstractKieModule
         return kbConf;
     }
 
-    public KnowledgeBuilderConfiguration createBuilderConfiguration( KieBaseModel kBaseModel, ClassLoader classLoader) {
+    public KnowledgeBuilderConfiguration createBuilderConfiguration(KieBaseModel kBaseModel, ClassLoader classLoader) {
         KnowledgeBuilderConfigurationImpl pconf = new KnowledgeBuilderConfigurationImpl(classLoader);
         pconf.setCompilationCache(getCompilationCache(kBaseModel.getName()));
-        setModelPropsOnConf( ((KieBaseModelImpl) kBaseModel).getKModule(), pconf );
+        setModelPropsOnConf(((KieBaseModelImpl) kBaseModel).getKModule(), pconf);
         return pconf;
     }
 
-    static void setModelPropsOnConf( KieModuleModel kModuleModel, KnowledgeBuilderConfigurationImpl pconf ) {
+    static void setModelPropsOnConf(KieModuleModel kModuleModel, KnowledgeBuilderConfigurationImpl pconf) {
         for (Map.Entry<String, String> entry : kModuleModel.getConfigurationProperties().entrySet()) {
             pconf.setProperty(entry.getKey(), entry.getValue());
         }
@@ -262,12 +263,11 @@ public abstract class AbstractKieModule
         Resource resource = getResource(fileName);
         if (resource != null) {
             ResourceConfiguration conf = getResourceConfiguration(fileName);
-            ResourceType resourceType = conf instanceof ResourceConfigurationImpl && ((ResourceConfigurationImpl)conf).getResourceType() != null ?
-                                        ((ResourceConfigurationImpl)conf).getResourceType() :
-                                        ResourceType.determineResourceType(fileName);
+            ResourceType resourceType = conf instanceof ResourceConfigurationImpl && ((ResourceConfigurationImpl) conf).getResourceType() != null ? ((ResourceConfigurationImpl) conf).getResourceType()
+                    : ResourceType.determineResourceType(fileName);
 
             if (resourceType == ResourceType.DTABLE && conf instanceof DecisionTableConfiguration) {
-                addDTableToCompiler( ckbuilder, kieBaseModel, fileName, resource, rcs, ( DecisionTableConfiguration ) conf );
+                addDTableToCompiler(ckbuilder, kieBaseModel, fileName, resource, rcs, (DecisionTableConfiguration) conf);
             } else {
                 ckbuilder.add(resource, resourceType, conf, rcs);
             }
@@ -276,31 +276,31 @@ public abstract class AbstractKieModule
         return false;
     }
 
-    private void addDTableToCompiler( CompositeKnowledgeBuilder ckbuilder, KieBaseModel kieBaseModel, String fileName, Resource resource, ResourceChangeSet rcs, DecisionTableConfiguration dtableConf ) {
+    private void addDTableToCompiler(CompositeKnowledgeBuilder ckbuilder, KieBaseModel kieBaseModel, String fileName, Resource resource, ResourceChangeSet rcs, DecisionTableConfiguration dtableConf) {
         for (RuleTemplateModel template : kieBaseModel.getRuleTemplates()) {
-            if (template.getDtable().equals( fileName )) {
-                Resource templateResource = getResource( template.getTemplate() );
-                if ( templateResource != null ) {
-                    dtableConf.addRuleTemplateConfiguration( templateResource, template.getRow(), template.getCol() );
+            if (template.getDtable().equals(fileName)) {
+                Resource templateResource = getResource(template.getTemplate());
+                if (templateResource != null) {
+                    dtableConf.addRuleTemplateConfiguration(templateResource, template.getRow(), template.getCol());
                 } else {
-                    throw new RuntimeException( "Cannot find resource: '" + template.getTemplate() + "'" );
+                    throw new RuntimeException("Cannot find resource: '" + template.getTemplate() + "'");
                 }
             }
         }
-        addDTableToCompiler( ckbuilder, resource, dtableConf, rcs );
+        addDTableToCompiler(ckbuilder, resource, dtableConf, rcs);
     }
 
-    public static void addDTableToCompiler( CompositeKnowledgeBuilder ckbuilder, Resource resource, DecisionTableConfiguration dtableConf ) {
-        addDTableToCompiler( ckbuilder, resource, dtableConf, null );
+    public static void addDTableToCompiler(CompositeKnowledgeBuilder ckbuilder, Resource resource, DecisionTableConfiguration dtableConf) {
+        addDTableToCompiler(ckbuilder, resource, dtableConf, null);
     }
 
-    private static void addDTableToCompiler( CompositeKnowledgeBuilder ckbuilder, Resource resource, DecisionTableConfiguration dtableConf, ResourceChangeSet rcs ) {
+    private static void addDTableToCompiler(CompositeKnowledgeBuilder ckbuilder, Resource resource, DecisionTableConfiguration dtableConf, ResourceChangeSet rcs) {
         String sheetNames = dtableConf.getWorksheetName();
-        if (sheetNames == null || sheetNames.indexOf( ',' ) < 0) {
-            ckbuilder.add( resource, ResourceType.DTABLE, dtableConf, rcs );
+        if (sheetNames == null || sheetNames.indexOf(',') < 0) {
+            ckbuilder.add(resource, ResourceType.DTABLE, dtableConf, rcs);
         } else {
-            for (String sheetName : sheetNames.split( "\\," ) ) {
-                ckbuilder.add( resource, ResourceType.DTABLE, new DecisionTableConfigurationDelegate( dtableConf, sheetName), rcs );
+            for (String sheetName : sheetNames.split("\\,")) {
+                ckbuilder.add(resource, ResourceType.DTABLE, new DecisionTableConfigurationDelegate(dtableConf, sheetName), rcs);
             }
         }
     }
@@ -310,14 +310,14 @@ public abstract class AbstractKieModule
         private final DecisionTableConfiguration delegate;
         private final String sheetName;
 
-        DecisionTableConfigurationDelegate( DecisionTableConfiguration delegate, String sheetName ) {
+        DecisionTableConfigurationDelegate(DecisionTableConfiguration delegate, String sheetName) {
             this.delegate = delegate;
             this.sheetName = sheetName;
         }
 
         @Override
-        public void setInputType( DecisionTableInputType inputType ) {
-            delegate.setInputType( inputType );
+        public void setInputType(DecisionTableInputType inputType) {
+            delegate.setInputType(inputType);
 
         }
 
@@ -327,7 +327,7 @@ public abstract class AbstractKieModule
         }
 
         @Override
-        public void setWorksheetName( String name ) {
+        public void setWorksheetName(String name) {
             throw new UnsupportedOperationException();
         }
 
@@ -337,8 +337,8 @@ public abstract class AbstractKieModule
         }
 
         @Override
-        public void addRuleTemplateConfiguration( Resource template, int row, int col ) {
-            delegate.addRuleTemplateConfiguration( template, row, col );
+        public void addRuleTemplateConfiguration(Resource template, int row, int col) {
+            delegate.addRuleTemplateConfiguration(template, row, col);
         }
 
         @Override
@@ -352,8 +352,8 @@ public abstract class AbstractKieModule
         }
 
         @Override
-        public void setTrimCell( boolean trimCell ) {
-            delegate.setTrimCell( trimCell );
+        public void setTrimCell(boolean trimCell) {
+            delegate.setTrimCell(trimCell);
         }
 
         @Override
@@ -362,8 +362,8 @@ public abstract class AbstractKieModule
         }
 
         @Override
-        public ResourceConfiguration fromProperties( Properties prop ) {
-            return delegate.fromProperties( prop );
+        public ResourceConfiguration fromProperties(Properties prop) {
+            return delegate.fromProperties(prop);
         }
     }
 
@@ -376,53 +376,53 @@ public abstract class AbstractKieModule
         return resourceConfigurationCache.computeIfAbsent(fileName, this::loadResourceConfiguration);
     }
 
-    private ResourceConfiguration loadResourceConfiguration( String fileName ) {
-        return loadResourceConfiguration( fileName, this::isAvailable, file -> new ByteArrayInputStream(getBytes( fileName + ".properties")) );
+    private ResourceConfiguration loadResourceConfiguration(String fileName) {
+        return loadResourceConfiguration(fileName, this::isAvailable, file -> new ByteArrayInputStream(getBytes(fileName + ".properties")));
     }
 
-    public static ResourceConfiguration loadResourceConfiguration( String fileName, Predicate<String> fileAvailable, Function<String, InputStream> fileProvider ) {
+    public static ResourceConfiguration loadResourceConfiguration(String fileName, Predicate<String> fileAvailable, Function<String, InputStream> fileProvider) {
         ResourceConfiguration conf;
         Properties prop = new Properties();
-        if ( fileAvailable.test( fileName + ".properties") ) {
-            try ( InputStream input = fileProvider.apply( fileName + ".properties") ) {
+        if (fileAvailable.test(fileName + ".properties")) {
+            try (InputStream input = fileProvider.apply(fileName + ".properties")) {
                 prop.load(input);
             } catch (IOException e) {
-                log.error(String.format("Error loading resource configuration from file: %s.properties", fileName ));
+                log.error(String.format("Error loading resource configuration from file: %s.properties", fileName));
             }
         }
-        if (ResourceType.DTABLE.matchesExtension( fileName )) {
-            int lastDot = fileName.lastIndexOf( '.' );
-            if (lastDot >= 0 && fileName.length() > lastDot+1) {
-                String extension = fileName.substring( lastDot+1 );
+        if (ResourceType.DTABLE.matchesExtension(fileName)) {
+            int lastDot = fileName.lastIndexOf('.');
+            if (lastDot >= 0 && fileName.length() > lastDot + 1) {
+                String extension = fileName.substring(lastDot + 1);
                 Object confClass = prop.get(ResourceTypeImpl.KIE_RESOURCE_CONF_CLASS);
-                if (confClass == null || confClass.toString().equals( ResourceConfigurationImpl.class.getCanonicalName() )) {
-                    prop.setProperty( ResourceTypeImpl.KIE_RESOURCE_CONF_CLASS, DecisionTableConfigurationImpl.class.getName() );
+                if (confClass == null || confClass.toString().equals(ResourceConfigurationImpl.class.getCanonicalName())) {
+                    prop.setProperty(ResourceTypeImpl.KIE_RESOURCE_CONF_CLASS, DecisionTableConfigurationImpl.class.getName());
                 }
-                prop.setProperty(DecisionTableConfigurationImpl.DROOLS_DT_TYPE, DecisionTableInputType.valueOf( extension.toUpperCase() ).toString());
+                prop.setProperty(DecisionTableConfigurationImpl.DROOLS_DT_TYPE, DecisionTableInputType.valueOf(extension.toUpperCase()).toString());
             }
         }
         conf = prop.isEmpty() ? null : ResourceTypeImpl.fromProperties(prop);
-        if (conf instanceof DecisionTableConfiguration && (( DecisionTableConfiguration ) conf).getWorksheetName() == null) {
-            (( DecisionTableConfiguration ) conf).setWorksheetName( prop.getProperty( "sheets" ) );
+        if (conf instanceof DecisionTableConfiguration && ((DecisionTableConfiguration) conf).getWorksheetName() == null) {
+            ((DecisionTableConfiguration) conf).setWorksheetName(prop.getProperty("sheets"));
         }
         return conf;
     }
 
     @Override
     public CompilationCache getCompilationCache(String kbaseName) {
-        return CompilationCacheProvider.get().getCompilationCache( this, compilationCache, kbaseName );
+        return CompilationCacheProvider.get().getCompilationCache(this, compilationCache, kbaseName);
     }
 
     public PomModel getPomModel() {
         if (pomModel == null) {
             try {
                 byte[] pomXml = getPomXml();
-                if( pomXml != null ) {
+                if (pomXml != null) {
                     PomModel tempPomModel = PomModel.Parser.parse("pom.xml", new ByteArrayInputStream(pomXml));
                     validatePomModel(tempPomModel); // throws an exception if invalid
                     pomModel = tempPomModel;
                 }
-            } catch( Exception e ) {
+            } catch (Exception e) {
                 // nothing to do as it was not possible to retrieve pom.xml
             }
         }
@@ -441,36 +441,36 @@ public abstract class AbstractKieModule
     }
 
     private byte[] getPomXml() {
-        return getBytes(((ReleaseIdImpl)releaseId).getPomXmlPath());
+        return getBytes(((ReleaseIdImpl) releaseId).getPomXmlPath());
     }
 
     public InputStream getPomAsStream() {
-        byte[] pom = getBytes(((ReleaseIdImpl)releaseId).getPomXmlPath());
+        byte[] pom = getBytes(((ReleaseIdImpl) releaseId).getPomXmlPath());
         return pom != null ? new ByteArrayInputStream(pom) : null;
     }
 
     public static boolean updateResource(CompositeKnowledgeBuilder ckbuilder,
-                                         InternalKieModule kieModule,
-                                         String resourceName,
-                                         ResourceChangeSet changes) {
+            InternalKieModule kieModule,
+            String resourceName,
+            ResourceChangeSet changes) {
         ResourceConfiguration conf = kieModule.getResourceConfiguration(resourceName);
         Resource resource = kieModule.getResource(resourceName);
         if (resource != null) {
             if (conf == null) {
                 ckbuilder.add(resource,
                         ResourceType.determineResourceType(resourceName),
-                        changes );
+                        changes);
             } else {
                 ckbuilder.add(resource,
                         ResourceType.determineResourceType(resourceName),
                         conf,
-                        changes );
+                        changes);
             }
             return true;
         }
         return false;
     }
-    
+
     @Override
     public ResourceProvider createResourceProvider() {
         try {
@@ -492,8 +492,8 @@ public abstract class AbstractKieModule
 
         @Override
         public InputStream getResourceAsStream(String name) throws IOException {
-            if (name.endsWith( "/" )) {
-                name = name.substring( 0, name.length()-1 );
+            if (name.endsWith("/")) {
+                name = name.substring(0, name.length() - 1);
             }
             Resource resource = kieModule.getResource(name);
             return resource != null ? resource.getInputStream() : null;
@@ -501,8 +501,8 @@ public abstract class AbstractKieModule
 
         @Override
         public URL getResource(String name) {
-            if (name.endsWith( "/" )) {
-                name = name.substring( 0, name.length()-1 );
+            if (name.endsWith("/")) {
+                name = name.substring(0, name.length() - 1);
             }
             return kieModule.hasResource(name) ? createURLForResource(name) : null;
         }

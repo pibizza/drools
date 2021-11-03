@@ -27,13 +27,14 @@ public class SerializableDroolsError extends DroolsError implements Externalizab
     private String errorClassName;
     private String namespace;
 
-    public SerializableDroolsError() { }
-    
+    public SerializableDroolsError() {
+    }
+
     public SerializableDroolsError(BaseKnowledgeBuilderResultImpl error) {
         this.message = error.getMessage();
         this.errorLines = error.getLines();
         this.errorClassName = error.getClass().getName();
-        this.namespace = error instanceof DroolsError ? ((DroolsError)error).getNamespace() : "";
+        this.namespace = error instanceof DroolsError ? ((DroolsError) error).getNamespace() : "";
     }
 
     @Override
@@ -48,32 +49,33 @@ public class SerializableDroolsError extends DroolsError implements Externalizab
     public String getMessage() {
         return this.message;
     }
-    
+
     /**
      * Returns the lines of the error in the source file
+     * 
      * @return
      */
     public int[] getLines() {
         return this.errorLines;
     }
-    
+
     public String toString() {
         return this.errorClassName + ": " + getMessage();
     }
 
     public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeObject( this.message );
-        out.writeObject( this.errorLines );
-        out.writeObject( this.errorClassName );
-        out.writeObject( this.namespace );
+        out.writeObject(this.message);
+        out.writeObject(this.errorLines);
+        out.writeObject(this.errorClassName);
+        out.writeObject(this.namespace);
     }
-    
+
     public void readExternal(ObjectInput in) throws IOException,
-                                            ClassNotFoundException {
-        this.message = ( String ) in.readObject();
-        this.errorLines = ( int[] ) in.readObject();
-        this.errorClassName = ( String ) in.readObject();
-        this.namespace = ( String ) in.readObject();
+            ClassNotFoundException {
+        this.message = (String) in.readObject();
+        this.errorLines = (int[]) in.readObject();
+        this.errorClassName = (String) in.readObject();
+        this.namespace = (String) in.readObject();
     }
-    
+
 }

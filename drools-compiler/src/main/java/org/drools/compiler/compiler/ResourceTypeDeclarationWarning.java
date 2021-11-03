@@ -24,8 +24,8 @@ public class ResourceTypeDeclarationWarning extends DroolsWarning {
     private ResourceType declaredResourceType;
     private ResourceType actualResourceType;
 
-    public ResourceTypeDeclarationWarning( Resource resource, ResourceType declaredResourceType, ResourceType actualResourceType ) {
-        super( resource );
+    public ResourceTypeDeclarationWarning(Resource resource, ResourceType declaredResourceType, ResourceType actualResourceType) {
+        super(resource);
         this.declaredResourceType = declaredResourceType;
         this.actualResourceType = actualResourceType;
     }
@@ -34,7 +34,7 @@ public class ResourceTypeDeclarationWarning extends DroolsWarning {
         return declaredResourceType;
     }
 
-    public void setDeclaredResourceType( ResourceType declaredResourceType ) {
+    public void setDeclaredResourceType(ResourceType declaredResourceType) {
         this.declaredResourceType = declaredResourceType;
     }
 
@@ -42,7 +42,7 @@ public class ResourceTypeDeclarationWarning extends DroolsWarning {
         return actualResourceType;
     }
 
-    public void setActualResourceType( ResourceType actualResourceType ) {
+    public void setActualResourceType(ResourceType actualResourceType) {
         this.actualResourceType = actualResourceType;
     }
 
@@ -53,6 +53,6 @@ public class ResourceTypeDeclarationWarning extends DroolsWarning {
 
     @Override
     public int[] getLines() {
-        return new int[ 0 ];  //To change body of implemented methods use File | Settings | File Templates.
+        return new int[0]; //To change body of implemented methods use File | Settings | File Templates.
     }
 }

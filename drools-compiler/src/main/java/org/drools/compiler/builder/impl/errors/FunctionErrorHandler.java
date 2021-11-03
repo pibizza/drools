@@ -24,15 +24,15 @@ public class FunctionErrorHandler extends ErrorHandler {
     private FunctionDescr descr;
 
     public FunctionErrorHandler(final FunctionDescr functionDescr,
-                                final String message) {
+            final String message) {
         this.descr = functionDescr;
         this.message = message;
     }
 
     public DroolsError getError() {
         return new FunctionError(this.descr,
-                                 collectCompilerProblems(),
-                                 this.message);
+                collectCompilerProblems(),
+                this.message);
     }
 
 }

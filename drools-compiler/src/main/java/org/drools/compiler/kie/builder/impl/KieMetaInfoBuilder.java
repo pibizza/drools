@@ -43,20 +43,20 @@ public class KieMetaInfoBuilder {
 
     protected final InternalKieModule kModule;
 
-    public KieMetaInfoBuilder( InternalKieModule kModule) {
+    public KieMetaInfoBuilder(InternalKieModule kModule) {
         this.kModule = kModule;
     }
 
     public void writeKieModuleMetaInfo(ResourceStore trgMfs) {
         if (hasMvel()) {
-            KieModuleMetaInfo info = generateKieModuleMetaInfo( trgMfs );
-            trgMfs.write( KieModuleModelImpl.KMODULE_INFO_JAR_PATH,
-                    info.marshallMetaInfos().getBytes( IoUtils.UTF8_CHARSET ),
-                    true );
+            KieModuleMetaInfo info = generateKieModuleMetaInfo(trgMfs);
+            trgMfs.write(KieModuleModelImpl.KMODULE_INFO_JAR_PATH,
+                    info.marshallMetaInfos().getBytes(IoUtils.UTF8_CHARSET),
+                    true);
         }
     }
 
-    public KieModuleMetaInfo getKieModuleMetaInfo(){
+    public KieModuleMetaInfo getKieModuleMetaInfo() {
         return generateKieModuleMetaInfo(null);
     }
 
@@ -65,37 +65,37 @@ public class KieMetaInfoBuilder {
         Map<String, Set<String>> rulesPerPackage = new HashMap<>();
 
         KieModuleModel kieModuleModel = kModule.getKieModuleModel();
-        for ( String kieBaseName : kieModuleModel.getKieBaseModels().keySet() ) {
-            KnowledgeBuilder kBuilder = kModule.getKnowledgeBuilderForKieBase( kieBaseName );
+        for (String kieBaseName : kieModuleModel.getKieBaseModels().keySet()) {
+            KnowledgeBuilder kBuilder = kModule.getKnowledgeBuilderForKieBase(kieBaseName);
 
-            for ( KiePackage kPkg : kBuilder.getKnowledgePackages() ) {
-                PackageRegistry pkgRegistry = (( InternalKnowledgeBuilder ) kBuilder).getPackageRegistry( kPkg.getName() );
-                JavaDialectRuntimeData runtimeData = (JavaDialectRuntimeData) pkgRegistry.getDialectRuntimeRegistry().getDialectData( "java" );
+            for (KiePackage kPkg : kBuilder.getKnowledgePackages()) {
+                PackageRegistry pkgRegistry = ((InternalKnowledgeBuilder) kBuilder).getPackageRegistry(kPkg.getName());
+                JavaDialectRuntimeData runtimeData = (JavaDialectRuntimeData) pkgRegistry.getDialectRuntimeRegistry().getDialectData("java");
 
                 List<String> types = new ArrayList<>();
-                for ( FactType factType : kPkg.getFactTypes() ) {
-                    Class< ? > typeClass = ((ClassDefinition) factType).getDefinedClass();
-                    TypeDeclaration typeDeclaration = pkgRegistry.getPackage().getTypeDeclaration( typeClass );
-                    if ( typeDeclaration != null ) {
-                        typeInfos.put( typeClass.getName(), new TypeMetaInfo(typeDeclaration) );
+                for (FactType factType : kPkg.getFactTypes()) {
+                    Class<?> typeClass = ((ClassDefinition) factType).getDefinedClass();
+                    TypeDeclaration typeDeclaration = pkgRegistry.getPackage().getTypeDeclaration(typeClass);
+                    if (typeDeclaration != null) {
+                        typeInfos.put(typeClass.getName(), new TypeMetaInfo(typeDeclaration));
                     }
 
                     String className = factType.getName();
                     String internalName = className.replace('.', '/') + ".class";
                     if (trgMfs != null) {
-                        byte[] bytes = runtimeData.getBytecode( internalName );
-                        if ( bytes != null ) {
-                            trgMfs.write( internalName, bytes, true );
+                        byte[] bytes = runtimeData.getBytecode(internalName);
+                        if (bytes != null) {
+                            trgMfs.write(internalName, bytes, true);
                         }
                     }
-                    types.add( internalName );
+                    types.add(internalName);
                 }
 
-                Set<String> rules = rulesPerPackage.get( kPkg.getName() );
-                if( rules == null ) {
+                Set<String> rules = rulesPerPackage.get(kPkg.getName());
+                if (rules == null) {
                     rules = new HashSet<>();
                 }
-                for ( Rule rule : kPkg.getRules() ) {
+                for (Rule rule : kPkg.getRules()) {
                     rules.add(rule.getName());
                 }
                 if (!rules.isEmpty()) {

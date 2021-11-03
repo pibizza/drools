@@ -27,25 +27,25 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class FromHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
 
     public FromHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
         final FromDescr fromDesctiptor = new FromDescr();
         return fromDesctiptor;
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
 
         final FromDescr fromDescr = (FromDescr) parser.getCurrent();
@@ -54,10 +54,10 @@ public class FromHandler extends BaseAbstractHandler
 
         final PatternDescr patternDescr = (PatternDescr) parent;
 
-        final ConditionalElementDescr parentDescr = (ConditionalElementDescr)  parser.getParent( 1 );
-                
-        if ( element.getElementsByTagName( "expression" ).getLength() > 0 ) {
-            patternDescr.setSource( fromDescr );
+        final ConditionalElementDescr parentDescr = (ConditionalElementDescr) parser.getParent(1);
+
+        if (element.getElementsByTagName("expression").getLength() > 0) {
+            patternDescr.setSource(fromDescr);
         }
 
         return fromDescr;

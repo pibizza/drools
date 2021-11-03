@@ -26,23 +26,23 @@ import org.kie.internal.io.ResourceFactory;
 public class DecisionTableFactory {
 
     private static DecisionTableProvider provider = ServiceRegistry.getService(DecisionTableProvider.class);
-    
-    public static String loadFromInputStream(InputStream is, DecisionTableConfiguration configuration ) {
-        return loadFromResource(ResourceFactory.newInputStreamResource( is ), configuration);
+
+    public static String loadFromInputStream(InputStream is, DecisionTableConfiguration configuration) {
+        return loadFromResource(ResourceFactory.newInputStreamResource(is), configuration);
     }
 
     public static String loadFromResource(Resource resource, DecisionTableConfiguration configuration) {
-        return getDecisionTableProvider().loadFromResource( resource, configuration );
+        return getDecisionTableProvider().loadFromResource(resource, configuration);
     }
 
     public static List<String> loadFromInputStreamWithTemplates(Resource resource, DecisionTableConfiguration configuration) {
-        return getDecisionTableProvider().loadFromInputStreamWithTemplates( resource, configuration );
+        return getDecisionTableProvider().loadFromInputStreamWithTemplates(resource, configuration);
     }
 
     public static synchronized void setDecisionTableProvider(DecisionTableProvider provider) {
         DecisionTableFactory.provider = provider;
     }
-    
+
     public static synchronized DecisionTableProvider getDecisionTableProvider() {
         return provider;
     }

@@ -19,29 +19,29 @@ package org.drools.compiler.compiler;
 import org.kie.api.io.Resource;
 
 public class ParserError extends DroolsError {
-    private final int    row;
-    private final int    col;
+    private final int row;
+    private final int col;
     private final String message;
     private final String namespace;
 
     public ParserError(final String message,
-                       final int row,
-                       final int col) {
+            final int row,
+            final int col) {
         this(null, message, row, col);
     }
 
     public ParserError(final Resource resource,
-                       final String message,
-                       final int row,
-                       final int col) {
+            final String message,
+            final int row,
+            final int col) {
         this(resource, message, row, col, "");
     }
 
     public ParserError(final Resource resource,
-                       final String message,
-                       final int row,
-                       final int col,
-                       final String namespace) {
+            final String message,
+            final int row,
+            final int col,
+            final String namespace) {
         super(resource);
         this.message = message;
         this.row = row;

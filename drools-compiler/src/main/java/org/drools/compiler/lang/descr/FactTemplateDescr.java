@@ -22,8 +22,8 @@ import java.util.List;
 public class FactTemplateDescr extends BaseDescr {
     private static final long serialVersionUID = 510l;
 
-    String                    name;
-    List<FieldTemplateDescr>  fields           = new ArrayList<FieldTemplateDescr>( 1 );
+    String name;
+    List<FieldTemplateDescr> fields = new ArrayList<FieldTemplateDescr>(1);
 
     public FactTemplateDescr(final String name) {
         this.name = name;
@@ -33,7 +33,7 @@ public class FactTemplateDescr extends BaseDescr {
     }
 
     public void addFieldTemplate(final FieldTemplateDescr fieldTemplate) {
-        this.fields.add( fieldTemplate );
+        this.fields.add(fieldTemplate);
     }
 
     public List<FieldTemplateDescr> getFields() {

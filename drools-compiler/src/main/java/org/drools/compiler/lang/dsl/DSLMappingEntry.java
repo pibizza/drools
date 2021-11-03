@@ -25,12 +25,12 @@ import java.util.regex.Pattern;
  */
 public interface DSLMappingEntry {
 
-    public static final Section  KEYWORD        = Section.KEYWORD;
-    public static final Section  CONDITION      = Section.CONDITION;
-    public static final Section  CONSEQUENCE    = Section.CONSEQUENCE;
-    public static final Section  ANY            = Section.ANY;
+    public static final Section KEYWORD = Section.KEYWORD;
+    public static final Section CONDITION = Section.CONDITION;
+    public static final Section CONSEQUENCE = Section.CONSEQUENCE;
+    public static final Section ANY = Section.ANY;
 
-    public static final MetaData EMPTY_METADATA = new DefaultDSLEntryMetaData( "" );
+    public static final MetaData EMPTY_METADATA = new DefaultDSLEntryMetaData("");
 
     /**
      * Returns the section this mapping entry refers to
@@ -63,18 +63,20 @@ public interface DSLMappingEntry {
 
     /**
      * Returns the compiled pattern based on the given MappingKey
+     * 
      * @return the keyPattern
      */
     public Pattern getKeyPattern();
 
     /**
-     * Returns the transformed mapping value using place holders for variables 
+     * Returns the transformed mapping value using place holders for variables
+     * 
      * @return the valuePattern
      */
     public String getValuePattern();
 
     /**
-     * Returns the list of variables found in the given pattern key 
+     * Returns the list of variables found in the given pattern key
      * in the same order they were found
      * 
      * @return the variables
@@ -103,6 +105,7 @@ public interface DSLMappingEntry {
 
     /**
      * Returns a list of errors found in this mapping
+     * 
      * @return
      */
     public List getErrors();
@@ -111,9 +114,9 @@ public interface DSLMappingEntry {
      * An enum for the sections
      */
     public enum Section {
-        KEYWORD("[keyword]"), 
-        CONDITION("[condition]"), 
-        CONSEQUENCE("[consequence]"), 
+        KEYWORD("[keyword]"),
+        CONDITION("[condition]"),
+        CONSEQUENCE("[consequence]"),
         ANY("[*]");
 
         private String symbol;
@@ -133,16 +136,16 @@ public interface DSLMappingEntry {
      * implementation dependent.
      */
     public static interface MetaData
-        extends
-        Comparable<MetaData> {
+            extends
+            Comparable<MetaData> {
         public String toString();
 
         public String getMetaData();
     }
 
     public static class DefaultDSLEntryMetaData
-        implements
-        DSLMappingEntry.MetaData {
+            implements
+            DSLMappingEntry.MetaData {
 
         private String metadata;
 
@@ -159,7 +162,7 @@ public interface DSLMappingEntry {
         }
 
         public int compareTo(final MetaData arg0) {
-            return this.toString().compareTo( arg0.toString() );
+            return this.toString().compareTo(arg0.toString());
         }
     }
 

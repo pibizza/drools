@@ -24,21 +24,21 @@ import org.drools.compiler.lang.descr.ForallDescr;
 /**
  * An implementation for the CEDescrBuilder
  */
-public class ForallDescrBuilderImpl<P extends DescrBuilder< ?, ? >> extends BaseDescrBuilderImpl<P, ForallDescr>
-    implements
-    ForallDescrBuilder<P> {
+public class ForallDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends BaseDescrBuilderImpl<P, ForallDescr>
+        implements
+        ForallDescrBuilder<P> {
 
     public ForallDescrBuilderImpl(P parent) {
-        super( parent, new ForallDescr() );
+        super(parent, new ForallDescr());
     }
 
     /**
      * {@inheritDoc}
      */
-    public PatternDescrBuilder<ForallDescrBuilder<P>> pattern( String type ) {
-        PatternDescrBuilder<ForallDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<ForallDescrBuilder<P>>( this,
-                                                                                                                 type );
-        descr.addDescr( pattern.getDescr() );
+    public PatternDescrBuilder<ForallDescrBuilder<P>> pattern(String type) {
+        PatternDescrBuilder<ForallDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<ForallDescrBuilder<P>>(this,
+                type);
+        descr.addDescr(pattern.getDescr());
         return pattern;
     }
 
@@ -46,8 +46,8 @@ public class ForallDescrBuilderImpl<P extends DescrBuilder< ?, ? >> extends Base
      * {@inheritDoc}
      */
     public PatternDescrBuilder<ForallDescrBuilder<P>> pattern() {
-        PatternDescrBuilder<ForallDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<ForallDescrBuilder<P>>( this );
-        descr.addDescr( pattern.getDescr() );
+        PatternDescrBuilder<ForallDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<ForallDescrBuilder<P>>(this);
+        descr.addDescr(pattern.getDescr());
         return pattern;
     }
 

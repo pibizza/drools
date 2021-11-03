@@ -46,7 +46,7 @@ public class KieFileSystemImpl
         KieFileSystem,
         Serializable {
 
-    private static Logger logger = LoggerFactory.getLogger( KieFileSystemImpl.class );
+    private static Logger logger = LoggerFactory.getLogger(KieFileSystemImpl.class);
 
     private final MemoryFileSystem mfs;
 
@@ -59,55 +59,57 @@ public class KieFileSystemImpl
     }
 
     public KieFileSystem write(String path, byte[] content) {
-        mfs.write( path, content, true );
+        mfs.write(path, content, true);
         return this;
     }
 
     public KieFileSystem write(KiePath path, byte[] content) {
-        mfs.write( path, content, true );
+        mfs.write(path, content, true);
         return this;
     }
 
     public KieFileSystem write(String path, String text) {
-        return write( path, text.getBytes( IoUtils.UTF8_CHARSET ) );
+        return write(path, text.getBytes(IoUtils.UTF8_CHARSET));
     }
 
     public KieFileSystem write(KiePath path, String text) {
-        return write( path, text.getBytes( IoUtils.UTF8_CHARSET ) );
+        return write(path, text.getBytes(IoUtils.UTF8_CHARSET));
     }
 
     public KieFileSystem write(String path, Resource resource) {
-        mfs.write( KiePath.of(path), resource );
+        mfs.write(KiePath.of(path), resource);
         return this;
     }
 
     public KieFileSystem write(KiePath path, Resource resource) {
-        mfs.write( path, resource );
+        mfs.write(path, resource);
         return this;
     }
 
     public KieFileSystem write(Resource resource) {
         try {
             String target = resource.getTargetPath() != null ? resource.getTargetPath() : resource.getSourcePath();
-            if( target != null ) {
+            if (target != null) {
                 String prefix = resource.getResourceType() == ResourceType.JAVA ? JAVA_ROOT : RESOURCES_ROOT;
-                int prefixPos = target.indexOf( prefix );
-                String path = prefixPos >= 0 ? target.substring( prefixPos ) : prefix + target;
+                int prefixPos = target.indexOf(prefix);
+                String path = prefixPos >= 0 ? target.substring(prefixPos) : prefix + target;
                 if (resource.getResourceType() == ResourceType.XSD) {
-                    write( path, (( InternalResource ) resource).getBytes() );
+                    write(path, ((InternalResource) resource).getBytes());
                 } else {
-                    write( path, resource );
+                    write(path, resource);
                 }
                 ResourceConfiguration conf = resource.getConfiguration();
-                if( conf != null ) {
+                if (conf != null) {
                     Properties prop = ResourceTypeImpl.toProperties(conf);
                     ByteArrayOutputStream buff = new ByteArrayOutputStream();
-                    prop.store( buff, "Configuration properties for resource: " + target );
-                    write( path + ".properties", buff.toByteArray() );
+                    prop.store(buff, "Configuration properties for resource: " + target);
+                    write(path + ".properties", buff.toByteArray());
                 }
                 return this;
             } else {
-                throw new RuntimeException( "Resource does not have neither a source nor a target path. Impossible to add it to the bundle. Please set either the source or target name of the resource before adding it." + resource.toString());
+                throw new RuntimeException(
+                        "Resource does not have neither a source nor a target path. Impossible to add it to the bundle. Please set either the source or target name of the resource before adding it."
+                                + resource.toString());
             }
         } catch (IOException e) {
             throw new UncheckedIOException("Unable to write Resource: " + resource.toString(), e);
@@ -115,13 +117,13 @@ public class KieFileSystemImpl
     }
 
     public void delete(String... paths) {
-        for ( String path : paths ) {
+        for (String path : paths) {
             mfs.remove(path);
         }
     }
 
     public byte[] read(String path) {
-        return mfs.read( path );
+        return mfs.read(path);
     }
 
     public MemoryFileSystem asMemoryFileSystem() {
@@ -129,7 +131,7 @@ public class KieFileSystemImpl
     }
 
     public KieFileSystem generateAndWritePomXML(ReleaseId releaseId) {
-        write("pom.xml", KieBuilderImpl.generatePomXml(releaseId) );
+        write("pom.xml", KieBuilderImpl.generatePomXml(releaseId));
         return this;
     }
 
@@ -159,27 +161,27 @@ public class KieFileSystemImpl
 
     public KieFileSystem clone() {
         try {
-            final ByteArrayOutputStream byteArray = writeToByteArray( this );
-            return readFromByteArray( byteArray );
-        } catch ( IOException | ClassNotFoundException ioe ) {
-            logger.warn( "Unable to clone KieFileSystemImpl", ioe );
+            final ByteArrayOutputStream byteArray = writeToByteArray(this);
+            return readFromByteArray(byteArray);
+        } catch (IOException | ClassNotFoundException ioe) {
+            logger.warn("Unable to clone KieFileSystemImpl", ioe);
             return null;
         }
     }
 
-    private KieFileSystem readFromByteArray( final ByteArrayOutputStream byteArrayOutputStream ) throws IOException, ClassNotFoundException {
+    private KieFileSystem readFromByteArray(final ByteArrayOutputStream byteArrayOutputStream) throws IOException, ClassNotFoundException {
         final byte[] byteArray = byteArrayOutputStream.toByteArray();
-        final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream( byteArray );
-        final ObjectInputStream inputStream = new ObjectInputStream( byteArrayInputStream );
+        final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArray);
+        final ObjectInputStream inputStream = new ObjectInputStream(byteArrayInputStream);
 
         return (KieFileSystem) inputStream.readObject();
     }
 
-    private ByteArrayOutputStream writeToByteArray( final KieFileSystemImpl obj ) throws IOException {
+    private ByteArrayOutputStream writeToByteArray(final KieFileSystemImpl obj) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        final ObjectOutputStream outputStream = new ObjectOutputStream( byteArrayOutputStream );
+        final ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
 
-        outputStream.writeObject( obj );
+        outputStream.writeObject(obj);
         outputStream.flush();
         outputStream.close();
 

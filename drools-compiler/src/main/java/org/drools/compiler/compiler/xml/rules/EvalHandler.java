@@ -31,17 +31,17 @@ import org.xml.sax.SAXException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class EvalHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public EvalHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
 
         final EvalDescr evalDescr = new EvalDescr();
 
@@ -49,20 +49,20 @@ public class EvalHandler extends BaseAbstractHandler
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
 
         final EvalDescr evalDescr = (EvalDescr) parser.getCurrent();
 
-        final String expression =((org.w3c.dom.Text)element.getChildNodes().item( 0 )).getWholeText();
+        final String expression = ((org.w3c.dom.Text) element.getChildNodes().item(0)).getWholeText();
 
-        emptyContentCheck( localName, expression, parser );
+        emptyContentCheck(localName, expression, parser);
 
-        evalDescr.setContent( expression );
+        evalDescr.setContent(expression);
 
         final ConditionalElementDescr parentDescr = (ConditionalElementDescr) parser.getParent();
-        parentDescr.addDescr( evalDescr );
+        parentDescr.addDescr(evalDescr);
 
         return evalDescr;
     }

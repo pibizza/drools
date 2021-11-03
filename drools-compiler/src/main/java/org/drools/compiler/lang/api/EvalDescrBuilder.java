@@ -19,12 +19,12 @@ package org.drools.compiler.lang.api;
 import org.drools.compiler.lang.descr.EvalDescr;
 
 /**
- *  A descriptor builder for evals
+ * A descriptor builder for evals
  */
-public interface EvalDescrBuilder<P extends DescrBuilder< ? , ? >>
-    extends
-    DescrBuilder<P, EvalDescr> {
+public interface EvalDescrBuilder<P extends DescrBuilder<?, ?>>
+        extends
+        DescrBuilder<P, EvalDescr> {
 
-    public EvalDescrBuilder<P> constraint( String expr );
+    public EvalDescrBuilder<P> constraint(String expr);
 
 }

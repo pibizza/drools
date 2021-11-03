@@ -26,12 +26,12 @@ public class CompilerTest {
     public void test() throws Exception {
         String drl =
                 "rule R when\n" +
-                "    $s: String()" +
-                "then\n" +
-                "end";
+                        "    $s: String()" +
+                        "then\n" +
+                        "end";
 
         try {
-            new KieHelper().addContent( drl, ResourceType.DRL ).build();
+            new KieHelper().addContent(drl, ResourceType.DRL).build();
             fail("trying to build without drools-mvel on classpath should throw an exception");
         } catch (RuntimeException e) {
             // expected

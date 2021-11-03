@@ -22,43 +22,44 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AndDescr extends AnnotatedBaseDescr
-    implements
-    ConditionalElementDescr {
+        implements
+        ConditionalElementDescr {
     private static final long serialVersionUID = 510l;
-    private List<BaseDescr>    descrs           = new ArrayList<BaseDescr>();
+    private List<BaseDescr> descrs = new ArrayList<BaseDescr>();
 
-    public AndDescr() { }
+    public AndDescr() {
+    }
 
     private AndDescr(BaseDescr baseDescr) {
         addDescr(baseDescr);
     }
 
     public void addDescr(final BaseDescr baseDescr) {
-        this.descrs.add( baseDescr );
+        this.descrs.add(baseDescr);
     }
 
     public void insertDescr(int index,
-                            final BaseDescr baseDescr) {
-        this.descrs.add( index,
-                         baseDescr );
+            final BaseDescr baseDescr) {
+        this.descrs.add(index,
+                baseDescr);
     }
 
     public void insertBeforeLast(final Class<?> clazz,
-                             final BaseDescr baseDescr) {
-        if ( this.descrs.isEmpty() ) {
-            addDescr( baseDescr );
+            final BaseDescr baseDescr) {
+        if (this.descrs.isEmpty()) {
+            addDescr(baseDescr);
             return;
         }
 
-        for ( int i = this.descrs.size() - 1; i >= 0; i-- ) {
-            if ( clazz.isInstance( this.descrs.get( i ) ) ) {
-                insertDescr( i,
-                             baseDescr );
+        for (int i = this.descrs.size() - 1; i >= 0; i--) {
+            if (clazz.isInstance(this.descrs.get(i))) {
+                insertDescr(i,
+                        baseDescr);
                 return;
             }
         }
-        
-        addDescr( baseDescr );
+
+        addDescr(baseDescr);
     }
 
     public List<BaseDescr> getDescrs() {
@@ -74,24 +75,24 @@ public class AndDescr extends AnnotatedBaseDescr
     private void getAllPatternDescr(ConditionalElementDescr elementDescr, List<PatternDescr> patterns) {
         for (BaseDescr base : elementDescr.getDescrs()) {
             if (base instanceof PatternDescr) {
-                patterns.add( ( (PatternDescr) base ));
+                patterns.add(((PatternDescr) base));
             } else if (base instanceof ConditionalElementDescr) {
-                getAllPatternDescr( ( (ConditionalElementDescr) base ), patterns);
+                getAllPatternDescr(((ConditionalElementDescr) base), patterns);
             }
         }
     }
 
     public void addOrMerge(final BaseDescr baseDescr) {
-        if ( baseDescr instanceof AndDescr ) {
+        if (baseDescr instanceof AndDescr) {
             AndDescr and = (AndDescr) baseDescr;
-            for( BaseDescr descr : and.getDescrs() ) {
-                addDescr( descr );
+            for (BaseDescr descr : and.getDescrs()) {
+                addDescr(descr);
             }
-            for ( String annKey : and.getAnnotationNames() ) {
+            for (String annKey : and.getAnnotationNames()) {
                 addAnnotation(and.getAnnotation(annKey));
             }
         } else {
-            addDescr( baseDescr );
+            addDescr(baseDescr);
         }
     }
 
@@ -100,7 +101,7 @@ public class AndDescr extends AnnotatedBaseDescr
     }
 
     public String toString() {
-        return "[AND "+descrs+" ]";
+        return "[AND " + descrs + " ]";
     }
 
     public void accept(DescrVisitor visitor) {
@@ -110,7 +111,7 @@ public class AndDescr extends AnnotatedBaseDescr
     @Override
     public BaseDescr negate() {
         if (descrs.isEmpty()) {
-            return new AndDescr(new ExprConstraintDescr( "false" ));
+            return new AndDescr(new ExprConstraintDescr("false"));
         }
 
         if (descrs.size() == 1) {
@@ -120,27 +121,27 @@ public class AndDescr extends AnnotatedBaseDescr
             }
         }
 
-        boolean allExprs = descrs.stream().allMatch( ExprConstraintDescr.class::isInstance );
+        boolean allExprs = descrs.stream().allMatch(ExprConstraintDescr.class::isInstance);
         if (allExprs) {
             String expr = descrs.stream()
-                    .map( ExprConstraintDescr.class::cast )
-                    .map( ExprConstraintDescr::getText )
-                    .map( this::removeEnclosingParenthesis )
-                    .flatMap( e -> Stream.of(e.split("&&")))
-                    .map( e -> "!(" + e + ")" )
-                    .collect( Collectors.joining( "||" ) );
-            return new AndDescr( new ExprConstraintDescr(expr) );
+                    .map(ExprConstraintDescr.class::cast)
+                    .map(ExprConstraintDescr::getText)
+                    .map(this::removeEnclosingParenthesis)
+                    .flatMap(e -> Stream.of(e.split("&&")))
+                    .map(e -> "!(" + e + ")")
+                    .collect(Collectors.joining("||"));
+            return new AndDescr(new ExprConstraintDescr(expr));
         }
 
         OrDescr or = new OrDescr();
         for (BaseDescr descr : descrs) {
-            or.addDescr( descr.negate() );
+            or.addDescr(descr.negate());
         }
         return or;
     }
 
     private String removeEnclosingParenthesis(String expr) {
         expr = expr.trim();
-        return expr.startsWith("(") && expr.endsWith(")") ? removeEnclosingParenthesis(expr.substring(1, expr.length()-1)) : expr;
+        return expr.startsWith("(") && expr.endsWith(")") ? removeEnclosingParenthesis(expr.substring(1, expr.length() - 1)) : expr;
     }
 }

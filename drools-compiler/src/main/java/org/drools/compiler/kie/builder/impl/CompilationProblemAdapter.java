@@ -22,7 +22,7 @@ public class CompilationProblemAdapter implements org.kie.internal.jci.Compilati
 
     private final org.kie.memorycompiler.CompilationProblem delegate;
 
-    public CompilationProblemAdapter( org.kie.memorycompiler.CompilationProblem delegate ) {
+    public CompilationProblemAdapter(org.kie.memorycompiler.CompilationProblem delegate) {
         this.delegate = delegate;
     }
 

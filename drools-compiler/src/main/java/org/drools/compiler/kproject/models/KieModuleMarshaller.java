@@ -49,7 +49,7 @@ public class KieModuleMarshaller {
     private final XStream xStream = createNonTrustingXStream(new DomDriver());
 
     private KieModuleMarshaller() {
-        xStream.addPermission(new WildcardTypePermission( new String[] {
+        xStream.addPermission(new WildcardTypePermission(new String[] {
                 "org.drools.compiler.kproject.models.*"
         }));
 
@@ -73,11 +73,11 @@ public class KieModuleMarshaller {
         xStream.setClassLoader(KieModuleModelImpl.class.getClassLoader());
     }
 
-    public String toXML( KieModuleModel kieProject) {
+    public String toXML(KieModuleModel kieProject) {
         return xStream.toXML(kieProject);
     }
 
-    public KieModuleModel fromXML( InputStream kModuleStream) {
+    public KieModuleModel fromXML(InputStream kModuleStream) {
         byte[] bytes = null;
         try {
             bytes = readBytesFromInputStream(kModuleStream);
@@ -85,22 +85,22 @@ public class KieModuleMarshaller {
             throw new RuntimeException(e);
         }
         KieModuleValidator.validate(bytes);
-        return (KieModuleModel)xStream.fromXML(new ByteArrayInputStream(bytes));
+        return (KieModuleModel) xStream.fromXML(new ByteArrayInputStream(bytes));
     }
 
     public KieModuleModel fromXML(java.io.File kModuleFile) {
         KieModuleValidator.validate(kModuleFile);
-        return (KieModuleModel)xStream.fromXML(kModuleFile);
+        return (KieModuleModel) xStream.fromXML(kModuleFile);
     }
 
-    public KieModuleModel fromXML( URL kModuleUrl) {
+    public KieModuleModel fromXML(URL kModuleUrl) {
         KieModuleValidator.validate(kModuleUrl);
-        return (KieModuleModel)xStream.fromXML(kModuleUrl);
+        return (KieModuleModel) xStream.fromXML(kModuleUrl);
     }
 
     public KieModuleModel fromXML(String kModuleString) {
         KieModuleValidator.validate(kModuleString);
-        return (KieModuleModel)xStream.fromXML(kModuleString);
+        return (KieModuleModel) xStream.fromXML(kModuleString);
     }
 
     public static class KieModuleConverter extends AbstractXStreamConverter {
@@ -109,25 +109,25 @@ public class KieModuleMarshaller {
             super(KieModuleModelImpl.class);
         }
 
-        public void marshal( Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
+        public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
             KieModuleModelImpl kModule = (KieModuleModelImpl) value;
             writePropertyMap(writer, context, "configuration", kModule.getConfProps());
-            for ( KieBaseModel kBaseModule : kModule.getKieBaseModels().values() ) {
-                writeObject( writer, context, "kbase", kBaseModule);
+            for (KieBaseModel kBaseModule : kModule.getKieBaseModels().values()) {
+                writeObject(writer, context, "kbase", kBaseModule);
             }
         }
 
-        public Object unmarshal( HierarchicalStreamReader reader, final UnmarshallingContext context) {
+        public Object unmarshal(HierarchicalStreamReader reader, final UnmarshallingContext context) {
             final KieModuleModelImpl kModule = new KieModuleModelImpl();
 
             readNodes(reader, new AbstractXStreamConverter.NodeReader() {
                 public void onNode(HierarchicalStreamReader reader, String name, String value) {
                     if ("kbase".equals(name)) {
-                        KieBaseModelImpl kBaseModule = readObject( reader, context, KieBaseModelImpl.class );
-                        kModule.getRawKieBaseModels().put( kBaseModule.getName(), kBaseModule );
+                        KieBaseModelImpl kBaseModule = readObject(reader, context, KieBaseModelImpl.class);
+                        kModule.getRawKieBaseModels().put(kBaseModule.getName(), kBaseModule);
                         kBaseModule.setKModule(kModule);
                     } else if ("configuration".equals(name)) {
-                        kModule.setConfProps( readPropertyMap(reader, context) );
+                        kModule.setConfProps(readPropertyMap(reader, context));
                     }
                 }
             });
@@ -148,8 +148,8 @@ public class KieModuleMarshaller {
                         "com.sun.org.apache.xerces.internal.jaxp.validation.XMLSchemaFactory", ClassLoader.getSystemClassLoader());
                 URL url = KieModuleModel.class.getClassLoader().getResource(xsd);
                 return url != null ? factory.newSchema(url) : null;
-            } catch (SAXException ex ) {
-                throw new RuntimeException( "Unable to load XSD", ex );
+            } catch (SAXException ex) {
+                throw new RuntimeException("Unable to load XSD", ex);
             } finally {
                 Thread.currentThread().setContextClassLoader(tccl);
             }

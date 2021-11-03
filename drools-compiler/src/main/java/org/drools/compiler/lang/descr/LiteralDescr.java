@@ -21,20 +21,21 @@ import java.text.ParseException;
 import java.util.Locale;
 
 public class LiteralDescr extends BaseDescr {
-    public static final int   TYPE_NULL        = 1;
-    public static final int   TYPE_NUMBER      = 2;
-    public static final int   TYPE_STRING      = 3;
-    public static final int   TYPE_BOOLEAN     = 4;
+    public static final int TYPE_NULL = 1;
+    public static final int TYPE_NUMBER = 2;
+    public static final int TYPE_STRING = 3;
+    public static final int TYPE_BOOLEAN = 4;
 
     private static final long serialVersionUID = 510l;
-    private int               type;
-    
-    private String            text;
+    private int type;
 
-    public LiteralDescr() { }
+    private String text;
+
+    public LiteralDescr() {
+    }
 
     public LiteralDescr(final String text,
-                             final int type) {
+            final int type) {
         this.text = text;
         this.type = type;
     }
@@ -50,24 +51,24 @@ public class LiteralDescr extends BaseDescr {
     public void setType(int type) {
         this.type = type;
     }
-    
+
     public String getText() {
         return this.text;
     }
 
     public Object getValue() {
-        switch ( this.type ) {
-            case TYPE_NUMBER :
+        switch (this.type) {
+            case TYPE_NUMBER:
                 try {
                     // in the DRL, we always use US number formatting 
-                    return DecimalFormat.getInstance(Locale.US).parse( this.getText() );
-                } catch ( ParseException e ) {
+                    return DecimalFormat.getInstance(Locale.US).parse(this.getText());
+                } catch (ParseException e) {
                     // return String anyway
                     return this.getText();
                 }
-            case TYPE_BOOLEAN :
-                return Boolean.valueOf( this.getText() );
-            default :
+            case TYPE_BOOLEAN:
+                return Boolean.valueOf(this.getText());
+            default:
                 return this.getText();
         }
     }

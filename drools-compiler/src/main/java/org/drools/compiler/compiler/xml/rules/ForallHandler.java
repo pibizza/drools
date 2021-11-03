@@ -26,35 +26,38 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ForallHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
 
     public ForallHandler() {
 
     }
-    
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.kie.xml.Handler#start(java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
 
         final ForallDescr forallDescr = new ForallDescr();
 
         return forallDescr;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.kie.xml.Handler#end(java.lang.String, java.lang.String)
      */
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
 
         final ForallDescr forallDescr = (ForallDescr) parser.getCurrent();
@@ -62,17 +65,18 @@ public class ForallHandler extends BaseAbstractHandler
         final Object parent = parser.getParent();
 
         final ConditionalElementDescr parentDescr = (ConditionalElementDescr) parent;
-        parentDescr.addDescr( forallDescr );
+        parentDescr.addDescr(forallDescr);
 
         return null;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.kie.xml.Handler#generateNodeFor()
      */
     public Class generateNodeFor() {
         return ForallDescr.class;
     }
-
 
 }

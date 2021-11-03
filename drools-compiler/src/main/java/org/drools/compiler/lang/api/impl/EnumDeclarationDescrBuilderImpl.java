@@ -25,38 +25,34 @@ import org.drools.compiler.lang.api.AnnotationDescrBuilder;
 import org.drools.compiler.lang.api.EnumLiteralDescrBuilder;
 
 public class EnumDeclarationDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBuilder, EnumDeclarationDescr>
-    implements
+        implements
         EnumDeclarationDescrBuilder {
 
     protected EnumDeclarationDescrBuilderImpl(PackageDescrBuilder parent) {
-        super( parent, new EnumDeclarationDescr() );
+        super(parent, new EnumDeclarationDescr());
     }
 
-
-
-
-    public AnnotationDescrBuilder<EnumDeclarationDescrBuilder> newAnnotation( String name ) {
-        AnnotationDescrBuilder<EnumDeclarationDescrBuilder> annotation = new AnnotationDescrBuilderImpl<EnumDeclarationDescrBuilder>( this, name );
-        descr.addAnnotation( annotation.getDescr() );
+    public AnnotationDescrBuilder<EnumDeclarationDescrBuilder> newAnnotation(String name) {
+        AnnotationDescrBuilder<EnumDeclarationDescrBuilder> annotation = new AnnotationDescrBuilderImpl<EnumDeclarationDescrBuilder>(this, name);
+        descr.addAnnotation(annotation.getDescr());
         return annotation;
     }
 
-
-    public EnumDeclarationDescrBuilder name( String type ) {
-        descr.setTypeName( type );
+    public EnumDeclarationDescrBuilder name(String type) {
+        descr.setTypeName(type);
         return this;
     }
 
-    public FieldDescrBuilder<AbstractClassTypeDeclarationBuilder<EnumDeclarationDescr>> newField( String name ) {
-        FieldDescrBuilder<AbstractClassTypeDeclarationBuilder<EnumDeclarationDescr>> field = new FieldDescrBuilderImpl( this, name );
-        descr.addField( field.getDescr() );
+    public FieldDescrBuilder<AbstractClassTypeDeclarationBuilder<EnumDeclarationDescr>> newField(String name) {
+        FieldDescrBuilder<AbstractClassTypeDeclarationBuilder<EnumDeclarationDescr>> field = new FieldDescrBuilderImpl(this, name);
+        descr.addField(field.getDescr());
         return field;
     }
 
-    public EnumLiteralDescrBuilder newEnumLiteral( String lit ) {
-        EnumLiteralDescrBuilder literal = new EnumLiteralDescrBuilderImpl( this );
-        literal.name( lit );
-        descr.addLiteral( literal.getDescr() );
+    public EnumLiteralDescrBuilder newEnumLiteral(String lit) {
+        EnumLiteralDescrBuilder literal = new EnumLiteralDescrBuilderImpl(this);
+        literal.name(lit);
+        descr.addLiteral(literal.getDescr());
         return literal;
     }
 

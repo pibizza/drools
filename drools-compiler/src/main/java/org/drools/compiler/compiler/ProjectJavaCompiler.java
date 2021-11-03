@@ -42,41 +42,41 @@ public class ProjectJavaCompiler {
     private final JavaCompiler compiler;
 
     public ProjectJavaCompiler(KnowledgeBuilderConfigurationImpl pkgConf) {
-        this(( JavaConfiguration ) pkgConf.getDialectConfiguration("java"));
+        this((JavaConfiguration) pkgConf.getDialectConfiguration("java"));
     }
 
     public ProjectJavaCompiler(JavaConfiguration configuration) {
         compiler = JavaCompilerFactory.loadCompiler(configuration);
     }
 
-    public List<KnowledgeBuilderResult> compileAll( ProjectClassLoader projectClassLoader,
-                                                    List<String> classList,
-                                                    MemoryResourceReader src) {
+    public List<KnowledgeBuilderResult> compileAll(ProjectClassLoader projectClassLoader,
+            List<String> classList,
+            MemoryResourceReader src) {
 
         List<KnowledgeBuilderResult> results = new ArrayList<KnowledgeBuilderResult>();
 
-        if ( classList.isEmpty() ) {
+        if (classList.isEmpty()) {
             return results;
         }
         final String[] classes = new String[classList.size()];
-        classList.toArray( classes );
+        classList.toArray(classes);
 
-        CompilationResult result = compiler.compile( classes,
-                                                     src,
-                                                     new ProjectResourceStore(projectClassLoader),
-                                                     projectClassLoader );
+        CompilationResult result = compiler.compile(classes,
+                src,
+                new ProjectResourceStore(projectClassLoader),
+                projectClassLoader);
 
-        if ( result.getErrors().length > 0 ) {
+        if (result.getErrors().length > 0) {
             Map<String, ErrorHandler> errorHandlerMap = new HashMap<String, ErrorHandler>();
 
-            for ( int i = 0; i < result.getErrors().length; i++ ) {
-                final CompilationProblem err = new CompilationProblemAdapter( result.getErrors()[i] );
-                ErrorHandler handler = errorHandlerMap.get( err.getFileName() );
+            for (int i = 0; i < result.getErrors().length; i++) {
+                final CompilationProblem err = new CompilationProblemAdapter(result.getErrors()[i]);
+                ErrorHandler handler = errorHandlerMap.get(err.getFileName());
                 if (handler == null) {
                     handler = new SrcErrorHandler("Src compile error");
                     errorHandlerMap.put(err.getFileName(), handler);
                 }
-                handler.addError( err );
+                handler.addError(err);
             }
 
             for (ErrorHandler handler : errorHandlerMap.values()) {

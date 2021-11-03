@@ -32,21 +32,21 @@ public class AccumulateUtil {
                 functionName = "averageBD";
             }
         } else if (functionName.equals("max")) {
-            final Class<?> exprClass = convertFromPrimitiveType( exprClassSupplier.get() );
+            final Class<?> exprClass = convertFromPrimitiveType(exprClassSupplier.get());
             if (exprClass == Integer.class) {
                 functionName = "maxI";
             } else if (exprClass == Long.class) {
                 functionName = "maxL";
-            } else if (Number.class.isAssignableFrom( exprClass )) {
+            } else if (Number.class.isAssignableFrom(exprClass)) {
                 functionName = "maxN";
             }
         } else if (functionName.equals("min")) {
-            final Class<?> exprClass = convertFromPrimitiveType( exprClassSupplier.get() );
+            final Class<?> exprClass = convertFromPrimitiveType(exprClassSupplier.get());
             if (exprClass == Integer.class) {
                 functionName = "minI";
             } else if (exprClass == Long.class) {
                 functionName = "minL";
-            } else if (Number.class.isAssignableFrom( exprClass )) {
+            } else if (Number.class.isAssignableFrom(exprClass)) {
                 functionName = "minN";
             }
         }
@@ -55,19 +55,19 @@ public class AccumulateUtil {
 
     @SuppressWarnings("unchecked")
     public static AccumulateFunction loadAccumulateFunction(ClassLoader classLoader, String identifier,
-                                                            String className) {
+            String className) {
         try {
             Class<? extends AccumulateFunction> clazz = (Class<? extends AccumulateFunction>) classLoader.loadClass(className);
             return clazz.newInstance();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Error loading accumulate function for identifier " + identifier + ". Class " + className + " not found",
-                                       e);
+                    e);
         } catch (InstantiationException e) {
             throw new RuntimeException("Error loading accumulate function for identifier " + identifier + ". Instantiation failed for class " + className,
-                                       e);
+                    e);
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Error loading accumulate function for identifier " + identifier + ". Illegal access to class " + className,
-                                       e);
+                    e);
         }
     }
 
@@ -75,14 +75,14 @@ public class AccumulateUtil {
         Map<String, AccumulateFunction> accumulateFunctions = new HashMap<>();
         Map<String, String> temp = new HashMap<>();
         chainedProperties.mapStartsWith(temp,
-                                        AccumulateFunctionOption.PROPERTY_NAME,
-                                        true);
+                AccumulateFunctionOption.PROPERTY_NAME,
+                true);
         int index = AccumulateFunctionOption.PROPERTY_NAME.length();
         for (Map.Entry<String, String> entry : temp.entrySet()) {
             String identifier = entry.getKey().trim().substring(index);
             accumulateFunctions.put(identifier,
-                                    AccumulateUtil.loadAccumulateFunction(typesClassLoader, identifier,
-                                                                          entry.getValue()));
+                    AccumulateUtil.loadAccumulateFunction(typesClassLoader, identifier,
+                            entry.getValue()));
         }
         return accumulateFunctions;
     }

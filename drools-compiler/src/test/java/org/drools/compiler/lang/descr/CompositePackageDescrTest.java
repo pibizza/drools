@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 public class CompositePackageDescrTest {
 
     private static final String NAMESPACE = "namespace";
-    private  CompositePackageDescr compositePackageDescr;
+    private CompositePackageDescr compositePackageDescr;
 
     @Before
     public void setup() {

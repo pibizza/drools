@@ -28,59 +28,59 @@ public class KieContainerSessionsPoolImpl extends AbstractKieSessionsPool implem
 
     private final KieContainerImpl kContainer;
 
-    KieContainerSessionsPoolImpl( KieContainerImpl kContainer, int initialSize ) {
+    KieContainerSessionsPoolImpl(KieContainerImpl kContainer, int initialSize) {
         super(initialSize);
         this.kContainer = kContainer;
     }
 
     @Override
     public KieSession newKieSession() {
-        return newKieSession( null, null );
+        return newKieSession(null, null);
     }
 
     @Override
-    public KieSession newKieSession( KieSessionConfiguration conf ) {
-        return newKieSession( null, conf );
+    public KieSession newKieSession(KieSessionConfiguration conf) {
+        return newKieSession(null, conf);
     }
 
     @Override
-    public KieSession newKieSession( String kSessionName ) {
-        return newKieSession( kSessionName, null );
+    public KieSession newKieSession(String kSessionName) {
+        return newKieSession(kSessionName, null);
     }
 
     @Override
-    public KieSession newKieSession( String kSessionName, KieSessionConfiguration conf ) {
+    public KieSession newKieSession(String kSessionName, KieSessionConfiguration conf) {
         return getPool(kSessionName, conf, false).get();
     }
 
     @Override
     public StatelessKieSession newStatelessKieSession() {
-        return newStatelessKieSession( null, null );
+        return newStatelessKieSession(null, null);
     }
 
     @Override
-    public StatelessKieSession newStatelessKieSession( KieSessionConfiguration conf ) {
-        return newStatelessKieSession( null, conf );
+    public StatelessKieSession newStatelessKieSession(KieSessionConfiguration conf) {
+        return newStatelessKieSession(null, conf);
     }
 
     @Override
-    public StatelessKieSession newStatelessKieSession( String kSessionName ) {
-        return newStatelessKieSession( kSessionName, null );
+    public StatelessKieSession newStatelessKieSession(String kSessionName) {
+        return newStatelessKieSession(kSessionName, null);
     }
 
     @Override
-    public StatelessKieSession newStatelessKieSession( String kSessionName, KieSessionConfiguration conf ) {
-        return new StatelessKnowledgeSessionImpl( conf, getPool(kSessionName, conf, true) );
+    public StatelessKieSession newStatelessKieSession(String kSessionName, KieSessionConfiguration conf) {
+        return new StatelessKnowledgeSessionImpl(conf, getPool(kSessionName, conf, true));
     }
 
     @Override
-    protected StatefulSessionPool createStatefulSessionPool( String kSessionName, KieSessionConfiguration conf, boolean stateless ) {
+    protected StatefulSessionPool createStatefulSessionPool(String kSessionName, KieSessionConfiguration conf, boolean stateless) {
         return kContainer.createKieSessionsPool(kSessionName, conf, environment, initialSize, stateless);
     }
 
     @Override
     protected String getKey(String kSessionName, KieSessionConfiguration conf, boolean stateless) {
         String key = kSessionName == null ? (stateless ? "DEFAULT_STATELESS" : "DEFAULT") : kSessionName;
-        return conf == null ? key : key + "@" + System.identityHashCode( conf );
+        return conf == null ? key : key + "@" + System.identityHashCode(conf);
     }
 }

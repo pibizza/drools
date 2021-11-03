@@ -19,11 +19,11 @@ package org.drools.compiler.lang.dsl;
 public class DSLMappingParseException extends Exception {
     private static final long serialVersionUID = 510l;
 
-    public String             message;
-    public int                line;
+    public String message;
+    public int line;
 
     public DSLMappingParseException(final String message,
-                                    final int line) {
+            final int line) {
         this.message = message;
         this.line = line;
     }

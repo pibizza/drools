@@ -28,26 +28,27 @@ public class ForFunctionDescr extends BaseDescr {
 
     private static final long serialVersionUID = 520l;
 
-    private String            id;
-    private String            label;
-    private List<String>      arguments;
+    private String id;
+    private String label;
+    private List<String> arguments;
 
-    public ForFunctionDescr() { }
+    public ForFunctionDescr() {
+    }
 
     @SuppressWarnings("unchecked")
     public void readExternal(ObjectInput in) throws IOException,
-                                            ClassNotFoundException {
-        super.readExternal( in );
+            ClassNotFoundException {
+        super.readExternal(in);
         id = (String) in.readObject();
         label = (String) in.readObject();
         arguments = (List<String>) in.readObject();
     }
 
     public void writeExternal(ObjectOutput out) throws IOException {
-        super.writeExternal( out );
-        out.writeObject( id );
-        out.writeObject( label );
-        out.writeObject( arguments );
+        super.writeExternal(out);
+        out.writeObject(id);
+        out.writeObject(label);
+        out.writeObject(arguments);
     }
 
     public String getId() {

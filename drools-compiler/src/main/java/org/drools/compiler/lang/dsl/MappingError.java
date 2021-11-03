@@ -20,34 +20,34 @@ import org.drools.compiler.compiler.DroolsError;
 
 /**
  * MappingError
- * A class to represent errors found in a DSL mapping 
+ * A class to represent errors found in a DSL mapping
  *
  *
  * Created: 11/04/2006
  */
 public class MappingError extends DroolsError {
-    public static final int TEMPLATE_UNKNOWN       = 0;
-    public static final int TEMPLATE_NATURAL       = 1;
-    public static final int TEMPLATE_TARGET        = 2;
+    public static final int TEMPLATE_UNKNOWN = 0;
+    public static final int TEMPLATE_NATURAL = 1;
+    public static final int TEMPLATE_TARGET = 2;
 
-    public static final int ERROR_UNUSED_TOKEN     = 21;
+    public static final int ERROR_UNUSED_TOKEN = 21;
     public static final int ERROR_UNDECLARED_TOKEN = 22;
-    public static final int ERROR_INVALID_TOKEN    = 23;
+    public static final int ERROR_INVALID_TOKEN = 23;
     public static final int ERROR_UNMATCHED_BRACES = 24;
 
-    private final int       errorCode;
-    private final int       template;
-    private final int       offset;
-    private final String    token;
-    private String          templateText;
-    private final int[]     line;
+    private final int errorCode;
+    private final int template;
+    private final int offset;
+    private final String token;
+    private String templateText;
+    private final int[] line;
 
     public MappingError(final int errorCode,
-                        final int template,
-                        final int offset,
-                        final String token,
-                        final String templateText,
-                        final int line ) {
+            final int template,
+            final int offset,
+            final String token,
+            final String templateText,
+            final int line) {
         this.errorCode = errorCode;
         this.template = template;
         this.token = token;
@@ -58,12 +58,13 @@ public class MappingError extends DroolsError {
 
     /**
      * Returns this error code
+     * 
      * @return
      */
     public int getErrorCode() {
         return this.errorCode;
     }
-    
+
     public int[] getLines() {
         return this.line;
     }
@@ -90,21 +91,21 @@ public class MappingError extends DroolsError {
     }
 
     /**
-     * @inheritDoc 
+     * @inheritDoc
      *
      * @see org.kie.compiler.DroolsError#getMessage()
      */
     public String getMessage() {
-        switch ( this.errorCode ) {
-            case ERROR_UNUSED_TOKEN :
+        switch (this.errorCode) {
+            case ERROR_UNUSED_TOKEN:
                 return "Warning, the token " + this.token + " not used in the mapping.";
-            case ERROR_UNDECLARED_TOKEN :
+            case ERROR_UNDECLARED_TOKEN:
                 return "Warning, the token " + this.token + " not found in the expression. (May not be a problem).";
-            case ERROR_INVALID_TOKEN :
+            case ERROR_INVALID_TOKEN:
                 return "Invalid token declaration at offset " + this.offset + ": " + this.token;
-            case ERROR_UNMATCHED_BRACES :
+            case ERROR_UNMATCHED_BRACES:
                 return "Unexpected } found at offset " + this.offset;
-            default :
+            default:
                 return "Unkown error at offset: " + this.offset;
         }
     }

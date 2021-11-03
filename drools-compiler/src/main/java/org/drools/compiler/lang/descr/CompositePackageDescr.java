@@ -25,10 +25,11 @@ import org.kie.api.io.Resource;
 import org.kie.internal.builder.ResourceChange;
 
 public class CompositePackageDescr extends PackageDescr {
-    
+
     private CompositeAssetFilter filter;
 
-    public CompositePackageDescr() { }
+    public CompositePackageDescr() {
+    }
 
     public CompositePackageDescr(Resource resource, PackageDescr packageDescr) {
         super(packageDescr.getNamespace(), packageDescr.getDocumentation());
@@ -38,8 +39,8 @@ public class CompositePackageDescr extends PackageDescr {
     public void addPackageDescr(Resource resource, PackageDescr packageDescr) {
         if (!getNamespace().equals(packageDescr.getNamespace())) {
             throw new RuntimeException("Composing PackageDescr (" + packageDescr.getName()
-                + ") in different namespaces (namespace=" + getNamespace()
-                + " packageDescr=" + packageDescr.getNamespace() + ")" );
+                    + ") in different namespaces (namespace=" + getNamespace()
+                    + " packageDescr=" + packageDescr.getNamespace() + ")");
         }
         internalAdd(resource, packageDescr);
     }
@@ -113,28 +114,28 @@ public class CompositePackageDescr extends PackageDescr {
             setPreferredPkgUUID(pkgUUID);
         });
     }
-    
+
     public CompositeAssetFilter getFilter() {
         return filter;
     }
-    
-    public void addFilter( KnowledgeBuilderImpl.AssetFilter f ) {
-        if( f != null ) {
-            if( filter == null ) {
+
+    public void addFilter(KnowledgeBuilderImpl.AssetFilter f) {
+        if (f != null) {
+            if (filter == null) {
                 this.filter = new CompositeAssetFilter();
             }
-            this.filter.filters.add( f );
+            this.filter.filters.add(f);
         }
     }
-    
+
     public static class CompositeAssetFilter implements KnowledgeBuilderImpl.AssetFilter {
         public List<KnowledgeBuilderImpl.AssetFilter> filters = new ArrayList<KnowledgeBuilderImpl.AssetFilter>();
 
         @Override
         public Action accept(ResourceChange.Type type, String pkgName, String assetName) {
-            for( KnowledgeBuilderImpl.AssetFilter filter : filters ) {
+            for (KnowledgeBuilderImpl.AssetFilter filter : filters) {
                 Action result = filter.accept(type, pkgName, assetName);
-                if( !Action.DO_NOTHING.equals( result ) ) {
+                if (!Action.DO_NOTHING.equals(result)) {
                     return result;
                 }
             }

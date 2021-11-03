@@ -22,16 +22,16 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public abstract class AbstractDSLMappingEntry
-    implements
-    DSLMappingEntry {
+        implements
+        DSLMappingEntry {
 
-    private Section              section;
-    private MetaData             metadata;
-    private String               key;
-    private String               value;
+    private Section section;
+    private MetaData metadata;
+    private String key;
+    private String value;
     private Map<String, Integer> variables = new HashMap<String, Integer>();
-    private Pattern              keyPattern;
-    private String               valuePattern;
+    private Pattern keyPattern;
+    private String valuePattern;
 
     public AbstractDSLMappingEntry() {
         super();
@@ -139,42 +139,42 @@ public abstract class AbstractDSLMappingEntry
     }
 
     public boolean equals(final Object obj) {
-        if ( this == obj ) {
+        if (this == obj) {
             return true;
         }
-        if ( obj == null ) {
+        if (obj == null) {
             return false;
         }
-        if ( getClass() != obj.getClass() ) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
         final AbstractDSLMappingEntry other = (AbstractDSLMappingEntry) obj;
-        if ( this.key == null ) {
-            if ( other.key != null ) {
+        if (this.key == null) {
+            if (other.key != null) {
                 return false;
             }
-        } else if ( !this.key.equals( other.key ) ) {
+        } else if (!this.key.equals(other.key)) {
             return false;
         }
-        if ( this.metadata == null ) {
-            if ( other.metadata != null ) {
+        if (this.metadata == null) {
+            if (other.metadata != null) {
                 return false;
             }
-        } else if ( !this.metadata.equals( other.metadata ) ) {
+        } else if (!this.metadata.equals(other.metadata)) {
             return false;
         }
-        if ( this.section == null ) {
-            if ( other.section != null ) {
+        if (this.section == null) {
+            if (other.section != null) {
                 return false;
             }
-        } else if ( !this.section.equals( other.section ) ) {
+        } else if (!this.section.equals(other.section)) {
             return false;
         }
-        if ( this.value == null ) {
-            if ( other.value != null ) {
+        if (this.value == null) {
+            if (other.value != null) {
                 return false;
             }
-        } else if ( !this.value.equals( other.value ) ) {
+        } else if (!this.value.equals(other.value)) {
             return false;
         }
         return true;

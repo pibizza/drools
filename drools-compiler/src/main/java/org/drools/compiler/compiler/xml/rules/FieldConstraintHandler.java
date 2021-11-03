@@ -33,51 +33,51 @@ import org.xml.sax.SAXException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class FieldConstraintHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public FieldConstraintHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
 
-        final String fieldName = attrs.getValue( "field-name" );
-        emptyAttributeCheck( localName,
-                             "field-name",
-                             fieldName,
-                             parser );
-        final ConnectiveDescr connective = new ConnectiveDescr( RestrictionConnectiveType.AND );
-        connective.setParen( false );
+        final String fieldName = attrs.getValue("field-name");
+        emptyAttributeCheck(localName,
+                "field-name",
+                fieldName,
+                parser);
+        final ConnectiveDescr connective = new ConnectiveDescr(RestrictionConnectiveType.AND);
+        connective.setParen(false);
 
-        connective.setPrefix( fieldName );
+        connective.setPrefix(fieldName);
 
         return connective;
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
 
         final ConnectiveDescr c = (ConnectiveDescr) parser.getCurrent();
 
         Object p = parser.getParent();
-        if ( p instanceof PatternDescr ) {
+        if (p instanceof PatternDescr) {
             StringBuilder sb = new StringBuilder();
-            c.buildExpression( sb );
+            c.buildExpression(sb);
 
             ExprConstraintDescr expr = new ExprConstraintDescr();
-            expr.setExpression( sb.toString() );
+            expr.setExpression(sb.toString());
 
             final PatternDescr patternDescr = (PatternDescr) parser.getParent();
-            patternDescr.addConstraint( expr );
+            patternDescr.addConstraint(expr);
 
-        } else if ( p instanceof ConnectiveDescr ) {
-            ((ConnectiveDescr) p).add( c );
+        } else if (p instanceof ConnectiveDescr) {
+            ((ConnectiveDescr) p).add(c);
         }
 
         return c;

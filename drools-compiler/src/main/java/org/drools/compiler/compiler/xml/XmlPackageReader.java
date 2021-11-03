@@ -27,25 +27,24 @@ import org.drools.core.xml.SemanticModules;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-
 public class XmlPackageReader {
     private ExtensibleXmlParser parser;
 
-    private PackageDescr        packageDescr;
+    private PackageDescr packageDescr;
 
     public XmlPackageReader(final SemanticModules modules) {
-        this( modules, null );
+        this(modules, null);
     }
 
     public XmlPackageReader(final SemanticModules modules, final SAXParser parser) {
-        if ( parser == null ) {
+        if (parser == null) {
             this.parser = new ExtensibleXmlParser();
         } else {
-            this.parser = new ExtensibleXmlParser( parser );
+            this.parser = new ExtensibleXmlParser(parser);
         }
-        this.parser.setSemanticModules( modules );
+        this.parser.setSemanticModules(modules);
     }
-    
+
     public ExtensibleXmlParser getParser() {
         return this.parser;
     }
@@ -54,13 +53,13 @@ public class XmlPackageReader {
      * Read a <code>RuleSet</code> from a <code>Reader</code>.
      *
      * @param reader
-     *            The reader containing the rule-set.
+     *        The reader containing the rule-set.
      *
      * @return The rule-set.
      */
     public PackageDescr read(final Reader reader) throws SAXException,
-                                                 IOException {
-        this.packageDescr = (PackageDescr) this.parser.read( reader );
+            IOException {
+        this.packageDescr = (PackageDescr) this.parser.read(reader);
         return this.packageDescr;
     }
 
@@ -68,13 +67,13 @@ public class XmlPackageReader {
      * Read a <code>RuleSet</code> from an <code>InputStream</code>.
      *
      * @param inputStream
-     *            The input-stream containing the rule-set.
+     *        The input-stream containing the rule-set.
      *
      * @return The rule-set.
      */
     public PackageDescr read(final InputStream inputStream) throws SAXException,
-                                                           IOException {
-        this.packageDescr = (PackageDescr) this.parser.read( inputStream );
+            IOException {
+        this.packageDescr = (PackageDescr) this.parser.read(inputStream);
         return this.packageDescr;
     }
 
@@ -82,13 +81,13 @@ public class XmlPackageReader {
      * Read a <code>RuleSet</code> from an <code>InputSource</code>.
      *
      * @param in
-     *            The rule-set input-source.
+     *        The rule-set input-source.
      *
      * @return The rule-set.
      */
     public PackageDescr read(final InputSource in) throws SAXException,
-                                                  IOException {
-        this.packageDescr = (PackageDescr) this.parser.read( in );
+            IOException {
+        this.packageDescr = (PackageDescr) this.parser.read(in);
         return this.packageDescr;
     }
 

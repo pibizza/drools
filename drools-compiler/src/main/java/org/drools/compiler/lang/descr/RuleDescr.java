@@ -36,22 +36,22 @@ import static org.drools.core.util.StringUtils.extractFirstIdentifier;
 import static org.drools.core.util.StringUtils.lcFirst;
 
 public class RuleDescr extends AnnotatedBaseDescr
-    implements
-    Dialectable {
+        implements
+        Dialectable {
 
     private static final long serialVersionUID = 510l;
-    private String                      name;
-    private String                      parentName;
-    private String                      documentation;
+    private String name;
+    private String parentName;
+    private String documentation;
     private Map<String, AttributeDescr> attributes;
-    private UnitDescr                   unit;
+    private UnitDescr unit;
 
-    private AndDescr            lhs;
-    private Object              consequence;
+    private AndDescr lhs;
+    private Object consequence;
     private Map<String, Object> namedConsequence;
-    private int                 consequenceLine;
-    private int                 consequencePattern;
-    private int                 offset;
+    private int consequenceLine;
+    private int consequencePattern;
+    private int offset;
 
     private String className;
 
@@ -64,16 +64,16 @@ public class RuleDescr extends AnnotatedBaseDescr
 
     public RuleDescr() {
         this(null,
-             "");
+                "");
     }
 
     public RuleDescr(final String name) {
         this(name,
-             "");
+                "");
     }
 
     public RuleDescr(final String ruleName,
-                     final String documentation) {
+            final String documentation) {
         this.name = ruleName;
         this.documentation = documentation;
         this.attributes = new LinkedHashMap<>();
@@ -102,25 +102,25 @@ public class RuleDescr extends AnnotatedBaseDescr
     }
 
     public void writeExternal(ObjectOutput out) throws IOException {
-        super.writeExternal( out );
-        out.writeObject( name );
-        out.writeObject( parentName );
-        out.writeObject( documentation );
-        out.writeObject( consequence );
-        out.writeObject( namedConsequence );
-        out.writeObject( lhs );
-        out.writeInt( consequenceLine );
-        out.writeInt( consequencePattern );
-        out.writeInt( offset );
-        out.writeObject( attributes );
-        out.writeObject( className );
+        super.writeExternal(out);
+        out.writeObject(name);
+        out.writeObject(parentName);
+        out.writeObject(documentation);
+        out.writeObject(consequence);
+        out.writeObject(namedConsequence);
+        out.writeObject(lhs);
+        out.writeInt(consequenceLine);
+        out.writeInt(consequencePattern);
+        out.writeInt(offset);
+        out.writeObject(attributes);
+        out.writeObject(className);
         out.writeInt(loadOrder);
         out.writeObject(unit);
     }
 
     public RuleImpl toRule() {
-        RuleImpl rule = new RuleImpl( name );
-        rule.setResource( getResource() );
+        RuleImpl rule = new RuleImpl(name);
+        rule.setResource(getResource());
         return rule;
     }
 
@@ -128,7 +128,7 @@ public class RuleDescr extends AnnotatedBaseDescr
         return unit;
     }
 
-    public void setUnit( UnitDescr unit ) {
+    public void setUnit(UnitDescr unit) {
         this.unit = unit;
     }
 
@@ -136,17 +136,17 @@ public class RuleDescr extends AnnotatedBaseDescr
         return this.name;
     }
 
-    public void setName( String name ) {
+    public void setName(String name) {
         this.name = name;
     }
 
     public String getDialect() {
-        AttributeDescr dialect = this.attributes.get( "dialect" );
+        AttributeDescr dialect = this.attributes.get("dialect");
         return dialect != null ? dialect.getValue() : null;
     }
 
     public String getSalience() {
-        AttributeDescr salience = this.attributes.get( "salience" );
+        AttributeDescr salience = this.attributes.get("salience");
         return salience != null ? salience.getValue() : null;
     }
 
@@ -167,11 +167,11 @@ public class RuleDescr extends AnnotatedBaseDescr
     }
 
     public void addAttribute(final AttributeDescr attribute) {
-        if ( attribute != null ) {
+        if (attribute != null) {
             if (attributes.containsKey(attribute.getName())) {
                 addError("Duplicate attribute definition: " + attribute.getName());
             } else {
-                this.attributes.put( attribute.getName(), attribute );
+                this.attributes.put(attribute.getName(), attribute);
             }
         }
     }
@@ -191,13 +191,13 @@ public class RuleDescr extends AnnotatedBaseDescr
     public void setConsequence(final Object consequence) {
         this.consequence = consequence;
     }
-    
+
     public Map<String, Object> getNamedConsequences() {
         return this.namedConsequence;
     }
 
     public void addNamedConsequences(String name, Object consequence) {
-        if ( namedConsequence.containsKey(name) ) {
+        if (namedConsequence.containsKey(name)) {
             addError("Duplicate consequence name: " + name);
         } else {
             namedConsequence.put(name, consequence);
@@ -212,7 +212,7 @@ public class RuleDescr extends AnnotatedBaseDescr
     }
 
     public void setConsequenceLocation(final int line,
-                                       final int pattern) {
+            final int pattern) {
         this.consequenceLine = line;
         this.consequencePattern = pattern;
     }
@@ -234,7 +234,7 @@ public class RuleDescr extends AnnotatedBaseDescr
     }
 
     public String getEnabled() {
-        AttributeDescr enabled = this.attributes.get( "enabled" );
+        AttributeDescr enabled = this.attributes.get("enabled");
         return enabled != null ? enabled.getValue() : null;
     }
 
@@ -253,7 +253,7 @@ public class RuleDescr extends AnnotatedBaseDescr
     public boolean isRule() {
         return true;
     }
-    
+
     public boolean isQuery() {
         return false;
     }
@@ -307,46 +307,70 @@ public class RuleDescr extends AnnotatedBaseDescr
 
     @Override
     public boolean equals(Object obj) {
-        if ( this == obj ) return true;
-        if ( obj == null ) return false;
-        if ( getClass() != obj.getClass() ) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
         RuleDescr other = (RuleDescr) obj;
-        if ( attributes == null ) {
-            if ( other.attributes != null ) return false;
-        } else if ( !attributes.equals( other.attributes ) ) return false;
-        if ( className == null ) {
-            if ( other.className != null ) return false;
-        } else if ( !className.equals( other.className ) ) return false;
-        if ( consequence == null ) {
-            if ( other.consequence != null ) return false;
-        } else if ( !consequence.equals( other.consequence ) ) return false;
-        if ( consequenceLine != other.consequenceLine ) return false;
-        if ( consequencePattern != other.consequencePattern ) return false;
-        if ( loadOrder != other.loadOrder ) return false;
-        if ( documentation == null ) {
-            if ( other.documentation != null ) return false;
-        } else if ( !documentation.equals( other.documentation ) ) return false;
-        if ( errors == null ) {
-            if ( other.errors != null ) return false;
-        } else if ( !errors.equals( other.errors ) ) return false;
-        if ( lhs == null ) {
-            if ( other.lhs != null ) return false;
-        } else if ( !lhs.equals( other.lhs ) ) return false;
-        if ( name == null ) {
-            if ( other.name != null ) return false;
-        } else if ( !name.equals( other.name ) ) return false;
-        if ( namedConsequence == null ) {
-            if ( other.namedConsequence != null ) return false;
-        } else if ( !namedConsequence.equals( other.namedConsequence ) ) return false;
-        if ( offset != other.offset ) return false;
-        if ( parentName == null ) {
-            if ( other.parentName != null ) return false;
-        } else if ( !parentName.equals( other.parentName ) ) return false;
+        if (attributes == null) {
+            if (other.attributes != null)
+                return false;
+        } else if (!attributes.equals(other.attributes))
+            return false;
+        if (className == null) {
+            if (other.className != null)
+                return false;
+        } else if (!className.equals(other.className))
+            return false;
+        if (consequence == null) {
+            if (other.consequence != null)
+                return false;
+        } else if (!consequence.equals(other.consequence))
+            return false;
+        if (consequenceLine != other.consequenceLine)
+            return false;
+        if (consequencePattern != other.consequencePattern)
+            return false;
+        if (loadOrder != other.loadOrder)
+            return false;
+        if (documentation == null) {
+            if (other.documentation != null)
+                return false;
+        } else if (!documentation.equals(other.documentation))
+            return false;
+        if (errors == null) {
+            if (other.errors != null)
+                return false;
+        } else if (!errors.equals(other.errors))
+            return false;
+        if (lhs == null) {
+            if (other.lhs != null)
+                return false;
+        } else if (!lhs.equals(other.lhs))
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (namedConsequence == null) {
+            if (other.namedConsequence != null)
+                return false;
+        } else if (!namedConsequence.equals(other.namedConsequence))
+            return false;
+        if (offset != other.offset)
+            return false;
+        if (parentName == null) {
+            if (other.parentName != null)
+                return false;
+        } else if (!parentName.equals(other.parentName))
+            return false;
         return true;
     }
 
-
-    public Collection<String> lookAheadFieldsOfIdentifier( PatternDescr patternDescr ) {
+    public Collection<String> lookAheadFieldsOfIdentifier(PatternDescr patternDescr) {
         String identifier = patternDescr.getIdentifier();
         if (identifier == null) {
             return Collections.emptyList();
@@ -363,8 +387,8 @@ public class RuleDescr extends AnnotatedBaseDescr
                 for (BaseDescr expr : pattern.getDescrs()) {
                     if (expr instanceof ExprConstraintDescr) {
                         String text = expr.getText();
-                        int pos = text.indexOf( identifier + "." );
-                        if ( pos == 0 || ( pos > 0 && !Character.isJavaIdentifierPart(text.charAt( pos-1 ))) ) {
+                        int pos = text.indexOf(identifier + ".");
+                        if (pos == 0 || (pos > 0 && !Character.isJavaIdentifierPart(text.charAt(pos - 1)))) {
                             String prop = extractFirstIdentifier(text, pos + identifier.length() + 1);
                             String propFromGetter = getter2property(prop);
                             props.add(propFromGetter != null ? propFromGetter : lcFirst(prop));

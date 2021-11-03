@@ -22,5 +22,6 @@ package org.drools.compiler.lang.descr;
 public class DeclarativeInvokerDescr extends BaseDescr {
     private static final long serialVersionUID = 510l;
 
-    public DeclarativeInvokerDescr() { }
+    public DeclarativeInvokerDescr() {
+    }
 }

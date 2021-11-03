@@ -19,32 +19,37 @@ package org.drools.compiler.lang.api;
 import org.drools.compiler.lang.descr.PatternDescr;
 
 /**
- *  A descriptor builder for Patterns
- *  
- *  rule.name("Xyz")
- *    .attribute("ruleflow-grou","bla")
- *  .lhs()
- *    .and()
- *      .pattern("Foo").id("$foo").constraint("bar==baz").constraint("x>y").end()
- *      .not().pattern("Bar").constraint("a+b==c").end()
- *    .end()
- *  .rhs( "System.out.println();" )
- *  .end()
+ * A descriptor builder for Patterns
+ * 
+ * rule.name("Xyz")
+ * .attribute("ruleflow-grou","bla")
+ * .lhs()
+ * .and()
+ * .pattern("Foo").id("$foo").constraint("bar==baz").constraint("x>y").end()
+ * .not().pattern("Bar").constraint("a+b==c").end()
+ * .end()
+ * .rhs( "System.out.println();" )
+ * .end()
  */
 public interface PatternDescrBuilder<P extends DescrBuilder<?, ?>>
-    extends
-    AnnotatedDescrBuilder<PatternDescrBuilder<P>>,
-    DescrBuilder<P, PatternDescr> {
+        extends
+        AnnotatedDescrBuilder<PatternDescrBuilder<P>>,
+        DescrBuilder<P, PatternDescr> {
 
-    public PatternDescrBuilder<P> id( String id, boolean isUnification );
-    public PatternDescrBuilder<P> type( String type );
-    public PatternDescrBuilder<P> isQuery( boolean query );
-    public PatternDescrBuilder<P> constraint( String constraint );
-    public PatternDescrBuilder<P> constraint( String constraint, boolean positional );
-    public PatternDescrBuilder<P> bind( String var, String target, boolean isUnification );
-    
+    public PatternDescrBuilder<P> id(String id, boolean isUnification);
+
+    public PatternDescrBuilder<P> type(String type);
+
+    public PatternDescrBuilder<P> isQuery(boolean query);
+
+    public PatternDescrBuilder<P> constraint(String constraint);
+
+    public PatternDescrBuilder<P> constraint(String constraint, boolean positional);
+
+    public PatternDescrBuilder<P> bind(String var, String target, boolean isUnification);
+
     public SourceDescrBuilder<PatternDescrBuilder<P>> from();
-    
+
     public BehaviorDescrBuilder<PatternDescrBuilder<P>> behavior();
 
 }

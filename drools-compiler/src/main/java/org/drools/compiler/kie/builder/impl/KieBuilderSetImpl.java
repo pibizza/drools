@@ -75,9 +75,9 @@ public class KieBuilderSetImpl implements KieBuilderSet {
         previousErrors = new HashMap<>();
         InternalKieModule kieModule = (InternalKieModule) kieBuilder.getKieModuleIgnoringErrors();
         for (KieBaseModel kBaseModel : kieModule.getKieModuleModel().getKieBaseModels().values()) {
-            KnowledgeBuilder kBuilder = kieModule.getKnowledgeBuilderForKieBase( kBaseModel.getName() );
+            KnowledgeBuilder kBuilder = kieModule.getKnowledgeBuilderForKieBase(kBaseModel.getName());
             if (kBuilder != null) {
-                previousErrors.put( kBaseModel.getName(), kBuilder.getResults( getSeverities() ) );
+                previousErrors.put(kBaseModel.getName(), kBuilder.getResults(getSeverities()));
                 resourcesWithErrors.put(kBaseModel.getName(), findResourcesWithMessages(kBuilder));
             }
         }
@@ -89,14 +89,18 @@ public class KieBuilderSetImpl implements KieBuilderSet {
 
     private ResultSeverity[] getSeverities() {
         switch (minimalLevel) {
-            case ERROR: return new ResultSeverity[] { ResultSeverity.ERROR };
-            case WARNING: return new ResultSeverity[] { ResultSeverity.ERROR, ResultSeverity.WARNING };
-            case INFO: return new ResultSeverity[] { ResultSeverity.ERROR, ResultSeverity.WARNING, ResultSeverity.INFO };
-            default: throw new UnsupportedOperationException( "Unknow message level:  " + minimalLevel );
+            case ERROR:
+                return new ResultSeverity[] { ResultSeverity.ERROR };
+            case WARNING:
+                return new ResultSeverity[] { ResultSeverity.ERROR, ResultSeverity.WARNING };
+            case INFO:
+                return new ResultSeverity[] { ResultSeverity.ERROR, ResultSeverity.WARNING, ResultSeverity.INFO };
+            default:
+                throw new UnsupportedOperationException("Unknow message level:  " + minimalLevel);
         }
     }
 
-    public KieBuilderSetImpl setFiles( String[] files) {
+    public KieBuilderSetImpl setFiles(String[] files) {
         this.files = files;
         return this;
     }
@@ -105,12 +109,12 @@ public class KieBuilderSetImpl implements KieBuilderSet {
     public IncrementalResults build() {
         Collection<String> srcFiles = files != null ? asList(files) : kieBuilder.getModifiedResourcesSinceLastMark();
         Collection<String> filesToBuild = new ArrayList<>();
-        if ( srcFiles.isEmpty() ) {
+        if (srcFiles.isEmpty()) {
             return new IncrementalResultsImpl();
         }
         kieBuilder.cloneKieModuleForIncrementalCompilation();
         for (String file : srcFiles) {
-            if ( !file.endsWith( ".properties" ) ) {
+            if (!file.endsWith(".properties")) {
                 String trgFile = kieBuilder.copySourceToTarget(KiePath.of(file));
                 if (trgFile != null) {
                     filesToBuild.add(trgFile);
@@ -123,10 +127,10 @@ public class KieBuilderSetImpl implements KieBuilderSet {
         return result;
     }
 
-    private Set<String> findResourcesWithMessages( KnowledgeBuilder kBuilder) {
-        if ( kBuilder.hasResults( getSeverities() ) ) {
+    private Set<String> findResourcesWithMessages(KnowledgeBuilder kBuilder) {
+        if (kBuilder.hasResults(getSeverities())) {
             Set<String> resourcesWithMessages = new HashSet<String>();
-            for ( KnowledgeBuilderResult result : kBuilder.getResults( getSeverities() ) ) {
+            for (KnowledgeBuilderResult result : kBuilder.getResults(getSeverities())) {
                 resourcesWithMessages.add(result.getResource().getSourcePath());
             }
             return resourcesWithMessages;
@@ -139,7 +143,7 @@ public class KieBuilderSetImpl implements KieBuilderSet {
 
         InternalKieModule kieModule = (InternalKieModule) kieBuilder.getKieModuleIgnoringErrors();
         for (KieBaseModel kBaseModel : kieModule.getKieModuleModel().getKieBaseModels().values()) {
-            InternalKnowledgeBuilder kBuilder = (InternalKnowledgeBuilder)kieModule.getKnowledgeBuilderForKieBase( kBaseModel.getName() );
+            InternalKnowledgeBuilder kBuilder = (InternalKnowledgeBuilder) kieModule.getKnowledgeBuilderForKieBase(kBaseModel.getName());
             if (kBuilder == null) {
                 continue;
             }
@@ -149,19 +153,19 @@ public class KieBuilderSetImpl implements KieBuilderSet {
             KnowledgeBuilderImpl.ResourceRemovalResult removalResult = new KnowledgeBuilderImpl.ResourceRemovalResult();
 
             Set<String> wrongResources = resourcesWithErrors.get(kBaseModel.getName());
-            for ( String resourceName : wrongResources ) {
-                removalResult.add( kBuilder.removeObjectsGeneratedFromResource(new DummyResource(resourceName)) );
-                removalResult.mergeModified( addResource(ckbuilder, kBaseModel, kieModule, resourceName, useFolders) );
+            for (String resourceName : wrongResources) {
+                removalResult.add(kBuilder.removeObjectsGeneratedFromResource(new DummyResource(resourceName)));
+                removalResult.mergeModified(addResource(ckbuilder, kBaseModel, kieModule, resourceName, useFolders));
             }
 
             for (String file : filesToBuild) {
-                if ( wrongResources.contains(file) ) {
-                    removalResult.mergeModified( true );
+                if (wrongResources.contains(file)) {
+                    removalResult.mergeModified(true);
                 } else {
                     // remove the objects generated by the old Resource
-                    removalResult.add( kBuilder.removeObjectsGeneratedFromResource(new DummyResource(file)) );
+                    removalResult.add(kBuilder.removeObjectsGeneratedFromResource(new DummyResource(file)));
                     // add the modified Resource
-                    removalResult.mergeModified( addResource(ckbuilder, kBaseModel, kieModule, file, useFolders) );
+                    removalResult.mergeModified(addResource(ckbuilder, kBaseModel, kieModule, file, useFolders));
                 }
             }
 
@@ -186,14 +190,14 @@ public class KieBuilderSetImpl implements KieBuilderSet {
                 }
 
                 resourcesWithErrors.put(kBaseModel.getName(), findResourcesWithMessages(kBuilder));
-                if ( kBuilder.hasResults( getSeverities() ) ) {
-                    currentResults.put( kBaseModel.getName(), kBuilder.getResults( getSeverities() ) );
+                if (kBuilder.hasResults(getSeverities())) {
+                    currentResults.put(kBaseModel.getName(), kBuilder.getResults(getSeverities()));
                 }
 
-                if ( kBuilder.hasErrors()) {
+                if (kBuilder.hasErrors()) {
                     kBuilder.undo();
                 } else {
-                    KieServices.Factory.get().getRepository().addKieModule( kieModule );
+                    KieServices.Factory.get().getRepository().addKieModule(kieModule);
                     kieBuilder.updateKieModuleMetaInfo();
                 }
             }
@@ -208,33 +212,33 @@ public class KieBuilderSetImpl implements KieBuilderSet {
         IncrementalResultsImpl results = new IncrementalResultsImpl();
         for (Map.Entry<String, Collection<KnowledgeBuilderResult>> entry : currentResults.entrySet()) {
             Collection<KnowledgeBuilderResult> previousErrorsInKB = previousErrors.remove(entry.getKey());
-            for ( KnowledgeBuilderResult error : entry.getValue() ) {
-                if ( previousErrorsInKB == null || !previousErrorsInKB.remove( error ) ) {
-                    results.addMessage( error, entry.getKey() );
+            for (KnowledgeBuilderResult error : entry.getValue()) {
+                if (previousErrorsInKB == null || !previousErrorsInKB.remove(error)) {
+                    results.addMessage(error, entry.getKey());
                 }
             }
             if (previousErrorsInKB != null) {
-                for ( KnowledgeBuilderResult error : previousErrorsInKB ) {
-                    results.removeMessage( error, entry.getKey() );
+                for (KnowledgeBuilderResult error : previousErrorsInKB) {
+                    results.removeMessage(error, entry.getKey());
                 }
             }
         }
         for (Map.Entry<String, Collection<KnowledgeBuilderResult>> entry : previousErrors.entrySet()) {
-            for ( KnowledgeBuilderResult error : entry.getValue() ) {
-                results.removeMessage( error, entry.getKey() );
+            for (KnowledgeBuilderResult error : entry.getValue()) {
+                results.removeMessage(error, entry.getKey());
             }
         }
         return results;
     }
 
-    private boolean addResource( CompositeKnowledgeBuilder ckbuilder,
-                                 KieBaseModel kieBaseModel,
-                                 InternalKieModule kieModule,
-                                 String resourceName,
-                                 boolean useFolders ) {
+    private boolean addResource(CompositeKnowledgeBuilder ckbuilder,
+            KieBaseModel kieBaseModel,
+            InternalKieModule kieModule,
+            String resourceName,
+            boolean useFolders) {
         return !resourceName.endsWith(".properties") &&
-               filterFileInKBase(kieModule, kieBaseModel, resourceName, () -> kieModule.getResource( resourceName ), useFolders) &&
-               kieModule.addResourceToCompiler(ckbuilder, kieBaseModel, resourceName);
+                filterFileInKBase(kieModule, kieBaseModel, resourceName, () -> kieModule.getResource(resourceName), useFolders) &&
+                kieModule.addResourceToCompiler(ckbuilder, kieBaseModel, resourceName);
     }
 
     public static class DummyResource extends BaseResource {

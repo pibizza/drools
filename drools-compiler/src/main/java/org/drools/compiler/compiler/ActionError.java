@@ -20,13 +20,13 @@ import org.drools.compiler.lang.descr.BaseDescr;
 
 public class ActionError extends DroolsError {
     private BaseDescr descr;
-    private Object    object;
-    private String    message;
-    private int[]     errorLines = new int[0];
+    private Object object;
+    private String message;
+    private int[] errorLines = new int[0];
 
     public ActionError(final BaseDescr descr,
-                     final Object object,
-                     final String message) {
+            final Object object,
+            final String message) {
         this.descr = descr;
         this.object = object;
         this.message = message;
@@ -58,15 +58,15 @@ public class ActionError extends DroolsError {
     }
 
     public String getMessage() {
-        return BuilderResultUtils.getProblemMessage( this.object, this.message, "\n" );
+        return BuilderResultUtils.getProblemMessage(this.object, this.message, "\n");
     }
 
     public String toString() {
         final StringBuilder builder = new StringBuilder()
-                .append( this.message )
-                .append( " : " )
-                .append( "\n" );
-        return BuilderResultUtils.appendProblems( this.object, builder ).toString();
+                .append(this.message)
+                .append(" : ")
+                .append("\n");
+        return BuilderResultUtils.appendProblems(this.object, builder).toString();
     }
 
 }

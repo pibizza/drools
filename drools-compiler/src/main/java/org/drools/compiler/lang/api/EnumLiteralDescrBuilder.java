@@ -18,17 +18,15 @@ package org.drools.compiler.lang.api;
 
 import org.drools.compiler.lang.descr.EnumLiteralDescr;
 
-
 public interface EnumLiteralDescrBuilder
-    extends
-    AnnotatedDescrBuilder<EnumLiteralDescrBuilder>,
-    DescrBuilder<EnumDeclarationDescrBuilder, EnumLiteralDescr> {
+        extends
+        AnnotatedDescrBuilder<EnumLiteralDescrBuilder>,
+        DescrBuilder<EnumDeclarationDescrBuilder, EnumLiteralDescr> {
 
-    public EnumLiteralDescrBuilder index( int index );
+    public EnumLiteralDescrBuilder index(int index);
 
-    public EnumLiteralDescrBuilder name( String name );
+    public EnumLiteralDescrBuilder name(String name);
 
-    public EnumLiteralDescrBuilder constructorArg( String arg );
-
+    public EnumLiteralDescrBuilder constructorArg(String arg);
 
 }

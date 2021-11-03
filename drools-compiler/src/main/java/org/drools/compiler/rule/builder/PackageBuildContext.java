@@ -39,12 +39,12 @@ import org.drools.core.rule.Dialectable;
 public class PackageBuildContext {
 
     // current package
-    private InternalKnowledgePackage    pkg;
+    private InternalKnowledgePackage pkg;
 
     private DroolsAssemblerContext kBuilder;
 
     // the contianer descr
-    private BaseDescr                   parentDescr;
+    private BaseDescr parentDescr;
 
     // errors found when building the current context
     private final List<DroolsError> errors = Collections.synchronizedList(new ArrayList<>());
@@ -63,13 +63,13 @@ public class PackageBuildContext {
     private final Map<String, BaseDescr> descrLookups = new ConcurrentHashMap<>();
 
     // a simple counter for generated names
-    private int                         counter;
+    private int counter;
 
-    private DialectCompiletimeRegistry  dialectRegistry;
+    private DialectCompiletimeRegistry dialectRegistry;
 
-    private Dialect                     dialect;
-    
-    private boolean                     typesafe;
+    private Dialect dialect;
+
+    private boolean typesafe;
 
     public PackageBuildContext() {
 
@@ -79,30 +79,30 @@ public class PackageBuildContext {
      * Default constructor
      */
     public void init(final DroolsAssemblerContext kBuilder,
-                     final InternalKnowledgePackage pkg,
-                     final BaseDescr parentDescr,
-                     final DialectCompiletimeRegistry dialectRegistry,
-                     final Dialect defaultDialect,
-                     final Dialectable component) {
+            final InternalKnowledgePackage pkg,
+            final BaseDescr parentDescr,
+            final DialectCompiletimeRegistry dialectRegistry,
+            final Dialect defaultDialect,
+            final Dialectable component) {
         this.kBuilder = kBuilder;
         this.pkg = pkg;
         this.parentDescr = parentDescr;
         this.dialectRegistry = dialectRegistry;
-        this.dialect = (component != null && component.getDialect() != null) ? this.dialectRegistry.getDialect( component.getDialect() ) : defaultDialect;
-        this.typesafe = isStrictMode( dialectRegistry );
+        this.dialect = (component != null && component.getDialect() != null) ? this.dialectRegistry.getDialect(component.getDialect()) : defaultDialect;
+        this.typesafe = isStrictMode(dialectRegistry);
 
-        if ( dialect == null && (component != null && component.getDialect() != null) ) {
-            this.errors.add( new DescrBuildError( null,
-                                                  parentDescr,
-                                                  component,
-                                                  "Unable to load Dialect '" + component.getDialect() + "'" ) );
+        if (dialect == null && (component != null && component.getDialect() != null)) {
+            this.errors.add(new DescrBuildError(null,
+                    parentDescr,
+                    component,
+                    "Unable to load Dialect '" + component.getDialect() + "'"));
             // dialect is null, but fall back to default dialect so we can attempt to compile rest of rule.
             this.dialect = defaultDialect;
         }
     }
 
-    private boolean isStrictMode( DialectCompiletimeRegistry dialectRegistry ) {
-        return dialectRegistry.getDialect( "mvel" ) == null || dialectRegistry.getDialect( "mvel" ).isStrictMode();
+    private boolean isStrictMode(DialectCompiletimeRegistry dialectRegistry) {
+        return dialectRegistry.getDialect("mvel") == null || dialectRegistry.getDialect("mvel").isStrictMode();
     }
 
     public BaseDescr getParentDescr() {
@@ -125,7 +125,7 @@ public class PackageBuildContext {
     }
 
     public Dialect getDialect(String dialectName) {
-        return (Dialect) this.dialectRegistry.getDialect( dialectName );
+        return (Dialect) this.dialectRegistry.getDialect(dialectName);
     }
 
     public DialectCompiletimeRegistry getDialectRegistry() {
@@ -134,6 +134,7 @@ public class PackageBuildContext {
 
     /**
      * Returns the list of errors found while building the current context
+     * 
      * @return
      */
     public List<DroolsError> getErrors() {
@@ -148,12 +149,13 @@ public class PackageBuildContext {
         return warnings;
     }
 
-    public void addWarning( DroolsWarning warning ) {
-        this.warnings.add( warning );
+    public void addWarning(DroolsWarning warning) {
+        this.warnings.add(warning);
     }
 
     /**
      * Returns the current package being built
+     * 
      * @return
      */
     public InternalKnowledgePackage getPkg() {
@@ -162,6 +164,7 @@ public class PackageBuildContext {
 
     /**
      * Returns the Map<String invokerClassName, BaseDescr descr> of descriptor lookups
+     * 
      * @return
      */
     public BaseDescr getDescrLookup(String className) {
@@ -182,6 +185,7 @@ public class PackageBuildContext {
 
     /**
      * Returns the Map<String invokerClassName, String invokerCode> of generated invokers
+     * 
      * @return
      */
     public Map<String, String> getInvokers() {
@@ -194,6 +198,7 @@ public class PackageBuildContext {
 
     /**
      * Returns the list of generated methods
+     * 
      * @return
      */
     public List<String> getMethods() {
@@ -206,6 +211,7 @@ public class PackageBuildContext {
 
     /**
      * Returns current counter value for generated method names
+     * 
      * @return
      */
     public int getCurrentId() {
@@ -219,7 +225,7 @@ public class PackageBuildContext {
     public KnowledgeBuilderConfigurationImpl getConfiguration() {
         return this.kBuilder.getBuilderConfiguration();
     }
-    
+
     public DroolsAssemblerContext getKnowledgeBuilder() {
         return this.kBuilder;
     }
@@ -232,7 +238,7 @@ public class PackageBuildContext {
         this.typesafe = stricttype;
     }
 
-    public Class< ? > resolveVarType(String identifier) {
-        return getKnowledgeBuilder().getGlobals().get( identifier );
+    public Class<?> resolveVarType(String identifier) {
+        return getKnowledgeBuilder().getGlobals().get(identifier);
     }
 }

@@ -19,12 +19,12 @@ package org.drools.compiler.lang.api;
 import org.drools.compiler.lang.descr.PackageDescr;
 
 /**
- *  A descriptor builder for declare statements
- *  
+ * A descriptor builder for declare statements
+ * 
  */
 public interface DeclareDescrBuilder
-    extends
-    DescrBuilder<PackageDescrBuilder, PackageDescr > {
+        extends
+        DescrBuilder<PackageDescrBuilder, PackageDescr> {
 
     /**
      * Declares a new entry point
@@ -39,14 +39,13 @@ public interface DeclareDescrBuilder
      * @return the descriptor builder for the type
      */
     public TypeDeclarationDescrBuilder type();
-    
+
     /**
      * Declares a new window
      * 
      * @return the descriptor builder for the window
      */
     public WindowDeclarationDescrBuilder window();
-
 
     /**
      * Declares a new enum

@@ -20,7 +20,7 @@ import org.drools.compiler.lang.descr.AnnotationDescr;
 public class AnnotationDeclarationError extends DroolsError {
 
     private String errorMessage;
-    private int[]  line;
+    private int[] line;
     private String namespace;
 
     public AnnotationDeclarationError(AnnotationDescr annotationDescr, String errorMessage) {

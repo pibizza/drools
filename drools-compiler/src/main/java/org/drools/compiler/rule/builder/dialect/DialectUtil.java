@@ -40,20 +40,21 @@ public final class DialectUtil {
      * Takes a given name and makes sure that its legal and doesn't already exist. If the file exists it increases counter appender untill it is unique.
      */
     public static String getUniqueLegalName(final String packageName,
-                                            final String name,
-                                            final int seed,
-                                            final String ext,
-                                            final String prefix,
-                                            final ResourceReader src) {
+            final String name,
+            final int seed,
+            final String ext,
+            final String prefix,
+            final ResourceReader src) {
         // replaces all non alphanumeric or $ chars with _
-        final String newName = prefix + "_" + normalizeRuleName( name );
+        final String newName = prefix + "_" + normalizeRuleName(name);
         if (ext.equals("java")) {
             return newName + Math.abs(seed);
         }
 
         final String fileName = packageName.replace('.', '/') + "/" + newName;
 
-        if (src == null || !src.isAvailable(fileName + "." + ext)) return newName;
+        if (src == null || !src.isAvailable(fileName + "." + ext))
+            return newName;
 
         // make sure the class name does not exist, if it does increase the counter
         int counter = -1;
@@ -63,14 +64,15 @@ public final class DialectUtil {
             final String actualName = fileName + "_" + counter + "." + ext;
 
             //MVEL:test null to Fix failing test on MVELConsequenceBuilderTest.testImperativeCodeError()
-            if (!src.isAvailable(actualName)) break;
+            if (!src.isAvailable(actualName))
+                break;
         }
         // we have duplicate file names so append counter
         return newName + "_" + counter;
     }
 
     public static List<JavaBlockDescr> buildBlockDescrs(List<JavaBlockDescr> descrs,
-                                                        JavaContainerBlockDescr parentBlock) {
+            JavaContainerBlockDescr parentBlock) {
         for (JavaBlockDescr block : parentBlock.getJavaBlockDescrs()) {
             if (block instanceof JavaContainerBlockDescr) {
                 buildBlockDescrs(descrs, (JavaContainerBlockDescr) block);
@@ -97,9 +99,9 @@ public final class DialectUtil {
     }
 
     private static void stripTryDescr(String originalCode,
-                                      StringBuilder consequence,
-                                      JavaTryBlockDescr block,
-                                      int offset) {
+            StringBuilder consequence,
+            JavaTryBlockDescr block,
+            int offset) {
 
         addWhiteSpaces(originalCode, consequence, consequence.length(), block.getTextStart() - offset);
         addWhiteSpaces(originalCode, consequence, consequence.length(), block.getEnd() - offset);
@@ -119,9 +121,9 @@ public final class DialectUtil {
     }
 
     private static void stripBlockDescr(String originalCode,
-                                        StringBuilder consequence,
-                                        JavaBlockDescr block,
-                                        int offset) {
+            StringBuilder consequence,
+            JavaBlockDescr block,
+            int offset) {
 
         addWhiteSpaces(originalCode, consequence, consequence.length(), block.getEnd() - offset);
     }
@@ -137,7 +139,8 @@ public final class DialectUtil {
         Class<?> clazz = null;
         try {
             clazz = Class.forName(className.indexOf('.') < 0 ? namespace + "." + className : className, false, packageBuilder.getRootClassLoader());
-        } catch (ClassNotFoundException e) { }
+        } catch (ClassNotFoundException e) {
+        }
 
         if (clazz != null) {
             return clazz;
@@ -168,7 +171,7 @@ public final class DialectUtil {
             } else if (Character.isJavaIdentifierPart(ch)) {
                 sb.append(ch);
             } else {
-                sb.append("$u").append((int)ch).append("$");
+                sb.append("$u").append((int) ch).append("$");
             }
         }
         return sb.toString();

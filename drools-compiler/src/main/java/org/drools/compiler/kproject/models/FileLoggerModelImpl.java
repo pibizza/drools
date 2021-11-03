@@ -23,7 +23,8 @@ public class FileLoggerModelImpl implements FileLoggerModel {
     private boolean threaded = false;
     private int interval = 30;
 
-    public FileLoggerModelImpl() { }
+    public FileLoggerModelImpl() {
+    }
 
     public FileLoggerModelImpl(String file) {
         this.file = file;

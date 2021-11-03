@@ -33,36 +33,36 @@ import org.xml.sax.SAXParseException;
  * Preferences - Java - Code Style - Code Templates
  */
 public class NotHandler extends BaseAbstractHandler
-    implements
-    Handler {
+        implements
+        Handler {
     public NotHandler() {
     }
 
     public Object start(final String uri,
-                        final String localName,
-                        final Attributes attrs,
-                        final ExtensibleXmlParser parser) throws SAXException {
-        parser.startElementBuilder( localName,
-                                    attrs );
+            final String localName,
+            final Attributes attrs,
+            final ExtensibleXmlParser parser) throws SAXException {
+        parser.startElementBuilder(localName,
+                attrs);
         final NotDescr notDescr = new NotDescr();
 
         return notDescr;
     }
 
     public Object end(final String uri,
-                      final String localName,
-                      final ExtensibleXmlParser parser) throws SAXException {
+            final String localName,
+            final ExtensibleXmlParser parser) throws SAXException {
         final Element element = parser.endElementBuilder();
 
         final NotDescr notDescr = (NotDescr) parser.getCurrent();
 
-        if ( (notDescr.getDescrs().size() != 1) && (notDescr.getDescrs().get( 0 ).getClass() != PatternDescr.class) ) {
-            throw new SAXParseException( "<not> can only have a single <pattern...> as a child element",
-                                         parser.getLocator() );
+        if ((notDescr.getDescrs().size() != 1) && (notDescr.getDescrs().get(0).getClass() != PatternDescr.class)) {
+            throw new SAXParseException("<not> can only have a single <pattern...> as a child element",
+                    parser.getLocator());
         }
 
         final ConditionalElementDescr parentDescr = (ConditionalElementDescr) parser.getParent();
-        parentDescr.addDescr( notDescr );
+        parentDescr.addDescr(notDescr);
 
         return null;
     }

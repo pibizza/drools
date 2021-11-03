@@ -21,33 +21,37 @@ import java.util.Collections;
 import java.util.List;
 
 public class ForallDescr extends BaseDescr
-    implements
-    ConditionalElementDescr {
+        implements
+        ConditionalElementDescr {
 
-    private static final long   serialVersionUID = 510l;
+    private static final long serialVersionUID = 510l;
 
-    public static final String BASE_IDENTIFIER  = "$__forallBaseIdentifier";
+    public static final String BASE_IDENTIFIER = "$__forallBaseIdentifier";
 
-    private List<BaseDescr>     patterns;
+    private List<BaseDescr> patterns;
 
     public ForallDescr() {
-        this.patterns = new ArrayList<BaseDescr>( 2 );
+        this.patterns = new ArrayList<BaseDescr>(2);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.kie.lang.descr.ConditionalElementDescr#addDescr(org.kie.lang.descr.BaseDescr)
      */
     public void addDescr(final BaseDescr baseDescr) {
         // cast to make sure we are adding a pattern descriptor
-        this.patterns.add( baseDescr );
+        this.patterns.add(baseDescr);
     }
 
     public void insertBeforeLast(final Class<?> clazz,
-                                 final BaseDescr baseDescr) {
-        throw new UnsupportedOperationException( "Can't add descriptors to " + this.getClass().getName() );
+            final BaseDescr baseDescr) {
+        throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.kie.lang.descr.ConditionalElementDescr#getDescrs()
      */
     public List<BaseDescr> getDescrs() {
@@ -56,20 +60,21 @@ public class ForallDescr extends BaseDescr
 
     /**
      * Returns the base pattern from the forall CE
+     * 
      * @return
      */
     public PatternDescr getBasePattern() {
-        if ( this.patterns.size() > 1 ) {
-            return (PatternDescr) this.patterns.get( 0 );
-        } else if ( this.patterns.size() == 1 ) {
+        if (this.patterns.size() > 1) {
+            return (PatternDescr) this.patterns.get(0);
+        } else if (this.patterns.size() == 1) {
             // in case there is only one pattern, we do a rewrite, so:
             // forall( Cheese( type == "stilton" ) )
             // becomes
             // forall( BASE_IDENTIFIER : Cheese() Cheese( this == BASE_IDENTIFIER, type == "stilton" ) )
-            PatternDescr original = (PatternDescr) this.patterns.get( 0 );
+            PatternDescr original = (PatternDescr) this.patterns.get(0);
             PatternDescr base = (PatternDescr) original.clone();
             base.getDescrs().clear();
-            base.setIdentifier( BASE_IDENTIFIER );
+            base.setIdentifier(BASE_IDENTIFIER);
             base.setResource(original.getResource());
             return base;
         }
@@ -85,21 +90,21 @@ public class ForallDescr extends BaseDescr
             return null;
         }
 
-        PatternDescr p1 = (PatternDescr) this.patterns.get( 0 );
+        PatternDescr p1 = (PatternDescr) this.patterns.get(0);
         String identifier = p1.getIdentifier();
         if (identifier == null) {
             return null;
         }
 
-        PatternDescr p2 = (PatternDescr) this.patterns.get( 1 );
-        if (!p1.getObjectType().equals( p2.getObjectType() )) {
+        PatternDescr p2 = (PatternDescr) this.patterns.get(1);
+        if (!p1.getObjectType().equals(p2.getObjectType())) {
             return null;
         }
 
-        identifier = identifier.replace( "$", "\\$" );
+        identifier = identifier.replace("$", "\\$");
         for (BaseDescr constraint : p2.getConstraint().getDescrs()) {
-            if ( constraint instanceof ExprConstraintDescr && constraint.getText() != null &&
-                 constraint.getText().matches( "\\s*this\\s*==\\s*" + identifier + "\\s*" ) ) {
+            if (constraint instanceof ExprConstraintDescr && constraint.getText() != null &&
+                    constraint.getText().matches("\\s*this\\s*==\\s*" + identifier + "\\s*")) {
                 return constraint;
             }
         }
@@ -108,28 +113,29 @@ public class ForallDescr extends BaseDescr
 
     /**
      * Returns the remaining patterns from the forall CE
+     * 
      * @return
      */
     public List<BaseDescr> getRemainingPatterns() {
-        if ( this.patterns.size() > 1 ) {
-            return this.patterns.subList( 1,
-                                          this.patterns.size() );
-        } else if ( this.patterns.size() == 1 ) {
+        if (this.patterns.size() > 1) {
+            return this.patterns.subList(1,
+                    this.patterns.size());
+        } else if (this.patterns.size() == 1) {
             // in case there is only one pattern, we do a rewrite, so:
             // forall( Cheese( type == "stilton" ) )
             // becomes
             // forall( BASE_IDENTIFIER : Cheese() Cheese( this == BASE_IDENTIFIER, type == "stilton" ) )
-            PatternDescr original = (PatternDescr) this.patterns.get( 0 );
+            PatternDescr original = (PatternDescr) this.patterns.get(0);
             PatternDescr remaining = (PatternDescr) original.clone();
-            remaining.addConstraint( new ExprConstraintDescr( "this == " + BASE_IDENTIFIER ) );
+            remaining.addConstraint(new ExprConstraintDescr("this == " + BASE_IDENTIFIER));
             remaining.setResource(original.getResource());
-            return Collections.singletonList( (BaseDescr)remaining );
+            return Collections.singletonList((BaseDescr) remaining);
         }
         return Collections.emptyList();
     }
 
     public void addOrMerge(BaseDescr baseDescr) {
-        this.patterns.add( baseDescr );
+        this.patterns.add(baseDescr);
     }
 
     public boolean removeDescr(BaseDescr baseDescr) {
@@ -138,7 +144,7 @@ public class ForallDescr extends BaseDescr
 
     @Override
     public String toString() {
-        return "forall( "+patterns+" )";
+        return "forall( " + patterns + " )";
     }
 
     @Override

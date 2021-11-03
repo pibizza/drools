@@ -18,7 +18,6 @@ package org.drools.compiler.compiler;
 import org.kie.api.internal.utils.ServiceRegistry;
 import org.kie.internal.builder.KnowledgeBuilder;
 
-
 public class ProcessBuilderFactory {
 
     private static ProcessBuilderFactoryService provider = initializeProvider();
@@ -39,6 +38,6 @@ public class ProcessBuilderFactory {
     }
 
     private static ProcessBuilderFactoryService initializeProvider() {
-        return ServiceRegistry.getService( ProcessBuilderFactoryService.class );
+        return ServiceRegistry.getService(ProcessBuilderFactoryService.class);
     }
 }

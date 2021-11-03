@@ -76,7 +76,7 @@ public class DroolsToken extends CommonToken {
      * setter of editor type
      *
      * @param editorElementType
-     *            editor type
+     *        editor type
      * @see DroolsEditorType
      */
     public void setEditorType(DroolsEditorType editorType) {

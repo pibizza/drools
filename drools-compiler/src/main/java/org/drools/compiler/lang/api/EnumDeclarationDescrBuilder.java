@@ -16,13 +16,11 @@
 
 package org.drools.compiler.lang.api;
 
-
 import org.drools.compiler.lang.descr.EnumDeclarationDescr;
 
 public interface EnumDeclarationDescrBuilder extends
-    AnnotatedDescrBuilder<EnumDeclarationDescrBuilder>,
-    AbstractClassTypeDeclarationBuilder<EnumDeclarationDescr> {
-
+        AnnotatedDescrBuilder<EnumDeclarationDescrBuilder>,
+        AbstractClassTypeDeclarationBuilder<EnumDeclarationDescr> {
 
     /**
      * Defines the type name
@@ -31,7 +29,7 @@ public interface EnumDeclarationDescrBuilder extends
      *
      * @return itself
      */
-    public EnumDeclarationDescrBuilder name( String type );
+    public EnumDeclarationDescrBuilder name(String type);
 
     /**
      * Adds an enum literal
@@ -39,5 +37,5 @@ public interface EnumDeclarationDescrBuilder extends
      * @param lit
      * @return
      */
-    public EnumLiteralDescrBuilder newEnumLiteral( String lit );
+    public EnumLiteralDescrBuilder newEnumLiteral(String lit);
 }

@@ -21,10 +21,10 @@ import org.antlr.runtime.RecognitionException;
 public class GeneralParseException extends RecognitionException {
 
     private static final long serialVersionUID = 510l;
-    private String            message;
+    private String message;
 
     public GeneralParseException(final String message,
-                                 final int line) {
+            final int line) {
         this.message = message;
         this.line = line;
     }

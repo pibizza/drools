@@ -24,29 +24,29 @@ import org.drools.core.rule.Dialectable;
 import org.drools.core.rule.Namespaceable;
 
 public class FunctionDescr extends BaseDescr
-    implements
-    Dialectable,
-    Namespaceable {
+        implements
+        Dialectable,
+        Namespaceable {
     private static final long serialVersionUID = 510l;
 
-    private String            name;
-    private String            returnType;
-    private String            dialect;
+    private String name;
+    private String returnType;
+    private String dialect;
 
-    private List<String>      parameterTypes   = Collections.emptyList();
-    private List<String>      parameterNames   = Collections.emptyList();
+    private List<String> parameterTypes = Collections.emptyList();
+    private List<String> parameterNames = Collections.emptyList();
 
-    private String            className;
-    
+    private String className;
+
     // this seems to be used to map error line from the java generated file to the drl file
-    private int               offset;
+    private int offset;
 
     public FunctionDescr() {
-        this( null, null );
+        this(null, null);
     }
-    
+
     public FunctionDescr(final String name,
-                         final String returnType) {
+            final String returnType) {
         this.name = name;
         this.returnType = returnType == null ? "void" : returnType;
         this.dialect = "java";
@@ -56,11 +56,11 @@ public class FunctionDescr extends BaseDescr
         return this.name;
     }
 
-    public void setName( String name ) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public void setDialect( String dialect ) {
+    public void setDialect(String dialect) {
         this.dialect = dialect;
     }
 
@@ -72,7 +72,7 @@ public class FunctionDescr extends BaseDescr
         return this.className;
     }
 
-    public void setClassName( final String className ) {
+    public void setClassName(final String className) {
         this.className = className;
     }
 
@@ -84,29 +84,29 @@ public class FunctionDescr extends BaseDescr
         return this.parameterTypes;
     }
 
-    public void addParameter( final String type,
-                              final String name ) {
-        if ( this.parameterTypes == Collections.EMPTY_LIST ) {
+    public void addParameter(final String type,
+            final String name) {
+        if (this.parameterTypes == Collections.EMPTY_LIST) {
             this.parameterTypes = new ArrayList<String>();
         }
-        this.parameterTypes.add( type );
+        this.parameterTypes.add(type);
 
-        if ( this.parameterNames == Collections.EMPTY_LIST ) {
+        if (this.parameterNames == Collections.EMPTY_LIST) {
             this.parameterNames = new ArrayList<String>();
         }
-        this.parameterNames.add( name );
+        this.parameterNames.add(name);
     }
 
     public String getReturnType() {
         return this.returnType;
     }
 
-    public void setReturnType( String type ) {
+    public void setReturnType(String type) {
         this.returnType = type;
     }
 
-    public void setBody( String body ) {
-        setText( body );
+    public void setBody(String body) {
+        setText(body);
     }
 
     public String getBody() {

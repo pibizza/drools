@@ -25,5 +25,5 @@ public interface BusinessRuleProvider {
     public Reader getKnowledgeReader(Resource ruleResource) throws IOException;
 
     public boolean hasDSLSentences();
-    
+
 }

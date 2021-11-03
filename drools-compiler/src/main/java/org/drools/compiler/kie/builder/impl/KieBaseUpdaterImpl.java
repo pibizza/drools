@@ -42,11 +42,11 @@ import org.slf4j.LoggerFactory;
 
 public class KieBaseUpdaterImpl implements KieBaseUpdater {
 
-    private static final Logger log = LoggerFactory.getLogger( KieBaseUpdaterImpl.class );
+    private static final Logger log = LoggerFactory.getLogger(KieBaseUpdaterImpl.class);
 
     protected final KieBaseUpdaterImplContext ctx;
 
-    public KieBaseUpdaterImpl(KieBaseUpdaterImplContext ctx ) {
+    public KieBaseUpdaterImpl(KieBaseUpdaterImplContext ctx) {
         this.ctx = ctx;
     }
 
@@ -61,18 +61,18 @@ public class KieBaseUpdaterImpl implements KieBaseUpdater {
 
         // remove all ObjectTypeNodes for the modified classes
         if (ctx.modifyingUsedClass) {
-            for (Class<?> cls : ctx.modifiedClasses ) {
+            for (Class<?> cls : ctx.modifiedClasses) {
                 clearInstancesOfModifiedClass(cls);
             }
             for (InternalKnowledgePackage pkg : ctx.kBase.getPackagesMap().values()) {
                 DialectRuntimeData mvel = pkg.getDialectRuntimeRegistry().getDialectData("mvel");
-                if(mvel != null) {
+                if (mvel != null) {
                     mvel.resetParserConfiguration();
                 }
             }
         }
 
-        if ( shouldRebuild ) {
+        if (shouldRebuild) {
             // readd unchanged dsl files to the kbuilder
             for (String dslFile : ctx.unchangedResources) {
                 if (isFileInKBase(ctx.newKM, ctx.newKieBaseModel, dslFile)) {
@@ -81,14 +81,14 @@ public class KieBaseUpdaterImpl implements KieBaseUpdater {
             }
 
             KieBaseUpdate kieBaseUpdate = createKieBaseUpdate();
-            ctx.kBase.beforeIncrementalUpdate( kieBaseUpdate );
+            ctx.kBase.beforeIncrementalUpdate(kieBaseUpdate);
             rebuildAll(kbuilder, ckbuilder);
-            ctx.kBase.afterIncrementalUpdate( kieBaseUpdate );
+            ctx.kBase.afterIncrementalUpdate(kieBaseUpdate);
         }
 
         ctx.kBase.setResolvedReleaseId(ctx.newReleaseId);
 
-        for ( InternalWorkingMemory wm : ctx.kBase.getWorkingMemories() ) {
+        for (InternalWorkingMemory wm : ctx.kBase.getWorkingMemories()) {
             wm.notifyWaitOnRest();
         }
     }
@@ -97,25 +97,25 @@ public class KieBaseUpdaterImpl implements KieBaseUpdater {
         KieBaseUpdate kieBaseUpdate = new KieBaseUpdate();
 
         for (ResourceChangeSet changeSet : ctx.cs.getChanges().values()) {
-            if (!isPackageInKieBase( ctx.newKieBaseModel, changeSet.getPackageName() )) {
+            if (!isPackageInKieBase(ctx.newKieBaseModel, changeSet.getPackageName())) {
                 continue;
             }
 
-            InternalKnowledgePackage currentPkg = ctx.currentKM.getPackage( changeSet.getPackageName() );
-            InternalKnowledgePackage newPkg = ctx.newKM.getPackage( changeSet.getPackageName() );
+            InternalKnowledgePackage currentPkg = ctx.currentKM.getPackage(changeSet.getPackageName());
+            InternalKnowledgePackage newPkg = ctx.newKM.getPackage(changeSet.getPackageName());
 
             for (ResourceChange change : changeSet.getChanges()) {
                 if (change.getType() == ResourceChange.Type.RULE) {
                     switch (change.getChangeType()) {
                         case ADDED:
-                            kieBaseUpdate.registerRuleToBeAdded(newPkg.getRule( change.getName() ));
+                            kieBaseUpdate.registerRuleToBeAdded(newPkg.getRule(change.getName()));
                             break;
                         case REMOVED:
-                            kieBaseUpdate.registerRuleToBeRemoved(currentPkg.getRule( change.getName() ));
+                            kieBaseUpdate.registerRuleToBeRemoved(currentPkg.getRule(change.getName()));
                             break;
                         case UPDATED:
-                            kieBaseUpdate.registerRuleToBeAdded(newPkg.getRule( change.getName() ));
-                            kieBaseUpdate.registerRuleToBeRemoved(currentPkg.getRule( change.getName() ));
+                            kieBaseUpdate.registerRuleToBeAdded(newPkg.getRule(change.getName()));
+                            kieBaseUpdate.registerRuleToBeRemoved(currentPkg.getRule(change.getName()));
                             break;
                     }
                 }
@@ -127,11 +127,11 @@ public class KieBaseUpdaterImpl implements KieBaseUpdater {
 
     protected void removeResources(InternalKnowledgeBuilder kBuilder) {
         // remove resources first
-        for ( ResourceChangeSet rcs : ctx.cs.getChanges().values()) {
-            if ( rcs.getChangeType() == ChangeType.REMOVED ) {
+        for (ResourceChangeSet rcs : ctx.cs.getChanges().values()) {
+            if (rcs.getChangeType() == ChangeType.REMOVED) {
                 String resourceName = rcs.getResourceName();
-                if ( !resourceName.endsWith( ".properties" ) && isFileInKBase(ctx.currentKM, ctx.currentKieBaseModel, resourceName) ) {
-                    kBuilder.removeObjectsGeneratedFromResource( ctx.currentKM.getResource( resourceName ) );
+                if (!resourceName.endsWith(".properties") && isFileInKBase(ctx.currentKM, ctx.currentKieBaseModel, resourceName)) {
+                    kBuilder.removeObjectsGeneratedFromResource(ctx.currentKM.getResource(resourceName));
                 }
             }
         }
@@ -141,9 +141,9 @@ public class KieBaseUpdaterImpl implements KieBaseUpdater {
         ckbuilder.build();
 
         PackageBuilderErrors errors = (PackageBuilderErrors) kbuilder.getErrors();
-        if ( !errors.isEmpty() ) {
-            for ( KnowledgeBuilderError error : errors.getErrors() ) {
-                ctx.results.addMessage(error).setKieBaseName( ctx.newKieBaseModel.getName() );
+        if (!errors.isEmpty()) {
+            for (KnowledgeBuilderError error : errors.getErrors()) {
+                ctx.results.addMessage(error).setKieBaseName(ctx.newKieBaseModel.getName());
             }
             log.error("Unable to update KieBase: " + ctx.newKieBaseModel.getName() + " to release " + ctx.newReleaseId + "\n" + errors.toString());
         }
@@ -153,7 +153,7 @@ public class KieBaseUpdaterImpl implements KieBaseUpdater {
         }
     }
 
-    private boolean applyResourceChanges( InternalKnowledgeBuilder kbuilder, CompositeKnowledgeBuilder ckbuilder) {
+    private boolean applyResourceChanges(InternalKnowledgeBuilder kbuilder, CompositeKnowledgeBuilder ckbuilder) {
         boolean shouldRebuild = ctx.modifyingUsedClass;
         if (ctx.modifyingUsedClass) {
             // invalidate accessors for old class
@@ -169,16 +169,16 @@ public class KieBaseUpdaterImpl implements KieBaseUpdater {
 
     protected void invalidateAccessorForOldClass() {
         for (Class<?> cls : ctx.modifiedClasses) {
-            InternalKnowledgePackage kpackage = ( (InternalKnowledgePackage) ctx.kBase.getKiePackage(cls.getPackage().getName() ) );
+            InternalKnowledgePackage kpackage = ((InternalKnowledgePackage) ctx.kBase.getKiePackage(cls.getPackage().getName()));
             if (kpackage != null) {
-                kpackage.getClassFieldAccessorStore().removeClass( cls );
+                kpackage.getClassFieldAccessorStore().removeClass(cls);
             }
         }
     }
 
     private int updateResourcesIncrementally(InternalKnowledgeBuilder kbuilder, CompositeKnowledgeBuilder ckbuilder) {
         int fileCount = ctx.modifiedClasses.size();
-        for ( ResourceChangeSet rcs : ctx.cs.getChanges().values()) {
+        for (ResourceChangeSet rcs : ctx.cs.getChanges().values()) {
             fileCount += updateResource(kbuilder, ckbuilder, rcs);
         }
         return fileCount;
@@ -186,16 +186,16 @@ public class KieBaseUpdaterImpl implements KieBaseUpdater {
 
     protected int updateResource(InternalKnowledgeBuilder kbuilder, CompositeKnowledgeBuilder ckbuilder, ResourceChangeSet rcs) {
         int fileCount = 0;
-        if ( rcs.getChangeType() != ChangeType.REMOVED ) {
+        if (rcs.getChangeType() != ChangeType.REMOVED) {
             String resourceName = rcs.getResourceName();
-            if ( !resourceName.endsWith( ".properties" ) && isFileInKBase(ctx.newKM, ctx.newKieBaseModel, resourceName) ) {
+            if (!resourceName.endsWith(".properties") && isFileInKBase(ctx.newKM, ctx.newKieBaseModel, resourceName)) {
                 List<ResourceChange> changes = rcs.getChanges();
-                if ( ! changes.isEmpty() ) {
+                if (!changes.isEmpty()) {
                     // we need to deal with individual parts of the resource
                     fileCount += AbstractKieModule.updateResource(ckbuilder, ctx.newKM, resourceName, rcs) ? 1 : 0;
                 } else {
                     // the whole resource has to handled
-                    if( rcs.getChangeType() == ChangeType.UPDATED ) {
+                    if (rcs.getChangeType() == ChangeType.UPDATED) {
                         Resource resource = ctx.currentKM.getResource(resourceName);
                         kbuilder.removeObjectsGeneratedFromResource(resource);
                     }
@@ -204,13 +204,13 @@ public class KieBaseUpdaterImpl implements KieBaseUpdater {
             }
         }
 
-        for ( ResourceChangeSet.RuleLoadOrder loadOrder : rcs.getLoadOrder() ) {
-            KnowledgePackageImpl pkg = (KnowledgePackageImpl)ctx.kBase.getKiePackage(loadOrder.getPkgName() );
-            if( pkg != null ) {
-                RuleImpl rule = pkg.getRule(loadOrder.getRuleName() );
-                if ( rule != null ) {
+        for (ResourceChangeSet.RuleLoadOrder loadOrder : rcs.getLoadOrder()) {
+            KnowledgePackageImpl pkg = (KnowledgePackageImpl) ctx.kBase.getKiePackage(loadOrder.getPkgName());
+            if (pkg != null) {
+                RuleImpl rule = pkg.getRule(loadOrder.getRuleName());
+                if (rule != null) {
                     // rule can be null, if it didn't exist before
-                    rule.setLoadOrder( loadOrder.getLoadOrder() );
+                    rule.setLoadOrder(loadOrder.getLoadOrder());
                 }
             }
         }
@@ -232,38 +232,37 @@ public class KieBaseUpdaterImpl implements KieBaseUpdater {
 
     protected void updateAllResources(InternalKnowledgeBuilder kbuilder, CompositeKnowledgeBuilder ckbuilder) {
         for (String resourceName : ctx.currentKM.getFileNames()) {
-            if ( !resourceName.endsWith( ".properties" ) && isFileInKBase(ctx.currentKM, ctx.newKieBaseModel, resourceName) ) {
+            if (!resourceName.endsWith(".properties") && isFileInKBase(ctx.currentKM, ctx.newKieBaseModel, resourceName)) {
                 Resource resource = ctx.currentKM.getResource(resourceName);
                 kbuilder.removeObjectsGeneratedFromResource(resource);
             }
         }
         for (String resourceName : ctx.newKM.getFileNames()) {
-            if ( !resourceName.endsWith( ".properties" ) && isFileInKBase(ctx.newKM, ctx.newKieBaseModel, resourceName) ) {
+            if (!resourceName.endsWith(".properties") && isFileInKBase(ctx.newKM, ctx.newKieBaseModel, resourceName)) {
                 ctx.newKM.addResourceToCompiler(ckbuilder, ctx.newKieBaseModel, resourceName);
             }
         }
     }
 
-    protected void clearInstancesOfModifiedClass( Class<?> cls ) {
+    protected void clearInstancesOfModifiedClass(Class<?> cls) {
         // remove all ObjectTypeNodes for the modified classes
-        ClassObjectType objectType = new ClassObjectType(cls );
-        for ( EntryPointNode epn : ctx.kBase.getRete().getEntryPointNodes().values() ) {
-            epn.removeObjectType( objectType );
+        ClassObjectType objectType = new ClassObjectType(cls);
+        for (EntryPointNode epn : ctx.kBase.getRete().getEntryPointNodes().values()) {
+            epn.removeObjectType(objectType);
         }
 
         // remove all instance of the old class from the object stores
         for (InternalWorkingMemory wm : ctx.kBase.getWorkingMemories()) {
             for (EntryPoint ep : wm.getEntryPoints()) {
-                InternalWorkingMemoryEntryPoint wmEp = (InternalWorkingMemoryEntryPoint) wm.getWorkingMemoryEntryPoint(ep.getEntryPointId() );
-                if ( wmEp.getObjectStore().clearClassStore( cls ) ) {
-                    log.warn( "Class " + cls.getName() + " has been modified and therfore its old instances will no longer match" );
+                InternalWorkingMemoryEntryPoint wmEp = (InternalWorkingMemoryEntryPoint) wm.getWorkingMemoryEntryPoint(ep.getEntryPointId());
+                if (wmEp.getObjectStore().clearClassStore(cls)) {
+                    log.warn("Class " + cls.getName() + " has been modified and therfore its old instances will no longer match");
                 }
             }
         }
     }
 
-    protected static boolean isPackageInKieBase( KieBaseModel kieBaseModel, String pkgName ) {
-        return pkgName != null && ( kieBaseModel.getPackages().isEmpty() || KieBuilderImpl.isPackageInKieBase( kieBaseModel, pkgName ) );
+    protected static boolean isPackageInKieBase(KieBaseModel kieBaseModel, String pkgName) {
+        return pkgName != null && (kieBaseModel.getPackages().isEmpty() || KieBuilderImpl.isPackageInKieBase(kieBaseModel, pkgName));
     }
 }
-

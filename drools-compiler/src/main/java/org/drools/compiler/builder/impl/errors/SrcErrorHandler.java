@@ -26,7 +26,7 @@ public class SrcErrorHandler extends ErrorHandler {
 
     public DroolsError getError() {
         return new SrcError(collectCompilerProblems(),
-                            this.message);
+                this.message);
     }
 
 }

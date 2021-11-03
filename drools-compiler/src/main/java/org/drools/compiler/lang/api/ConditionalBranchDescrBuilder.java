@@ -17,7 +17,7 @@ package org.drools.compiler.lang.api;
 
 import org.drools.compiler.lang.descr.ConditionalBranchDescr;
 
-public interface ConditionalBranchDescrBuilder<P extends DescrBuilder< ? , ? >> extends DescrBuilder<P, ConditionalBranchDescr> {
+public interface ConditionalBranchDescrBuilder<P extends DescrBuilder<?, ?>> extends DescrBuilder<P, ConditionalBranchDescr> {
 
     /**
      * Defines the condition for this conditional branch

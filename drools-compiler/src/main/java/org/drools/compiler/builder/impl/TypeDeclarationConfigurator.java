@@ -46,32 +46,33 @@ public class TypeDeclarationConfigurator {
 
     protected KnowledgeBuilderImpl kbuilder;
 
-    public TypeDeclarationConfigurator( KnowledgeBuilderImpl kbuilder ) {
+    public TypeDeclarationConfigurator(KnowledgeBuilderImpl kbuilder) {
         this.kbuilder = kbuilder;
     }
 
-    public void finalizeConfigurator(TypeDeclaration type, AbstractClassTypeDeclarationDescr typeDescr, PackageRegistry pkgRegistry, Map<String, PackageRegistry> pkgRegistryMap, ClassHierarchyManager hierarchyManager ) {
+    public void finalizeConfigurator(TypeDeclaration type, AbstractClassTypeDeclarationDescr typeDescr, PackageRegistry pkgRegistry, Map<String, PackageRegistry> pkgRegistryMap,
+            ClassHierarchyManager hierarchyManager) {
         // prefer definitions where possible
-        if ( type.getNature() == TypeDeclaration.Nature.DEFINITION ) {
-            hierarchyManager.addDeclarationToPackagePreservingOrder( type, typeDescr, pkgRegistry.getPackage(), pkgRegistryMap );
+        if (type.getNature() == TypeDeclaration.Nature.DEFINITION) {
+            hierarchyManager.addDeclarationToPackagePreservingOrder(type, typeDescr, pkgRegistry.getPackage(), pkgRegistryMap);
         } else {
-            TypeDeclaration oldType = pkgRegistry.getPackage().getTypeDeclaration( type.getTypeName() );
-            if ( oldType == null ) {
-                pkgRegistry.getPackage().addTypeDeclaration( type );
+            TypeDeclaration oldType = pkgRegistry.getPackage().getTypeDeclaration(type.getTypeName());
+            if (oldType == null) {
+                pkgRegistry.getPackage().addTypeDeclaration(type);
             } else {
                 if (type.getRole() == Role.Type.EVENT) {
                     oldType.setRole(Role.Type.EVENT);
-                    if ( type.getDurationAttribute() != null ) {
-                        oldType.setDurationAttribute( type.getDurationAttribute() );
-                        oldType.setDurationExtractor( type.getDurationExtractor() );
+                    if (type.getDurationAttribute() != null) {
+                        oldType.setDurationAttribute(type.getDurationAttribute());
+                        oldType.setDurationExtractor(type.getDurationExtractor());
                     }
-                    if ( type.getTimestampAttribute() != null ) {
-                        oldType.setTimestampAttribute( type.getTimestampAttribute() );
-                        oldType.setTimestampExtractor( type.getTimestampExtractor() );
+                    if (type.getTimestampAttribute() != null) {
+                        oldType.setTimestampAttribute(type.getTimestampAttribute());
+                        oldType.setTimestampExtractor(type.getTimestampExtractor());
                     }
-                    if ( type.getExpirationOffset() >= 0 ) {
-                        oldType.setExpirationOffset( type.getExpirationOffset() );
-                        oldType.setExpirationType( type.getExpirationPolicy() );
+                    if (type.getExpirationOffset() >= 0) {
+                        oldType.setExpirationOffset(type.getExpirationOffset());
+                        oldType.setExpirationType(type.getExpirationPolicy());
                     }
                 }
                 if (type.isPropertyReactive()) {
@@ -81,37 +82,36 @@ public class TypeDeclarationConfigurator {
         }
     }
 
+    public boolean wireFieldAccessors(PackageRegistry pkgRegistry,
+            AbstractClassTypeDeclarationDescr typeDescr,
+            TypeDeclaration type) {
 
-    public boolean wireFieldAccessors( PackageRegistry pkgRegistry,
-                                       AbstractClassTypeDeclarationDescr typeDescr,
-                                       TypeDeclaration type ) {
-
-        if ( type.getTypeClassDef() != null ) {
+        if (type.getTypeClassDef() != null) {
             try {
-                buildFieldAccessors( type, pkgRegistry );
-            } catch ( Throwable e ) {
+                buildFieldAccessors(type, pkgRegistry);
+            } catch (Throwable e) {
                 kbuilder.addBuilderResult(new TypeDeclarationError(typeDescr,
-                                                                   "Error creating field accessors for TypeDeclaration '" + type.getTypeName() +
-                                                                   "' for type '" +
-                                                                   type.getTypeName() +
-                                                                   " : " + e.getMessage() +
-                                                                   "'"));
+                        "Error creating field accessors for TypeDeclaration '" + type.getTypeName() +
+                                "' for type '" +
+                                type.getTypeName() +
+                                " : " + e.getMessage() +
+                                "'"));
                 return false;
             }
         }
 
-        processMvelBasedAccessors( kbuilder, pkgRegistry, typeDescr, type );
-        processTypeAnnotations( type, typeDescr, kbuilder.getBuilderConfiguration().getPropertySpecificOption());
+        processMvelBasedAccessors(kbuilder, pkgRegistry, typeDescr, type);
+        processTypeAnnotations(type, typeDescr, kbuilder.getBuilderConfiguration().getPropertySpecificOption());
         return true;
     }
 
-    static void processMvelBasedAccessors( KnowledgeBuilderImpl kbuilder, PackageRegistry pkgRegistry, Annotated annotated, TypeDeclaration type ) {
-        wireTimestampAccessor( kbuilder, annotated, type, pkgRegistry );
-        wireDurationAccessor( kbuilder, annotated, type, pkgRegistry );
+    static void processMvelBasedAccessors(KnowledgeBuilderImpl kbuilder, PackageRegistry pkgRegistry, Annotated annotated, TypeDeclaration type) {
+        wireTimestampAccessor(kbuilder, annotated, type, pkgRegistry);
+        wireDurationAccessor(kbuilder, annotated, type, pkgRegistry);
     }
 
     protected void buildFieldAccessors(final TypeDeclaration type,
-                                       final PackageRegistry pkgRegistry) throws SecurityException,
+            final PackageRegistry pkgRegistry) throws SecurityException,
             IllegalArgumentException,
             InstantiationException,
             IllegalAccessException,
@@ -122,17 +122,17 @@ public class TypeDeclarationConfigurator {
             NoSuchFieldException {
         ClassDefinition cd = type.getTypeClassDef();
         ClassFieldAccessorStore store = pkgRegistry.getPackage().getClassFieldAccessorStore();
-        for ( FieldDefinition attrDef : cd.getFieldsDefinitions() ) {
-            ClassFieldAccessor accessor = store.getAccessor( cd.getDefinedClass().getName(),
-                                                             attrDef.getName() );
-            attrDef.setReadWriteAccessor( accessor );
+        for (FieldDefinition attrDef : cd.getFieldsDefinitions()) {
+            ClassFieldAccessor accessor = store.getAccessor(cd.getDefinedClass().getName(),
+                    attrDef.getName());
+            attrDef.setReadWriteAccessor(accessor);
         }
     }
 
-    private static void wireTimestampAccessor( KnowledgeBuilderImpl kbuilder, Annotated annotated, TypeDeclaration type, PackageRegistry pkgRegistry ) {
+    private static void wireTimestampAccessor(KnowledgeBuilderImpl kbuilder, Annotated annotated, TypeDeclaration type, PackageRegistry pkgRegistry) {
         Timestamp timestamp = annotated.getTypedAnnotation(Timestamp.class);
-        if ( timestamp != null ) {
-            BaseDescr typeDescr = annotated instanceof BaseDescr ? ( (BaseDescr) annotated ) : new BaseDescr();
+        if (timestamp != null) {
+            BaseDescr typeDescr = annotated instanceof BaseDescr ? ((BaseDescr) annotated) : new BaseDescr();
             String timestampField;
             try {
                 timestampField = timestamp.value();
@@ -140,24 +140,24 @@ public class TypeDeclarationConfigurator {
                 kbuilder.addBuilderResult(new TypeDeclarationError(typeDescr, e.getMessage()));
                 return;
             }
-            type.setTimestampAttribute( timestampField );
+            type.setTimestampAttribute(timestampField);
             InternalKnowledgePackage pkg = pkgRegistry.getPackage();
 
-            AnalysisResult results = getMvelAnalysisResult( kbuilder, typeDescr, type, pkgRegistry, timestampField, pkg );
+            AnalysisResult results = getMvelAnalysisResult(kbuilder, typeDescr, type, pkgRegistry, timestampField, pkg);
             if (results != null) {
-                type.setTimestampExtractor(getFieldExtractor( type, timestampField, pkg, results ));
+                type.setTimestampExtractor(getFieldExtractor(type, timestampField, pkg, results));
             } else {
                 kbuilder.addBuilderResult(new TypeDeclarationError(typeDescr,
-                                                                   "Error creating field accessors for timestamp field '" + timestamp +
-                                                                   "' for type '" + type.getTypeName() + "'"));
+                        "Error creating field accessors for timestamp field '" + timestamp +
+                                "' for type '" + type.getTypeName() + "'"));
             }
         }
     }
 
-    private static void wireDurationAccessor( KnowledgeBuilderImpl kbuilder, Annotated annotated, TypeDeclaration type, PackageRegistry pkgRegistry ) {
+    private static void wireDurationAccessor(KnowledgeBuilderImpl kbuilder, Annotated annotated, TypeDeclaration type, PackageRegistry pkgRegistry) {
         Duration duration = annotated.getTypedAnnotation(Duration.class);
         if (duration != null) {
-            BaseDescr typeDescr = annotated instanceof BaseDescr ? ( (BaseDescr) annotated ) : new BaseDescr();
+            BaseDescr typeDescr = annotated instanceof BaseDescr ? ((BaseDescr) annotated) : new BaseDescr();
             String durationField;
             try {
                 durationField = duration.value();
@@ -168,18 +168,19 @@ public class TypeDeclarationConfigurator {
             type.setDurationAttribute(durationField);
             InternalKnowledgePackage pkg = pkgRegistry.getPackage();
 
-            AnalysisResult results = getMvelAnalysisResult( kbuilder, typeDescr, type, pkgRegistry, durationField, pkg );
+            AnalysisResult results = getMvelAnalysisResult(kbuilder, typeDescr, type, pkgRegistry, durationField, pkg);
             if (results != null) {
-                type.setDurationExtractor(getFieldExtractor( type, durationField, pkg, results ));
+                type.setDurationExtractor(getFieldExtractor(type, durationField, pkg, results));
             } else {
                 kbuilder.addBuilderResult(new TypeDeclarationError(typeDescr,
-                                                                   "Error processing @duration for TypeDeclaration '" + type.getFullName() +
-                                                                   "': cannot access the field '" + durationField + "'"));
+                        "Error processing @duration for TypeDeclaration '" + type.getFullName() +
+                                "': cannot access the field '" + durationField + "'"));
             }
         }
     }
 
-    private static AnalysisResult getMvelAnalysisResult( KnowledgeBuilderImpl kbuilder, BaseDescr typeDescr, TypeDeclaration type, PackageRegistry pkgRegistry, String durationField, InternalKnowledgePackage pkg ) {
+    private static AnalysisResult getMvelAnalysisResult(KnowledgeBuilderImpl kbuilder, BaseDescr typeDescr, TypeDeclaration type, PackageRegistry pkgRegistry, String durationField,
+            InternalKnowledgePackage pkg) {
         Dialect dialect = pkgRegistry.getDialectCompiletimeRegistry().getDialect("mvel");
         PackageBuildContext context = new PackageBuildContext();
         context.init(kbuilder, pkg, typeDescr, pkgRegistry.getDialectCompiletimeRegistry(), dialect, null);
@@ -187,20 +188,20 @@ public class TypeDeclarationConfigurator {
             context.setTypesafe(false);
         }
 
-        return context.getDialect().analyzeExpression( context,
-                                                       typeDescr,
-                                                       durationField,
-                                                       new BoundIdentifiers( type.getTypeClass() ) );
+        return context.getDialect().analyzeExpression(context,
+                typeDescr,
+                durationField,
+                new BoundIdentifiers(type.getTypeClass()));
     }
 
-    private static InternalReadAccessor getFieldExtractor( TypeDeclaration type, String timestampField, InternalKnowledgePackage pkg, AnalysisResult results ) {
-        InternalReadAccessor reader = pkg.getClassFieldAccessorStore().getMVELReader( ClassUtils.getPackage( type.getTypeClass() ),
-                                                                                      type.getTypeClass().getName(),
-                                                                                      timestampField,
-                                                                                      type.isTypesafe(),
-                                                                                      results.getReturnType());
+    private static InternalReadAccessor getFieldExtractor(TypeDeclaration type, String timestampField, InternalKnowledgePackage pkg, AnalysisResult results) {
+        InternalReadAccessor reader = pkg.getClassFieldAccessorStore().getMVELReader(ClassUtils.getPackage(type.getTypeClass()),
+                type.getTypeClass().getName(),
+                timestampField,
+                type.isTypesafe(),
+                results.getReturnType());
 
-        pkg.getDialectRuntimeRegistry().getDialectData("mvel").compile( reader );
+        pkg.getDialectRuntimeRegistry().getDialectData("mvel").compile(reader);
         return reader;
     }
 }

@@ -29,12 +29,12 @@ public class JavaLocalDeclarationDescr {
     private String type;
     private List<String> modifiers;
     private List<IdentifierDescr> identifiers;
-    
+
     public JavaLocalDeclarationDescr() {
-        this( -1, -1, "" );
+        this(-1, -1, "");
     }
 
-    public JavaLocalDeclarationDescr( int start, int end, String type ) {
+    public JavaLocalDeclarationDescr(int start, int end, String type) {
         this.start = start;
         this.end = end;
         this.type = type;
@@ -57,12 +57,13 @@ public class JavaLocalDeclarationDescr {
     public void setIdentifiers(List<IdentifierDescr> identifiers) {
         this.identifiers = identifiers;
     }
-    
+
     public void addIdentifier(IdentifierDescr identifier) {
-        this.identifiers.add( identifier );
+        this.identifiers.add(identifier);
     }
+
     public void addIdentifier(String identifier, int start, int end) {
-        this.identifiers.add( new IdentifierDescr( identifier, start, end ) );
+        this.identifiers.add(new IdentifierDescr(identifier, start, end));
     }
 
     public List<String> getModifiers() {
@@ -72,9 +73,9 @@ public class JavaLocalDeclarationDescr {
     public void setModifiers(List<String> modifiers) {
         this.modifiers = modifiers;
     }
-    
+
     public void addModifier(String modifier) {
-        this.modifiers.add( modifier );
+        this.modifiers.add(modifier);
     }
 
     public int getStart() {
@@ -84,10 +85,10 @@ public class JavaLocalDeclarationDescr {
     public void setStart(int startingOffset) {
         this.start = startingOffset;
     }
-    
-    public void updateStart( int start ) {
-        if( this.start == -1 ) {
-            this.setStart( start );
+
+    public void updateStart(int start) {
+        if (this.start == -1) {
+            this.setStart(start);
         }
     }
 
@@ -106,40 +107,48 @@ public class JavaLocalDeclarationDescr {
 
     @Override
     public String toString() {
-        return "[Declaration type="+this.type + " identifiers=" + this.identifiers.toString() + "]";
+        return "[Declaration type=" + this.type + " identifiers=" + this.identifiers.toString() + "]";
     }
-    
+
     public static class IdentifierDescr {
         private String identifier;
         private int start;
         private int end;
-        
+
         public IdentifierDescr() {
-            this( "", -1, -1 );
+            this("", -1, -1);
         }
-        public IdentifierDescr( String identifier, int start, int end ) {
+
+        public IdentifierDescr(String identifier, int start, int end) {
             this.identifier = identifier;
             this.start = start;
             this.end = end;
         }
+
         public int getEnd() {
             return end;
         }
+
         public void setEnd(int end) {
             this.end = end;
         }
+
         public String getIdentifier() {
             return identifier;
         }
+
         public void setIdentifier(String identifier) {
             this.identifier = identifier;
         }
+
         public int getStart() {
             return start;
         }
+
         public void setStart(int start) {
             this.start = start;
         }
+
         @Override
         public String toString() {
             return this.identifier;

@@ -23,29 +23,30 @@ public class NamedConsequenceDescr extends BaseDescr {
 
     private boolean breaking;
 
-    public NamedConsequenceDescr() { }
+    public NamedConsequenceDescr() {
+    }
 
-    public NamedConsequenceDescr( String id ) {
-        this.setText( id );
+    public NamedConsequenceDescr(String id) {
+        this.setText(id);
     }
 
     public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
-        super.readExternal( in );
+        super.readExternal(in);
         breaking = in.readBoolean();
     }
 
     public void writeExternal(ObjectOutput out) throws IOException {
-        super.writeExternal( out );
-        out.writeBoolean( breaking );
+        super.writeExternal(out);
+        out.writeBoolean(breaking);
     }
 
     public String getName() {
         return getText();
     }
 
-    public void setName( String name) {
-        setText( name );
+    public void setName(String name) {
+        setText(name);
     }
 
     public boolean isBreaking() {

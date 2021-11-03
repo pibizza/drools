@@ -15,7 +15,6 @@
 
 package org.drools.compiler.rule.builder;
 
-
 import org.drools.core.base.FieldDataFactory;
 import org.drools.core.base.FieldFactory;
 import org.drools.compiler.lang.MVELDumper;
@@ -29,7 +28,7 @@ public class DroolsCompilerComponentFactory {
         return expressionProcessor;
     }
 
-    public void setExpressionProcessor( ExpressionRewriter provider ) {
+    public void setExpressionProcessor(ExpressionRewriter provider) {
         expressionProcessor = provider;
     }
 
@@ -37,21 +36,18 @@ public class DroolsCompilerComponentFactory {
         expressionProcessor = new MVELDumper();
     }
 
-
-
     private FieldDataFactory fieldFactory = FieldFactory.getInstance();
 
     public FieldDataFactory getFieldFactory() {
         return fieldFactory;
     }
 
-    public void setFieldDataFactory( FieldDataFactory provider ) {
+    public void setFieldDataFactory(FieldDataFactory provider) {
         fieldFactory = provider;
     }
 
     public void setDefaultFieldDataFactory() {
         fieldFactory = FieldFactory.getInstance();
     }
-
 
 }

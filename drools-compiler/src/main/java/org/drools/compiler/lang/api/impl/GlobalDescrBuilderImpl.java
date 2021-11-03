@@ -20,20 +20,20 @@ import org.drools.compiler.lang.api.PackageDescrBuilder;
 import org.drools.compiler.lang.descr.GlobalDescr;
 
 public class GlobalDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBuilder, GlobalDescr>
-    implements
+        implements
         GlobalDescrBuilder {
 
-    protected GlobalDescrBuilderImpl( PackageDescrBuilder parent ) {
-        super( parent, new GlobalDescr() );
+    protected GlobalDescrBuilderImpl(PackageDescrBuilder parent) {
+        super(parent, new GlobalDescr());
     }
 
-    public GlobalDescrBuilder type( String type ) {
-        descr.setType( type );
+    public GlobalDescrBuilder type(String type) {
+        descr.setType(type);
         return this;
     }
 
-    public GlobalDescrBuilder identifier( String identifier ) {
-        descr.setIdentifier( identifier );
+    public GlobalDescrBuilder identifier(String identifier) {
+        descr.setIdentifier(identifier);
         return this;
     }
 

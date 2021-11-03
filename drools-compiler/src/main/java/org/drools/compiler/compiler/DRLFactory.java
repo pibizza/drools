@@ -40,54 +40,55 @@ import java.io.Reader;
 
 public class DRLFactory {
 
-    private DRLFactory() { }
+    private DRLFactory() {
+    }
 
     public static DRLLexer buildLexer(String text, LanguageLevelOption languageLevel) {
         return getDRLLexer(new ANTLRStringStream(text), languageLevel);
     }
 
-    public static DRLLexer buildLexer( Reader reader, LanguageLevelOption languageLevel ) {
+    public static DRLLexer buildLexer(Reader reader, LanguageLevelOption languageLevel) {
         try {
             return getDRLLexer(new ANTLRReaderStream(reader), languageLevel);
-        } catch ( final Exception e ) {
-            throw new RuntimeException( "Unable to parser Reader", e );
+        } catch (final Exception e) {
+            throw new RuntimeException("Unable to parser Reader", e);
         }
     }
 
-    public static DRLLexer buildLexer( final InputStream is, final String encoding, LanguageLevelOption languageLevel ) {
+    public static DRLLexer buildLexer(final InputStream is, final String encoding, LanguageLevelOption languageLevel) {
         try {
             return getDRLLexer(encoding != null ? new ANTLRInputStream(is, encoding) : new ANTLRInputStream(is), languageLevel);
-        } catch ( final Exception e ) {
-            throw new RuntimeException( "Unable to parser Reader", e );
+        } catch (final Exception e) {
+            throw new RuntimeException("Unable to parser Reader", e);
         }
     }
 
     public static DRLParser buildParser(DRLLexer lexer, LanguageLevelOption languageLevel) {
-        CommonTokenStream stream = new CommonTokenStream( lexer );
+        CommonTokenStream stream = new CommonTokenStream(lexer);
         return getDRLParser(stream, languageLevel);
     }
 
     public static DRLParser buildParser(CharStream input, LanguageLevelOption languageLevel) {
-        return buildParser(getDRLLexer( input, languageLevel ), languageLevel);
+        return buildParser(getDRLLexer(input, languageLevel), languageLevel);
     }
 
     public static DRLParser buildParser(String text, LanguageLevelOption languageLevel) {
         return buildParser(new ANTLRStringStream(text), languageLevel);
     }
 
-    public static DRLParser buildParser( Reader reader, LanguageLevelOption languageLevel ) {
+    public static DRLParser buildParser(Reader reader, LanguageLevelOption languageLevel) {
         try {
             return buildParser(new ANTLRReaderStream(reader), languageLevel);
-        } catch ( final Exception e ) {
-            throw new RuntimeException( "Unable to parser Reader", e );
+        } catch (final Exception e) {
+            throw new RuntimeException("Unable to parser Reader", e);
         }
     }
 
-    public static DRLParser buildParser( final InputStream is, final String encoding, LanguageLevelOption languageLevel ) {
+    public static DRLParser buildParser(final InputStream is, final String encoding, LanguageLevelOption languageLevel) {
         try {
             return buildParser(encoding != null ? new ANTLRInputStream(is, encoding) : new ANTLRInputStream(is), languageLevel);
-        } catch ( final Exception e ) {
-            throw new RuntimeException( "Unable to parser Reader", e );
+        } catch (final Exception e) {
+            throw new RuntimeException("Unable to parser Reader", e);
         }
     }
 
@@ -114,7 +115,7 @@ public class DRLFactory {
         throw new RuntimeException("Unknown language level");
     }
 
-    public static DRLExpressions getDRLExpressions(TokenStream input, RecognizerSharedState state, ParserHelper helper, LanguageLevelOption languageLevel ) {
+    public static DRLExpressions getDRLExpressions(TokenStream input, RecognizerSharedState state, ParserHelper helper, LanguageLevelOption languageLevel) {
         switch (languageLevel) {
             case DRL5:
                 return new DRL5Expressions(input, state, helper);
@@ -140,12 +141,12 @@ public class DRLFactory {
      * Helper method that creates a user friendly token definition
      *
      * @param tokenType
-     *            token type
+     *        token type
      * @param defaultValue
-     *            default value for identifier token, may be null
+     *        default value for identifier token, may be null
      * @return user friendly token definition
      */
-    public static String getBetterToken( int tokenType, String defaultValue, LanguageLevelOption languageLevel ) {
+    public static String getBetterToken(int tokenType, String defaultValue, LanguageLevelOption languageLevel) {
         switch (languageLevel) {
             case DRL5:
                 return getBetterTokenForDRL5(tokenType, defaultValue);
@@ -156,124 +157,124 @@ public class DRLFactory {
         throw new RuntimeException("Unknown language level");
     }
 
-    private static String getBetterTokenForDRL5( int tokenType, String defaultValue ) {
-        switch ( tokenType ) {
-            case DRL5Lexer.DECIMAL :
+    private static String getBetterTokenForDRL5(int tokenType, String defaultValue) {
+        switch (tokenType) {
+            case DRL5Lexer.DECIMAL:
                 return defaultValue == null ? "int" : defaultValue;
-            case DRL5Lexer.FLOAT :
+            case DRL5Lexer.FLOAT:
                 return defaultValue == null ? "float" : defaultValue;
-            case DRL5Lexer.STRING :
+            case DRL5Lexer.STRING:
                 return defaultValue == null ? "string" : defaultValue;
-            case DRL5Lexer.BOOL :
+            case DRL5Lexer.BOOL:
                 return defaultValue == null ? "boolean" : defaultValue;
-            case DRL5Lexer.NULL :
+            case DRL5Lexer.NULL:
                 return "null";
-            case DRL5Lexer.SEMICOLON :
+            case DRL5Lexer.SEMICOLON:
                 return ";";
-            case DRL5Lexer.COLON :
+            case DRL5Lexer.COLON:
                 return ":";
-            case DRL5Lexer.EQUALS :
+            case DRL5Lexer.EQUALS:
                 return "==";
-            case DRL5Lexer.NOT_EQUALS :
+            case DRL5Lexer.NOT_EQUALS:
                 return "!=";
-            case DRL5Lexer.GREATER :
+            case DRL5Lexer.GREATER:
                 return ">";
-            case DRL5Lexer.GREATER_EQUALS :
+            case DRL5Lexer.GREATER_EQUALS:
                 return ">=";
-            case DRL5Lexer.LESS :
+            case DRL5Lexer.LESS:
                 return "<";
-            case DRL5Lexer.LESS_EQUALS :
+            case DRL5Lexer.LESS_EQUALS:
                 return "<=";
-            case DRL5Lexer.ARROW :
+            case DRL5Lexer.ARROW:
                 return "->";
-            case DRL5Lexer.ID :
+            case DRL5Lexer.ID:
                 return defaultValue == null ? "identifier" : defaultValue;
-            case DRL5Lexer.LEFT_PAREN :
+            case DRL5Lexer.LEFT_PAREN:
                 return "(";
-            case DRL5Lexer.RIGHT_PAREN :
+            case DRL5Lexer.RIGHT_PAREN:
                 return ")";
-            case DRL5Lexer.LEFT_SQUARE :
+            case DRL5Lexer.LEFT_SQUARE:
                 return "[";
-            case DRL5Lexer.RIGHT_SQUARE :
+            case DRL5Lexer.RIGHT_SQUARE:
                 return "]";
-            case DRL5Lexer.LEFT_CURLY :
+            case DRL5Lexer.LEFT_CURLY:
                 return "{";
-            case DRL5Lexer.RIGHT_CURLY :
+            case DRL5Lexer.RIGHT_CURLY:
                 return "}";
-            case DRL5Lexer.COMMA :
+            case DRL5Lexer.COMMA:
                 return ",";
-            case DRL5Lexer.DOT :
+            case DRL5Lexer.DOT:
                 return ".";
-            case DRL5Lexer.DOUBLE_AMPER :
+            case DRL5Lexer.DOUBLE_AMPER:
                 return "&&";
-            case DRL5Lexer.DOUBLE_PIPE :
+            case DRL5Lexer.DOUBLE_PIPE:
                 return "||";
-            case DRL5Lexer.MISC :
+            case DRL5Lexer.MISC:
                 return defaultValue == null ? "misc" : defaultValue;
-            case DRL5Lexer.EOF :
+            case DRL5Lexer.EOF:
                 return "<eof>";
-            default :
+            default:
                 return defaultValue;
         }
     }
 
-    private static String getBetterTokenForDRL6( int tokenType, String defaultValue ) {
-        switch ( tokenType ) {
-            case DRL6Lexer.DECIMAL :
+    private static String getBetterTokenForDRL6(int tokenType, String defaultValue) {
+        switch (tokenType) {
+            case DRL6Lexer.DECIMAL:
                 return defaultValue == null ? "int" : defaultValue;
-            case DRL6Lexer.FLOAT :
+            case DRL6Lexer.FLOAT:
                 return defaultValue == null ? "float" : defaultValue;
-            case DRL6Lexer.STRING :
+            case DRL6Lexer.STRING:
                 return defaultValue == null ? "string" : defaultValue;
-            case DRL6Lexer.BOOL :
+            case DRL6Lexer.BOOL:
                 return defaultValue == null ? "boolean" : defaultValue;
-            case DRL6Lexer.NULL :
+            case DRL6Lexer.NULL:
                 return "null";
-            case DRL6Lexer.SEMICOLON :
+            case DRL6Lexer.SEMICOLON:
                 return ";";
-            case DRL6Lexer.COLON :
+            case DRL6Lexer.COLON:
                 return ":";
-            case DRL6Lexer.EQUALS :
+            case DRL6Lexer.EQUALS:
                 return "==";
-            case DRL6Lexer.NOT_EQUALS :
+            case DRL6Lexer.NOT_EQUALS:
                 return "!=";
-            case DRL6Lexer.GREATER :
+            case DRL6Lexer.GREATER:
                 return ">";
-            case DRL6Lexer.GREATER_EQUALS :
+            case DRL6Lexer.GREATER_EQUALS:
                 return ">=";
-            case DRL6Lexer.LESS :
+            case DRL6Lexer.LESS:
                 return "<";
-            case DRL6Lexer.LESS_EQUALS :
+            case DRL6Lexer.LESS_EQUALS:
                 return "<=";
-            case DRL6Lexer.ARROW :
+            case DRL6Lexer.ARROW:
                 return "->";
-            case DRL6Lexer.ID :
+            case DRL6Lexer.ID:
                 return defaultValue == null ? "identifier" : defaultValue;
-            case DRL6Lexer.LEFT_PAREN :
+            case DRL6Lexer.LEFT_PAREN:
                 return "(";
-            case DRL6Lexer.RIGHT_PAREN :
+            case DRL6Lexer.RIGHT_PAREN:
                 return ")";
-            case DRL6Lexer.LEFT_SQUARE :
+            case DRL6Lexer.LEFT_SQUARE:
                 return "[";
-            case DRL6Lexer.RIGHT_SQUARE :
+            case DRL6Lexer.RIGHT_SQUARE:
                 return "]";
-            case DRL6Lexer.LEFT_CURLY :
+            case DRL6Lexer.LEFT_CURLY:
                 return "{";
-            case DRL6Lexer.RIGHT_CURLY :
+            case DRL6Lexer.RIGHT_CURLY:
                 return "}";
-            case DRL6Lexer.COMMA :
+            case DRL6Lexer.COMMA:
                 return ",";
-            case DRL6Lexer.DOT :
+            case DRL6Lexer.DOT:
                 return ".";
-            case DRL6Lexer.DOUBLE_AMPER :
+            case DRL6Lexer.DOUBLE_AMPER:
                 return "&&";
-            case DRL6Lexer.DOUBLE_PIPE :
+            case DRL6Lexer.DOUBLE_PIPE:
                 return "||";
-            case DRL6Lexer.MISC :
+            case DRL6Lexer.MISC:
                 return defaultValue == null ? "misc" : defaultValue;
-            case DRL6Lexer.EOF :
+            case DRL6Lexer.EOF:
                 return "<eof>";
-            default :
+            default:
                 return defaultValue;
         }
     }

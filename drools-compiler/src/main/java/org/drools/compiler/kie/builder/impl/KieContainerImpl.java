@@ -88,7 +88,7 @@ public class KieContainerImpl
         implements
         InternalKieContainer {
 
-    private static final Logger log = LoggerFactory.getLogger( KieContainerImpl.class );
+    private static final Logger log = LoggerFactory.getLogger(KieContainerImpl.class);
 
     private KieProject kProject;
 
@@ -97,7 +97,7 @@ public class KieContainerImpl
     private final Map<String, KieSession> kSessions = new ConcurrentHashMap<String, KieSession>();
     private final Map<String, StatelessKieSession> statelessKSessions = new ConcurrentHashMap<String, StatelessKieSession>();
 
-    private final KieRepository        kr;
+    private final KieRepository kr;
 
     private ReleaseId configuredReleaseId;
     private ReleaseId containerReleaseId;
@@ -116,7 +116,7 @@ public class KieContainerImpl
      * The direct manual call to KieContainerImpl constructor instead would not guarantee the consistency of the supplied containerId.
      */
     public KieContainerImpl(KieProject kProject, KieRepository kr) {
-        this("impl"+UUID.randomUUID(), kProject, kr);
+        this("impl" + UUID.randomUUID(), kProject, kr);
     }
 
     /**
@@ -125,7 +125,7 @@ public class KieContainerImpl
      * The direct manual call to KieContainerImpl constructor instead would not guarantee the consistency of the supplied containerId.
      */
     public KieContainerImpl(KieProject kProject, KieRepository kr, ReleaseId containerReleaseId) {
-        this("impl"+UUID.randomUUID(), kProject, kr, containerReleaseId);
+        this("impl" + UUID.randomUUID(), kProject, kr, containerReleaseId);
     }
 
     /**
@@ -153,10 +153,10 @@ public class KieContainerImpl
     }
 
     private void initMBeans(String containerId) {
-        if ( isMBeanOptionEnabled() ) {
+        if (isMBeanOptionEnabled()) {
             KieContainerMonitor monitor = new KieContainerMonitor(this);
             ObjectName on = DroolsManagementAgent.createObjectNameBy(containerId);
-            DroolsManagementAgent.getInstance().registerMBean( this, monitor, on );
+            DroolsManagementAgent.getInstance().registerMBean(this, monitor, on);
         }
     }
 
@@ -199,7 +199,7 @@ public class KieContainerImpl
             containerReleaseId = newReleaseId;
         } else {
             results = new ResultsImpl();
-            ( (ResultsImpl) results ).addMessage( Message.Level.ERROR, null, "Cannot find KieModule with ReleaseId: " + newReleaseId );
+            ((ResultsImpl) results).addMessage(Message.Level.ERROR, null, "Cannot find KieModule with ReleaseId: " + newReleaseId);
         }
         return results;
     }
@@ -222,45 +222,44 @@ public class KieContainerImpl
         checkNotClasspathKieProject();
         // upgrading a transitive dependency: taking the kmodule from the krepo
         // if the new and the current release are equal (a snapshot) check if there is an older version with the same releaseId
-        InternalKieModule currentKM = currentReleaseId.equals(newReleaseId) ?
-                (InternalKieModule) ((KieRepositoryImpl) kr).getOldKieModule(currentReleaseId) :
-                (InternalKieModule) kr.getKieModule(currentReleaseId);
+        InternalKieModule currentKM =
+                currentReleaseId.equals(newReleaseId) ? (InternalKieModule) ((KieRepositoryImpl) kr).getOldKieModule(currentReleaseId) : (InternalKieModule) kr.getKieModule(currentReleaseId);
         return update(currentKM, newReleaseId);
     }
 
     private void checkNotClasspathKieProject() {
-        if( kProject instanceof ClasspathKieProject) {
-            throw new UnsupportedOperationException( "It is not possible to update a classpath container to a new version." );
+        if (kProject instanceof ClasspathKieProject) {
+            throw new UnsupportedOperationException("It is not possible to update a classpath container to a new version.");
         }
     }
 
     private Results update(final InternalKieModule currentKM, final ReleaseId newReleaseId) {
-        final InternalKieModule newKM = (InternalKieModule) kr.getKieModule( newReleaseId );
-        return newKM == null ? null : update( currentKM, newKM );
+        final InternalKieModule newKM = (InternalKieModule) kr.getKieModule(newReleaseId);
+        return newKM == null ? null : update(currentKM, newKM);
     }
 
-    private Results update( InternalKieModule currentKM, InternalKieModule newKM ) {
-        final KieJarChangeSet cs = currentKM.getChanges( newKM );
+    private Results update(InternalKieModule currentKM, InternalKieModule newKM) {
+        final KieJarChangeSet cs = currentKM.getChanges(newKM);
         List<String> modifiedClassNames = getModifiedClasses(cs);
-        final boolean modifyingUsedClass = isModifyingUsedClass( modifiedClassNames, getClassLoader() ) || isModifyingUsedFunction(cs);
-        final Collection<Class<?>> modifiedClasses = reinitModifiedClasses( newKM, modifiedClassNames, getClassLoader(), modifyingUsedClass );
-        final Collection<String> unchangedResources = getUnchangedResources( newKM, cs );
+        final boolean modifyingUsedClass = isModifyingUsedClass(modifiedClassNames, getClassLoader()) || isModifyingUsedFunction(cs);
+        final Collection<Class<?>> modifiedClasses = reinitModifiedClasses(newKM, modifiedClassNames, getClassLoader(), modifyingUsedClass);
+        final Collection<String> unchangedResources = getUnchangedResources(newKM, cs);
 
-        Map<String, KieBaseModel> currentKieBaseModels = ((KieModuleKieProject ) kProject).updateToModule( newKM );
+        Map<String, KieBaseModel> currentKieBaseModels = ((KieModuleKieProject) kProject).updateToModule(newKM);
 
         final ResultsImpl results = new ResultsImpl();
 
         currentKM.updateKieModule(newKM);
 
         List<String> kbasesToRemove = new ArrayList<>();
-        for ( Entry<String, KieBase> kBaseEntry : kBases.entrySet() ) {
+        for (Entry<String, KieBase> kBaseEntry : kBases.entrySet()) {
             String kbaseName = kBaseEntry.getKey();
-            KieBaseModelImpl newKieBaseModel = (KieBaseModelImpl) kProject.getKieBaseModel( kbaseName );
-            KieBaseModelImpl currentKieBaseModel = (KieBaseModelImpl) currentKieBaseModels.get( kbaseName );
+            KieBaseModelImpl newKieBaseModel = (KieBaseModelImpl) kProject.getKieBaseModel(kbaseName);
+            KieBaseModelImpl currentKieBaseModel = (KieBaseModelImpl) currentKieBaseModels.get(kbaseName);
             // if a kbase no longer exists, just remove it from the cache
-            if ( newKieBaseModel == null ) {
+            if (newKieBaseModel == null) {
                 // have to save for later removal to avoid iteration errors
-                kbasesToRemove.add( kbaseName );
+                kbasesToRemove.add(kbaseName);
             } else {
                 final InternalKnowledgeBase kBase = (InternalKnowledgeBase) kBaseEntry.getValue();
 
@@ -271,8 +270,8 @@ public class KieContainerImpl
                         (InternalKnowledgeBuilder) KnowledgeBuilderFactory.newKnowledgeBuilder(kBase, builderConfiguration);
 
                 KieBaseUpdaterImplContext context = new KieBaseUpdaterImplContext(kProject, kBase, currentKM, newKM,
-                                                                                  cs, modifiedClasses, modifyingUsedClass, unchangedResources,
-                                                                                  results, newKieBaseModel, currentKieBaseModel, kbuilder);
+                        cs, modifiedClasses, modifyingUsedClass, unchangedResources,
+                        results, newKieBaseModel, currentKieBaseModel, kbuilder);
 
                 // Multiple updaters are required to be merged together in a single Runnable
                 // to avoid a deadlock while using .fireUntilHalt()
@@ -290,9 +289,8 @@ public class KieContainerImpl
                 updaters.getChildren()
                         .stream()
                         .map(kbu -> kbu.create(new KieBaseUpdatersContext(kieBaseUpdaterOptions,
-                                                                          context.kBase.getRete(),
-                                                                          context.kBase.getRootClassLoader()
-                                                                          )))
+                                context.kBase.getRete(),
+                                context.kBase.getRootClassLoader())))
                         .forEach(compositeUpdater::add);
 
                 kBase.enqueueModification(compositeUpdater);
@@ -305,8 +303,8 @@ public class KieContainerImpl
         }
 
         // remove sessions that no longer exist
-        this.kSessions.entrySet().removeIf( ksession -> kProject.getKieSessionModel( ksession.getKey() ) == null );
-        this.statelessKSessions.entrySet().removeIf( ksession -> kProject.getKieSessionModel( ksession.getKey() ) == null );
+        this.kSessions.entrySet().removeIf(ksession -> kProject.getKieSessionModel(ksession.getKey()) == null);
+        this.statelessKSessions.entrySet().removeIf(ksession -> kProject.getKieSessionModel(ksession.getKey()) == null);
 
         return results;
     }
@@ -316,16 +314,16 @@ public class KieContainerImpl
         private final List<Runnable> runnables = new ArrayList<>();
 
         public void add(Runnable runnable) {
-            runnables.add( runnable );
+            runnables.add(runnable);
         }
 
         void addAll(List<Runnable> runnableList) {
-            runnables.addAll( runnableList );
+            runnables.addAll(runnableList);
         }
 
         @Override
         public void run() {
-            runnables.forEach( Runnable::run );
+            runnables.forEach(Runnable::run);
         }
     }
 
@@ -336,10 +334,10 @@ public class KieContainerImpl
                 .anyMatch(change -> change.getType() == ResourceChange.Type.FUNCTION && change.getChangeType() == ChangeType.UPDATED);
     }
 
-    private Collection<String> getUnchangedResources( InternalKieModule newKM, KieJarChangeSet cs ) {
+    private Collection<String> getUnchangedResources(InternalKieModule newKM, KieJarChangeSet cs) {
         List<String> dslFiles = new ArrayList<>();
         for (String file : newKM.getFileNames()) {
-            if ( includeIfUnchanged( file ) && !cs.contains( file ) ) {
+            if (includeIfUnchanged(file) && !cs.contains(file)) {
                 dslFiles.add(file);
             }
         }
@@ -348,24 +346,24 @@ public class KieContainerImpl
 
     private static final ResourceType[] TYPES_TO_BE_INCLUDED = new ResourceType[] { ResourceType.DSL, ResourceType.GDRL };
 
-    private boolean includeIfUnchanged( String file ) {
-        for (ResourceType type : TYPES_TO_BE_INCLUDED ) {
-            if (type.matchesExtension( file )) {
+    private boolean includeIfUnchanged(String file) {
+        for (ResourceType type : TYPES_TO_BE_INCLUDED) {
+            if (type.matchesExtension(file)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isModifyingUsedClass( List<String> modifiedClasses, ClassLoader classLoader ) {
-        return modifiedClasses.stream().anyMatch( c -> isClassInUse( classLoader, convertResourceToClassName(c) ) );
+    private boolean isModifyingUsedClass(List<String> modifiedClasses, ClassLoader classLoader) {
+        return modifiedClasses.stream().anyMatch(c -> isClassInUse(classLoader, convertResourceToClassName(c)));
     }
 
     private boolean isClassInUse(ClassLoader rootClassLoader, String className) {
         return !(rootClassLoader instanceof ProjectClassLoader) || ((ProjectClassLoader) rootClassLoader).isClassInUse(className, MaterializedLambda.class);
     }
 
-    private Collection<Class<?>> reinitModifiedClasses( InternalKieModule newKM, List<String> modifiedClasses, ClassLoader classLoader, boolean modifyingUsedClass ) {
+    private Collection<Class<?>> reinitModifiedClasses(InternalKieModule newKM, List<String> modifiedClasses, ClassLoader classLoader, boolean modifyingUsedClass) {
         if (modifiedClasses.isEmpty() || !(classLoader instanceof ProjectClassLoader)) {
             return Collections.emptyList();
         }
@@ -375,16 +373,16 @@ public class KieContainerImpl
         ProjectClassLoader projectClassLoader = (ProjectClassLoader) classLoader;
         projectClassLoader.clearStore();
         if (modifyingUsedClass) {
-            reloadedClasses.addAll( projectClassLoader.reinitTypes().stream().map( ClassUtils::convertClassToResourcePath ).collect( toList() ) );
+            reloadedClasses.addAll(projectClassLoader.reinitTypes().stream().map(ClassUtils::convertClassToResourcePath).collect(toList()));
         }
 
         List<Class<?>> classes = new ArrayList<Class<?>>();
         for (String resourceName : reloadedClasses) {
-            String className = convertResourceToClassName( resourceName );
+            String className = convertResourceToClassName(resourceName);
             byte[] bytes = newKM.getBytes(resourceName);
             if (bytes != null) {
-                Class<?> clazz = projectClassLoader.defineClass( className, resourceName, bytes );
-                classes.add( clazz );
+                Class<?> clazz = projectClassLoader.defineClass(className, resourceName, bytes);
+                classes.add(clazz);
             }
         }
         return classes;
@@ -392,10 +390,10 @@ public class KieContainerImpl
 
     private List<String> getModifiedClasses(KieJarChangeSet cs) {
         List<String> modifiedClasses = new ArrayList<>();
-        for ( ResourceChangeSet rcs : cs.getChanges().values() ) {
-            if ( rcs.getChangeType() != ChangeType.REMOVED ) {
+        for (ResourceChangeSet rcs : cs.getChanges().values()) {
+            if (rcs.getChangeType() != ChangeType.REMOVED) {
                 String resourceName = rcs.getResourceName();
-                if ( resourceName.endsWith( ".class" ) ) {
+                if (resourceName.endsWith(".class")) {
                     modifiedClasses.add(resourceName);
                 }
             }
@@ -409,7 +407,7 @@ public class KieContainerImpl
 
     public Collection<String> getKieSessionNamesInKieBase(String kBaseName) {
         KieBaseModel kieBaseModel = kProject.getKieBaseModel(kBaseName);
-        return kieBaseModel != null ? kieBaseModel.getKieSessionModels().keySet() : Collections.<String>emptySet();
+        return kieBaseModel != null ? kieBaseModel.getKieSessionModels().keySet() : Collections.<String> emptySet();
     }
 
     public KieBase getKieBase() {
@@ -417,7 +415,7 @@ public class KieContainerImpl
         if (defaultKieBaseModel == null) {
             throw new RuntimeException("Cannot find a default KieBase");
         }
-        return getKieBase( defaultKieBaseModel.getName() );
+        return getKieBase(defaultKieBaseModel.getName());
     }
 
     public Results verify() {
@@ -425,16 +423,16 @@ public class KieContainerImpl
     }
 
     public Results verify(String... kModelNames) {
-        return this.kProject.verify( kModelNames );
+        return this.kProject.verify(kModelNames);
     }
 
     public KieBase getKieBase(String kBaseName) {
-        KieBase kBase = kBases.get( kBaseName );
-        if ( kBase == null ) {
+        KieBase kBase = kBases.get(kBaseName);
+        if (kBase == null) {
             KieBaseModelImpl kBaseModel = getKieBaseModelImpl(kBaseName);
             synchronized (kBaseModel) {
-                kBase = kBases.get( kBaseName );
-                if ( kBase == null ) {
+                kBase = kBases.get(kBaseName);
+                if (kBase == null) {
                     BuildContext buildContext = new BuildContext();
                     kBase = createKieBase(kBaseModel, kProject, buildContext, null);
                     if (kBase == null) {
@@ -459,23 +457,23 @@ public class KieContainerImpl
     public KieBase newKieBase(String kBaseName, KieBaseConfiguration conf) {
         BuildContext buildContext = new BuildContext();
         KieBase kBase = createKieBase(getKieBaseModelImpl(kBaseName), kProject, buildContext, conf);
-        if ( kBase == null ) {
+        if (kBase == null) {
             // build error, throw runtime exception
-            throw new RuntimeException( "Error while creating KieBase" + buildContext.getMessages().filterMessages( Level.ERROR  ) );
+            throw new RuntimeException("Error while creating KieBase" + buildContext.getMessages().filterMessages(Level.ERROR));
         }
         return kBase;
     }
 
     private KieBase createKieBase(KieBaseModelImpl kBaseModel, KieProject kieProject, BuildContext buildContext, KieBaseConfiguration conf) {
         if (log.isInfoEnabled()) {
-            log.info( "Start creation of KieBase: " + kBaseModel.getName() );
+            log.info("Start creation of KieBase: " + kBaseModel.getName());
         }
 
-        InternalKieModule kModule = kieProject.getKieModuleForKBase( kBaseModel.getName() );
+        InternalKieModule kModule = kieProject.getKieModuleForKBase(kBaseModel.getName());
         InternalKnowledgeBase kBase = kModule.createKieBase(kBaseModel, kieProject, buildContext, conf);
         kModule.afterKieBaseCreationUpdate(kBaseModel.getName(), kBase);
 
-        if ( kBase == null ) {
+        if (kBase == null) {
             return null;
         }
         kBase.setResolvedReleaseId(containerReleaseId);
@@ -484,7 +482,7 @@ public class KieContainerImpl
         kBase.initMBeans();
 
         if (log.isInfoEnabled()) {
-            log.info( "End creation of KieBase: " + kBaseModel.getName() );
+            log.info("End creation of KieBase: " + kBaseModel.getName());
         }
 
         return kBase;
@@ -493,13 +491,13 @@ public class KieContainerImpl
     private KieBaseModelImpl getKieBaseModelImpl(String kBaseName) {
         KieBaseModelImpl kBaseModel = (KieBaseModelImpl) kProject.getKieBaseModel(kBaseName);
         if (kBaseModel == null) {
-            throw new RuntimeException( "The requested KieBase \"" + kBaseName + "\" does not exist" );
+            throw new RuntimeException("The requested KieBase \"" + kBaseName + "\" does not exist");
         }
         return kBaseModel;
     }
 
     public KieSession newKieSession() {
-        return newKieSession((Environment)null, null);
+        return newKieSession((Environment) null, null);
     }
 
     public KieSession getKieSession() {
@@ -508,7 +506,7 @@ public class KieContainerImpl
     }
 
     public KieSession newKieSession(KieSessionConfiguration conf) {
-        return newKieSession((Environment)null, conf);
+        return newKieSession((Environment) null, conf);
     }
 
     public KieSession newKieSession(Environment environment) {
@@ -519,23 +517,22 @@ public class KieContainerImpl
         return newKieSession(null, environment, conf);
     }
 
-    public KieContainerSessionsPool newKieSessionsPool( int initialSize) {
+    public KieContainerSessionsPool newKieSessionsPool(int initialSize) {
         return new KieContainerSessionsPoolImpl(this, initialSize);
     }
 
     StatefulSessionPool createKieSessionsPool(String kSessionName, KieSessionConfiguration conf, Environment env, int initialSize, boolean stateless) {
         KieSessionModel kSessionModel = kSessionName != null ? getKieSessionModel(kSessionName) : findKieSessionModel(false);
-        if ( kSessionModel == null ) {
+        if (kSessionModel == null) {
             log.error("Unknown KieSession name: " + kSessionName);
             return null;
         }
-        KnowledgeBaseImpl kBase = (KnowledgeBaseImpl) getKieBaseFromKieSessionModel( kSessionModel );
+        KnowledgeBaseImpl kBase = (KnowledgeBaseImpl) getKieBaseFromKieSessionModel(kSessionModel);
         return kBase == null ? null : new StatefulSessionPool(kBase, initialSize, () -> {
             SessionConfiguration sessConf = conf != null ? (SessionConfiguration) conf : kBase.getSessionConfiguration();
-            StatefulKnowledgeSessionImpl kSession = stateless ?
-                    kBase.internalCreateStatefulKnowledgeSession( env, sessConf, false ).setStateless( true ) :
-                    (StatefulKnowledgeSessionImpl) kBase.newKieSession( sessConf, env );
-            registerNewKieSession( kSessionModel, kBase, kSession );
+            StatefulKnowledgeSessionImpl kSession =
+                    stateless ? kBase.internalCreateStatefulKnowledgeSession(env, sessConf, false).setStateless(true) : (StatefulKnowledgeSessionImpl) kBase.newKieSession(sessConf, env);
+            registerNewKieSession(kSessionModel, kBase, kSession);
             return kSession;
         });
     }
@@ -549,7 +546,7 @@ public class KieContainerImpl
     }
 
     public StatelessKieSession newStatelessKieSession() {
-        return newStatelessKieSession((KieSessionConfiguration)null);
+        return newStatelessKieSession((KieSessionConfiguration) null);
     }
 
     public StatelessKieSession newStatelessKieSession(KieSessionConfiguration conf) {
@@ -568,7 +565,7 @@ public class KieContainerImpl
 
     public KieSession getKieSession(String kSessionName) {
         KieSession kieSession = kSessions.get(kSessionName);
-        if (kieSession instanceof StatefulKnowledgeSessionImpl && !((StatefulKnowledgeSessionImpl)kieSession).isAlive()) {
+        if (kieSession instanceof StatefulKnowledgeSessionImpl && !((StatefulKnowledgeSessionImpl) kieSession).isAlive()) {
             kSessions.remove(kSessionName);
             kieSession = null;
         }
@@ -584,41 +581,40 @@ public class KieContainerImpl
     }
 
     public KieSession newKieSession(String kSessionName, Environment environment, KieSessionConfiguration conf) {
-        KieSessionModelImpl kSessionModel = kSessionName != null ?
-                (KieSessionModelImpl) getKieSessionModel(kSessionName) :
-                (KieSessionModelImpl) findKieSessionModel(false);
+        KieSessionModelImpl kSessionModel = kSessionName != null ? (KieSessionModelImpl) getKieSessionModel(kSessionName) : (KieSessionModelImpl) findKieSessionModel(false);
 
-        if ( kSessionModel == null ) {
+        if (kSessionModel == null) {
             log.error("Unknown KieSession name: " + kSessionName);
             return null;
         }
 
-        KieBase kBase = getKieBaseFromKieSessionModel( kSessionModel );
-        if ( kBase == null ) return null;
+        KieBase kBase = getKieBaseFromKieSessionModel(kSessionModel);
+        if (kBase == null)
+            return null;
 
-        KieSession kSession = kBase.newKieSession( conf != null ? conf : getKieSessionConfiguration( kSessionModel ), environment );
-        registerNewKieSession( kSessionModel, ( InternalKnowledgeBase ) kBase, kSession );
+        KieSession kSession = kBase.newKieSession(conf != null ? conf : getKieSessionConfiguration(kSessionModel), environment);
+        registerNewKieSession(kSessionModel, (InternalKnowledgeBase) kBase, kSession);
         return kSession;
     }
 
-    private void registerNewKieSession( KieSessionModel kSessionModel, InternalKnowledgeBase kBase, KieSession kSession ) {
+    private void registerNewKieSession(KieSessionModel kSessionModel, InternalKnowledgeBase kBase, KieSession kSession) {
         if (isJndiAvailable()) {
-            wireSessionComponents( kSessionModel, kSession );
+            wireSessionComponents(kSessionModel, kSession);
         }
         registerLoggers(kSessionModel, kSession);
         registerCalendars(kSessionModel, kSession);
 
-        ((StatefulKnowledgeSessionImpl ) kSession).initMBeans(containerId, kBase.getId(), kSessionModel.getName());
+        ((StatefulKnowledgeSessionImpl) kSession).initMBeans(containerId, kBase.getId(), kSessionModel.getName());
 
         kSessions.put(kSessionModel.getName(), kSession);
     }
 
-    private KieBase getKieBaseFromKieSessionModel( KieSessionModel kSessionModel ) {
+    private KieBase getKieBaseFromKieSessionModel(KieSessionModel kSessionModel) {
         if (kSessionModel.getType() == KieSessionModel.KieSessionType.STATELESS) {
             throw new RuntimeException("Trying to create a stateful KieSession from a stateless KieSessionModel: " + kSessionModel.getName());
         }
-        KieBase kBase = getKieBase( kSessionModel.getKieBaseModel().getName() );
-        if ( kBase == null ) {
+        KieBase kBase = getKieBase(kSessionModel.getKieBaseModel().getName());
+        if (kBase == null) {
             log.error("Unknown KieBase name: " + kSessionModel.getKieBaseModel().getName());
             return null;
         }
@@ -643,10 +639,10 @@ public class KieContainerImpl
     private void registerCalendars(KieSessionModel kSessionModel, KieSession kSession) {
         for (Map.Entry<String, String> entry : kSessionModel.getCalendars().entrySet()) {
             try {
-                Calendar calendar = (Calendar) getClassLoader().loadClass( entry.getValue() ).newInstance();
-                kSession.getCalendars().set( entry.getKey(), calendar );
+                Calendar calendar = (Calendar) getClassLoader().loadClass(entry.getValue()).newInstance();
+                kSession.getCalendars().set(entry.getKey(), calendar);
             } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-                log.error( "Cannot instance calendar " + entry.getKey(), e );
+                log.error("Cannot instance calendar " + entry.getKey(), e);
             }
         }
     }
@@ -656,26 +652,24 @@ public class KieContainerImpl
     }
 
     public StatelessKieSession newStatelessKieSession(String kSessionName, KieSessionConfiguration conf) {
-        KieSessionModelImpl kSessionModel = kSessionName != null ?
-                (KieSessionModelImpl) getKieSessionModel(kSessionName) :
-                (KieSessionModelImpl) findKieSessionModel(true);
+        KieSessionModelImpl kSessionModel = kSessionName != null ? (KieSessionModelImpl) getKieSessionModel(kSessionName) : (KieSessionModelImpl) findKieSessionModel(true);
 
-        if ( kSessionModel == null ) {
+        if (kSessionModel == null) {
             log.error("Unknown KieSession name: " + kSessionName);
             return null;
         }
         if (kSessionModel.getType() == KieSessionModel.KieSessionType.STATEFUL) {
             throw new RuntimeException("Trying to create a stateless KieSession from a stateful KieSessionModel: " + kSessionModel.getName());
         }
-        KieBase kBase = getKieBase( kSessionModel.getKieBaseModel().getName() );
-        if ( kBase == null ) {
+        KieBase kBase = getKieBase(kSessionModel.getKieBaseModel().getName());
+        if (kBase == null) {
             log.error("Unknown KieBase name: " + kSessionModel.getKieBaseModel().getName());
             return null;
         }
 
-        StatelessKieSession statelessKieSession = kBase.newStatelessKieSession( conf != null ? conf : getKieSessionConfiguration( kSessionModel ) );
+        StatelessKieSession statelessKieSession = kBase.newStatelessKieSession(conf != null ? conf : getKieSessionConfiguration(kSessionModel));
         if (isJndiAvailable()) {
-            wireSessionComponents( kSessionModel, statelessKieSession );
+            wireSessionComponents(kSessionModel, statelessKieSession);
         }
         registerLoggers(kSessionModel, statelessKieSession);
 
@@ -692,32 +686,32 @@ public class KieContainerImpl
     }
 
     public KieSessionConfiguration getKieSessionConfiguration() {
-        return getKieSessionConfiguration( kProject.getDefaultKieSession() );
+        return getKieSessionConfiguration(kProject.getDefaultKieSession());
     }
 
-    public KieSessionConfiguration getKieSessionConfiguration( String kSessionName ) {
-        KieSessionModelImpl kSessionModel = (KieSessionModelImpl) kProject.getKieSessionModel( kSessionName );
-        if ( kSessionModel == null ) {
+    public KieSessionConfiguration getKieSessionConfiguration(String kSessionName) {
+        KieSessionModelImpl kSessionModel = (KieSessionModelImpl) kProject.getKieSessionModel(kSessionName);
+        if (kSessionModel == null) {
             log.error("Unknown KieSession name: " + kSessionName);
             return null;
         }
-        return getKieSessionConfiguration( kSessionModel );
+        return getKieSessionConfiguration(kSessionModel);
     }
 
-    private KieSessionConfiguration getKieSessionConfiguration( KieSessionModel kSessionModel ) {
+    private KieSessionConfiguration getKieSessionConfiguration(KieSessionModel kSessionModel) {
         KieSessionConfiguration ksConf = sessionConfsCache.computeIfAbsent(kSessionModel.getName(),
-                                                                           k -> new SessionConfigurationImpl( null, kProject.getClassLoader() ) );
-        ksConf.setOption( kSessionModel.getClockType() );
-        ksConf.setOption( kSessionModel.getBeliefSystem() );
+                k -> new SessionConfigurationImpl(null, kProject.getClassLoader()));
+        ksConf.setOption(kSessionModel.getClockType());
+        ksConf.setOption(kSessionModel.getBeliefSystem());
         return ksConf;
     }
 
     public void dispose() {
         sessionConfsCache.clear();
-        kBases.values().forEach( kb -> ( (InternalKnowledgeBase) kb ).setKieContainer( null ) );
+        kBases.values().forEach(kb -> ((InternalKnowledgeBase) kb).setKieContainer(null));
 
         Set<DroolsManagementAgent.CBSKey> cbskeys = new HashSet<DroolsManagementAgent.CBSKey>();
-        if ( isMBeanOptionEnabled() ) {
+        if (isMBeanOptionEnabled()) {
             for (Entry<String, KieSession> kv : kSessions.entrySet()) {
                 cbskeys.add(new DroolsManagementAgent.CBSKey(containerId, ((InternalKnowledgeBase) kv.getValue().getKieBase()).getId(), kv.getKey()));
             }
@@ -732,7 +726,7 @@ public class KieContainerImpl
         kSessions.clear();
         statelessKSessions.clear();
 
-        if ( isMBeanOptionEnabled() ) {
+        if (isMBeanOptionEnabled()) {
             for (CBSKey c : cbskeys) {
                 DroolsManagementAgent.getInstance().unregisterKnowledgeSessionBean(c);
             }
@@ -748,12 +742,12 @@ public class KieContainerImpl
     @Override
     public void disposeSession(KieSession kieSession) {
         if (!isMBeanOptionEnabled()) {
-            kSessions.values().remove( kieSession );
+            kSessions.values().remove(kieSession);
         }
     }
 
     private boolean isMBeanOptionEnabled() {
-        return MBeansOption.isEnabled( System.getProperty( MBeansOption.PROPERTY_NAME, MBeansOption.DISABLED.toString() ) );
+        return MBeansOption.isEnabled(System.getProperty(MBeansOption.PROPERTY_NAME, MBeansOption.DISABLED.toString()));
     }
 
     public KieProject getKieProject() {
@@ -761,7 +755,7 @@ public class KieContainerImpl
     }
 
     public KieModule getKieModuleForKBase(String kBaseName) {
-        return kProject.getKieModuleForKBase( kBaseName );
+        return kProject.getKieModuleForKBase(kBaseName);
     }
 
     public KieBaseModel getKieBaseModel(String kBaseName) {

@@ -37,40 +37,40 @@ import org.slf4j.LoggerFactory;
  */
 public class KieModuleKieProject extends AbstractKieProject {
 
-    private static final Logger            log               = LoggerFactory.getLogger( KieModuleKieProject.class );
+    private static final Logger log = LoggerFactory.getLogger(KieModuleKieProject.class);
 
-    private List<InternalKieModule>        kieModules;
+    private List<InternalKieModule> kieModules;
 
     private Map<String, InternalKieModule> kJarFromKBaseName = new HashMap<String, InternalKieModule>();
 
-    private InternalKieModule              kieModule;
+    private InternalKieModule kieModule;
 
     private ProjectClassLoader cl;
 
-    public KieModuleKieProject( InternalKieModule kieModule ) {
-        this( kieModule, null );
+    public KieModuleKieProject(InternalKieModule kieModule) {
+        this(kieModule, null);
     }
-    
+
     public KieModuleKieProject(InternalKieModule kieModule, ClassLoader parent) {
         this.kieModule = kieModule;
-        this.cl = kieModule.createModuleClassLoader( parent );
+        this.cl = kieModule.createModuleClassLoader(parent);
     }
 
     public void init() {
-        if ( kieModules == null ) {
+        if (kieModules == null) {
             Collection<InternalKieModule> depKieModules = kieModule.getKieDependencies().values();
-            indexParts( kieModule, depKieModules, kJarFromKBaseName );
+            indexParts(kieModule, depKieModules, kJarFromKBaseName);
             kieModules = new ArrayList<InternalKieModule>();
-            kieModules.addAll( depKieModules );
-            kieModules.add( kieModule );
-            cl.storeClasses( getClassesMap() );
+            kieModules.addAll(depKieModules);
+            kieModules.add(kieModule);
+            cl.storeClasses(getClassesMap());
         }
     }
 
     private Map<String, byte[]> getClassesMap() {
         Map<String, byte[]> classes = new HashMap<String, byte[]>();
-        for ( InternalKieModule kModule : kieModules ) {
-            classes.putAll( kModule.getClassesMap() );
+        for (InternalKieModule kModule : kieModules) {
+            classes.putAll(kModule.getClassesMap());
         }
         return classes;
     }
@@ -88,7 +88,7 @@ public class KieModuleKieProject extends AbstractKieProject {
     }
 
     public InternalKieModule getKieModuleForKBase(String kBaseName) {
-        return this.kJarFromKBaseName.get( kBaseName );
+        return this.kJarFromKBaseName.get(kBaseName);
     }
 
     public InternalKieModule getInternalKieModule() {
@@ -105,7 +105,7 @@ public class KieModuleKieProject extends AbstractKieProject {
 
     public Map<String, KieBaseModel> updateToModule(InternalKieModule updatedKieModule) {
         Map<String, KieBaseModel> oldKieBaseModels = new HashMap<String, KieBaseModel>();
-        oldKieBaseModels.putAll( kBaseModels );
+        oldKieBaseModels.putAll(kBaseModels);
 
         this.kieModules = null;
         this.kJarFromKBaseName.clear();
@@ -114,7 +114,7 @@ public class KieModuleKieProject extends AbstractKieProject {
         ReleaseId updatingReleaseId = updatedKieModule.getReleaseId();
 
         if (currentReleaseId.getGroupId().equals(updatingReleaseId.getGroupId()) &&
-            currentReleaseId.getArtifactId().equals(updatingReleaseId.getArtifactId())) {
+                currentReleaseId.getArtifactId().equals(updatingReleaseId.getArtifactId())) {
             this.kieModule = updatedKieModule;
         } else if (this.kieModule.getKieDependencies().keySet().contains(updatingReleaseId)) {
             this.kieModule.addKieDependency(updatedKieModule);
