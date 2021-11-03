@@ -33,6 +33,7 @@ public class MVELExprDescr extends DeclarativeInvokerDescr {
         return getText();
     }
 
+    @Override
     public String toString() {
         return getText();
     }

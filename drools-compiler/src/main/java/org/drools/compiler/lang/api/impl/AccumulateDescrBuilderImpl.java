@@ -16,6 +16,8 @@
 
 package org.drools.compiler.lang.api.impl;
 
+import java.util.List;
+
 import org.drools.compiler.lang.api.AccumulateDescrBuilder;
 import org.drools.compiler.lang.api.CEDescrBuilder;
 import org.drools.compiler.lang.api.DescrBuilder;
@@ -26,8 +28,6 @@ import org.drools.compiler.lang.descr.BaseDescr;
 import org.drools.compiler.lang.descr.ConditionalElementDescr;
 import org.drools.compiler.lang.descr.ExprConstraintDescr;
 import org.drools.compiler.lang.descr.PatternDescr;
-
-import java.util.List;
 
 /**
  * An implementation for the CollectDescrBuilder
@@ -45,7 +45,7 @@ public class AccumulateDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends Ba
      * {@inheritDoc}
      */
     public PatternDescrBuilder<AccumulateDescrBuilder<P>> pattern(String type) {
-        PatternDescrBuilder<AccumulateDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<AccumulateDescrBuilder<P>>(this,
+        PatternDescrBuilder<AccumulateDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<>(this,
                 type);
         descr.setInputPattern(pattern.getDescr());
         return pattern;
@@ -55,18 +55,20 @@ public class AccumulateDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends Ba
      * {@inheritDoc}
      */
     public PatternDescrBuilder<AccumulateDescrBuilder<P>> pattern() {
-        PatternDescrBuilder<AccumulateDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<AccumulateDescrBuilder<P>>(this);
+        PatternDescrBuilder<AccumulateDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<>(this);
         descr.setInputPattern(pattern.getDescr());
         return pattern;
     }
 
+    @Override
     public CEDescrBuilder<AccumulateDescrBuilder<P>, AndDescr> source() {
-        CEDescrBuilder<AccumulateDescrBuilder<P>, AndDescr> and = new CEDescrBuilderImpl<AccumulateDescrBuilder<P>, AndDescr>(this,
+        CEDescrBuilder<AccumulateDescrBuilder<P>, AndDescr> and = new CEDescrBuilderImpl<>(this,
                 new AndDescr());
         descr.setInput(and.getDescr());
         return and;
     }
 
+    @Override
     public AccumulateDescrBuilder<P> function(String name,
             String bind,
             boolean unif,
@@ -78,21 +80,25 @@ public class AccumulateDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends Ba
         return this;
     }
 
+    @Override
     public AccumulateDescrBuilder<P> init(String block) {
         descr.setInitCode(block);
         return this;
     }
 
+    @Override
     public AccumulateDescrBuilder<P> action(String block) {
         descr.setActionCode(block);
         return this;
     }
 
+    @Override
     public AccumulateDescrBuilder<P> reverse(String block) {
         descr.setReverseCode(block);
         return this;
     }
 
+    @Override
     public AccumulateDescrBuilder<P> result(String expr) {
         descr.setResultCode(expr);
         return this;

@@ -1,12 +1,12 @@
 /*
  * Copyright 2005 Red Hat, Inc. and/or its affiliates.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,7 @@ public class OrDescr extends AnnotatedBaseDescr
         ConditionalElementDescr {
 
     private static final long serialVersionUID = 510l;
-    private List<BaseDescr> descrs = new ArrayList<BaseDescr>();
+    private List<BaseDescr> descrs = new ArrayList<>();
 
     public OrDescr() {
     }
@@ -32,6 +32,7 @@ public class OrDescr extends AnnotatedBaseDescr
         addDescr(baseDescr);
     }
 
+    @Override
     public void insertBeforeLast(final Class<?> clazz,
             final BaseDescr baseDescr) {
         if (clazz.isInstance(baseDescr)) {
@@ -56,14 +57,17 @@ public class OrDescr extends AnnotatedBaseDescr
                 baseDescr);
     }
 
+    @Override
     public void addDescr(final BaseDescr baseDescr) {
         this.descrs.add(baseDescr);
     }
 
+    @Override
     public List<BaseDescr> getDescrs() {
         return this.descrs;
     }
 
+    @Override
     public void addOrMerge(final BaseDescr baseDescr) {
         if (baseDescr instanceof OrDescr) {
             this.descrs.addAll(((OrDescr) baseDescr).getDescrs());
@@ -72,6 +76,7 @@ public class OrDescr extends AnnotatedBaseDescr
         }
     }
 
+    @Override
     public boolean removeDescr(BaseDescr baseDescr) {
         return baseDescr == null ? false : descrs.remove(baseDescr);
     }

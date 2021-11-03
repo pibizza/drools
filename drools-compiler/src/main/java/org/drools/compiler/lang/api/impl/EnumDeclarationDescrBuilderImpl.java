@@ -16,13 +16,13 @@
 
 package org.drools.compiler.lang.api.impl;
 
+import org.drools.compiler.lang.api.AbstractClassTypeDeclarationBuilder;
+import org.drools.compiler.lang.api.AnnotationDescrBuilder;
 import org.drools.compiler.lang.api.EnumDeclarationDescrBuilder;
+import org.drools.compiler.lang.api.EnumLiteralDescrBuilder;
 import org.drools.compiler.lang.api.FieldDescrBuilder;
 import org.drools.compiler.lang.api.PackageDescrBuilder;
 import org.drools.compiler.lang.descr.EnumDeclarationDescr;
-import org.drools.compiler.lang.api.AbstractClassTypeDeclarationBuilder;
-import org.drools.compiler.lang.api.AnnotationDescrBuilder;
-import org.drools.compiler.lang.api.EnumLiteralDescrBuilder;
 
 public class EnumDeclarationDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBuilder, EnumDeclarationDescr>
         implements
@@ -32,23 +32,27 @@ public class EnumDeclarationDescrBuilderImpl extends BaseDescrBuilderImpl<Packag
         super(parent, new EnumDeclarationDescr());
     }
 
+    @Override
     public AnnotationDescrBuilder<EnumDeclarationDescrBuilder> newAnnotation(String name) {
-        AnnotationDescrBuilder<EnumDeclarationDescrBuilder> annotation = new AnnotationDescrBuilderImpl<EnumDeclarationDescrBuilder>(this, name);
+        AnnotationDescrBuilder<EnumDeclarationDescrBuilder> annotation = new AnnotationDescrBuilderImpl<>(this, name);
         descr.addAnnotation(annotation.getDescr());
         return annotation;
     }
 
+    @Override
     public EnumDeclarationDescrBuilder name(String type) {
         descr.setTypeName(type);
         return this;
     }
 
+    @Override
     public FieldDescrBuilder<AbstractClassTypeDeclarationBuilder<EnumDeclarationDescr>> newField(String name) {
         FieldDescrBuilder<AbstractClassTypeDeclarationBuilder<EnumDeclarationDescr>> field = new FieldDescrBuilderImpl(this, name);
         descr.addField(field.getDescr());
         return field;
     }
 
+    @Override
     public EnumLiteralDescrBuilder newEnumLiteral(String lit) {
         EnumLiteralDescrBuilder literal = new EnumLiteralDescrBuilderImpl(this);
         literal.name(lit);

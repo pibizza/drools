@@ -20,9 +20,9 @@ import org.drools.compiler.lang.api.AnnotationDescrBuilder;
 import org.drools.compiler.lang.api.AttributeDescrBuilder;
 import org.drools.compiler.lang.api.CEDescrBuilder;
 import org.drools.compiler.lang.api.PackageDescrBuilder;
+import org.drools.compiler.lang.api.RuleDescrBuilder;
 import org.drools.compiler.lang.descr.AndDescr;
 import org.drools.compiler.lang.descr.AttributeDescr;
-import org.drools.compiler.lang.api.RuleDescrBuilder;
 import org.drools.compiler.lang.descr.RuleDescr;
 
 /**
@@ -37,47 +37,55 @@ public class RuleDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBuild
                 new RuleDescr());
     }
 
+    @Override
     public AnnotationDescrBuilder<RuleDescrBuilder> newAnnotation(String name) {
-        AnnotationDescrBuilder<RuleDescrBuilder> annotation = new AnnotationDescrBuilderImpl<RuleDescrBuilder>(this,
+        AnnotationDescrBuilder<RuleDescrBuilder> annotation = new AnnotationDescrBuilderImpl<>(this,
                 name);
         descr.addAnnotation(annotation.getDescr());
         return annotation;
     }
 
+    @Override
     public AttributeDescrBuilder<RuleDescrBuilder> attribute(String name) {
-        AttributeDescrBuilder<RuleDescrBuilder> attribute = new AttributeDescrBuilderImpl<RuleDescrBuilder>(this,
+        AttributeDescrBuilder<RuleDescrBuilder> attribute = new AttributeDescrBuilderImpl<>(this,
                 name);
         descr.addAttribute(attribute.getDescr());
         return attribute;
     }
 
+    @Override
     public RuleDescrBuilder name(String name) {
         descr.setName(name);
         return this;
     }
 
+    @Override
     public RuleDescrBuilder extendsRule(String name) {
         descr.setParentName(name);
         return this;
     }
 
+    @Override
     public RuleDescrBuilder rhs(String rhs) {
         descr.setConsequence(rhs);
         return this;
     }
 
+    @Override
     public RuleDescrBuilder namedRhs(String name, String rhs) {
         descr.addNamedConsequences(name, rhs);
         return this;
     }
 
+    @Override
     public CEDescrBuilder<RuleDescrBuilder, AndDescr> lhs() {
-        CEDescrBuilder<RuleDescrBuilder, AndDescr> ce = new CEDescrBuilderImpl<RuleDescrBuilder, AndDescr>(this,
+        CEDescrBuilder<RuleDescrBuilder, AndDescr> ce = new CEDescrBuilderImpl<>(this,
                 new AndDescr());
         descr.setLhs(ce.getDescr());
         return ce;
     }
 
+    @Override
     public RuleDescrBuilder attribute(String name,
             String value) {
         descr.addAttribute(new AttributeDescr(name,
@@ -85,6 +93,7 @@ public class RuleDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBuild
         return this;
     }
 
+    @Override
     public RuleDescrBuilder attribute(String name,
             String value,
             AttributeDescr.Type type) {

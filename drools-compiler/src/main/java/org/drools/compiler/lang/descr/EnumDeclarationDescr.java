@@ -19,9 +19,9 @@ package org.drools.compiler.lang.descr;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class EnumDeclarationDescr extends AbstractClassTypeDeclarationDescr {
 
@@ -53,6 +53,7 @@ public class EnumDeclarationDescr extends AbstractClassTypeDeclarationDescr {
         out.writeObject(literals);
     }
 
+    @Override
     public String toString() {
         return "EnumDeclaration[ " + this.getType().getFullName() + " ]";
     }
@@ -70,25 +71,29 @@ public class EnumDeclarationDescr extends AbstractClassTypeDeclarationDescr {
 
     public void addLiteral(EnumLiteralDescr lit) {
         if (this.literals == Collections.EMPTY_LIST) {
-            this.literals = new ArrayList<EnumLiteralDescr>();
+            this.literals = new ArrayList<>();
         }
         this.literals.add(lit);
     }
 
+    @Override
     public String getSuperTypeName() {
         return "Enum";
     }
 
+    @Override
     public String getSuperTypeNamespace() {
         return "java.lang";
     }
 
+    @Override
     public String getSupertTypeFullName() {
         return "java.lang.Enum";
     }
 
+    @Override
     public List<QualifiedName> getSuperTypes() {
-        List<QualifiedName> l = new ArrayList<QualifiedName>(1);
+        List<QualifiedName> l = new ArrayList<>(1);
         l.add(new QualifiedName("Enum", "java.lang"));
         return l;
     }

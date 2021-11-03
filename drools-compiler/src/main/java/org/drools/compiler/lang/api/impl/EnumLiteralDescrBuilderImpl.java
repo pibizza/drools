@@ -33,23 +33,27 @@ public class EnumLiteralDescrBuilderImpl extends BaseDescrBuilderImpl<EnumDeclar
         super(parent, descr);
     }
 
+    @Override
     public EnumLiteralDescrBuilder index(int index) {
         descr.setIndex(index);
         return this;
     }
 
+    @Override
     public EnumLiteralDescrBuilder name(String name) {
         descr.setName(name);
         return this;
     }
 
+    @Override
     public EnumLiteralDescrBuilder constructorArg(String expr) {
         descr.addConstructorArg(expr);
         return this;
     }
 
+    @Override
     public AnnotationDescrBuilder<EnumLiteralDescrBuilder> newAnnotation(String name) {
-        AnnotationDescrBuilder<EnumLiteralDescrBuilder> annotation = new AnnotationDescrBuilderImpl<EnumLiteralDescrBuilder>(this, name);
+        AnnotationDescrBuilder<EnumLiteralDescrBuilder> annotation = new AnnotationDescrBuilderImpl<>(this, name);
         descr.addAnnotation(annotation.getDescr());
         return annotation;
     }

@@ -34,26 +34,32 @@ public class FromDescr extends PatternSourceDescr
         this.dataSource = dataSource;
     }
 
+    @Override
     public void addDescr(final BaseDescr baseDescr) {
         throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
+    @Override
     public void insertBeforeLast(final Class<?> clazz, final BaseDescr baseDescr) {
         throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
+    @Override
     public List<BaseDescr> getDescrs() {
         return Collections.emptyList();
     }
 
+    @Override
     public void addOrMerge(BaseDescr baseDescr) {
         throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
+    @Override
     public boolean removeDescr(BaseDescr baseDescr) {
         throw new UnsupportedOperationException("Can't remove descriptors from " + this.getClass().getName());
     }
 
+    @Override
     public String toString() {
         return "from " + this.dataSource.toString();
     }
@@ -67,6 +73,7 @@ public class FromDescr extends PatternSourceDescr
         return getDataSource().getText();
     }
 
+    @Override
     public void accept(DescrVisitor visitor) {
         visitor.visit(this);
     }

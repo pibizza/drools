@@ -35,6 +35,7 @@ public class ForFunctionDescr extends BaseDescr {
     public ForFunctionDescr() {
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
@@ -44,6 +45,7 @@ public class ForFunctionDescr extends BaseDescr {
         arguments = (List<String>) in.readObject();
     }
 
+    @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         super.writeExternal(out);
         out.writeObject(id);
@@ -75,6 +77,7 @@ public class ForFunctionDescr extends BaseDescr {
         this.arguments = arguments;
     }
 
+    @Override
     public String toString() {
         return "[ForFunctionDescr: " + label + " : " + id + "( " + arguments + " )]";
     }

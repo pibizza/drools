@@ -28,9 +28,9 @@ public interface EntryPointDeclarationDescrBuilder
 
     /**
      * Declares the entry point id
-     * 
+     *
      * @param name the name of the entry point to be declared
-     * 
+     *
      * @return itself
      */
     public EntryPointDeclarationDescrBuilder entryPointId(String name);

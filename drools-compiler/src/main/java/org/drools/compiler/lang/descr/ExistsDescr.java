@@ -33,22 +33,27 @@ public class ExistsDescr extends AnnotatedBaseDescr
         addDescr(baseDescr);
     }
 
+    @Override
     public void addDescr(final BaseDescr baseDescr) {
         this.descrs.add(baseDescr);
     }
 
+    @Override
     public void insertBeforeLast(final Class clazz, final BaseDescr baseDescr) {
         throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
+    @Override
     public List getDescrs() {
         return this.descrs;
     }
 
+    @Override
     public boolean removeDescr(BaseDescr baseDescr) {
         return baseDescr == null ? false : descrs.remove(baseDescr);
     }
 
+    @Override
     public void addOrMerge(BaseDescr baseDescr) {
         if (baseDescr instanceof ExistsDescr) {
             this.descrs.addAll(((ExistsDescr) baseDescr).getDescrs());

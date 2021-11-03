@@ -61,22 +61,27 @@ public class EvalDescr extends BaseDescr
         return this.declarations;
     }
 
+    @Override
     public List getDescrs() {
         return Collections.EMPTY_LIST;
     }
 
+    @Override
     public void addDescr(final BaseDescr baseDescr) {
         throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
+    @Override
     public void insertBeforeLast(final Class clazz, final BaseDescr baseDescr) {
         throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
+    @Override
     public void addOrMerge(BaseDescr baseDescr) {
         throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
+    @Override
     public boolean removeDescr(BaseDescr baseDescr) {
         throw new UnsupportedOperationException("Can't remove descriptors from " + this.getClass().getName());
     }
@@ -94,6 +99,7 @@ public class EvalDescr extends BaseDescr
         }
     }
 
+    @Override
     public void accept(DescrVisitor visitor) {
         visitor.visit(this);
     }

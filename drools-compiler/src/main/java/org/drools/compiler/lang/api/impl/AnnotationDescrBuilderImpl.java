@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -15,9 +15,9 @@
 
 package org.drools.compiler.lang.api.impl;
 
+import org.drools.compiler.lang.api.AnnotationDescrBuilder;
 import org.drools.compiler.lang.api.DescrBuilder;
 import org.drools.compiler.lang.descr.AnnotationDescr;
-import org.drools.compiler.lang.api.AnnotationDescrBuilder;
 
 public class AnnotationDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends BaseDescrBuilderImpl<P, AnnotationDescr>
         implements
@@ -29,11 +29,13 @@ public class AnnotationDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends Ba
                 new AnnotationDescr(name));
     }
 
+    @Override
     public AnnotationDescrBuilder<P> value(Object value) {
         descr.setValue(value);
         return this;
     }
 
+    @Override
     public AnnotationDescrBuilder<P> keyValue(String key,
             Object value) {
         descr.setKeyValue(key,
@@ -43,6 +45,6 @@ public class AnnotationDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends Ba
 
     @Override
     public AnnotationDescrBuilder<AnnotationDescrBuilder<P>> newAnnotation(String name) {
-        return new AnnotationDescrBuilderImpl<AnnotationDescrBuilder<P>>(this, name);
+        return new AnnotationDescrBuilderImpl<>(this, name);
     }
 }

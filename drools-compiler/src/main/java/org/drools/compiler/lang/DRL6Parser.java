@@ -1,10 +1,10 @@
-/* 
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -86,6 +86,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
         this.exprParser = new DRL6Expressions(input, state, helper);
     }
 
+    @Override
     protected LanguageLevelOption getLanguageLevel() {
         return LanguageLevelOption.DRL6;
     }
@@ -96,14 +97,16 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
      * ------------------------------------------------------------------------------------------------
      */
 
+    @Override
     protected final PackageDescr compilationUnit(PackageDescrBuilder pkg) throws RecognitionException {
         try {
             // package declaration?
             if (input.LA(1) != DRL6Lexer.EOF && helper.validateIdentifierKey(DroolsSoftKeywords.PACKAGE)) {
                 String pkgName = packageStatement(pkg);
                 pkg.name(pkgName);
-                if (state.failed)
+                if (state.failed) {
                     return pkg.getDescr();
+                }
 
                 // unit declaration?
                 // this is only allowed immediately after the package declaration
@@ -117,8 +120,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 int next = input.index();
                 if (helper.validateStatement(1)) {
                     statement(pkg);
-                    if (state.failed)
+                    if (state.failed) {
                         return pkg.getDescr();
+                    }
 
                     if (next == input.index()) {
                         // no token consumed, so, report problem:
@@ -134,8 +138,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return pkg.getDescr();
+                    }
                 }
             }
         } catch (RecognitionException e) {
@@ -178,12 +183,14 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.PACKAGE,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return pkgName;
+            }
 
             pkgName = qualifiedIdentifier();
-            if (state.failed)
+            if (state.failed) {
                 return pkgName;
+            }
             if (state.backtracking == 0) {
                 helper.setParaphrasesValue(DroolsParaphraseTypes.PACKAGE,
                         pkgName);
@@ -195,8 +202,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return pkgName;
+                }
             }
 
         } catch (RecognitionException re) {
@@ -223,13 +231,15 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.UNIT,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             // qualifiedIdentifier
             String target = qualifiedIdentifier();
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             if (state.backtracking == 0) {
                 imp.target(target);
@@ -241,8 +251,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
             return (imp != null) ? imp.getDescr() : null;
         } finally {
@@ -268,32 +279,39 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
         try {
             if (helper.validateIdentifierKey(DroolsSoftKeywords.IMPORT)) {
                 descr = importStatement(pkg);
-                if (state.failed)
+                if (state.failed) {
                     return descr;
+                }
             } else if (helper.validateIdentifierKey(DroolsSoftKeywords.GLOBAL)) {
                 descr = globalStatement(pkg);
-                if (state.failed)
+                if (state.failed) {
                     return descr;
+                }
             } else if (helper.validateIdentifierKey(DroolsSoftKeywords.DECLARE)) {
                 descr = declare(pkg);
-                if (state.failed)
+                if (state.failed) {
                     return descr;
+                }
             } else if (helper.validateIdentifierKey(DroolsSoftKeywords.RULE)) {
                 descr = rule(pkg);
-                if (state.failed)
+                if (state.failed) {
                     return descr;
+                }
             } else if (helper.validateIdentifierKey(DroolsSoftKeywords.QUERY)) {
                 descr = query(pkg);
-                if (state.failed)
+                if (state.failed) {
                     return descr;
+                }
             } else if (helper.validateIdentifierKey(DroolsSoftKeywords.FUNCTION)) {
                 descr = function(pkg);
-                if (state.failed)
+                if (state.failed) {
                     return descr;
+                }
             } else if (helper.validateAttribute(1)) {
                 descr = attribute(pkg);
-                if (state.failed)
+                if (state.failed) {
                     return descr;
+                }
             }
         } catch (RecognitionException e) {
             helper.reportError(e);
@@ -332,8 +350,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             DroolsSoftKeywords.IMPORT,
                             null,
                             DroolsEditorType.KEYWORD);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
 
                     // import accumulate
                     match(input,
@@ -341,13 +360,15 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             kwd,
                             null,
                             DroolsEditorType.KEYWORD);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
 
                     // qualifiedIdentifier
                     String target = qualifiedIdentifier();
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
 
                     // function name
                     Token id = match(input,
@@ -355,8 +376,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.IDENTIFIER);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                     if (state.backtracking == 0) {
                         imp.target(target).functionName(id.getText());
                     }
@@ -378,8 +400,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             DroolsSoftKeywords.IMPORT,
                             null,
                             DroolsEditorType.KEYWORD);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
 
                     if (helper.validateIdentifierKey(kwd = DroolsSoftKeywords.FUNCTION) ||
                             helper.validateIdentifierKey(kwd = DroolsSoftKeywords.STATIC)) {
@@ -389,14 +412,16 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                                 kwd,
                                 null,
                                 DroolsEditorType.KEYWORD);
-                        if (state.failed)
+                        if (state.failed) {
                             return null;
+                        }
                     }
 
                     // qualifiedIdentifier
                     String target = qualifiedIdentifier();
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
 
                     if (input.LA(1) == DRL6Lexer.DOT && input.LA(2) == DRL6Lexer.STAR) {
                         // .*
@@ -405,19 +430,22 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                                 null,
                                 null,
                                 DroolsEditorType.IDENTIFIER);
-                        if (state.failed)
+                        if (state.failed) {
                             return null;
+                        }
                         match(input,
                                 DRL6Lexer.STAR,
                                 null,
                                 null,
                                 DroolsEditorType.IDENTIFIER);
-                        if (state.failed)
+                        if (state.failed) {
                             return null;
+                        }
                         target += ".*";
                     }
-                    if (state.backtracking == 0)
+                    if (state.backtracking == 0) {
                         imp.target(target);
+                    }
                     return (imp != null) ? imp.getDescr() : null;
                 } finally {
                     helper.end(ImportDescrBuilder.class,
@@ -456,15 +484,18 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.GLOBAL,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             // type
             String type = type();
-            if (state.backtracking == 0)
+            if (state.backtracking == 0) {
                 global.type(type);
-            if (state.failed)
+            }
+            if (state.failed) {
                 return null;
+            }
 
             // identifier
             Token id = match(input,
@@ -472,8 +503,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.IDENTIFIER_TYPE);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
             if (state.backtracking == 0) {
                 global.identifier(id.getText());
                 helper.setParaphrasesValue(DroolsParaphraseTypes.GLOBAL,
@@ -520,8 +552,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.DECLARE,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             if (helper.validateIdentifierKey(DroolsSoftKeywords.ENTRY)) {
                 // entry point declaration
@@ -537,8 +570,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         DroolsSoftKeywords.TRAIT,
                         null,
                         DroolsEditorType.KEYWORD);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 declaration = typeDeclaration(declare, true);
             } else if (helper.validateIdentifierKey(DroolsSoftKeywords.ENUM)) {
@@ -547,8 +581,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         DroolsSoftKeywords.ENUM,
                         null,
                         DroolsEditorType.KEYWORD);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 declaration = enumDeclaration(declare);
             } else {
@@ -580,28 +615,32 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.ENTRY,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             match(input,
                     DRL6Lexer.MINUS,
                     null,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             match(input,
                     DRL6Lexer.ID,
                     DroolsSoftKeywords.POINT,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             String ep = stringId();
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
             if (state.backtracking == 0) {
                 declare.entryPointId(ep);
             }
@@ -609,8 +648,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             while (input.LA(1) == DRL6Lexer.AT) {
                 // annotation*
                 annotation(declare);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
 
             match(input,
@@ -618,8 +658,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.END,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
         } catch (RecognitionException re) {
             reportError(re);
@@ -650,16 +691,18 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.WINDOW,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             Token id = match(input,
                     DRL6Lexer.ID,
                     null,
                     null,
                     DroolsEditorType.IDENTIFIER);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
             window = id.getText();
 
             if (state.backtracking == 0) {
@@ -669,8 +712,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             while (input.LA(1) == DRL6Lexer.AT) {
                 // annotation*
                 annotation(declare);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
 
             lhsPatternBind(declare, false);
@@ -681,8 +725,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     DroolsEditorType.KEYWORD);
 
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
         } catch (RecognitionException re) {
             reportError(re);
@@ -701,7 +746,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
      * END
      *
      * @return
-     * 
+     *
      * @throws RecognitionException
      */
     public EnumDeclarationDescr enumDeclaration(DeclareDescrBuilder ddb) throws RecognitionException {
@@ -713,24 +758,28 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
             // type may be qualified when adding metadata
             String type = qualifiedIdentifier();
-            if (state.failed)
+            if (state.failed) {
                 return null;
-            if (state.backtracking == 0)
+            }
+            if (state.backtracking == 0) {
                 declare.name(type);
+            }
 
             while (input.LA(1) == DRL6Lexer.AT) {
                 // annotation*
                 annotation(declare);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
 
             while (input.LA(1) == DRL6Lexer.ID) {
                 int next = input.LA(2);
                 if (next == DRL6Lexer.LEFT_PAREN || next == DRL6Lexer.COMMA || next == DRL6Lexer.SEMICOLON) {
                     enumerative(declare);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
 
                 if (input.LA(1) == DRL6Lexer.COMMA) {
@@ -754,8 +803,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             input.LA(1) == DRL6Lexer.ID && !helper.validateIdentifierKey(DroolsSoftKeywords.END)) {
                 // field*
                 field(declare);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
 
             match(input,
@@ -764,8 +814,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     DroolsEditorType.KEYWORD);
 
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
         } catch (RecognitionException re) {
             reportError(re);
@@ -801,16 +852,19 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         DroolsSoftKeywords.TYPE,
                         null,
                         DroolsEditorType.KEYWORD);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
 
             // type may be qualified when adding metadata
             String type = qualifiedIdentifier();
-            if (state.failed)
+            if (state.failed) {
                 return null;
-            if (state.backtracking == 0)
+            }
+            if (state.backtracking == 0) {
                 declare.name(type);
+            }
 
             if (helper.validateIdentifierKey(DroolsSoftKeywords.EXTENDS)) {
                 match(input,
@@ -840,8 +894,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             while (input.LA(1) == DRL6Lexer.AT) {
                 // annotation*
                 annotation(declare);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
 
             //boolean qualified = type.indexOf( '.' ) >= 0;
@@ -849,8 +904,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             input.LA(1) == DRL6Lexer.ID && !helper.validateIdentifierKey(DroolsSoftKeywords.END)) {
                 // field*
                 field(declare);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
 
             match(input,
@@ -858,8 +914,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.END,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
         } catch (RecognitionException re) {
             reportError(re);
@@ -883,8 +940,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     DroolsEditorType.IDENTIFIER);
             lit = enumLit.getText();
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
         } catch (RecognitionException re) {
             reportError(re);
         }
@@ -901,16 +959,18 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
 
                 boolean more;
 
                 do {
                     int first = input.index();
                     exprParser.conditionalExpression();
-                    if (state.failed)
+                    if (state.failed) {
                         return;
+                    }
                     if (state.backtracking == 0 && input.index() > first) {
                         // expression consumed something
                         String arg = input.toString(first,
@@ -934,8 +994,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
 
             }
 
@@ -955,8 +1016,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
         String fname = null;
         try {
             fname = label(DroolsEditorType.IDENTIFIER);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
         } catch (RecognitionException re) {
             reportError(re);
         }
@@ -968,10 +1030,12 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
             // type
             String type = type();
-            if (state.failed)
+            if (state.failed) {
                 return;
-            if (state.backtracking == 0)
+            }
+            if (state.backtracking == 0) {
                 field.type(type);
+            }
 
             if (input.LA(1) == DRL6Lexer.EQUALS_ASSIGN) {
                 // EQUALS_ASSIGN
@@ -980,13 +1044,15 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
 
                 int first = input.index();
                 exprParser.conditionalExpression();
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
                 if (state.backtracking == 0 && input.index() > first) {
                     // expression consumed something
                     String value = input.toString(first,
@@ -998,8 +1064,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             while (input.LA(1) == DRL6Lexer.AT) {
                 // annotation*
                 annotation(field);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
             }
 
             if (input.LA(1) == DRL6Lexer.SEMICOLON) {
@@ -1008,8 +1075,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
             }
 
         } catch (RecognitionException re) {
@@ -1045,16 +1113,19 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.FUNCTION,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             if (input.LA(1) != DRL6Lexer.ID || input.LA(2) != DRL6Lexer.LEFT_PAREN) {
                 // type
                 String type = type();
-                if (state.failed)
+                if (state.failed) {
                     return null;
-                if (state.backtracking == 0)
+                }
+                if (state.backtracking == 0) {
                     function.returnType(type);
+                }
             }
 
             // name
@@ -1063,8 +1134,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.IDENTIFIER);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
             if (state.backtracking == 0) {
                 function.name(id.getText());
                 helper.setParaphrasesValue(DroolsParaphraseTypes.FUNCTION,
@@ -1074,17 +1146,20 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             // arguments
             parameters(function,
                     true);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             // body
             String body = chunk(DRL6Lexer.LEFT_CURLY,
                     DRL6Lexer.RIGHT_CURLY,
                     -1);
-            if (state.failed)
+            if (state.failed) {
                 return null;
-            if (state.backtracking == 0)
+            }
+            if (state.backtracking == 0) {
                 function.body(body);
+            }
 
         } catch (RecognitionException re) {
             reportError(re);
@@ -1097,7 +1172,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * parameters := LEFT_PAREN ( parameter ( COMMA parameter )* )? RIGHT_PAREN
-     * 
+     *
      * @param statement
      * @param requiresType
      * @throws org.antlr.runtime.RecognitionException
@@ -1109,14 +1184,16 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 DroolsEditorType.SYMBOL);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         if (input.LA(1) != DRL6Lexer.RIGHT_PAREN) {
             parameter(statement,
                     requiresType);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             while (input.LA(1) == DRL6Lexer.COMMA) {
                 match(input,
@@ -1124,13 +1201,15 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
 
                 parameter(statement,
                         requiresType);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
             }
         }
 
@@ -1139,13 +1218,14 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 DroolsEditorType.SYMBOL);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
     }
 
     /**
      * parameter := ({requiresType}?=>type)? ID (LEFT_SQUARE RIGHT_SQUARE)*
-     * 
+     *
      * @param statement
      * @param requiresType
      * @throws org.antlr.runtime.RecognitionException
@@ -1155,8 +1235,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
         String type = "Object";
         if (requiresType) {
             type = type();
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
         }
 
         int start = input.index();
@@ -1165,8 +1246,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 DroolsEditorType.IDENTIFIER);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         while (input.LA(1) == DRL6Lexer.LEFT_SQUARE) {
             match(input,
@@ -1174,23 +1256,26 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             match(input,
                     DRL6Lexer.RIGHT_SQUARE,
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
         }
         int end = input.LT(-1).getTokenIndex();
 
-        if (state.backtracking == 0)
+        if (state.backtracking == 0) {
             statement.parameter(type,
                     input.toString(start,
                             end));
+        }
     }
 
     /*
@@ -1218,8 +1303,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.QUERY,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             if (helper.validateIdentifierKey(DroolsSoftKeywords.WHEN) ||
                     helper.validateIdentifierKey(DroolsSoftKeywords.THEN) ||
@@ -1229,10 +1315,12 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             }
 
             String name = stringId();
-            if (state.backtracking == 0)
+            if (state.backtracking == 0) {
                 query.name(name);
-            if (state.failed)
+            }
+            if (state.failed) {
                 return null;
+            }
 
             if (state.backtracking == 0) {
                 helper.emit(Location.LOCATION_RULE_HEADER);
@@ -1242,8 +1330,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 // parameters
                 parameters(query,
                         true);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
                 if (state.backtracking == 0) {
                     helper.emit(Location.LOCATION_LHS_BEGIN_OF_CONDITION);
                 }
@@ -1251,8 +1340,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 // parameters
                 parameters(query,
                         false);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
                 if (state.backtracking == 0) {
                     helper.emit(Location.LOCATION_LHS_BEGIN_OF_CONDITION);
                 }
@@ -1261,8 +1351,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             while (input.LA(1) == DRL6Lexer.AT) {
                 // annotation*
                 annotation(query);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
 
             if (state.backtracking == 0 && input.LA(1) != DRL6Lexer.EOF) {
@@ -1277,8 +1368,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.END,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             helper.emit(Location.LOCATION_RHS);
 
@@ -1333,8 +1425,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.RULE,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             if (helper.validateIdentifierKey(DroolsSoftKeywords.WHEN) ||
                     helper.validateIdentifierKey(DroolsSoftKeywords.THEN) ||
@@ -1344,8 +1437,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             }
 
             String name = stringId();
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
             if (state.backtracking == 0) {
                 rule.name(name);
                 helper.setParaphrasesValue(DroolsParaphraseTypes.RULE,
@@ -1360,14 +1454,17 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         DroolsSoftKeywords.EXTENDS,
                         null,
                         DroolsEditorType.KEYWORD);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 String parent = stringId();
-                if (state.backtracking == 0)
+                if (state.backtracking == 0) {
                     rule.extendsRule(parent);
-                if (state.failed)
+                }
+                if (state.failed) {
                     return null;
+                }
             }
 
             if (state.backtracking == 0 && input.LA(1) != DRL6Lexer.EOF) {
@@ -1377,8 +1474,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             while (input.LA(1) == DRL6Lexer.AT) {
                 // annotation*
                 annotation(rule);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
 
             attributes(rule);
@@ -1397,8 +1495,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.END,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
         } catch (RecognitionException re) {
             reportError(re);
@@ -1411,7 +1510,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * stringId := ( ID | STRING )
-     * 
+     *
      * @return
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -1422,8 +1521,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.IDENTIFIER);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
             return id.getText();
         } else if (input.LA(1) == DRL6Lexer.STRING) {
             Token id = match(input,
@@ -1431,8 +1531,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.IDENTIFIER);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
             return StringUtils.unescapeJava(safeStripStringDelimiters(id.getText()));
         } else {
             throw new MismatchedTokenException(DRL6Lexer.ID,
@@ -1442,7 +1543,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * attributes := (ATTRIBUTES COLON?)? [ attribute ( COMMA? attribute )* ]
-     * 
+     *
      * @param rule
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -1453,8 +1554,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.ATTRIBUTES,
                     null,
                     DroolsEditorType.IDENTIFIER);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             if (input.LA(1) == DRL6Lexer.COLON) {
                 match(input,
@@ -1462,15 +1564,17 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
             }
         }
 
         if (helper.validateAttribute(1)) {
             attribute(rule);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             while (input.LA(1) == DRL6Lexer.COMMA || helper.validateAttribute(1)) {
                 if (input.LA(1) == DRL6Lexer.COMMA) {
@@ -1479,12 +1583,14 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return;
+                    }
                 }
                 attribute(rule);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
             }
         }
     }
@@ -1637,7 +1743,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * salience := SALIENCE conditionalExpression
-     * 
+     *
      * @throws org.antlr.runtime.RecognitionException
      */
     private AttributeDescr salience(AttributeSupportBuilder<?> as) throws RecognitionException {
@@ -1649,8 +1755,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.SALIENCE,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
             if (state.backtracking == 0) {
                 attribute = helper.start((DescrBuilder<?, ?>) as,
                         AttributeDescrBuilder.class,
@@ -1665,13 +1772,15 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
 
             String value = conditionalExpression();
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             if (hasParen) {
                 match(input,
@@ -1679,8 +1788,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
             if (state.backtracking == 0) {
                 if (attribute != null) {
@@ -1704,7 +1814,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * enabled := ENABLED conditionalExpression
-     * 
+     *
      * @throws org.antlr.runtime.RecognitionException
      */
     private AttributeDescr enabled(AttributeSupportBuilder<?> as) throws RecognitionException {
@@ -1716,8 +1826,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.ENABLED,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
             if (state.backtracking == 0) {
                 attribute = helper.start((DescrBuilder<?, ?>) as,
                         AttributeDescrBuilder.class,
@@ -1732,13 +1843,15 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
 
             String value = conditionalExpression();
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             if (hasParen) {
                 match(input,
@@ -1746,8 +1859,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
             if (state.backtracking == 0) {
                 if (attribute != null) {
@@ -1771,7 +1885,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * booleanAttribute := attributeKey (BOOLEAN)?
-     * 
+     *
      * @param key
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -1787,16 +1901,18 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             k,
                             null,
                             DroolsEditorType.KEYWORD); // part of the keyword
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 } else {
                     match(input,
                             DRL6Lexer.ID,
                             k,
                             null,
                             DroolsEditorType.KEYWORD);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
                 builder.append(k);
             }
@@ -1813,8 +1929,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.KEYWORD);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
                 value = bool.getText();
             }
             if (state.backtracking == 0) {
@@ -1834,7 +1951,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * stringAttribute := attributeKey STRING
-     * 
+     *
      * @param key
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -1850,16 +1967,18 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             k,
                             null,
                             DroolsEditorType.KEYWORD); // part of the keyword
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 } else {
                     match(input,
                             DRL6Lexer.ID,
                             k,
                             null,
                             DroolsEditorType.KEYWORD);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
                 builder.append(k);
             }
@@ -1874,8 +1993,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.STRING_CONST);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
             if (state.backtracking == 0) {
                 if (attribute != null) {
                     attribute.value(StringUtils.unescapeJava(safeStripStringDelimiters(value.getText())));
@@ -1893,7 +2013,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * stringListAttribute := attributeKey STRING (COMMA STRING)*
-     * 
+     *
      * @param key
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -1909,16 +2029,18 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             k,
                             null,
                             DroolsEditorType.KEYWORD); // part of the keyword
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 } else {
                     match(input,
                             DRL6Lexer.ID,
                             k,
                             null,
                             DroolsEditorType.KEYWORD);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
                 builder.append(k);
             }
@@ -1935,8 +2057,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.STRING_CONST);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
             builder.append(value.getText());
 
             while (input.LA(1) == DRL6Lexer.COMMA) {
@@ -1945,16 +2068,18 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
                 builder.append(", ");
                 value = match(input,
                         DRL6Lexer.STRING,
                         null,
                         null,
                         DroolsEditorType.STRING_CONST);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
                 builder.append(value.getText());
             }
             builder.append(" ]");
@@ -1975,7 +2100,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * intOrChunkAttribute := attributeKey ( DECIMAL | chunk_(_) )
-     * 
+     *
      * @param key
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -1991,16 +2116,18 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             k,
                             null,
                             DroolsEditorType.KEYWORD); // part of the keyword
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 } else {
                     match(input,
                             DRL6Lexer.ID,
                             k,
                             null,
                             DroolsEditorType.KEYWORD);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
                 builder.append(k);
             }
@@ -2014,8 +2141,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 String value = chunk(DRL6Lexer.LEFT_PAREN,
                         DRL6Lexer.RIGHT_PAREN,
                         -1);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
                 if (state.backtracking == 0) {
                     if (attribute != null) {
                         attribute.value(safeStripDelimiters(value,
@@ -2032,8 +2160,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.NUMERIC_CONST);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                     value += sign.getText();
                 } else if (input.LA(1) == DRL6Lexer.MINUS) {
                     Token sign = match(input,
@@ -2041,8 +2170,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.NUMERIC_CONST);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                     value += sign.getText();
                 }
                 Token nbr = match(input,
@@ -2050,8 +2180,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.NUMERIC_CONST);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
                 value += nbr.getText();
                 if (state.backtracking == 0) {
                     if (attribute != null) {
@@ -2071,7 +2202,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * lhs := WHEN COLON? lhsExpression
-     * 
+     *
      * @param rule
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -2081,8 +2212,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 DroolsSoftKeywords.WHEN,
                 null,
                 DroolsEditorType.KEYWORD);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         if (input.LA(1) == DRL6Lexer.COLON) {
             match(input,
@@ -2090,8 +2222,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
         }
 
         lhsExpression(rule != null ? rule.lhs() : null);
@@ -2121,15 +2254,16 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 lhsOr(lhs,
                         true);
                 if (lhs.getDescr() != null && lhs.getDescr() instanceof ConditionalElementDescr) {
-                    ConditionalElementDescr root = (ConditionalElementDescr) lhs.getDescr();
+                    ConditionalElementDescr root = lhs.getDescr();
                     BaseDescr[] descrs = root.getDescrs().toArray(new BaseDescr[root.getDescrs().size()]);
                     root.getDescrs().clear();
                     for (int i = 0; i < descrs.length; i++) {
                         root.addOrMerge(descrs[i]);
                     }
                 }
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
             }
         } finally {
             helper.end(CEDescrBuilder.class,
@@ -2165,22 +2299,25 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 match(input,
                         DRL6Lexer.ID,
                         DroolsSoftKeywords.OR,
                         null,
                         DroolsEditorType.KEYWORD);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 while (input.LA(1) == DRL6Lexer.AT) {
                     // annotation*
                     annotation(or);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
 
                 if (state.backtracking == 0) {
@@ -2189,8 +2326,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 while (input.LA(1) != DRL6Lexer.RIGHT_PAREN) {
                     lhsAnd(or,
                             allowOr);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
 
                 match(input,
@@ -2198,8 +2336,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             } finally {
                 if (state.backtracking == 0) {
                     helper.end(CEDescrBuilder.class,
@@ -2221,8 +2360,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             try {
                 lhsAnd(or,
                         allowOr);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 if (allowOr &&
                         (helper.validateIdentifierKey(DroolsSoftKeywords.OR)
@@ -2243,14 +2383,16 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                                     null,
                                     DroolsEditorType.KEYWORD);
                         }
-                        if (state.failed)
+                        if (state.failed) {
                             return null;
+                        }
 
                         while (input.LA(1) == DRL6Lexer.AT) {
                             // annotation*
                             annotation(or);
-                            if (state.failed)
+                            if (state.failed) {
                                 return null;
+                            }
                         }
 
                         if (state.backtracking == 0) {
@@ -2259,8 +2401,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
                         lhsAnd(or,
                                 allowOr);
-                        if (state.failed)
+                        if (state.failed) {
                             return null;
+                        }
                     }
                 } else if (allowOr) {
                     if (state.backtracking == 0) {
@@ -2309,22 +2452,25 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 match(input,
                         DRL6Lexer.ID,
                         DroolsSoftKeywords.AND,
                         null,
                         DroolsEditorType.KEYWORD);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 while (input.LA(1) == DRL6Lexer.AT) {
                     // annotation*
                     annotation(and);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
 
                 if (state.backtracking == 0) {
@@ -2333,8 +2479,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 while (input.LA(1) != DRL6Lexer.RIGHT_PAREN) {
                     lhsUnary(and,
                             allowOr);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
 
                 match(input,
@@ -2342,8 +2489,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             } finally {
                 if (state.backtracking == 0) {
                     helper.end(CEDescrBuilder.class,
@@ -2365,8 +2513,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             try {
                 lhsUnary(and,
                         allowOr);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 if (helper.validateIdentifierKey(DroolsSoftKeywords.AND) ||
                         input.LA(1) == DRL6Lexer.DOUBLE_AMPER) {
@@ -2385,14 +2534,16 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                                     null,
                                     DroolsEditorType.KEYWORD);
                         }
-                        if (state.failed)
+                        if (state.failed) {
                             return null;
+                        }
 
                         while (input.LA(1) == DRL6Lexer.AT) {
                             // annotation*
                             annotation(and);
-                            if (state.failed)
+                            if (state.failed) {
                                 return null;
+                            }
                         }
 
                         if (state.backtracking == 0) {
@@ -2400,8 +2551,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         }
                         lhsUnary(and,
                                 allowOr);
-                        if (state.failed)
+                        if (state.failed) {
                             return null;
+                        }
                     }
                 } else {
                     if (state.backtracking == 0 && and.getDescr().getDescrs().size() < 2) {
@@ -2455,8 +2607,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             }
         } else if (helper.validateIdentifierKey(DroolsSoftKeywords.EVAL)) {
             result = lhsEval(ce);
-            for (BaseDescr i = consequenceInvocation(ce); i != null; i = consequenceInvocation(ce))
+            for (BaseDescr i = consequenceInvocation(ce); i != null; i = consequenceInvocation(ce)) {
                 ;
+            }
         } else if (helper.validateIdentifierKey(DroolsSoftKeywords.FORALL)) {
             result = lhsForall(ce);
         } else if (helper.validateIdentifierKey(DroolsSoftKeywords.ACCUMULATE) || helper.validateIdentifierKey(DroolsSoftKeywords.ACC)) {
@@ -2473,8 +2626,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
         } else if (input.LA(1) == DRL6Lexer.ID || input.LA(1) == DRL6Lexer.QUESTION || input.LA(1) == DRL6Lexer.DIV) {
             result = lhsPatternBind(ce,
                     allowOr);
-            for (BaseDescr i = consequenceInvocation(ce); i != null; i = consequenceInvocation(ce))
+            for (BaseDescr i = consequenceInvocation(ce); i != null; i = consequenceInvocation(ce)) {
                 ;
+            }
         } else {
             failMismatchedTokenException();
         }
@@ -2484,8 +2638,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
         }
 
         return result;
@@ -2525,19 +2680,23 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.IF,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             EvalDescrBuilder<?> eval = conditionalBranch.condition();
-            if (!parseEvalExpression(eval))
+            if (!parseEvalExpression(eval)) {
                 return null;
+            }
 
             if (helper.validateIdentifierKey(DroolsSoftKeywords.DO)) {
-                if (namedConsequence(null, conditionalBranch.consequence()) == null)
+                if (namedConsequence(null, conditionalBranch.consequence()) == null) {
                     return null;
+                }
             } else if (helper.validateIdentifierKey(DroolsSoftKeywords.BREAK)) {
-                if (breakingNamedConsequence(null, conditionalBranch.consequence()) == null)
+                if (breakingNamedConsequence(null, conditionalBranch.consequence()) == null) {
                     return null;
+                }
             } else {
                 return null;
             }
@@ -2548,19 +2707,23 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         DroolsSoftKeywords.ELSE,
                         null,
                         DroolsEditorType.KEYWORD);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 ConditionalBranchDescrBuilder<?> elseBranch = conditionalBranch.otherwise();
                 if (helper.validateIdentifierKey(DroolsSoftKeywords.DO)) {
-                    if (namedConsequence(null, elseBranch.consequence()) == null)
+                    if (namedConsequence(null, elseBranch.consequence()) == null) {
                         return null;
+                    }
                 } else if (helper.validateIdentifierKey(DroolsSoftKeywords.BREAK)) {
-                    if (breakingNamedConsequence(null, elseBranch.consequence()) == null)
+                    if (breakingNamedConsequence(null, elseBranch.consequence()) == null) {
                         return null;
+                    }
                 } else if (helper.validateIdentifierKey(DroolsSoftKeywords.IF)) {
-                    if (conditionalBranch(null, elseBranch) == null)
+                    if (conditionalBranch(null, elseBranch) == null) {
                         return null;
+                    }
                 } else {
                     return null;
                 }
@@ -2588,24 +2751,27 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.DO,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             match(input,
                     DRL6Lexer.LEFT_SQUARE,
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             Token label = match(input,
                     DRL6Lexer.ID,
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             namedConsequence.name(label.getText());
 
@@ -2614,8 +2780,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
         } finally {
             helper.end(NamedConsequenceDescrBuilder.class,
                     namedConsequence);
@@ -2639,24 +2806,27 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.BREAK,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             match(input,
                     DRL6Lexer.LEFT_SQUARE,
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             Token label = match(input,
                     DRL6Lexer.ID,
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             namedConsequence.name(label.getText());
             namedConsequence.breaking(true);
@@ -2666,8 +2836,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
         } finally {
             helper.end(NamedConsequenceDescrBuilder.class,
@@ -2703,8 +2874,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.EXISTS,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             if (state.backtracking == 0) {
                 helper.emit(Location.LOCATION_LHS_BEGIN_OF_CONDITION_EXISTS);
@@ -2721,14 +2893,16 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
 
                 lhsOr(exists,
                         allowOr);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 if (!prefixed) {
                     match(input,
@@ -2736,15 +2910,17 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
             } else {
 
                 lhsPatternBind(exists,
                         true);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
 
         } finally {
@@ -2784,8 +2960,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.NOT,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             if (state.backtracking == 0) {
                 helper.emit(Location.LOCATION_LHS_BEGIN_OF_CONDITION_NOT);
@@ -2802,8 +2979,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
                 if (state.backtracking == 0 && input.LA(1) != DRL6Lexer.EOF) {
                     helper.emit(Location.LOCATION_LHS_BEGIN_OF_CONDITION);
@@ -2811,8 +2989,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
                 lhsOr(not,
                         allowOr);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 if (!prefixed) {
                     match(input,
@@ -2820,15 +2999,17 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
             } else if (input.LA(1) != DRL6Lexer.EOF) {
 
                 lhsPatternBind(not,
                         true);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             }
 
         } finally {
@@ -2858,22 +3039,25 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.FORALL,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             match(input,
                     DRL6Lexer.LEFT_PAREN,
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
             do {
                 lhsPatternBind(forall,
                         false);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 if (input.LA(1) == DRL6Lexer.COMMA) {
                     match(input,
@@ -2881,8 +3065,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
             } while (input.LA(1) != DRL6Lexer.EOF && input.LA(1) != DRL6Lexer.RIGHT_PAREN);
 
@@ -2891,8 +3076,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
         } finally {
             helper.end(ForallDescrBuilder.class,
                     forall);
@@ -2921,11 +3107,13 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.EVAL,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
 
-            if (!parseEvalExpression(eval))
+            if (!parseEvalExpression(eval)) {
                 return null;
+            }
 
         } catch (RecognitionException e) {
             throw e;
@@ -2943,8 +3131,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 DroolsEditorType.SYMBOL);
-        if (state.failed)
+        if (state.failed) {
             return false;
+        }
 
         if (state.backtracking == 0) {
             helper.emit(Location.LOCATION_LHS_INSIDE_EVAL);
@@ -2978,8 +3167,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 DroolsEditorType.SYMBOL);
-        if (state.failed)
+        if (state.failed) {
             return false;
+        }
 
         helper.emit(Location.LOCATION_LHS_BEGIN_OF_CONDITION);
         return true;
@@ -2999,24 +3189,27 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 DroolsEditorType.SYMBOL);
-        if (state.failed)
+        if (state.failed) {
             return null;
+        }
 
         if (state.backtracking == 0 && input.LA(1) != DRL6Lexer.EOF) {
             helper.emit(Location.LOCATION_LHS_BEGIN_OF_CONDITION);
         }
         BaseDescr descr = lhsOr(ce,
                 allowOr);
-        if (state.failed)
+        if (state.failed) {
             return null;
+        }
 
         match(input,
                 DRL6Lexer.RIGHT_PAREN,
                 null,
                 null,
                 DroolsEditorType.SYMBOL);
-        if (state.failed)
+        if (state.failed) {
             return null;
+        }
 
         return descr;
     }
@@ -3049,12 +3242,14 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
         boolean isUnification = false;
         if (input.LA(1) == DRL6Lexer.ID && input.LA(2) == DRL6Lexer.COLON && !helper.validateCEKeyword(1)) {
             label = label(DroolsEditorType.IDENTIFIER_PATTERN);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
         } else if (input.LA(1) == DRL6Lexer.ID && input.LA(2) == DRL6Lexer.UNIFY && !helper.validateCEKeyword(1)) {
             label = unif(DroolsEditorType.IDENTIFIER_PATTERN);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
             isUnification = true;
         }
 
@@ -3065,8 +3260,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 if (helper.validateCEKeyword(1)) {
                     failMismatchedTokenException();
@@ -3076,8 +3272,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 lhsPattern(pattern,
                         label,
                         isUnification);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 if (allowOr && helper.validateIdentifierKey(DroolsSoftKeywords.OR) && ce instanceof CEDescrBuilder) {
                     if (state.backtracking == 0) {
@@ -3106,8 +3303,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                                 DroolsSoftKeywords.OR,
                                 null,
                                 DroolsEditorType.KEYWORD);
-                        if (state.failed)
+                        if (state.failed) {
                             return null;
+                        }
 
                         pattern = helper.start(or,
                                 PatternDescrBuilder.class,
@@ -3116,8 +3314,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         lhsPattern(pattern,
                                 label,
                                 isUnification);
-                        if (state.failed)
+                        if (state.failed) {
                             return null;
+                        }
 
                         helper.end(PatternDescrBuilder.class,
                                 pattern);
@@ -3129,8 +3328,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
             } finally {
                 if (or != null) {
@@ -3147,8 +3347,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 lhsPattern(pattern,
                         label,
                         isUnification);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
             } finally {
                 helper.end(PatternDescrBuilder.class,
@@ -3205,8 +3406,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             DroolsEditorType.KEYWORD);
                 }
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 if (state.backtracking == 0 && input.LA(1) != DRL6Lexer.EOF) {
                     helper.emit(Location.LOCATION_LHS_FROM_ACCUMULATE);
@@ -3216,8 +3418,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 CEDescrBuilder<?, AndDescr> source = accumulate.source();
                 try {
@@ -3226,11 +3429,12 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null);
                     lhsAnd(source,
                             true);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
 
                     if (source.getDescr() != null && source.getDescr() instanceof ConditionalElementDescr) {
-                        ConditionalElementDescr root = (ConditionalElementDescr) source.getDescr();
+                        ConditionalElementDescr root = source.getDescr();
                         BaseDescr[] descrs = root.getDescrs().toArray(new BaseDescr[root.getDescrs().size()]);
                         root.getDescrs().clear();
                         for (int i = 0; i < descrs.length; i++) {
@@ -3248,8 +3452,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 } else if (input.LA(-1) != DRL6Lexer.SEMICOLON) {
                     // lhsUnary will consume an optional SEMICOLON, so we need to check if it was consumed already
                     // or if we must fail consuming it now
@@ -3258,14 +3463,16 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
 
                 // accumulate functions
                 accumulateFunctionBinding(accumulate);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 while (input.LA(1) == DRL6Lexer.COMMA) {
                     match(input,
@@ -3273,12 +3480,14 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
 
                     accumulateFunctionBinding(accumulate);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
                 }
 
                 if (input.LA(1) == DRL6Lexer.SEMICOLON) {
@@ -3287,8 +3496,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return null;
+                    }
 
                     constraints(pattern);
                 }
@@ -3297,8 +3507,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
             } finally {
                 helper.end(AccumulateDescrBuilder.class,
                         accumulate);
@@ -3317,8 +3528,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
         }
         return result;
     }
@@ -3363,8 +3575,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
         if (input.LA(1) == DRL6Lexer.DIV) {
             int first = input.index();
             exprParser.xpathPrimary();
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
             int last = input.LT(-1).getTokenIndex();
             String expr = toExpression("", first, last);
             pattern.constraint(expr);
@@ -3381,14 +3594,16 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
             query = true;
         }
 
         String type = this.qualifiedIdentifier();
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         if (state.backtracking == 0) {
             pattern.type(type);
@@ -3403,8 +3618,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 DroolsEditorType.SYMBOL);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         if (input.LA(1) != DRL6Lexer.RIGHT_PAREN && speculatePositionalConstraints()) {
             positionalConstraints(pattern);
@@ -3419,14 +3635,16 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 DroolsEditorType.SYMBOL);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         while (input.LA(1) == DRL6Lexer.AT) {
             // annotation*
             annotation(pattern);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
         }
 
         if (helper.validateIdentifierKey(DroolsSoftKeywords.OVER)) {
@@ -3445,7 +3663,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * label := ID COLON
-     * 
+     *
      * @return
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -3455,23 +3673,25 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 edType);
-        if (state.failed)
+        if (state.failed) {
             return null;
+        }
 
         match(input,
                 DRL6Lexer.COLON,
                 null,
                 null,
                 DroolsEditorType.SYMBOL);
-        if (state.failed)
+        if (state.failed) {
             return null;
+        }
 
         return label.getText();
     }
 
     /**
      * unif := ID UNIFY
-     * 
+     *
      * @return
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -3481,16 +3701,18 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 edType);
-        if (state.failed)
+        if (state.failed) {
             return null;
+        }
 
         match(input,
                 DRL6Lexer.UNIFY,
                 null,
                 null,
                 DroolsEditorType.SYMBOL);
-        if (state.failed)
+        if (state.failed) {
             return null;
+        }
 
         return label.getText();
     }
@@ -3513,7 +3735,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * positionalConstraints := constraint (COMMA constraint)* SEMICOLON
-     * 
+     *
      * @param pattern
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -3521,8 +3743,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
         constraint(pattern,
                 true,
                 "");
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         while (input.LA(1) == DRL6Lexer.COMMA) {
             match(input,
@@ -3530,14 +3753,16 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             constraint(pattern,
                     true,
                     "");
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
         }
 
         match(input,
@@ -3545,13 +3770,14 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 DroolsEditorType.SYMBOL);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
     }
 
     /**
      * constraints := constraint (COMMA constraint)*
-     * 
+     *
      * @param pattern
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -3563,8 +3789,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
         constraint(pattern,
                 false,
                 prefix);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         while (input.LA(1) == DRL6Lexer.COMMA) {
             match(input,
@@ -3573,20 +3800,22 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     DroolsEditorType.SYMBOL);
 
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             constraint(pattern,
                     false,
                     prefix);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
         }
     }
 
     /**
      * constraint := nestedConstraint | conditionalOrExpression
-     * 
+     *
      * @param pattern
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -3629,8 +3858,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             }
         }
 
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         if (state.backtracking == 0 && input.index() > first) {
             // expression consumed something
@@ -3696,7 +3926,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * nestedConstraint := ( ID ( DOT | HASH ) )* ID DOT LEFT_PAREN constraints RIGHT_PAREN
-     * 
+     *
      * @param pattern
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -3802,18 +4032,21 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 DroolsSoftKeywords.OVER,
                 null,
                 DroolsEditorType.KEYWORD);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         filterDef(pattern);
         if (state.failed)
+         {
             return;
         //        }
+        }
     }
 
     /**
      * filterDef := label ID LEFT_PAREN parameters RIGHT_PAREN
-     * 
+     *
      * @param pattern
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -3823,16 +4056,18 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null);
         try {
             String bName = label(DroolsEditorType.IDENTIFIER_PATTERN);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             Token subtype = match(input,
                     DRL6Lexer.ID,
                     null,
                     null,
                     DroolsEditorType.IDENTIFIER_PATTERN);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             if (state.backtracking == 0) {
                 behavior.type(bName,
@@ -3840,8 +4075,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
             }
 
             List<String> parameters = parameters();
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             if (state.backtracking == 0) {
                 behavior.parameters(parameters);
@@ -3859,7 +4095,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
      * | fromEntryPoint
      * | fromWindow
      * | fromExpression )
-     * 
+     *
      * @param pattern
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -3869,8 +4105,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 DroolsSoftKeywords.FROM,
                 null,
                 DroolsEditorType.KEYWORD);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         if (state.backtracking == 0) {
             helper.emit(Location.LOCATION_LHS_FROM);
@@ -3887,8 +4124,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 helper.validateLT(3,
                         DroolsSoftKeywords.POINT)) {
             fromEntryPoint(pattern);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
         } else if (helper.validateIdentifierKey(DroolsSoftKeywords.WINDOW)) {
             fromWindow(pattern);
         } else {
@@ -3897,8 +4135,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 helper.emit(Location.LOCATION_LHS_FROM);
                 throw new RecognitionException();
             }
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
         }
         if (input.LA(1) == DRL6Lexer.SEMICOLON) {
             match(input,
@@ -3906,8 +4145,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
         }
     }
 
@@ -3919,8 +4159,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
      */
     private void fromExpression(PatternDescrBuilder<?> pattern) throws RecognitionException {
         String expr = conditionalOrExpression();
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         if (state.backtracking == 0) {
             pattern.from().expression(expr);
@@ -3944,24 +4185,27 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 DroolsSoftKeywords.ENTRY,
                 null,
                 DroolsEditorType.KEYWORD);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         match(input,
                 DRL6Lexer.MINUS,
                 null,
                 null,
                 DroolsEditorType.KEYWORD);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         match(input,
                 DRL6Lexer.ID,
                 DroolsSoftKeywords.POINT,
                 null,
                 DroolsEditorType.KEYWORD);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         ep = stringId();
 
@@ -3987,16 +4231,18 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 DroolsSoftKeywords.WINDOW,
                 null,
                 DroolsEditorType.KEYWORD);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         Token id = match(input,
                 DRL6Lexer.ID,
                 null,
                 null,
                 DroolsEditorType.IDENTIFIER);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
         window = id.getText();
 
         if (state.backtracking == 0) {
@@ -4023,8 +4269,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.COLLECT,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
             if (state.backtracking == 0 && input.LA(1) != DRL6Lexer.EOF) {
                 helper.emit(Location.LOCATION_LHS_FROM_COLLECT);
             }
@@ -4034,21 +4281,24 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             lhsPatternBind(collect,
                     false);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             match(input,
                     DRL6Lexer.RIGHT_PAREN,
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
         } finally {
             helper.end(CollectDescrBuilder.class,
                     collect);
@@ -4087,8 +4337,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         DroolsEditorType.KEYWORD);
             }
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             if (state.backtracking == 0 && input.LA(1) != DRL6Lexer.EOF) {
                 helper.emit(Location.LOCATION_LHS_FROM_ACCUMULATE);
@@ -4098,8 +4349,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             CEDescrBuilder<?, AndDescr> source = accumulate.source();
             try {
@@ -4108,11 +4360,12 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null);
                 lhsAnd(source,
                         false);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
 
                 if (source.getDescr() != null && source.getDescr() instanceof ConditionalElementDescr) {
-                    ConditionalElementDescr root = (ConditionalElementDescr) source.getDescr();
+                    ConditionalElementDescr root = source.getDescr();
                     BaseDescr[] descrs = root.getDescrs().toArray(new BaseDescr[root.getDescrs().size()]);
                     root.getDescrs().clear();
                     for (int i = 0; i < descrs.length; i++) {
@@ -4130,16 +4383,18 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
             } else if (input.LA(-1) != DRL6Lexer.SEMICOLON) {
                 match(input,
                         DRL6Lexer.SEMICOLON,
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
             }
 
             if (helper.validateIdentifierKey(DroolsSoftKeywords.INIT)) {
@@ -4151,8 +4406,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         DroolsSoftKeywords.INIT,
                         null,
                         DroolsEditorType.KEYWORD);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
                 if (state.backtracking == 0 && input.LA(1) != DRL6Lexer.EOF) {
                     helper.emit(Location.LOCATION_LHS_FROM_ACCUMULATE_INIT);
                 }
@@ -4160,10 +4416,12 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 String init = chunk(DRL6Lexer.LEFT_PAREN,
                         DRL6Lexer.RIGHT_PAREN,
                         Location.LOCATION_LHS_FROM_ACCUMULATE_INIT_INSIDE);
-                if (state.failed)
+                if (state.failed) {
                     return;
-                if (state.backtracking == 0)
+                }
+                if (state.backtracking == 0) {
                     accumulate.init(init);
+                }
 
                 if (input.LA(1) == DRL6Lexer.COMMA) {
                     match(input,
@@ -4171,8 +4429,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return;
+                    }
                 }
 
                 // actionBlock
@@ -4181,8 +4440,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         DroolsSoftKeywords.ACTION,
                         null,
                         DroolsEditorType.KEYWORD);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
                 if (state.backtracking == 0 && input.LA(1) != DRL6Lexer.EOF) {
                     helper.emit(Location.LOCATION_LHS_FROM_ACCUMULATE_ACTION);
                 }
@@ -4190,10 +4450,12 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 String action = chunk(DRL6Lexer.LEFT_PAREN,
                         DRL6Lexer.RIGHT_PAREN,
                         Location.LOCATION_LHS_FROM_ACCUMULATE_ACTION_INSIDE);
-                if (state.failed)
+                if (state.failed) {
                     return;
-                if (state.backtracking == 0)
+                }
+                if (state.backtracking == 0) {
                     accumulate.action(action);
+                }
 
                 if (input.LA(1) == DRL6Lexer.COMMA) {
                     match(input,
@@ -4201,8 +4463,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return;
+                    }
                 }
 
                 // reverseBlock
@@ -4212,8 +4475,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             DroolsSoftKeywords.REVERSE,
                             null,
                             DroolsEditorType.KEYWORD);
-                    if (state.failed)
+                    if (state.failed) {
                         return;
+                    }
                     if (state.backtracking == 0 && input.LA(1) != DRL6Lexer.EOF) {
                         helper.emit(Location.LOCATION_LHS_FROM_ACCUMULATE_REVERSE);
                     }
@@ -4221,10 +4485,12 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     String reverse = chunk(DRL6Lexer.LEFT_PAREN,
                             DRL6Lexer.RIGHT_PAREN,
                             Location.LOCATION_LHS_FROM_ACCUMULATE_REVERSE_INSIDE);
-                    if (state.failed)
+                    if (state.failed) {
                         return;
-                    if (state.backtracking == 0)
+                    }
+                    if (state.backtracking == 0) {
                         accumulate.reverse(reverse);
+                    }
 
                     if (input.LA(1) == DRL6Lexer.COMMA) {
                         match(input,
@@ -4232,8 +4498,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                                 null,
                                 null,
                                 DroolsEditorType.SYMBOL);
-                        if (state.failed)
+                        if (state.failed) {
                             return;
+                        }
                     }
                 }
 
@@ -4243,8 +4510,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         DroolsSoftKeywords.RESULT,
                         null,
                         DroolsEditorType.KEYWORD);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
 
                 if (state.backtracking == 0 && input.LA(1) != DRL6Lexer.EOF) {
                     helper.emit(Location.LOCATION_LHS_FROM_ACCUMULATE_RESULT);
@@ -4253,17 +4521,20 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 String result = chunk(DRL6Lexer.LEFT_PAREN,
                         DRL6Lexer.RIGHT_PAREN,
                         Location.LOCATION_LHS_FROM_ACCUMULATE_RESULT_INSIDE);
-                if (state.failed)
+                if (state.failed) {
                     return;
-                if (state.backtracking == 0)
+                }
+                if (state.backtracking == 0) {
                     accumulate.result(result);
+                }
             } else {
                 // accumulate functions
                 accumulateFunction(accumulate,
                         false,
                         null);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
             }
 
             match(input,
@@ -4271,8 +4542,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
         } finally {
             helper.end(AccumulateDescrBuilder.class,
                     accumulate);
@@ -4284,7 +4556,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * accumulateFunctionBinding := label accumulateFunction
-     * 
+     *
      * @param accumulate
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -4304,7 +4576,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * accumulateFunction := label? ID parameters
-     * 
+     *
      * @param accumulate
      * @throws org.antlr.runtime.RecognitionException
      */
@@ -4316,12 +4588,14 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 DroolsEditorType.KEYWORD);
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         List<String> parameters = parameters();
-        if (state.failed)
+        if (state.failed) {
             return;
+        }
 
         if (state.backtracking == 0) {
             accumulate.function(function.getText(),
@@ -4343,14 +4617,16 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 DroolsEditorType.SYMBOL);
-        if (state.failed)
+        if (state.failed) {
             return null;
+        }
 
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
         if (input.LA(1) != DRL6Lexer.EOF && input.LA(1) != DRL6Lexer.RIGHT_PAREN) {
             String param = conditionalExpression();
-            if (state.failed)
+            if (state.failed) {
                 return null;
+            }
             parameters.add(param);
 
             while (input.LA(1) == DRL6Lexer.COMMA) {
@@ -4359,12 +4635,14 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
 
                 param = conditionalExpression();
-                if (state.failed)
+                if (state.failed) {
                     return null;
+                }
                 parameters.add(param);
             }
         }
@@ -4374,14 +4652,15 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                 null,
                 null,
                 DroolsEditorType.SYMBOL);
-        if (state.failed)
+        if (state.failed) {
             return null;
+        }
         return parameters;
     }
 
     /**
      * rhs := defaultConsequence namedConsequence* (~END)*
-     * 
+     *
      * @param rule
      */
     void rhs(RuleDescrBuilder rule) {
@@ -4393,7 +4672,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * defaultConsequence := THEN chunk
-     * 
+     *
      * @param rule
      */
     public void defaultConsequence(RuleDescrBuilder rule) {
@@ -4404,8 +4683,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     DroolsSoftKeywords.THEN,
                     null,
                     DroolsEditorType.KEYWORD);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             if (state.backtracking == 0) {
                 rule.getDescr().setConsequenceLocation(t.getLine(),
@@ -4428,7 +4708,7 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * namedConsequence := THEN LEFT_SQUARE ID RIGHT_SQUARE chunk
-     * 
+     *
      * @param rule
      */
     public void namedConsequence(RuleDescrBuilder rule) {
@@ -4454,8 +4734,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return;
+            }
 
             String name = label.getText();
             String chunk = getConsequenceCode(first);
@@ -4539,13 +4820,15 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         null,
                         DroolsEditorType.SYMBOL);
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
 
                 // identifier
                 String fqn = qualifiedIdentifier();
-                if (state.failed)
+                if (state.failed) {
                     return;
+                }
 
                 if (state.backtracking == 0) {
                     annotation = adb.newAnnotation(fqn);
@@ -4558,8 +4841,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         String value = chunk(DRL6Lexer.LEFT_PAREN,
                                 DRL6Lexer.RIGHT_PAREN,
                                 -1).trim();
-                        if (state.failed)
+                        if (state.failed) {
                             return;
+                        }
                         if (state.backtracking == 0) {
                             if (annotation != null) {
                                 annotation.value(value);
@@ -4627,13 +4911,15 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     new int[] { DRL6Lexer.DOT, DRL6Lexer.LESS },
                     DroolsEditorType.IDENTIFIER);
-            if (state.failed)
+            if (state.failed) {
                 return type;
+            }
 
             if (input.LA(1) == DRL6Lexer.LESS) {
                 typeArguments();
-                if (state.failed)
+                if (state.failed) {
                     return type;
+                }
             }
 
             while (input.LA(1) == DRL6Lexer.DOT && input.LA(2) == DRL6Lexer.ID) {
@@ -4642,20 +4928,23 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         new int[] { DRL6Lexer.ID },
                         DroolsEditorType.IDENTIFIER);
-                if (state.failed)
+                if (state.failed) {
                     return type;
+                }
                 match(input,
                         DRL6Lexer.ID,
                         null,
                         new int[] { DRL6Lexer.DOT },
                         DroolsEditorType.IDENTIFIER);
-                if (state.failed)
+                if (state.failed) {
                     return type;
+                }
 
                 if (input.LA(1) == DRL6Lexer.LESS) {
                     typeArguments();
-                    if (state.failed)
+                    if (state.failed) {
                         return type;
+                    }
                 }
             }
 
@@ -4665,15 +4954,17 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         new int[] { DRL6Lexer.RIGHT_SQUARE },
                         DroolsEditorType.IDENTIFIER);
-                if (state.failed)
+                if (state.failed) {
                     return type;
+                }
                 match(input,
                         DRL6Lexer.RIGHT_SQUARE,
                         null,
                         null,
                         DroolsEditorType.IDENTIFIER);
-                if (state.failed)
+                if (state.failed) {
                     return type;
+                }
             }
             last = input.LT(-1).getTokenIndex();
             type = input.toString(first,
@@ -4703,12 +4994,14 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     new int[] { DRL6Lexer.QUESTION, DRL6Lexer.ID },
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return typeArguments;
+            }
 
             typeArgument();
-            if (state.failed)
+            if (state.failed) {
                 return typeArguments;
+            }
 
             while (input.LA(1) == DRL6Lexer.COMMA) {
                 token = match(input,
@@ -4716,12 +5009,14 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         new int[] { DRL6Lexer.QUESTION, DRL6Lexer.ID },
                         DroolsEditorType.IDENTIFIER);
-                if (state.failed)
+                if (state.failed) {
                     return typeArguments;
+                }
 
                 typeArgument();
-                if (state.failed)
+                if (state.failed) {
                     return typeArguments;
+                }
             }
 
             token = match(input,
@@ -4729,8 +5024,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return typeArguments;
+            }
             typeArguments = input.toString(first,
                     token.getTokenIndex());
 
@@ -4762,8 +5058,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                             null,
                             null,
                             DroolsEditorType.SYMBOL);
-                    if (state.failed)
+                    if (state.failed) {
                         return typeArgument;
+                    }
 
                     if (helper.validateIdentifierKey(DroolsSoftKeywords.EXTENDS)) {
                         match(input,
@@ -4771,29 +5068,34 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                                 DroolsSoftKeywords.EXTENDS,
                                 null,
                                 DroolsEditorType.SYMBOL);
-                        if (state.failed)
+                        if (state.failed) {
                             return typeArgument;
+                        }
 
                         type();
-                        if (state.failed)
+                        if (state.failed) {
                             return typeArgument;
+                        }
                     } else if (helper.validateIdentifierKey(DroolsSoftKeywords.SUPER)) {
                         match(input,
                                 DRL6Lexer.ID,
                                 DroolsSoftKeywords.SUPER,
                                 null,
                                 DroolsEditorType.SYMBOL);
-                        if (state.failed)
+                        if (state.failed) {
                             return typeArgument;
+                        }
                         type();
-                        if (state.failed)
+                        if (state.failed) {
                             return typeArgument;
+                        }
                     }
                     break;
                 case DRL6Lexer.ID:
                     type();
-                    if (state.failed)
+                    if (state.failed) {
                         return typeArgument;
+                    }
                     break;
                 default:
                     // TODO: raise error
@@ -4823,8 +5125,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     new int[] { DRL6Lexer.DOT },
                     DroolsEditorType.IDENTIFIER);
-            if (state.failed)
+            if (state.failed) {
                 return qi;
+            }
 
             Token last = first;
             while (input.LA(1) == DRL6Lexer.DOT && input.LA(2) == DRL6Lexer.ID) {
@@ -4833,15 +5136,17 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                         null,
                         new int[] { DRL6Lexer.ID },
                         DroolsEditorType.IDENTIFIER);
-                if (state.failed)
+                if (state.failed) {
                     return qi;
+                }
                 last = match(input,
                         DRL6Lexer.ID,
                         null,
                         new int[] { DRL6Lexer.DOT },
                         DroolsEditorType.IDENTIFIER);
-                if (state.failed)
+                if (state.failed) {
                     return qi;
+                }
             }
             qi = input.toString(first,
                     last);
@@ -4862,8 +5167,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
     public String conditionalExpression() throws RecognitionException {
         int first = input.index();
         exprParser.conditionalExpression();
-        if (state.failed)
+        if (state.failed) {
             return null;
+        }
 
         if (state.backtracking == 0 && input.index() > first) {
             // expression consumed something
@@ -4883,8 +5189,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
     public String conditionalOrExpression() throws RecognitionException {
         int first = input.index();
         exprParser.conditionalOrExpression();
-        if (state.failed)
+        if (state.failed) {
             return null;
+        }
 
         if (state.backtracking == 0 && input.index() > first) {
             // expression consumed something
@@ -4897,12 +5204,13 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
 
     /**
      * Matches a chunk started by the leftDelimiter and ended by the rightDelimiter.
-     * 
+     *
      * @param leftDelimiter
      * @param rightDelimiter
      * @param location
      * @return the matched chunk without the delimiters
      */
+    @Override
     public String chunk(final int leftDelimiter,
             final int rightDelimiter,
             final int location) {
@@ -4914,8 +5222,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return chunk;
+            }
             if (state.backtracking == 0 && location >= 0) {
                 helper.emit(location);
             }
@@ -4941,8 +5250,9 @@ public class DRL6Parser extends AbstractDRLParser implements DRLParser {
                     null,
                     null,
                     DroolsEditorType.SYMBOL);
-            if (state.failed)
+            if (state.failed) {
                 return chunk;
+            }
 
         } catch (RecognitionException re) {
             reportError(re);

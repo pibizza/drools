@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -30,11 +30,13 @@ public class NamedConsequenceDescrBuilderImpl<P extends DescrBuilder<?, ?>>
         super(parent, new NamedConsequenceDescr());
     }
 
+    @Override
     public NamedConsequenceDescrBuilder<P> name(String name) {
         getDescr().setName(name);
         return this;
     }
 
+    @Override
     public NamedConsequenceDescrBuilder<P> breaking(boolean breaking) {
         getDescr().setBreaking(breaking);
         return this;

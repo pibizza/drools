@@ -1,12 +1,12 @@
 /*
  * Copyright 2005 Red Hat, Inc. and/or its affiliates.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,8 +44,8 @@ public class QueryDescr extends RuleDescr {
 
     public void addParameter(String type, String variable) {
         if (parameterTypes == Collections.EMPTY_LIST) {
-            this.parameterTypes = new ArrayList<String>();
-            this.parameterNames = new ArrayList<String>();
+            this.parameterTypes = new ArrayList<>();
+            this.parameterNames = new ArrayList<>();
         }
         this.parameterTypes.add(type);
         this.parameterNames.add(variable);
@@ -59,14 +59,17 @@ public class QueryDescr extends RuleDescr {
         return this.parameterTypes.toArray(new String[this.parameterTypes.size()]);
     }
 
+    @Override
     public boolean isRule() {
         return false;
     }
 
+    @Override
     public boolean isQuery() {
         return true;
     }
 
+    @Override
     public String toString() {
         return "[Query name='" + getName() + "']";
     }

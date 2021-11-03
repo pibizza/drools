@@ -17,8 +17,8 @@
 package org.drools.compiler.lang.api.impl;
 
 import org.drools.compiler.lang.api.DescrBuilder;
-import org.drools.compiler.lang.api.PatternDescrBuilder;
 import org.drools.compiler.lang.api.ForallDescrBuilder;
+import org.drools.compiler.lang.api.PatternDescrBuilder;
 import org.drools.compiler.lang.descr.ForallDescr;
 
 /**
@@ -35,8 +35,9 @@ public class ForallDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends BaseDe
     /**
      * {@inheritDoc}
      */
+    @Override
     public PatternDescrBuilder<ForallDescrBuilder<P>> pattern(String type) {
-        PatternDescrBuilder<ForallDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<ForallDescrBuilder<P>>(this,
+        PatternDescrBuilder<ForallDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<>(this,
                 type);
         descr.addDescr(pattern.getDescr());
         return pattern;
@@ -45,12 +46,14 @@ public class ForallDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends BaseDe
     /**
      * {@inheritDoc}
      */
+    @Override
     public PatternDescrBuilder<ForallDescrBuilder<P>> pattern() {
-        PatternDescrBuilder<ForallDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<ForallDescrBuilder<P>>(this);
+        PatternDescrBuilder<ForallDescrBuilder<P>> pattern = new PatternDescrBuilderImpl<>(this);
         descr.addDescr(pattern.getDescr());
         return pattern;
     }
 
+    @Override
     public P end() {
         return parent;
     }

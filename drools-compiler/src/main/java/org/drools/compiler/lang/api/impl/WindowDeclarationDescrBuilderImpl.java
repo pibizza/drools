@@ -16,8 +16,8 @@
 
 package org.drools.compiler.lang.api.impl;
 
-import org.drools.compiler.lang.api.PackageDescrBuilder;
 import org.drools.compiler.lang.api.AnnotationDescrBuilder;
+import org.drools.compiler.lang.api.PackageDescrBuilder;
 import org.drools.compiler.lang.api.PatternDescrBuilder;
 import org.drools.compiler.lang.api.WindowDeclarationDescrBuilder;
 import org.drools.compiler.lang.descr.WindowDeclarationDescr;
@@ -31,27 +31,31 @@ public class WindowDeclarationDescrBuilderImpl extends BaseDescrBuilderImpl<Pack
                 new WindowDeclarationDescr());
     }
 
+    @Override
     public WindowDeclarationDescrBuilder name(String name) {
         descr.setName(name);
         return this;
     }
 
+    @Override
     public AnnotationDescrBuilder<WindowDeclarationDescrBuilder> newAnnotation(String name) {
-        AnnotationDescrBuilder<WindowDeclarationDescrBuilder> annotation = new AnnotationDescrBuilderImpl<WindowDeclarationDescrBuilder>(this,
+        AnnotationDescrBuilder<WindowDeclarationDescrBuilder> annotation = new AnnotationDescrBuilderImpl<>(this,
                 name);
         descr.addAnnotation(annotation.getDescr());
         return annotation;
     }
 
+    @Override
     public PatternDescrBuilder<WindowDeclarationDescrBuilder> pattern(String type) {
-        PatternDescrBuilder<WindowDeclarationDescrBuilder> pattern = new PatternDescrBuilderImpl<WindowDeclarationDescrBuilder>(this,
+        PatternDescrBuilder<WindowDeclarationDescrBuilder> pattern = new PatternDescrBuilderImpl<>(this,
                 type);
         descr.setPattern(pattern.getDescr());
         return pattern;
     }
 
+    @Override
     public PatternDescrBuilder<WindowDeclarationDescrBuilder> pattern() {
-        PatternDescrBuilder<WindowDeclarationDescrBuilder> pattern = new PatternDescrBuilderImpl<WindowDeclarationDescrBuilder>(this);
+        PatternDescrBuilder<WindowDeclarationDescrBuilder> pattern = new PatternDescrBuilderImpl<>(this);
         descr.setPattern(pattern.getDescr());
         return pattern;
     }

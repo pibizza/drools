@@ -16,14 +16,14 @@
 
 package org.drools.compiler.lang.descr;
 
-import org.drools.core.factmodel.traits.Trait;
-
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.drools.core.factmodel.traits.Trait;
 
 public class TypeDeclarationDescr
         extends AbstractClassTypeDeclarationDescr
@@ -61,18 +61,22 @@ public class TypeDeclarationDescr
         out.writeBoolean(trait);
     }
 
+    @Override
     public String toString() {
         return "TypeDeclaration[ " + this.getType().getFullName() + " ]";
     }
 
+    @Override
     public String getSuperTypeName() {
         return superTypes == null ? null : superTypes.get(0).getName();
     }
 
+    @Override
     public String getSuperTypeNamespace() {
         return superTypes == null ? null : superTypes.get(0).getNamespace();
     }
 
+    @Override
     public List<QualifiedName> getSuperTypes() {
         return superTypes != null ? superTypes : Collections.<QualifiedName> emptyList();
     }
@@ -83,13 +87,14 @@ public class TypeDeclarationDescr
 
     public void addSuperType(QualifiedName type) {
         if (superTypes == null) {
-            superTypes = new ArrayList<QualifiedName>();
+            superTypes = new ArrayList<>();
         }
         if (!this.superTypes.contains(type)) {
             this.superTypes.add(type);
         }
     }
 
+    @Override
     public int compareTo(TypeDeclarationDescr descr) {
         if (!this.getSuperTypes().isEmpty() && !descr.getSuperTypes().isEmpty()) {
             for (QualifiedName q : descr.getSuperTypes()) {

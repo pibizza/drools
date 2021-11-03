@@ -160,7 +160,7 @@ public class RuleBuilder {
                 if (annotationDefinition.getValues().size() == 1 && annotationDefinition.getValues().containsKey(AnnotationDescr.VALUE)) {
                     rule.addMetaAttribute(metaAttr, annotationDefinition.getPropertyValue(AnnotationDescr.VALUE));
                 } else {
-                    Map<String, Object> map = new HashMap<String, Object>(annotationDefinition.getValues().size());
+                    Map<String, Object> map = new HashMap<>(annotationDefinition.getValues().size());
                     for (String key : annotationDefinition.getValues().keySet()) {
                         map.put(key, annotationDefinition.getPropertyValue(key));
                     }

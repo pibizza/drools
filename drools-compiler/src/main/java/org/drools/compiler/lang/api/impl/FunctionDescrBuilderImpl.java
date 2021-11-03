@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -15,8 +15,8 @@
 
 package org.drools.compiler.lang.api.impl;
 
-import org.drools.compiler.lang.api.PackageDescrBuilder;
 import org.drools.compiler.lang.api.FunctionDescrBuilder;
+import org.drools.compiler.lang.api.PackageDescrBuilder;
 import org.drools.compiler.lang.descr.FunctionDescr;
 
 public class FunctionDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBuilder, FunctionDescr>
@@ -27,26 +27,31 @@ public class FunctionDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrB
         super(parent, new FunctionDescr());
     }
 
+    @Override
     public FunctionDescrBuilder namespace(String namespace) {
         descr.setNamespace(namespace);
         return this;
     }
 
+    @Override
     public FunctionDescrBuilder returnType(String type) {
         descr.setReturnType(type);
         return this;
     }
 
+    @Override
     public FunctionDescrBuilder name(String name) {
         descr.setName(name);
         return this;
     }
 
+    @Override
     public FunctionDescrBuilder body(String body) {
         descr.setBody(body);
         return this;
     }
 
+    @Override
     public FunctionDescrBuilder parameter(String type,
             String variable) {
         descr.addParameter(type,
@@ -54,6 +59,7 @@ public class FunctionDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrB
         return this;
     }
 
+    @Override
     public FunctionDescrBuilder dialect(String dialect) {
         descr.setDialect(dialect);
         return this;

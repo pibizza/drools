@@ -16,12 +16,12 @@
 
 package org.drools.compiler.lang.api.impl;
 
+import org.drools.compiler.lang.api.AnnotationDescrBuilder;
 import org.drools.compiler.lang.api.CEDescrBuilder;
 import org.drools.compiler.lang.api.PackageDescrBuilder;
-import org.drools.compiler.lang.descr.QueryDescr;
-import org.drools.compiler.lang.api.AnnotationDescrBuilder;
 import org.drools.compiler.lang.api.QueryDescrBuilder;
 import org.drools.compiler.lang.descr.AndDescr;
+import org.drools.compiler.lang.descr.QueryDescr;
 
 /**
  * A descr builder for queries
@@ -34,23 +34,27 @@ public class QueryDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBuil
         super(parent, new QueryDescr());
     }
 
+    @Override
     public AnnotationDescrBuilder<QueryDescrBuilder> newAnnotation(String name) {
-        AnnotationDescrBuilder<QueryDescrBuilder> annotation = new AnnotationDescrBuilderImpl<QueryDescrBuilder>(this, name);
+        AnnotationDescrBuilder<QueryDescrBuilder> annotation = new AnnotationDescrBuilderImpl<>(this, name);
         descr.addAnnotation(annotation.getDescr());
         return annotation;
     }
 
+    @Override
     public QueryDescrBuilder name(String name) {
         descr.setName(name);
         return this;
     }
 
+    @Override
     public CEDescrBuilder<QueryDescrBuilder, AndDescr> lhs() {
-        CEDescrBuilder<QueryDescrBuilder, AndDescr> ce = new CEDescrBuilderImpl<QueryDescrBuilder, AndDescr>(this, new AndDescr());
+        CEDescrBuilder<QueryDescrBuilder, AndDescr> ce = new CEDescrBuilderImpl<>(this, new AndDescr());
         descr.setLhs(ce.getDescr());
         return ce;
     }
 
+    @Override
     public QueryDescrBuilder parameter(String type,
             String variable) {
         descr.addParameter(type,

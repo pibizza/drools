@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -38,7 +38,7 @@ public class RuleCoverageListener implements AgendaEventListener {
 
     /**
      * Pass in the expected rules to fire.
-     * 
+     *
      * @param expectedRuleNames
      */
     public RuleCoverageListener(HashSet<String> expectedRuleNames) {
@@ -46,22 +46,28 @@ public class RuleCoverageListener implements AgendaEventListener {
         this.totalCount = expectedRuleNames.size();
     }
 
+    @Override
     public void matchCancelled(MatchCancelledEvent event) {
     }
 
+    @Override
     public void matchCreated(MatchCreatedEvent event) {
     }
 
+    @Override
     public void afterMatchFired(AfterMatchFiredEvent event) {
         rules.remove(event.getMatch().getRule().getName());
     }
 
+    @Override
     public void agendaGroupPopped(AgendaGroupPoppedEvent event) {
     }
 
+    @Override
     public void agendaGroupPushed(AgendaGroupPushedEvent event) {
     }
 
+    @Override
     public void beforeMatchFired(BeforeMatchFiredEvent event) {
     }
 
@@ -82,21 +88,25 @@ public class RuleCoverageListener implements AgendaEventListener {
         return (int) ((left / totalCount) * 100);
     }
 
+    @Override
     public void afterRuleFlowGroupActivated(RuleFlowGroupActivatedEvent event) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void afterRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent event) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void beforeRuleFlowGroupActivated(RuleFlowGroupActivatedEvent event) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void beforeRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent event) {
         // TODO Auto-generated method stub
 

@@ -20,13 +20,13 @@ import java.util.List;
 
 import org.drools.compiler.builder.InternalKnowledgeBuilder;
 import org.drools.compiler.compiler.PackageBuilderErrors;
-import org.drools.core.impl.KieBaseUpdate;
 import org.drools.core.base.ClassObjectType;
 import org.drools.core.common.InternalWorkingMemory;
 import org.drools.core.common.InternalWorkingMemoryEntryPoint;
 import org.drools.core.definitions.InternalKnowledgePackage;
 import org.drools.core.definitions.impl.KnowledgePackageImpl;
 import org.drools.core.definitions.rule.impl.RuleImpl;
+import org.drools.core.impl.KieBaseUpdate;
 import org.drools.core.reteoo.EntryPointNode;
 import org.drools.core.rule.DialectRuntimeData;
 import org.kie.api.builder.model.KieBaseModel;

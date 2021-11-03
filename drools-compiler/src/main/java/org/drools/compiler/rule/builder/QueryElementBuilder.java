@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -59,11 +59,13 @@ public class QueryElementBuilder
         return INSTANCE;
     }
 
+    @Override
     public RuleConditionElement build(RuleBuildContext context,
             BaseDescr descr) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public RuleConditionElement build(RuleBuildContext context,
             BaseDescr descr,
             Pattern prefixPattern) {
@@ -275,7 +277,7 @@ public class QueryElementBuilder
             }
         } else {
             // this is creating a new output binding
-            // we know it doesn't exist, as we already checked for left == var                    
+            // we know it doesn't exist, as we already checked for left == var
             pos = getPos(bind.getExpression(), params);
             if (pos < 0) {
                 // error this must be a binding on a slot

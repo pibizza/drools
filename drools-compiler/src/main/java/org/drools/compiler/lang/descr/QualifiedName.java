@@ -57,19 +57,24 @@ public class QualifiedName implements Serializable {
         this.namespace = namespace;
     }
 
+    @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
 
         QualifiedName that = (QualifiedName) o;
 
-        if (name != null ? !name.equals(that.name) : that.name != null)
+        if (name != null ? !name.equals(that.name) : that.name != null) {
             return false;
+        }
         return !(namespace != null ? !namespace.equals(that.namespace) : that.namespace != null);
     }
 
+    @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (namespace != null ? namespace.hashCode() : 0);
@@ -84,6 +89,7 @@ public class QualifiedName implements Serializable {
         }
     }
 
+    @Override
     public String toString() {
         return getFullName();
     }

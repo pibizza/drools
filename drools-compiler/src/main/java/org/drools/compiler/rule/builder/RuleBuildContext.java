@@ -24,6 +24,7 @@ import org.drools.compiler.compiler.DialectCompiletimeRegistry;
 import org.drools.compiler.compiler.RuleBuildError;
 import org.drools.compiler.lang.descr.QueryDescr;
 import org.drools.compiler.lang.descr.RuleDescr;
+import org.drools.core.addon.TypeResolver;
 import org.drools.core.beliefsystem.abductive.Abductive;
 import org.drools.core.definitions.InternalKnowledgePackage;
 import org.drools.core.definitions.rule.impl.RuleImpl;
@@ -35,7 +36,6 @@ import org.drools.core.spi.DeclarationScopeResolver;
 import org.drools.core.util.ClassUtils;
 import org.kie.internal.ruleunit.RuleUnitComponentFactory;
 import org.kie.internal.ruleunit.RuleUnitDescription;
-import org.drools.core.addon.TypeResolver;
 
 /**
  * A context for the current build
@@ -48,7 +48,7 @@ public class RuleBuildContext extends PackageBuildContext {
     // current Rule descriptor
     private final RuleDescr ruleDescr;
 
-    // available declarationResolver 
+    // available declarationResolver
     private DeclarationScopeResolver declarationResolver;
 
     // a simple counter for patterns

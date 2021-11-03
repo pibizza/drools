@@ -71,6 +71,7 @@ public class PackageDescr extends BaseDescr
         this.documentation = documentation;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
@@ -90,6 +91,7 @@ public class PackageDescr extends BaseDescr
         preferredPkgUUID = (String) in.readObject();
     }
 
+    @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         super.writeExternal(out);
         out.writeUTF(documentation);
@@ -134,14 +136,14 @@ public class PackageDescr extends BaseDescr
 
     public void addAllImports(final Collection<ImportDescr> importEntries) {
         if (this.imports == Collections.EMPTY_LIST) {
-            this.imports = new ArrayList<ImportDescr>();
+            this.imports = new ArrayList<>();
         }
         this.imports.addAll(importEntries);
     }
 
     public void addImport(final ImportDescr importEntry) {
         if (this.imports == Collections.EMPTY_LIST) {
-            this.imports = new ArrayList<ImportDescr>();
+            this.imports = new ArrayList<>();
         }
         this.imports.add(importEntry);
     }
@@ -152,7 +154,7 @@ public class PackageDescr extends BaseDescr
 
     public void addFunctionImport(final FunctionImportDescr importFunction) {
         if (this.functionImports == Collections.EMPTY_LIST) {
-            this.functionImports = new ArrayList<FunctionImportDescr>();
+            this.functionImports = new ArrayList<>();
         }
         this.functionImports.add(importFunction);
     }
@@ -163,7 +165,7 @@ public class PackageDescr extends BaseDescr
 
     public void addAccumulateImport(final AccumulateImportDescr importAccumulate) {
         if (this.accumulateImports == Collections.EMPTY_LIST) {
-            this.accumulateImports = new ArrayList<AccumulateImportDescr>();
+            this.accumulateImports = new ArrayList<>();
         }
         this.accumulateImports.add(importAccumulate);
     }
@@ -174,7 +176,7 @@ public class PackageDescr extends BaseDescr
 
     public void addGlobal(final GlobalDescr global) {
         if (this.globals == Collections.EMPTY_LIST) {
-            this.globals = new ArrayList<GlobalDescr>();
+            this.globals = new ArrayList<>();
         }
         this.globals.add(global);
     }
@@ -185,7 +187,7 @@ public class PackageDescr extends BaseDescr
 
     public void addAttribute(final AttributeDescr attribute) {
         if (this.attributes == Collections.EMPTY_LIST) {
-            this.attributes = new ArrayList<AttributeDescr>();
+            this.attributes = new ArrayList<>();
         }
         this.attributes.add(attribute);
     }
@@ -207,7 +209,7 @@ public class PackageDescr extends BaseDescr
 
     public void addFunction(final FunctionDescr function) {
         if (this.functions == Collections.EMPTY_LIST) {
-            this.functions = new ArrayList<FunctionDescr>(1);
+            this.functions = new ArrayList<>(1);
         }
         this.functions.add(function);
     }
@@ -218,7 +220,7 @@ public class PackageDescr extends BaseDescr
 
     public void addRule(final RuleDescr rule) {
         if (this.rules == Collections.EMPTY_LIST) {
-            this.rules = new ArrayList<RuleDescr>(1);
+            this.rules = new ArrayList<>(1);
         }
         rule.setLoadOrder(rules.size());
         this.rules.add(rule);
@@ -240,7 +242,7 @@ public class PackageDescr extends BaseDescr
 
     public void addTypeDeclaration(TypeDeclarationDescr declaration) {
         if (this.typeDeclarations == Collections.EMPTY_LIST) {
-            this.typeDeclarations = new ArrayList<TypeDeclarationDescr>();
+            this.typeDeclarations = new ArrayList<>();
         }
         this.typeDeclarations.add(declaration);
     }
@@ -251,7 +253,7 @@ public class PackageDescr extends BaseDescr
 
     public void addEntryPointDeclaration(EntryPointDeclarationDescr epDescr) {
         if (this.entryPointDeclarations == Collections.EMPTY_SET) {
-            this.entryPointDeclarations = new HashSet<EntryPointDeclarationDescr>();
+            this.entryPointDeclarations = new HashSet<>();
         }
         this.entryPointDeclarations.add(epDescr);
     }
@@ -266,14 +268,14 @@ public class PackageDescr extends BaseDescr
 
     public void addWindowDeclaration(WindowDeclarationDescr window) {
         if (this.windowDeclarations == Collections.EMPTY_SET) {
-            this.windowDeclarations = new HashSet<WindowDeclarationDescr>();
+            this.windowDeclarations = new HashSet<>();
         }
         this.windowDeclarations.add(window);
     }
 
     public void addEnumDeclaration(EnumDeclarationDescr declaration) {
         if (this.enumDeclarations == Collections.EMPTY_LIST) {
-            this.enumDeclarations = new ArrayList<EnumDeclarationDescr>();
+            this.enumDeclarations = new ArrayList<>();
         }
         this.enumDeclarations.add(declaration);
     }
@@ -283,7 +285,7 @@ public class PackageDescr extends BaseDescr
     }
 
     public List<AbstractClassTypeDeclarationDescr> getClassAndEnumDeclarationDescrs() {
-        List<AbstractClassTypeDeclarationDescr> list = new ArrayList<AbstractClassTypeDeclarationDescr>(getEnumDeclarations());
+        List<AbstractClassTypeDeclarationDescr> list = new ArrayList<>(getEnumDeclarations());
         list.addAll(getTypeDeclarations());
         return Collections.unmodifiableList(list);
     }
@@ -304,7 +306,7 @@ public class PackageDescr extends BaseDescr
     /**
      * Get the <b>pkgUUID</b> to be used inside <code>PackageModel</code>
      * If <b>empty</b>, a default generated one will be used
-     * 
+     *
      * @return
      */
     public Optional<String> getPreferredPkgUUID() {

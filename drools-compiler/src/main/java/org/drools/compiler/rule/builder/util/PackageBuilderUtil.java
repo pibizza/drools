@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -31,7 +31,7 @@ public class PackageBuilderUtil {
     /**
      * This method checks for the conditions when local declarations should be read from a tuple instead
      * of the right object when resolving declarations in an accumulate
-     * 
+     *
      * @param accumDescr
      * @param source
      * @return

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -21,7 +21,6 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.drools.compiler.builder.DroolsAssemblerContext;
-import org.kie.memorycompiler.resources.ResourceReader;
 import org.drools.compiler.lang.descr.ImportDescr;
 import org.drools.compiler.lang.descr.PackageDescr;
 import org.drools.compiler.rule.builder.RuleBuildContext;
@@ -29,6 +28,7 @@ import org.drools.compiler.rule.builder.dialect.java.parser.JavaBlockDescr;
 import org.drools.compiler.rule.builder.dialect.java.parser.JavaCatchBlockDescr;
 import org.drools.compiler.rule.builder.dialect.java.parser.JavaContainerBlockDescr;
 import org.drools.compiler.rule.builder.dialect.java.parser.JavaTryBlockDescr;
+import org.kie.memorycompiler.resources.ResourceReader;
 
 import static org.drools.core.util.ClassUtils.findClass;
 
@@ -53,8 +53,9 @@ public final class DialectUtil {
 
         final String fileName = packageName.replace('.', '/') + "/" + newName;
 
-        if (src == null || !src.isAvailable(fileName + "." + ext))
+        if (src == null || !src.isAvailable(fileName + "." + ext)) {
             return newName;
+        }
 
         // make sure the class name does not exist, if it does increase the counter
         int counter = -1;
@@ -64,8 +65,9 @@ public final class DialectUtil {
             final String actualName = fileName + "_" + counter + "." + ext;
 
             //MVEL:test null to Fix failing test on MVELConsequenceBuilderTest.testImperativeCodeError()
-            if (!src.isAvailable(actualName))
+            if (!src.isAvailable(actualName)) {
                 break;
+            }
         }
         // we have duplicate file names so append counter
         return newName + "_" + counter;

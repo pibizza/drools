@@ -15,14 +15,13 @@
 
 package org.drools.compiler.kproject.models;
 
-import org.drools.core.util.AbstractXStreamConverter;
-import org.kie.api.builder.model.ListenerModel;
-import org.kie.api.builder.model.QualifierModel;
-
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import org.drools.core.util.AbstractXStreamConverter;
+import org.kie.api.builder.model.ListenerModel;
+import org.kie.api.builder.model.QualifierModel;
 
 public class ListenerModelImpl implements ListenerModel {
 

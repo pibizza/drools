@@ -22,9 +22,10 @@ public class JavaRuleClassBuilder implements RuleClassBuilder {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.kie.rule.builder.dialect.java.RuleClassBuilder#buildRule(org.kie.rule.builder.BuildContext, org.kie.rule.builder.dialect.java.BuildUtils, org.kie.lang.descr.RuleDescr)
      */
+    @Override
     public String buildRule(final RuleBuildContext context) {
         // If there is no compiled code, return
         if (context.getMethods().isEmpty()) {

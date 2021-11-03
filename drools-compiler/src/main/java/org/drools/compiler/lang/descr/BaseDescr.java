@@ -44,6 +44,7 @@ public class BaseDescr
     private Resource resource;
     private String namespace = "";
 
+    @Override
     public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
         startCharacter = in.readInt();
@@ -57,6 +58,7 @@ public class BaseDescr
         namespace = in.readUTF();
     }
 
+    @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeInt(startCharacter);
         out.writeInt(endCharacter);
@@ -79,11 +81,13 @@ public class BaseDescr
         }
     }
 
+    @Override
     public void setNamespace(String namespace) {
         Objects.requireNonNull(namespace);
         this.namespace = namespace;
     }
 
+    @Override
     public final String getNamespace() {
         return this.namespace;
     }

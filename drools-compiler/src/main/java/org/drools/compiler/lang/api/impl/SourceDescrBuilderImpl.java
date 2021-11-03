@@ -17,12 +17,12 @@
 package org.drools.compiler.lang.api.impl;
 
 import org.drools.compiler.lang.api.AccumulateDescrBuilder;
-import org.drools.compiler.lang.descr.MVELExprDescr;
 import org.drools.compiler.lang.api.CollectDescrBuilder;
 import org.drools.compiler.lang.api.PatternDescrBuilder;
 import org.drools.compiler.lang.api.SourceDescrBuilder;
 import org.drools.compiler.lang.descr.EntryPointDescr;
 import org.drools.compiler.lang.descr.FromDescr;
+import org.drools.compiler.lang.descr.MVELExprDescr;
 import org.drools.compiler.lang.descr.PatternDescr;
 import org.drools.compiler.lang.descr.WindowReferenceDescr;
 
@@ -37,6 +37,7 @@ public class SourceDescrBuilderImpl<P extends PatternDescrBuilder<?>> extends Ba
         super(parent, parent.getDescr());
     }
 
+    @Override
     public P expression(String expression) {
         FromDescr from = new FromDescr();
         from.setDataSource(new MVELExprDescr(expression));
@@ -45,6 +46,7 @@ public class SourceDescrBuilderImpl<P extends PatternDescrBuilder<?>> extends Ba
         return parent;
     }
 
+    @Override
     public P entryPoint(String entryPoint) {
         EntryPointDescr ep = new EntryPointDescr(entryPoint);
         ep.setResource(descr.getResource());
@@ -52,18 +54,21 @@ public class SourceDescrBuilderImpl<P extends PatternDescrBuilder<?>> extends Ba
         return parent;
     }
 
+    @Override
     public CollectDescrBuilder<P> collect() {
-        CollectDescrBuilder<P> collect = new CollectDescrBuilderImpl<P>(parent);
+        CollectDescrBuilder<P> collect = new CollectDescrBuilderImpl<>(parent);
         descr.setSource(collect.getDescr());
         return collect;
     }
 
+    @Override
     public AccumulateDescrBuilder<P> accumulate() {
-        AccumulateDescrBuilder<P> accumulate = new AccumulateDescrBuilderImpl<P>(parent);
+        AccumulateDescrBuilder<P> accumulate = new AccumulateDescrBuilderImpl<>(parent);
         descr.setSource(accumulate.getDescr());
         return accumulate;
     }
 
+    @Override
     public P window(String window) {
         WindowReferenceDescr wd = new WindowReferenceDescr(window);
         wd.setResource(descr.getResource());

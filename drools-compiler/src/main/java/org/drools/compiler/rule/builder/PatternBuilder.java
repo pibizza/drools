@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 Red Hat, Inc. and/or its affiliates.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -127,6 +127,7 @@ public class PatternBuilder
     public PatternBuilder() {
     }
 
+    @Override
     public RuleConditionElement build(RuleBuildContext context,
             PatternDescr descr) {
         boolean typeSafe = context.isTypesafe();
@@ -143,6 +144,7 @@ public class PatternBuilder
      * Build a pattern for the given descriptor in the current
      * context and using the given utils object
      */
+    @Override
     public RuleConditionElement build(RuleBuildContext context,
             PatternDescr patternDescr,
             Pattern prefixPattern) {
@@ -508,7 +510,7 @@ public class PatternBuilder
 
         List<String> settableProperties = getSettableProperties(context, patternDescr, pattern);
 
-        List<String> listenedProperties = new ArrayList<String>();
+        List<String> listenedProperties = new ArrayList<>();
         for (String propertyName : watchedValues.split(",")) {
             propertyName = propertyName.trim();
             if (propertyName.equals("*") || propertyName.equals("!*")) {
@@ -672,9 +674,9 @@ public class PatternBuilder
             ConstraintConnectiveDescr descr,
             MVELDumper.MVELDumperContext mvelCtx) {
 
-        List<Constraint> constraints = new ArrayList<Constraint>();
+        List<Constraint> constraints = new ArrayList<>();
 
-        List<BaseDescr> initialDescrs = new ArrayList<BaseDescr>(descr.getDescrs());
+        List<BaseDescr> initialDescrs = new ArrayList<>(descr.getDescrs());
         for (BaseDescr d : initialDescrs) {
             boolean isXPath = isXPathDescr(d);
             if (isXPath && pattern.hasXPath()) {
@@ -708,11 +710,11 @@ public class PatternBuilder
             // The initial build process may have generated other constraint descrs.
             // This happens when null-safe references or inline-casts are used
             // These additional constraints must be built, and added as
-            List<BaseDescr> additionalDescrs = new ArrayList<BaseDescr>(descr.getDescrs());
+            List<BaseDescr> additionalDescrs = new ArrayList<>(descr.getDescrs());
             additionalDescrs.removeAll(initialDescrs);
 
             if (!additionalDescrs.isEmpty()) {
-                List<Constraint> additionalConstraints = new ArrayList<Constraint>();
+                List<Constraint> additionalConstraints = new ArrayList<>();
                 for (BaseDescr d : additionalDescrs) {
                     Constraint constraint = buildCcdDescr(context, patternDescr, pattern, d, descr, mvelCtx);
                     if (constraint != null) {
@@ -765,7 +767,7 @@ public class PatternBuilder
         ObjectType objectType = pattern.getObjectType();
         Class<?> patternClass = objectType.getClassType();
 
-        List<Class<?>> backReferenceClasses = new ArrayList<Class<?>>();
+        List<Class<?>> backReferenceClasses = new ArrayList<>();
         backReferenceClasses.add(patternClass);
         XpathBackReference backRef = new XpathBackReference(pattern, backReferenceClasses);
         pattern.setBackRefDeclarations(backRef);
@@ -1178,8 +1180,8 @@ public class PatternBuilder
         }
         final BoundIdentifiers usedIdentifiers = analysis.getBoundIdentifiers();
 
-        final List<Declaration> tupleDeclarations = new ArrayList<Declaration>();
-        final List<Declaration> factDeclarations = new ArrayList<Declaration>();
+        final List<Declaration> tupleDeclarations = new ArrayList<>();
+        final List<Declaration> factDeclarations = new ArrayList<>();
         for (String id : usedIdentifiers.getDeclrClasses().keySet()) {
             Declaration decl = context.getDeclarationResolver().getDeclaration(id);
             if (decl.getPattern() == pattern) {
@@ -1309,9 +1311,9 @@ public class PatternBuilder
         protected boolean withJavaIdentifier;
 
         public ExprBindings() {
-            this.globalBindings = new HashSet<String>();
-            this.ruleBindings = new HashSet<String>();
-            this.fieldAccessors = new HashSet<String>();
+            this.globalBindings = new HashSet<>();
+            this.ruleBindings = new HashSet<>();
+            this.fieldAccessors = new HashSet<>();
             this.withJavaIdentifier = false;
         }
 
@@ -1481,8 +1483,8 @@ public class PatternBuilder
 
     public static Declaration[][] getUsedDeclarations(RuleBuildContext context, Pattern pattern, AnalysisResult analysis) {
         BoundIdentifiers usedIdentifiers = analysis.getBoundIdentifiers();
-        final List<Declaration> tupleDeclarations = new ArrayList<Declaration>();
-        final List<Declaration> factDeclarations = new ArrayList<Declaration>();
+        final List<Declaration> tupleDeclarations = new ArrayList<>();
+        final List<Declaration> factDeclarations = new ArrayList<>();
 
         for (String id : usedIdentifiers.getDeclrClasses().keySet()) {
             Declaration decl = context.getDeclarationResolver().getDeclaration(id);
@@ -1506,7 +1508,7 @@ public class PatternBuilder
     }
 
     public static AnalysisResult buildAnalysis(RuleBuildContext context, Pattern pattern, PredicateDescr predicateDescr, Map<String, OperatorDescr> aliases) {
-        Map<String, EvaluatorWrapper> operators = aliases == null ? new HashMap<String, EvaluatorWrapper>() : buildOperators(context, pattern, predicateDescr, aliases);
+        Map<String, EvaluatorWrapper> operators = aliases == null ? new HashMap<>() : buildOperators(context, pattern, predicateDescr, aliases);
 
         return context.getDialect().analyzeExpression(context,
                 predicateDescr,
@@ -1525,7 +1527,7 @@ public class PatternBuilder
             return Collections.emptyMap();
         }
 
-        Map<String, EvaluatorWrapper> operators = new HashMap<String, EvaluatorWrapper>();
+        Map<String, EvaluatorWrapper> operators = new HashMap<>();
         for (Map.Entry<String, OperatorDescr> entry : aliases.entrySet()) {
             OperatorDescr op = entry.getValue();
 
@@ -1600,7 +1602,7 @@ public class PatternBuilder
                     identifier,
                     pattern);
             // the name may not be a local field, such as enums
-            // maybe should have a safer way to detect this, as other issues may cause null too 
+            // maybe should have a safer way to detect this, as other issues may cause null too
             // that we would need to know about
             if (declaration != null) {
                 factDeclarations.add(declaration);
@@ -1678,7 +1680,7 @@ public class PatternBuilder
         InternalReadAccessor reader;
 
         if (ValueType.FACTTEMPLATE_TYPE.equals(objectType.getValueType())) {
-            //@todo use accessor cache            
+            //@todo use accessor cache
             final FactTemplate factTemplate = ((FactTemplateObjectType) objectType).getFactTemplate();
             reader = new FactTemplateFieldExtractor(factTemplate, factTemplate.getFieldTemplateIndex(fieldName));
             if (target != null) {

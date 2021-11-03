@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -246,7 +246,7 @@ public class TypeDeclarationFactory {
 
         //Field comparison
         List<FactField> oldFields = oldDeclaration.getTypeClassDef().getFields();
-        Map<String, FactField> newFieldsMap = new HashMap<String, FactField>();
+        Map<String, FactField> newFieldsMap = new HashMap<>();
         for (FactField factField : newDeclaration.getTypeClassDef().getFields()) {
             newFieldsMap.put(factField.getName(), factField);
         }
@@ -306,16 +306,16 @@ public class TypeDeclarationFactory {
     }
 
     private TypeDeclarationError reportDeclarationDiff(ClassFieldInspector cfi, AbstractClassTypeDeclarationDescr typeDescr) {
-        List<String> existing = new ArrayList<String>();
+        List<String> existing = new ArrayList<>();
         for (String existingFieldName : cfi.getFieldTypesField().keySet()) {
             if (!cfi.isNonGetter(existingFieldName) && !"class".equals(existingFieldName) && cfi.getSetterMethods().containsKey(existingFieldName)) {
                 existing.add(existingFieldName);
             }
         }
         Collections.sort(existing);
-        List<String> declared = new ArrayList<String>(typeDescr.getFields().keySet());
+        List<String> declared = new ArrayList<>(typeDescr.getFields().keySet());
         Collections.sort(declared);
-        List<String> deltas = new ArrayList<String>();
+        List<String> deltas = new ArrayList<>();
         for (String s : existing) {
             if (!declared.contains(s)) {
                 deltas.add("--" + s);

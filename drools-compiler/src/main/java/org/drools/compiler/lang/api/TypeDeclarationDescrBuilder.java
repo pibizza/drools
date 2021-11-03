@@ -38,9 +38,9 @@ public interface TypeDeclarationDescrBuilder
     /**
      * Defines the super type of this type. For POJOs, this is the
      * super class it will extend
-     * 
+     *
      * @param type the super type for this type
-     * 
+     *
      * @return itself
      */
     public TypeDeclarationDescrBuilder superType(String type);

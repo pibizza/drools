@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -127,7 +127,7 @@ public class XpathAnalysis implements Iterable<XpathAnalysis.XpathPart> {
     }
 
     public static XpathAnalysis analyze(String xpath) {
-        List<XpathPart> parts = new ArrayList<XpathPart>();
+        List<XpathPart> parts = new ArrayList<>();
         boolean lazyPath = false;
         int i = 0;
         if (xpath.length() >= 1 && xpath.charAt(0) == '/') {
@@ -139,7 +139,7 @@ public class XpathAnalysis implements Iterable<XpathAnalysis.XpathPart> {
             return new XpathAnalysis(parts, "An oopath expression has to start with '/' or '?/'");
         }
 
-        List<String> constraints = new ArrayList<String>();
+        List<String> constraints = new ArrayList<>();
 
         String inlineCast = null;
         int index = -1;
@@ -178,7 +178,7 @@ public class XpathAnalysis implements Iterable<XpathAnalysis.XpathPart> {
                                 lazyPath = true;
                             }
                         }
-                        constraints = new ArrayList<String>();
+                        constraints = new ArrayList<>();
                         inlineCast = null;
                         index = -1;
                         lastStart = i + 1;

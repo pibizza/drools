@@ -55,7 +55,7 @@ public interface ResourceProcessor<C extends ProcessedResource> {
 
     /**
      * Returns any error that have been generated while processing the resource.
-     * 
+     *
      * @return empty if no errors occurred and the resource have been successfully processed
      */
     Collection<? extends KnowledgeBuilderError> getErrors();

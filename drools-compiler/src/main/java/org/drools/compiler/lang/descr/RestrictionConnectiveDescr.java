@@ -69,7 +69,7 @@ public class RestrictionConnectiveDescr extends RestrictionDescr {
 
     public void addRestriction(RestrictionDescr restriction) {
         if (this.restrictions == Collections.EMPTY_LIST) {
-            this.restrictions = new ArrayList<RestrictionDescr>();
+            this.restrictions = new ArrayList<>();
         }
         this.restrictions.add(restriction);
     }
@@ -77,7 +77,7 @@ public class RestrictionConnectiveDescr extends RestrictionDescr {
     public void addOrMerge(RestrictionDescr restriction) {
         if ((restriction instanceof RestrictionConnectiveDescr) && ((RestrictionConnectiveDescr) restriction).connective == this.connective) {
             if (this.restrictions == Collections.EMPTY_LIST) {
-                this.restrictions = new ArrayList<RestrictionDescr>();
+                this.restrictions = new ArrayList<>();
             }
             this.restrictions.addAll(((RestrictionConnectiveDescr) restriction).getRestrictions());
         } else {
@@ -89,6 +89,7 @@ public class RestrictionConnectiveDescr extends RestrictionDescr {
         return this.restrictions;
     }
 
+    @Override
     public String toString() {
         final StringBuilder buf = new StringBuilder();
         buf.append("( ");

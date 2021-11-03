@@ -16,10 +16,10 @@
 
 package org.drools.compiler.lang.api.impl;
 
-import org.drools.compiler.lang.api.FieldDescrBuilder;
-import org.drools.compiler.lang.api.PackageDescrBuilder;
 import org.drools.compiler.lang.api.AbstractClassTypeDeclarationBuilder;
 import org.drools.compiler.lang.api.AnnotationDescrBuilder;
+import org.drools.compiler.lang.api.FieldDescrBuilder;
+import org.drools.compiler.lang.api.PackageDescrBuilder;
 import org.drools.compiler.lang.api.TypeDeclarationDescrBuilder;
 import org.drools.compiler.lang.descr.TypeDeclarationDescr;
 
@@ -31,27 +31,32 @@ public class TypeDeclarationDescrBuilderImpl extends BaseDescrBuilderImpl<Packag
         super(parent, new TypeDeclarationDescr());
     }
 
+    @Override
     public TypeDeclarationDescrBuilder name(String type) {
         descr.setTypeName(type);
         return this;
     }
 
+    @Override
     public TypeDeclarationDescrBuilder superType(String type) {
         descr.addSuperType(type);
         return this;
     }
 
+    @Override
     public TypeDeclarationDescrBuilder setTrait(boolean trait) {
         descr.setTrait(trait);
         return this;
     }
 
+    @Override
     public AnnotationDescrBuilder<TypeDeclarationDescrBuilder> newAnnotation(String name) {
-        AnnotationDescrBuilder<TypeDeclarationDescrBuilder> annotation = new AnnotationDescrBuilderImpl<TypeDeclarationDescrBuilder>(this, name);
+        AnnotationDescrBuilder<TypeDeclarationDescrBuilder> annotation = new AnnotationDescrBuilderImpl<>(this, name);
         descr.addAnnotation(annotation.getDescr());
         return annotation;
     }
 
+    @Override
     public FieldDescrBuilder<AbstractClassTypeDeclarationBuilder<TypeDeclarationDescr>> newField(String name) {
         FieldDescrBuilder<AbstractClassTypeDeclarationBuilder<TypeDeclarationDescr>> field = new FieldDescrBuilderImpl(this, name);
         descr.addField(field.getDescr());

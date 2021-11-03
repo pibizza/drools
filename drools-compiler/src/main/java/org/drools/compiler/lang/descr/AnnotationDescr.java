@@ -16,14 +16,14 @@
 
 package org.drools.compiler.lang.descr;
 
-import org.drools.core.factmodel.PropertyMap;
-
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.drools.core.factmodel.PropertyMap;
 
 public class AnnotationDescr extends AnnotatedBaseDescr implements PropertyMap {
 
@@ -37,7 +37,7 @@ public class AnnotationDescr extends AnnotatedBaseDescr implements PropertyMap {
     private boolean duplicated = false;
     private boolean strict = false;
 
-    // '' and 'a' are passed through as 
+    // '' and 'a' are passed through as
     public static String unquote(String s) {
         if (s.startsWith("\"") && s.endsWith("\"") ||
                 s.startsWith("'") && s.endsWith("'")) {
@@ -52,7 +52,7 @@ public class AnnotationDescr extends AnnotatedBaseDescr implements PropertyMap {
 
     public AnnotationDescr(final String name) {
         this.name = name;
-        this.values = new HashMap<String, Object>();
+        this.values = new HashMap<>();
     }
 
     public AnnotationDescr(final String name,
@@ -111,6 +111,7 @@ public class AnnotationDescr extends AnnotatedBaseDescr implements PropertyMap {
         return this.values.get(key);
     }
 
+    @Override
     public Map<String, Object> getValues() {
         return this.values;
     }
@@ -127,9 +128,10 @@ public class AnnotationDescr extends AnnotatedBaseDescr implements PropertyMap {
 
     public Object getValueStripped() {
         Object single = getSingleValueStripped();
-        if (single != null)
+        if (single != null) {
             return single;
-        Map<String, String> sMap = new HashMap<String, String>();
+        }
+        Map<String, String> sMap = new HashMap<>();
         for (Map.Entry<String, Object> entry : this.values.entrySet()) {
             sMap.put(entry.getKey(), unquote(entry.getValue().toString()));
         }
@@ -166,18 +168,23 @@ public class AnnotationDescr extends AnnotatedBaseDescr implements PropertyMap {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         AnnotationDescr other = (AnnotationDescr) obj;
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         return true;
     }
 

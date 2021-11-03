@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -15,12 +15,12 @@
 
 package org.drools.compiler.rule.builder.util;
 
-import org.drools.compiler.lang.descr.AnnotationDescr;
-import org.drools.core.addon.TypeResolver;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+
+import org.drools.compiler.lang.descr.AnnotationDescr;
+import org.drools.core.addon.TypeResolver;
 
 import static java.lang.reflect.Proxy.newProxyInstance;
 import static org.drools.core.util.StringUtils.ucFirst;

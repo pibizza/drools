@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -17,8 +17,8 @@ package org.drools.compiler.lang.api.impl;
 
 import org.drools.compiler.lang.api.ConditionalBranchDescrBuilder;
 import org.drools.compiler.lang.api.DescrBuilder;
-import org.drools.compiler.lang.api.NamedConsequenceDescrBuilder;
 import org.drools.compiler.lang.api.EvalDescrBuilder;
+import org.drools.compiler.lang.api.NamedConsequenceDescrBuilder;
 import org.drools.compiler.lang.descr.ConditionalBranchDescr;
 
 public class ConditionalBranchDescrBuilderImpl<P extends DescrBuilder<?, ?>>
@@ -29,20 +29,23 @@ public class ConditionalBranchDescrBuilderImpl<P extends DescrBuilder<?, ?>>
         super(parent, new ConditionalBranchDescr());
     }
 
+    @Override
     public EvalDescrBuilder<ConditionalBranchDescrBuilder<P>> condition() {
-        EvalDescrBuilder<ConditionalBranchDescrBuilder<P>> eval = new EvalDescrBuilderImpl<ConditionalBranchDescrBuilder<P>>(this);
+        EvalDescrBuilder<ConditionalBranchDescrBuilder<P>> eval = new EvalDescrBuilderImpl<>(this);
         getDescr().setCondition(eval.getDescr());
         return eval;
     }
 
+    @Override
     public NamedConsequenceDescrBuilder<ConditionalBranchDescrBuilder<P>> consequence() {
-        NamedConsequenceDescrBuilder<ConditionalBranchDescrBuilder<P>> namedConsequence = new NamedConsequenceDescrBuilderImpl<ConditionalBranchDescrBuilder<P>>(this);
+        NamedConsequenceDescrBuilder<ConditionalBranchDescrBuilder<P>> namedConsequence = new NamedConsequenceDescrBuilderImpl<>(this);
         getDescr().setConsequence(namedConsequence.getDescr());
         return namedConsequence;
     }
 
+    @Override
     public ConditionalBranchDescrBuilder<P> otherwise() {
-        ConditionalBranchDescrBuilder<P> elseBranch = new ConditionalBranchDescrBuilderImpl<P>(parent);
+        ConditionalBranchDescrBuilder<P> elseBranch = new ConditionalBranchDescrBuilderImpl<>(parent);
         getDescr().setElseBranch(elseBranch.getDescr());
         return elseBranch;
     }

@@ -29,9 +29,9 @@ public interface WindowDeclarationDescrBuilder
 
     /**
      * Defines the window name
-     * 
+     *
      * @param name the window name
-     * 
+     *
      * @return itself
      */
     public WindowDeclarationDescrBuilder name(String name);

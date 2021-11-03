@@ -1,10 +1,10 @@
-/* 
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -51,6 +51,7 @@ public class MVELDumper extends ReflectiveVisitor implements ExpressionRewriter 
         Arrays.sort(standard);
     }
 
+    @Override
     public String dump(BaseDescr base) {
         return dump(new StringBuilder(),
                 base,
@@ -59,6 +60,7 @@ public class MVELDumper extends ReflectiveVisitor implements ExpressionRewriter 
                 createContext()).toString();
     }
 
+    @Override
     public String dump(BaseDescr base,
             MVELDumperContext context) {
         return dump(new StringBuilder(),
@@ -68,6 +70,7 @@ public class MVELDumper extends ReflectiveVisitor implements ExpressionRewriter 
                 context).toString();
     }
 
+    @Override
     public String dump(BaseDescr base,
             ConstraintConnectiveDescr parent,
             MVELDumperContext context) {
@@ -80,6 +83,7 @@ public class MVELDumper extends ReflectiveVisitor implements ExpressionRewriter 
                 context).toString();
     }
 
+    @Override
     public String dump(BaseDescr base,
             int parentPrecedence) {
         return dump(new StringBuilder(),
@@ -89,6 +93,7 @@ public class MVELDumper extends ReflectiveVisitor implements ExpressionRewriter 
                 createContext()).toString();
     }
 
+    @Override
     public StringBuilder dump(StringBuilder sbuilder,
             BaseDescr base,
             int parentPriority,
@@ -103,6 +108,7 @@ public class MVELDumper extends ReflectiveVisitor implements ExpressionRewriter 
                 context);
     }
 
+    @Override
     public StringBuilder dump(StringBuilder sbuilder,
             BaseDescr base,
             ConstraintConnectiveDescr parent,
@@ -385,7 +391,7 @@ public class MVELDumper extends ReflectiveVisitor implements ExpressionRewriter 
         }
 
         ClassLoader cl = context.getRuleContext().getKnowledgeBuilder().getRootClassLoader();
-        // DROOLS-1337, attempt to identify FQN by progressively iterating from the /beginning/ of split[] 
+        // DROOLS-1337, attempt to identify FQN by progressively iterating from the /beginning/ of split[]
         for (int i = 2; i <= split.length; i++) {
             String className = concatDotSeparated(split, 0, i);
             if (className.endsWith("!")) {
@@ -419,7 +425,7 @@ public class MVELDumper extends ReflectiveVisitor implements ExpressionRewriter 
             sbuilder.append("( ");
         }
         boolean first = true;
-        List<BaseDescr> descrs = new ArrayList<BaseDescr>(ccd.getDescrs());
+        List<BaseDescr> descrs = new ArrayList<>(ccd.getDescrs());
         for (BaseDescr constr : descrs) {
             if (!(constr instanceof BindingDescr)) {
                 if (first) {
@@ -451,6 +457,7 @@ public class MVELDumper extends ReflectiveVisitor implements ExpressionRewriter 
 
     }
 
+    @Override
     public String processRestriction(MVELDumperContext context,
             String left,
             OperatorDescr operator,
@@ -555,6 +562,7 @@ public class MVELDumper extends ReflectiveVisitor implements ExpressionRewriter 
         return new MVELDumperContext();
     }
 
+    @Override
     public Class<?> getEvaluatorWrapperClass() {
         return EvaluatorWrapper.class;
     }
@@ -568,7 +576,7 @@ public class MVELDumper extends ReflectiveVisitor implements ExpressionRewriter 
         private int openCcd;
 
         public MVELDumperContext() {
-            this.aliases = new HashMap<String, OperatorDescr>();
+            this.aliases = new HashMap<>();
             this.counter = 0;
             this.bindings = null;
             this.openCcd = 0;
@@ -583,7 +591,7 @@ public class MVELDumper extends ReflectiveVisitor implements ExpressionRewriter 
 
         public void addInferredCast(String var, String cast) {
             if (inferredCasts == null) {
-                inferredCasts = new HashMap<String, String>();
+                inferredCasts = new HashMap<>();
             }
             inferredCasts.put(var, cast);
         }
@@ -630,7 +638,7 @@ public class MVELDumper extends ReflectiveVisitor implements ExpressionRewriter 
          */
         public void addBinding(BindingDescr bind) {
             if (this.bindings == null) {
-                this.bindings = new ArrayList<BindingDescr>();
+                this.bindings = new ArrayList<>();
             }
             this.bindings.add(bind);
         }

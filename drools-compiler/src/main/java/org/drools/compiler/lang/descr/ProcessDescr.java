@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -35,10 +35,12 @@ public class ProcessDescr extends BaseDescr
         this.name = name;
     }
 
+    @Override
     public Resource getResource() {
         return resource;
     }
 
+    @Override
     public void setResource(Resource resource) {
         this.resource = resource;
     }
@@ -63,6 +65,7 @@ public class ProcessDescr extends BaseDescr
         this.dialect = dialect;
     }
 
+    @Override
     public String getDialect() {
         return this.dialect;
     }
@@ -75,6 +78,7 @@ public class ProcessDescr extends BaseDescr
         this.processId = processId;
     }
 
+    @Override
     public String toString() {
         return "Process " + name + "(" + processId + ")";
     }

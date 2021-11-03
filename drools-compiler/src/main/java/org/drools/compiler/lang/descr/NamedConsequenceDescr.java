@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -30,12 +30,14 @@ public class NamedConsequenceDescr extends BaseDescr {
         this.setText(id);
     }
 
+    @Override
     public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
         super.readExternal(in);
         breaking = in.readBoolean();
     }
 
+    @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         super.writeExternal(out);
         out.writeBoolean(breaking);
@@ -62,6 +64,7 @@ public class NamedConsequenceDescr extends BaseDescr {
         return (isBreaking() ? " break" : "do") + "[" + getName() + "]";
     }
 
+    @Override
     public void accept(DescrVisitor visitor) {
         visitor.visit(this);
     }

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -129,7 +129,7 @@ public class CompositePackageDescr extends PackageDescr {
     }
 
     public static class CompositeAssetFilter implements KnowledgeBuilderImpl.AssetFilter {
-        public List<KnowledgeBuilderImpl.AssetFilter> filters = new ArrayList<KnowledgeBuilderImpl.AssetFilter>();
+        public List<KnowledgeBuilderImpl.AssetFilter> filters = new ArrayList<>();
 
         @Override
         public Action accept(ResourceChange.Type type, String pkgName, String assetName) {

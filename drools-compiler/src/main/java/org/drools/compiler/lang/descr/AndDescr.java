@@ -25,7 +25,7 @@ public class AndDescr extends AnnotatedBaseDescr
         implements
         ConditionalElementDescr {
     private static final long serialVersionUID = 510l;
-    private List<BaseDescr> descrs = new ArrayList<BaseDescr>();
+    private List<BaseDescr> descrs = new ArrayList<>();
 
     public AndDescr() {
     }
@@ -34,6 +34,7 @@ public class AndDescr extends AnnotatedBaseDescr
         addDescr(baseDescr);
     }
 
+    @Override
     public void addDescr(final BaseDescr baseDescr) {
         this.descrs.add(baseDescr);
     }
@@ -44,6 +45,7 @@ public class AndDescr extends AnnotatedBaseDescr
                 baseDescr);
     }
 
+    @Override
     public void insertBeforeLast(final Class<?> clazz,
             final BaseDescr baseDescr) {
         if (this.descrs.isEmpty()) {
@@ -62,6 +64,7 @@ public class AndDescr extends AnnotatedBaseDescr
         addDescr(baseDescr);
     }
 
+    @Override
     public List<BaseDescr> getDescrs() {
         return this.descrs;
     }
@@ -82,6 +85,7 @@ public class AndDescr extends AnnotatedBaseDescr
         }
     }
 
+    @Override
     public void addOrMerge(final BaseDescr baseDescr) {
         if (baseDescr instanceof AndDescr) {
             AndDescr and = (AndDescr) baseDescr;
@@ -96,14 +100,17 @@ public class AndDescr extends AnnotatedBaseDescr
         }
     }
 
+    @Override
     public boolean removeDescr(BaseDescr baseDescr) {
         return baseDescr == null ? false : descrs.remove(baseDescr);
     }
 
+    @Override
     public String toString() {
         return "[AND " + descrs + " ]";
     }
 
+    @Override
     public void accept(DescrVisitor visitor) {
         visitor.visit(this);
     }

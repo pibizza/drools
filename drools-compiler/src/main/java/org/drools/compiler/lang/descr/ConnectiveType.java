@@ -44,6 +44,7 @@ public enum ConnectiveType {
         return this.precedence;
     }
 
+    @Override
     public String toString() {
         return this.connective;
     }

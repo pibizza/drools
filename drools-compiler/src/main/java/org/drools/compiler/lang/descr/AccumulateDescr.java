@@ -45,6 +45,7 @@ public class AccumulateDescr extends PatternSourceDescr
     private String className;
     private List<AccumulateFunctionCallDescr> functions = null;
 
+    @Override
     @SuppressWarnings("unchecked")
     public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
@@ -59,6 +60,7 @@ public class AccumulateDescr extends PatternSourceDescr
         functions = (List<AccumulateDescr.AccumulateFunctionCallDescr>) in.readObject();
     }
 
+    @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         super.writeExternal(out);
         out.writeObject(input);
@@ -71,6 +73,7 @@ public class AccumulateDescr extends PatternSourceDescr
         out.writeObject(functions);
     }
 
+    @Override
     public int getLine() {
         return this.input.getLine();
     }
@@ -115,28 +118,34 @@ public class AccumulateDescr extends PatternSourceDescr
         this.resultCode = resultCode;
     }
 
+    @Override
     public String toString() {
         return "[Accumulate: input=" + this.input.toString() + "]";
     }
 
+    @Override
     public void addDescr(final BaseDescr patternDescr) {
         throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
+    @Override
     public boolean removeDescr(BaseDescr baseDescr) {
         throw new UnsupportedOperationException("Can't remove descriptors from " + this.getClass().getName());
     }
 
+    @Override
     public void insertBeforeLast(final Class<?> clazz,
             final BaseDescr baseDescr) {
         throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
 
+    @Override
     public List<BaseDescr> getDescrs() {
         // nothing to do
         return Collections.emptyList();
     }
 
+    @Override
     public void addOrMerge(BaseDescr baseDescr) {
         throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
     }
@@ -168,7 +177,7 @@ public class AccumulateDescr extends PatternSourceDescr
 
     public void addFunction(AccumulateFunctionCallDescr function) {
         if (functions == null) {
-            functions = new ArrayList<AccumulateDescr.AccumulateFunctionCallDescr>();
+            functions = new ArrayList<>();
         }
         this.functions.add(function);
     }
@@ -181,6 +190,7 @@ public class AccumulateDescr extends PatternSourceDescr
         return functions != null && !functions.isEmpty();
     }
 
+    @Override
     public PatternDescr getInputPattern() {
         if (isSinglePattern()) {
             if (this.input instanceof PatternDescr) {
@@ -193,14 +203,17 @@ public class AccumulateDescr extends PatternSourceDescr
         return null;
     }
 
+    @Override
     public void setInputPattern(final PatternDescr inputPattern) {
         this.input = inputPattern;
     }
 
+    @Override
     public BaseDescr getInput() {
         return input;
     }
 
+    @Override
     public void setInput(BaseDescr input) {
         this.input = input;
     }
@@ -270,22 +283,28 @@ public class AccumulateDescr extends PatternSourceDescr
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
+            if (this == obj) {
                 return true;
-            if (obj == null)
+            }
+            if (obj == null) {
                 return false;
-            if (getClass() != obj.getClass())
+            }
+            if (getClass() != obj.getClass()) {
                 return false;
+            }
             AccumulateFunctionCallDescr other = (AccumulateFunctionCallDescr) obj;
             if (function == null) {
-                if (other.function != null)
+                if (other.function != null) {
                     return false;
-            } else if (!function.equals(other.function))
+                }
+            } else if (!function.equals(other.function)) {
                 return false;
+            }
 
             if (bind == null) {
-                if (other.bind != null)
+                if (other.bind != null) {
                     return false;
+                }
             } else if (!bind.equals(other.bind)) {
                 return false;
             }
@@ -294,6 +313,7 @@ public class AccumulateDescr extends PatternSourceDescr
         }
     }
 
+    @Override
     public void accept(DescrVisitor visitor) {
         visitor.visit(this);
     }

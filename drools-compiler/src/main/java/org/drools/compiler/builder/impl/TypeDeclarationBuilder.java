@@ -42,7 +42,7 @@ public class TypeDeclarationBuilder {
 
     protected final KnowledgeBuilderImpl kbuilder;
 
-    protected final Set<String> generatedTypes = new HashSet<String>();
+    protected final Set<String> generatedTypes = new HashSet<>();
 
     protected TypeDeclarationCache classDeclarationExtractor;
     protected TypeDeclarationNameResolver typeDeclarationNameResolver;
@@ -161,7 +161,7 @@ public class TypeDeclarationBuilder {
 
     private Collection<AbstractClassTypeDeclarationDescr> compactDefinitionsAndDeclarations(Collection<AbstractClassTypeDeclarationDescr> unsortedDescrs,
             Map<String, AbstractClassTypeDeclarationDescr> unprocesseableDescrs) {
-        Map<String, AbstractClassTypeDeclarationDescr> compactedUnsorted = new HashMap<String, AbstractClassTypeDeclarationDescr>(unsortedDescrs.size());
+        Map<String, AbstractClassTypeDeclarationDescr> compactedUnsorted = new HashMap<>(unsortedDescrs.size());
         for (AbstractClassTypeDeclarationDescr descr : unsortedDescrs) {
             if (compactedUnsorted.containsKey(descr.getType().getFullName())) {
                 AbstractClassTypeDeclarationDescr prev = compactedUnsorted.get(descr.getType().getFullName());
@@ -313,7 +313,7 @@ public class TypeDeclarationBuilder {
                     PackageDescr altDescr;
 
                     if (foreignPackages == null) {
-                        foreignPackages = new HashMap<String, PackageDescr>();
+                        foreignPackages = new HashMap<>();
                     }
 
                     if (foreignPackages.containsKey(typeDescr.getNamespace())) {

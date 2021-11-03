@@ -29,27 +29,32 @@ public class FieldDescrBuilderImpl<T extends DescrBuilder<?, ?>> extends BaseDes
         super(parent, new TypeFieldDescr(name));
     }
 
+    @Override
     public AnnotationDescrBuilder<FieldDescrBuilder<T>> newAnnotation(String name) {
-        AnnotationDescrBuilder<FieldDescrBuilder<T>> annotation = new AnnotationDescrBuilderImpl<FieldDescrBuilder<T>>(this, name);
+        AnnotationDescrBuilder<FieldDescrBuilder<T>> annotation = new AnnotationDescrBuilderImpl<>(this, name);
         descr.addAnnotation(annotation.getDescr());
         return annotation;
     }
 
+    @Override
     public FieldDescrBuilder index(int index) {
         descr.setIndex(index);
         return this;
     }
 
+    @Override
     public FieldDescrBuilder name(String name) {
         descr.setFieldName(name);
         return this;
     }
 
+    @Override
     public FieldDescrBuilder type(String type) {
         descr.setPattern(new PatternDescr(type)); // resource set for new PatternDescr in setPattern
         return this;
     }
 
+    @Override
     public FieldDescrBuilder initialValue(String value) {
         descr.setInitExpr(value);
         return this;

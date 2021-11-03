@@ -16,8 +16,8 @@
 
 package org.drools.compiler.lang.descr;
 
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class AccessorDescr extends DeclarativeInvokerDescr {
@@ -61,6 +61,7 @@ public class AccessorDescr extends DeclarativeInvokerDescr {
         this.variableName = methodName;
     }
 
+    @Override
     public String toString() {
         final StringBuilder buf = new StringBuilder();
         buf.append((this.variableName != null) ? this.variableName : "");

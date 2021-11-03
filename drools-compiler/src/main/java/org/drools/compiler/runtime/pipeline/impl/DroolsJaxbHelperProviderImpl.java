@@ -29,6 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import com.sun.codemodel.CodeWriter;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JPackage;
@@ -37,10 +40,7 @@ import com.sun.tools.xjc.ErrorReceiver;
 import com.sun.tools.xjc.ModelLoader;
 import com.sun.tools.xjc.Options;
 import com.sun.tools.xjc.model.Model;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import org.drools.compiler.builder.impl.KnowledgeBuilderImpl;
-import org.kie.memorycompiler.resources.MemoryResourceReader;
 import org.drools.compiler.compiler.Dialect;
 import org.drools.compiler.compiler.PackageRegistry;
 import org.drools.compiler.compiler.ProjectJavaCompiler;
@@ -74,6 +74,7 @@ import org.kie.api.io.ResourceConfiguration;
 import org.kie.internal.builder.KnowledgeBuilder;
 import org.kie.internal.builder.KnowledgeBuilderResult;
 import org.kie.internal.builder.help.DroolsJaxbHelperProvider;
+import org.kie.memorycompiler.resources.MemoryResourceReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 
@@ -148,8 +149,8 @@ public class DroolsJaxbHelperProviderImpl
 
         boolean useProjectClassLoader = kBuilder.getRootClassLoader() instanceof ProjectClassLoader;
 
-        List<String> classNames = new ArrayList<String>();
-        List<String> srcNames = new ArrayList<String>();
+        List<String> classNames = new ArrayList<>();
+        List<String> srcNames = new ArrayList<>();
 
         for (Entry<String, byte[]> entry : codeWriter.getMap().entrySet()) {
             String name = entry.getKey();
@@ -223,6 +224,7 @@ public class DroolsJaxbHelperProviderImpl
 
     }
 
+    @Override
     public String[] addXsdModel(Resource resource,
             KnowledgeBuilder kbuilder,
             Options xjcOpts,
@@ -237,6 +239,7 @@ public class DroolsJaxbHelperProviderImpl
                 kbase);
     }
 
+    @Override
     public JAXBContext newJAXBContext(String[] classNames,
             Map<String, ?> properties,
             KieBase kbase) throws JAXBException {
@@ -276,9 +279,10 @@ public class DroolsJaxbHelperProviderImpl
         private String currentPath;
 
         public MapVfsCodeWriter() {
-            this.map = new LinkedHashMap<String, byte[]>();
+            this.map = new LinkedHashMap<>();
         }
 
+        @Override
         public OutputStream openBinary(JPackage pkg,
                 String fileName) throws IOException {
             String pkgName = pkg.name();
@@ -297,12 +301,14 @@ public class DroolsJaxbHelperProviderImpl
             this.currentBaos = new ByteArrayOutputStream();
 
             return new FilterOutputStream(this.currentBaos) {
+                @Override
                 public void close() {
                     // don't let this stream close
                 }
             };
         }
 
+        @Override
         public void close() throws IOException {
             if (this.currentBaos != null) {
                 this.currentBaos.close();
@@ -321,18 +327,22 @@ public class DroolsJaxbHelperProviderImpl
 
         public String stage = "processing";
 
+        @Override
         public void warning(SAXParseException e) {
             e.printStackTrace();
         }
 
+        @Override
         public void error(SAXParseException e) {
             e.printStackTrace();
         }
 
+        @Override
         public void fatalError(SAXParseException e) {
             e.printStackTrace();
         }
 
+        @Override
         public void info(SAXParseException e) {
             e.printStackTrace();
         }
@@ -349,6 +359,7 @@ public class DroolsJaxbHelperProviderImpl
             this.strBuilder = new StringBuilder();
         }
 
+        @Override
         public int read(char[] cbuf,
                 int off,
                 int len) throws IOException {
@@ -374,6 +385,7 @@ public class DroolsJaxbHelperProviderImpl
             return value;
         }
 
+        @Override
         public void close() throws IOException {
             if (!sourceClosed) {
                 // close the source, we only do this once.
@@ -396,6 +408,7 @@ public class DroolsJaxbHelperProviderImpl
             super(s);
         }
 
+        @Override
         public void close() {
             try {
                 reset();

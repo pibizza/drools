@@ -18,7 +18,7 @@ package org.drools.compiler.lang;
 /**
  * Enum to identify a sentence type. This is used by DRLParser and stored into
  * DroolsSentence.
- * 
+ *
  * @see DroolsSentence
  */
 public enum DroolsSentenceType {

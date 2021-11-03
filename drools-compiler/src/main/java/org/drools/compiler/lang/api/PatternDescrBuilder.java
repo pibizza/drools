@@ -20,7 +20,7 @@ import org.drools.compiler.lang.descr.PatternDescr;
 
 /**
  * A descriptor builder for Patterns
- * 
+ *
  * rule.name("Xyz")
  * .attribute("ruleflow-grou","bla")
  * .lhs()

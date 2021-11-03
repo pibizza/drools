@@ -26,6 +26,7 @@ public class KieScannerStatusChangeEventImpl implements KieScannerStatusChangeEv
         this.status = status;
     }
 
+    @Override
     public Status getStatus() {
         return status;
     }
@@ -40,15 +41,19 @@ public class KieScannerStatusChangeEventImpl implements KieScannerStatusChangeEv
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (!(obj instanceof KieScannerStatusChangeEventImpl))
+        }
+        if (!(obj instanceof KieScannerStatusChangeEventImpl)) {
             return false;
+        }
         KieScannerStatusChangeEventImpl other = (KieScannerStatusChangeEventImpl) obj;
-        if (status != other.status)
+        if (status != other.status) {
             return false;
+        }
         return true;
     }
 

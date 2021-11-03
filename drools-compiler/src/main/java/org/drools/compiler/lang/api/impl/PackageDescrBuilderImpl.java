@@ -26,7 +26,6 @@ import org.drools.compiler.lang.api.PackageDescrBuilder;
 import org.drools.compiler.lang.api.QueryDescrBuilder;
 import org.drools.compiler.lang.api.RuleDescrBuilder;
 import org.drools.compiler.lang.api.UnitDescrBuilder;
-import org.drools.compiler.lang.descr.AccumulateImportDescr;
 import org.drools.compiler.lang.descr.AttributeDescr;
 import org.drools.compiler.lang.descr.BaseDescr;
 import org.drools.compiler.lang.descr.FunctionImportDescr;
@@ -64,6 +63,7 @@ public class PackageDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBu
     /**
      * {@inheritDoc}
      */
+    @Override
     public PackageDescr getDescr() {
         return descr;
     }
@@ -71,46 +71,54 @@ public class PackageDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBu
     /**
      * {@inheritDoc}
      */
+    @Override
     public PackageDescrBuilder name(String name) {
         descr.setNamespace(name);
         return this;
     }
 
+    @Override
     public UnitDescrBuilder newUnit() {
         UnitDescrBuilder impl = new UnitDescrBuilderImpl(this);
         descr.setUnit(initDescr(impl));
         return impl;
     }
 
+    @Override
     public ImportDescrBuilder newImport() {
         ImportDescrBuilder impl = new ImportDescrBuilderImpl(this, false);
         descr.addImport(initDescr(impl));
         return impl;
     }
 
+    @Override
     public ImportDescrBuilder newFunctionImport() {
         ImportDescrBuilder impl = new ImportDescrBuilderImpl(this, true);
         descr.addFunctionImport((FunctionImportDescr) initDescr(impl));
         return impl;
     }
 
+    @Override
     public AccumulateImportDescrBuilder newAccumulateImport() {
         AccumulateImportDescrBuilder impl = new AccumulateImportDescrBuilderImpl(this);
-        descr.addAccumulateImport((AccumulateImportDescr) initDescr(impl));
+        descr.addAccumulateImport(initDescr(impl));
         return impl;
     }
 
+    @Override
     public GlobalDescrBuilder newGlobal() {
         GlobalDescrBuilder global = new GlobalDescrBuilderImpl(this);
         descr.addGlobal(initDescr(global));
         return global;
     }
 
+    @Override
     public DeclareDescrBuilder newDeclare() {
         DeclareDescrBuilder declare = new DeclareDescrBuilderImpl(this);
         return declare;
     }
 
+    @Override
     public RuleDescrBuilder newRule() {
         RuleDescrBuilder rule = new RuleDescrBuilderImpl(this);
         descr.addRule(initDescr(rule));
@@ -118,6 +126,7 @@ public class PackageDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBu
         return rule;
     }
 
+    @Override
     public QueryDescrBuilder newQuery() {
         QueryDescrBuilder query = new QueryDescrBuilderImpl(this);
         descr.addRule(initDescr(query));
@@ -125,14 +134,16 @@ public class PackageDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBu
         return query;
     }
 
+    @Override
     public FunctionDescrBuilder newFunction() {
         FunctionDescrBuilder function = new FunctionDescrBuilderImpl(this);
         descr.addFunction(initDescr(function));
         return function;
     }
 
+    @Override
     public AttributeDescrBuilder<PackageDescrBuilder> attribute(String name) {
-        AttributeDescrBuilder<PackageDescrBuilder> attribute = new AttributeDescrBuilderImpl<PackageDescrBuilder>(this, name);
+        AttributeDescrBuilder<PackageDescrBuilder> attribute = new AttributeDescrBuilderImpl<>(this, name);
         descr.addAttribute(initDescr(attribute));
         return attribute;
     }
@@ -144,6 +155,7 @@ public class PackageDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBu
         return descr;
     }
 
+    @Override
     public PackageDescrBuilder attribute(String name,
             String value) {
         descr.addAttribute(new AttributeDescr(name,
@@ -151,6 +163,7 @@ public class PackageDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBu
         return this;
     }
 
+    @Override
     public PackageDescrBuilder attribute(String name,
             String value,
             AttributeDescr.Type type) {
@@ -160,6 +173,7 @@ public class PackageDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBu
         return this;
     }
 
+    @Override
     public PackageDescrBuilder end() {
         return this;
     }

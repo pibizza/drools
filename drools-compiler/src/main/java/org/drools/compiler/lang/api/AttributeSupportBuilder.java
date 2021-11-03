@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -24,7 +24,7 @@ public interface AttributeSupportBuilder<P extends DescrBuilder<?, ?>> {
 
     /**
      * Adds a new attribute to the statement
-     * 
+     *
      * @param name the attribute name
      * @return the AttributeDescrBuilder to set the attribute value
      */
@@ -32,7 +32,7 @@ public interface AttributeSupportBuilder<P extends DescrBuilder<?, ?>> {
 
     /**
      * Adds a new attribute with the given name and value
-     * 
+     *
      * @param name the name of the attribute to be added
      * @param value the value of the attribute to be added
      * @return the container builder
@@ -42,7 +42,7 @@ public interface AttributeSupportBuilder<P extends DescrBuilder<?, ?>> {
 
     /**
      * Adds a new attribute with the given name and value
-     * 
+     *
      * @param name the name of the attribute to be added
      * @param value the value of the attribute to be added
      * @param type the type of the value of the attribute. See {@link AttributeDescr.Type}

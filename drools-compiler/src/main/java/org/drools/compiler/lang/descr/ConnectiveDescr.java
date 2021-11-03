@@ -16,14 +16,14 @@
 
 package org.drools.compiler.lang.descr;
 
-import org.drools.core.util.StringUtils;
-
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.drools.core.util.StringUtils;
 
 /**
  * This is used to connect restrictions together for a single field
@@ -93,14 +93,14 @@ public class ConnectiveDescr extends RestrictionDescr {
 
     public void add(ConnectiveDescr restriction) {
         if (this.children == Collections.EMPTY_LIST) {
-            this.children = new ArrayList<Object>(2);
+            this.children = new ArrayList<>(2);
         }
         this.children.add(restriction);
     }
 
     public void add(String restriction) {
         if (this.children == Collections.EMPTY_LIST) {
-            this.children = new ArrayList<Object>(2);
+            this.children = new ArrayList<>(2);
         }
         this.children.add(restriction);
     }
@@ -132,6 +132,7 @@ public class ConnectiveDescr extends RestrictionDescr {
         }
     }
 
+    @Override
     public String toString() {
         final StringBuilder buf = new StringBuilder();
         buildExpression(buf);
@@ -143,11 +144,13 @@ public class ConnectiveDescr extends RestrictionDescr {
      */
     public static enum RestrictionConnectiveType {
         AND {
+            @Override
             public String toString() {
                 return "&&";
             }
         },
         OR {
+            @Override
             public String toString() {
                 return "||";
             }

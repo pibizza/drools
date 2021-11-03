@@ -27,7 +27,7 @@ public interface AccumulateImportDescrBuilder
 
     /**
      * Sets the import target
-     * 
+     *
      * @param target the class or package being imported
      * @return itself
      */
@@ -35,7 +35,7 @@ public interface AccumulateImportDescrBuilder
 
     /**
      * Sets the function name for the accumulate import
-     * 
+     *
      * @param functionName the function name
      * @return itself
      */

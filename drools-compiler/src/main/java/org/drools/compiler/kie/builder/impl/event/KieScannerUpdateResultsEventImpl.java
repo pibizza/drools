@@ -26,6 +26,7 @@ public class KieScannerUpdateResultsEventImpl implements KieScannerUpdateResults
         this.results = results;
     }
 
+    @Override
     public Results getResults() {
         return results;
     }

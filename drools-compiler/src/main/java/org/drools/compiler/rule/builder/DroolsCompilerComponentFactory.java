@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -15,10 +15,10 @@
 
 package org.drools.compiler.rule.builder;
 
+import org.drools.compiler.lang.ExpressionRewriter;
+import org.drools.compiler.lang.MVELDumper;
 import org.drools.core.base.FieldDataFactory;
 import org.drools.core.base.FieldFactory;
-import org.drools.compiler.lang.MVELDumper;
-import org.drools.compiler.lang.ExpressionRewriter;
 
 public class DroolsCompilerComponentFactory {
 

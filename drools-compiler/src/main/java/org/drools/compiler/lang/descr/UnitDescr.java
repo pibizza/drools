@@ -43,9 +43,10 @@ public class UnitDescr extends BaseDescr {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
@@ -56,9 +57,10 @@ public class UnitDescr extends BaseDescr {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
@@ -80,16 +82,19 @@ public class UnitDescr extends BaseDescr {
         return this.getStartCharacter() == other.getStartCharacter();
     }
 
+    @Override
     public String toString() {
         return "unit " + this.target;
     }
 
+    @Override
     public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
         super.readExternal(in);
         target = (String) in.readObject();
     }
 
+    @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         super.writeExternal(out);
         out.writeObject(target);

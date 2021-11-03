@@ -66,18 +66,23 @@ public class EntryPointDeclarationDescr extends AnnotatedBaseDescr {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         EntryPointDeclarationDescr other = (EntryPointDeclarationDescr) obj;
         if (entryPoint == null) {
-            if (other.entryPoint != null)
+            if (other.entryPoint != null) {
                 return false;
-        } else if (!entryPoint.equals(other.entryPoint))
+            }
+        } else if (!entryPoint.equals(other.entryPoint)) {
             return false;
+        }
         return true;
     }
 

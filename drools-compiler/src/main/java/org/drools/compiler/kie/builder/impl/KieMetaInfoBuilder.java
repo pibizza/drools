@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.drools.compiler.builder.InternalKnowledgeBuilder;
-import org.kie.memorycompiler.resources.ResourceStore;
 import org.drools.compiler.compiler.PackageRegistry;
 import org.drools.compiler.kproject.models.KieModuleModelImpl;
 import org.drools.core.factmodel.ClassDefinition;
@@ -36,6 +35,7 @@ import org.kie.api.definition.KiePackage;
 import org.kie.api.definition.rule.Rule;
 import org.kie.api.definition.type.FactType;
 import org.kie.internal.builder.KnowledgeBuilder;
+import org.kie.memorycompiler.resources.ResourceStore;
 
 import static org.drools.core.util.Drools.hasMvel;
 

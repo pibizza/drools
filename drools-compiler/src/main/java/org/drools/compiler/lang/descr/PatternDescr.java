@@ -1,12 +1,12 @@
 /*
  * Copyright 2005 Red Hat, Inc. and/or its affiliates.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -155,7 +155,7 @@ public class PatternDescr extends AnnotatedBaseDescr
     }
 
     private List<? extends BaseDescr> doGetConstraints(ExprConstraintDescr.Type type) {
-        List<BaseDescr> returnList = new ArrayList<BaseDescr>();
+        List<BaseDescr> returnList = new ArrayList<>();
         for (BaseDescr descr : this.constraint.getDescrs()) {
 
             // if it is a ExprConstraintDescr - check the type
@@ -180,6 +180,7 @@ public class PatternDescr extends AnnotatedBaseDescr
                 (source instanceof FromDescr) && context.getEntryPointId(((FromDescr) source).getExpression()).isPresent());
     }
 
+    @Override
     public String toString() {
         return "[Pattern: id=" + this.identifier + "; objectType=" + this.objectType + "]";
     }
@@ -224,7 +225,7 @@ public class PatternDescr extends AnnotatedBaseDescr
     public void setResource(org.kie.api.io.Resource resource) {
         super.setResource(resource);
         ((BaseDescr) this.constraint).setResource(resource);
-    };
+    }
 
     /**
      * @return the behaviors
@@ -245,7 +246,7 @@ public class PatternDescr extends AnnotatedBaseDescr
 
     public void addBehavior(BehaviorDescr behavior) {
         if (this.behaviors == null) {
-            this.behaviors = new ArrayList<BehaviorDescr>();
+            this.behaviors = new ArrayList<>();
         }
         this.behaviors.add(behavior);
     }
@@ -272,6 +273,7 @@ public class PatternDescr extends AnnotatedBaseDescr
         this.xpathStartDeclaration = xpathStartDeclaration;
     }
 
+    @Override
     public PatternDescr clone() {
         PatternDescr clone = new PatternDescr(this.objectType,
                 this.identifier);
@@ -299,6 +301,7 @@ public class PatternDescr extends AnnotatedBaseDescr
         return clone;
     }
 
+    @Override
     public void accept(DescrVisitor visitor) {
         visitor.visit(this);
     }

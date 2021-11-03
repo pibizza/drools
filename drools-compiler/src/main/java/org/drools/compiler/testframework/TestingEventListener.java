@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.drools.core.WorkingMemory;
 import org.drools.core.common.ReteEvaluator;
 import org.drools.core.spi.Consequence;
 import org.drools.core.spi.KnowledgeHelper;
@@ -50,7 +49,7 @@ import org.kie.api.runtime.rule.Match;
  */
 public class TestingEventListener implements AgendaEventListener {
 
-    final Map<String, Integer> firingCounts = new HashMap<String, Integer>(100);
+    final Map<String, Integer> firingCounts = new HashMap<>(100);
 
     long totalFires;
 
@@ -59,9 +58,11 @@ public class TestingEventListener implements AgendaEventListener {
 
     public AgendaFilter getAgendaFilter(final HashSet<String> ruleNames, final boolean inclusive) {
         return new AgendaFilter() {
+            @Override
             public boolean accept(Match match) {
-                if (ruleNames.size() == 0)
+                if (ruleNames.size() == 0) {
                     return true;
+                }
                 String ruleName = match.getRule().getName();
 
                 //jdelong: please don't want to see records of cancelled activations
@@ -121,12 +122,15 @@ public class TestingEventListener implements AgendaEventListener {
     //        }
     //    }
 
+    @Override
     public void matchCancelled(MatchCancelledEvent event) {
     }
 
+    @Override
     public void matchCreated(MatchCreatedEvent event) {
     }
 
+    @Override
     public void afterMatchFired(AfterMatchFiredEvent event) {
         recordFiring(event.getMatch().getRule());
     }
@@ -135,12 +139,15 @@ public class TestingEventListener implements AgendaEventListener {
         record(rule, this.firingCounts);
     }
 
+    @Override
     public void agendaGroupPopped(AgendaGroupPoppedEvent event) {
     }
 
+    @Override
     public void agendaGroupPushed(AgendaGroupPushedEvent event) {
     }
 
+    @Override
     public void beforeMatchFired(BeforeMatchFiredEvent event) {
     }
 
@@ -177,21 +184,25 @@ public class TestingEventListener implements AgendaEventListener {
         return r;
     }
 
+    @Override
     public void afterRuleFlowGroupActivated(RuleFlowGroupActivatedEvent event) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void afterRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent event) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void beforeRuleFlowGroupActivated(RuleFlowGroupActivatedEvent event) {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void beforeRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent event) {
         // TODO Auto-generated method stub
 
@@ -201,6 +212,7 @@ public class TestingEventListener implements AgendaEventListener {
 
 class NilConsequence implements Consequence {
 
+    @Override
     public void evaluate(KnowledgeHelper knowledgeHelper, ReteEvaluator reteEvaluator) throws Exception {
     }
 
@@ -212,6 +224,7 @@ class NilConsequence implements Consequence {
 
     }
 
+    @Override
     public String getName() {
         return "default";
     }

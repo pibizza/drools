@@ -69,8 +69,8 @@ public class ClassHierarchyManager {
      */
     protected List<AbstractClassTypeDeclarationDescr> sortByHierarchy(Collection<AbstractClassTypeDeclarationDescr> unsortedDescrs, KnowledgeBuilderImpl kbuilder) {
 
-        taxonomy = new HashMap<QualifiedName, Collection<QualifiedName>>();
-        Map<QualifiedName, AbstractClassTypeDeclarationDescr> cache = new HashMap<QualifiedName, AbstractClassTypeDeclarationDescr>();
+        taxonomy = new HashMap<>();
+        Map<QualifiedName, AbstractClassTypeDeclarationDescr> cache = new HashMap<>();
 
         for (AbstractClassTypeDeclarationDescr tdescr : unsortedDescrs) {
             cache.put(tdescr.getType(), tdescr);
@@ -81,7 +81,7 @@ public class ClassHierarchyManager {
 
             Collection<QualifiedName> supers = taxonomy.get(name);
             if (supers == null) {
-                supers = new ArrayList<QualifiedName>();
+                supers = new ArrayList<>();
                 taxonomy.put(name, supers);
             } else {
                 kbuilder.addBuilderResult(new TypeDeclarationError(tdescr,
@@ -193,9 +193,10 @@ public class ClassHierarchyManager {
                     inheritedFlDescr.setResource(resource);
                     inheritedFlDescr.setInherited(!Modifier.isAbstract(inspector.getGetterMethods().get(name).getModifiers()));
 
-                    if (!fieldMap.containsKey(inheritedFlDescr.getFieldName()))
+                    if (!fieldMap.containsKey(inheritedFlDescr.getFieldName())) {
                         fieldMap.put(inheritedFlDescr.getFieldName(),
                                 inheritedFlDescr);
+                    }
                 }
             }
         }
@@ -254,7 +255,7 @@ public class ClassHierarchyManager {
             Map<String, AbstractClassTypeDeclarationDescr> unprocessableDescrs,
             TypeResolver resolver) {
 
-        Map<String, TypeFieldDescr> fieldMap = new LinkedHashMap<String, TypeFieldDescr>();
+        Map<String, TypeFieldDescr> fieldMap = new LinkedHashMap<>();
         boolean isNovel = TypeDeclarationUtils.isNovelClass(typeDescr, kbuilder.getPackageRegistry(typeDescr.getNamespace()));
 
         PackageRegistry registry = kbuilder.getPackageRegistry(superTypePackageName);

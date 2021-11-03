@@ -101,12 +101,12 @@ import static org.drools.core.reteoo.KieComponentFactory.createKieComponentFacto
  * drools.accumulate.function.min = org.kie.base.accumulators.MinAccumulateFunction
  * drools.accumulate.function.count = org.kie.base.accumulators.CountAccumulateFunction
  * drools.accumulate.function.sum = org.kie.base.accumulators.SumAccumulateFunction
- * 
+ *
  * drools.parser.processStringEscapes = true|false
- * 
- * 
+ *
+ *
  * drools.problem.severity.<ident> = ERROR|WARNING|INFO
- * 
+ *
  */
 public class KnowledgeBuilderConfigurationImpl
         implements
@@ -163,7 +163,7 @@ public class KnowledgeBuilderConfigurationImpl
 
     /**
      * Constructor that sets the parent class loader for the package being built/compiled
-     * 
+     *
      * @param classLoaders
      */
     public KnowledgeBuilderConfigurationImpl(ClassLoader... classLoaders) {
@@ -279,8 +279,8 @@ public class KnowledgeBuilderConfigurationImpl
     }
 
     private void buildSeverityMap() {
-        this.severityMap = new HashMap<String, ResultSeverity>();
-        Map<String, String> temp = new HashMap<String, String>();
+        this.severityMap = new HashMap<>();
+        Map<String, String> temp = new HashMap<>();
         this.chainedProperties.mapStartsWith(temp,
                 KBuilderSeverityOption.PROPERTY_NAME,
                 true);
@@ -293,6 +293,7 @@ public class KnowledgeBuilderConfigurationImpl
         }
     }
 
+    @Override
     public void setProperty(String name,
             String value) {
         name = name.trim();
@@ -354,6 +355,7 @@ public class KnowledgeBuilderConfigurationImpl
         }
     }
 
+    @Override
     public String getProperty(String name) {
         name = name.trim();
         if (StringUtils.isEmpty(name)) {
@@ -413,7 +415,7 @@ public class KnowledgeBuilderConfigurationImpl
         java.init(this);
         dialectConfigurations.put("java", java);
 
-        Map<String, String> dialectProperties = new HashMap<String, String>();
+        Map<String, String> dialectProperties = new HashMap<>();
         this.chainedProperties.mapStartsWith(dialectProperties, "drools.dialect", false);
         setDefaultDialect(dialectProperties.get(DefaultDialectOption.PROPERTY_NAME));
     }
@@ -585,7 +587,7 @@ public class KnowledgeBuilderConfigurationImpl
 
     private void buildEvaluatorRegistry() {
         this.evaluatorRegistry = new EvaluatorRegistry(getFunctionFactoryClassLoader());
-        Map<String, String> temp = new HashMap<String, String>();
+        Map<String, String> temp = new HashMap<>();
         this.chainedProperties.mapStartsWith(temp,
                 EvaluatorOption.PROPERTY_NAME,
                 true);
@@ -604,7 +606,7 @@ public class KnowledgeBuilderConfigurationImpl
 
     /**
      * Returns the evaluator registry for this package builder configuration
-     * 
+     *
      * @return
      */
     public EvaluatorRegistry getEvaluatorRegistry() {
@@ -765,6 +767,7 @@ public class KnowledgeBuilderConfigurationImpl
         this.alphaNetworkCompilerOption = alphaNetworkCompilerOption;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T extends SingleValueKnowledgeBuilderOption> T getOption(Class<T> option) {
         if (DefaultDialectOption.class.equals(option)) {
@@ -795,6 +798,7 @@ public class KnowledgeBuilderConfigurationImpl
         return null;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T extends MultiValueKnowledgeBuilderOption> T getOption(Class<T> option,
             String key) {
@@ -812,6 +816,7 @@ public class KnowledgeBuilderConfigurationImpl
         return null;
     }
 
+    @Override
     public <T extends MultiValueKnowledgeBuilderOption> Set<String> getOptionKeys(
             Class<T> option) {
         if (AccumulateFunctionOption.class.equals(option)) {
@@ -824,6 +829,7 @@ public class KnowledgeBuilderConfigurationImpl
         return null;
     }
 
+    @Override
     public <T extends KnowledgeBuilderOption> void setOption(T option) {
         if (option instanceof DefaultDialectOption) {
             this.defaultDialect = (DefaultDialectOption) option;

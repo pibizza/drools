@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -15,9 +15,9 @@
 
 package org.drools.compiler.lang.api.impl;
 
-import org.drools.compiler.lang.api.PackageDescrBuilder;
 import org.drools.compiler.lang.api.AnnotationDescrBuilder;
 import org.drools.compiler.lang.api.EntryPointDeclarationDescrBuilder;
+import org.drools.compiler.lang.api.PackageDescrBuilder;
 import org.drools.compiler.lang.descr.EntryPointDeclarationDescr;
 
 public class EntryPointDeclarationDescrBuilderImpl extends BaseDescrBuilderImpl<PackageDescrBuilder, EntryPointDeclarationDescr>
@@ -28,13 +28,15 @@ public class EntryPointDeclarationDescrBuilderImpl extends BaseDescrBuilderImpl<
         super(parent, new EntryPointDeclarationDescr());
     }
 
+    @Override
     public EntryPointDeclarationDescrBuilder entryPointId(String id) {
         descr.setEntryPointId(id);
         return this;
     }
 
+    @Override
     public AnnotationDescrBuilder<EntryPointDeclarationDescrBuilder> newAnnotation(String name) {
-        AnnotationDescrBuilder<EntryPointDeclarationDescrBuilder> annotation = new AnnotationDescrBuilderImpl<EntryPointDeclarationDescrBuilder>(this, name);
+        AnnotationDescrBuilder<EntryPointDeclarationDescrBuilder> annotation = new AnnotationDescrBuilderImpl<>(this, name);
         descr.addAnnotation(annotation.getDescr());
         return annotation;
     }

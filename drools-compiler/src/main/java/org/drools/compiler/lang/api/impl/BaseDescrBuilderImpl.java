@@ -38,6 +38,7 @@ public class BaseDescrBuilderImpl<P extends DescrBuilder<?, ? extends BaseDescr>
         }
     }
 
+    @Override
     public DescrBuilder<P, T> startLocation(int line,
             int column) {
         descr.setLocation(line,
@@ -45,6 +46,7 @@ public class BaseDescrBuilderImpl<P extends DescrBuilder<?, ? extends BaseDescr>
         return this;
     }
 
+    @Override
     public DescrBuilder<P, T> endLocation(int line,
             int column) {
         descr.setEndLocation(line,
@@ -52,20 +54,24 @@ public class BaseDescrBuilderImpl<P extends DescrBuilder<?, ? extends BaseDescr>
         return this;
     }
 
+    @Override
     public DescrBuilder<P, T> startCharacter(int offset) {
         descr.setStartCharacter(offset);
         return this;
     }
 
+    @Override
     public DescrBuilder<P, T> endCharacter(int offset) {
         descr.setEndCharacter(offset);
         return this;
     }
 
+    @Override
     public T getDescr() {
         return descr;
     }
 
+    @Override
     public P end() {
         return parent;
     }

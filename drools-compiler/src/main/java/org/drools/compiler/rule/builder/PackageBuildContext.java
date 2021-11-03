@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 Red Hat, Inc. and/or its affiliates.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -125,7 +125,7 @@ public class PackageBuildContext {
     }
 
     public Dialect getDialect(String dialectName) {
-        return (Dialect) this.dialectRegistry.getDialect(dialectName);
+        return this.dialectRegistry.getDialect(dialectName);
     }
 
     public DialectCompiletimeRegistry getDialectRegistry() {
@@ -134,7 +134,7 @@ public class PackageBuildContext {
 
     /**
      * Returns the list of errors found while building the current context
-     * 
+     *
      * @return
      */
     public List<DroolsError> getErrors() {
@@ -155,7 +155,7 @@ public class PackageBuildContext {
 
     /**
      * Returns the current package being built
-     * 
+     *
      * @return
      */
     public InternalKnowledgePackage getPkg() {
@@ -164,7 +164,7 @@ public class PackageBuildContext {
 
     /**
      * Returns the Map<String invokerClassName, BaseDescr descr> of descriptor lookups
-     * 
+     *
      * @return
      */
     public BaseDescr getDescrLookup(String className) {
@@ -185,7 +185,7 @@ public class PackageBuildContext {
 
     /**
      * Returns the Map<String invokerClassName, String invokerCode> of generated invokers
-     * 
+     *
      * @return
      */
     public Map<String, String> getInvokers() {
@@ -198,7 +198,7 @@ public class PackageBuildContext {
 
     /**
      * Returns the list of generated methods
-     * 
+     *
      * @return
      */
     public List<String> getMethods() {
@@ -211,7 +211,7 @@ public class PackageBuildContext {
 
     /**
      * Returns current counter value for generated method names
-     * 
+     *
      * @return
      */
     public int getCurrentId() {

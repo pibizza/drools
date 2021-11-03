@@ -77,6 +77,7 @@ public class RelationalExprDescr extends BaseDescr {
         createOrGetOperator().setOperator(operator);
     }
 
+    @Override
     public boolean isNegated() {
         return operator != null ? operator.isNegated() : false;
     }

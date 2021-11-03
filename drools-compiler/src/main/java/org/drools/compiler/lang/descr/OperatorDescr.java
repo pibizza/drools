@@ -57,6 +57,7 @@ public class OperatorDescr extends BaseDescr {
         this.operator = operator.trim();
     }
 
+    @Override
     public boolean isNegated() {
         return negated;
     }
@@ -112,7 +113,7 @@ public class OperatorDescr extends BaseDescr {
     /**
      * This is an internal cache of the left string parameter that is set during the rewrite
      * into MVEL, allowing for further analysis of the parameter type.
-     * 
+     *
      * @param left
      */
     public void setLeftString(String left) {
@@ -122,7 +123,7 @@ public class OperatorDescr extends BaseDescr {
     /**
      * This is an internal cache of the right string parameter that is set during the rewrite
      * into MVEL, allowing for further analysis of the parameter type.
-     * 
+     *
      * @param right
      */
     public void setRightString(String right) {
@@ -132,7 +133,7 @@ public class OperatorDescr extends BaseDescr {
     /**
      * This is an internal cache of the left string parameter that is set during the rewrite
      * into MVEL, allowing for further analysis of the parameter type.
-     * 
+     *
      * @return the leftString
      */
     public String getLeftString() {
@@ -142,7 +143,7 @@ public class OperatorDescr extends BaseDescr {
     /**
      * This is an internal cache of the right string parameter that is set during the rewrite
      * into MVEL, allowing for further analysis of the parameter type.
-     * 
+     *
      * @return the rightString
      */
     public String getRightString() {

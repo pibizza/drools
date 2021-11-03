@@ -27,7 +27,7 @@ public interface AttributeDescrBuilder<P extends DescrBuilder<?, ?>>
 
     /**
      * Sets the attribute value
-     * 
+     *
      * @param value
      * @return itself
      */
@@ -35,9 +35,9 @@ public interface AttributeDescrBuilder<P extends DescrBuilder<?, ?>>
 
     /**
      * Sets the attribute value type
-     * 
+     *
      * @param type see {@link AttributeDescr.Type}
-     * 
+     *
      * @return itself
      */
     public AttributeDescrBuilder<P> type(AttributeDescr.Type type);

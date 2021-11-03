@@ -346,6 +346,7 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
         return resource;
     }
 
+    @Override
     public InternalKnowledgeBase getKnowledgeBase() {
         return kBase;
     }
@@ -1738,6 +1739,7 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
         }
     }
 
+    @Override
     public TypeDeclaration getAndRegisterTypeDeclaration(Class<?> cls, String packageName) {
         if (kBase != null) {
             InternalKnowledgePackage pkg = kBase.getPackage(packageName);
@@ -1856,10 +1858,12 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
      *
      * @return The PackageBuilderConfiguration
      */
+    @Override
     public KnowledgeBuilderConfigurationImpl getBuilderConfiguration() {
         return this.configuration;
     }
 
+    @Override
     public PackageRegistry getPackageRegistry(String name) {
         return this.pkgRegistryMap.get(name);
     }
@@ -1878,6 +1882,7 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
         return pkgRegistryMap.keySet();
     }
 
+    @Override
     public List<PackageDescr> getPackageDescrs(String packageName) {
         return packages.get(packageName);
     }
@@ -1897,6 +1902,7 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
         return expander;
     }
 
+    @Override
     public Map<String, Class<?>> getGlobals() {
         return this.globals;
     }
@@ -1909,10 +1915,12 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
      * This will return true if there were errors in the package building and
      * compiling phase
      */
+    @Override
     public boolean hasErrors() {
         return !getErrorList().isEmpty();
     }
 
+    @Override
     public KnowledgeBuilderResults getResults(ResultSeverity... problemTypes) {
         List<KnowledgeBuilderResult> problems = getResultList(problemTypes);
         return new PackageBuilderResults(problems.toArray(new BaseKnowledgeBuilderResultImpl[problems.size()]));
@@ -1929,6 +1937,7 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
         return problems;
     }
 
+    @Override
     public boolean hasResults(ResultSeverity... problemTypes) {
         return !getResultList(problemTypes).isEmpty();
     }
@@ -1982,6 +1991,7 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
      * @return A list of Error objects that resulted from building and compiling
      *         the package.
      */
+    @Override
     public PackageBuilderErrors getErrors() {
         List<DroolsError> errors = getErrorList();
         return new PackageBuilderErrors(errors.toArray(new DroolsError[errors.size()]));
@@ -2018,6 +2028,7 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
         }
     }
 
+    @Override
     public ClassLoader getRootClassLoader() {
         return this.rootClassLoader;
     }
@@ -2067,10 +2078,12 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
             } catch (Exception e) {
                 results.add(new DroolsError() {
 
+                    @Override
                     public String getMessage() {
                         return "Unable to register changeset resource " + resource;
                     }
 
+                    @Override
                     public int[] getLines() {
                         return new int[0];
                     }
@@ -2085,6 +2098,7 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
         buildResources.push(resources);
     }
 
+    @Override
     public void undo() {
         if (buildResources.isEmpty()) {
             return;
@@ -2094,6 +2108,7 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
         }
     }
 
+    @Override
     public ResourceRemovalResult removeObjectsGeneratedFromResource(Resource resource) {
         boolean modified = false;
         for (PackageRegistry packageRegistry : pkgRegistryMap.values()) {
@@ -2160,15 +2175,18 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
         this.assetFilter = assetFilter;
     }
 
+    @Override
     public void add(Resource resource, ResourceType type) {
         ResourceConfiguration resourceConfiguration = resource instanceof BaseResource ? resource.getConfiguration() : null;
         add(resource, type, resourceConfiguration);
     }
 
+    @Override
     public CompositeKnowledgeBuilder batch() {
         return new CompositeKnowledgeBuilderImpl(this);
     }
 
+    @Override
     public void add(Resource resource,
             ResourceType type,
             ResourceConfiguration configuration) {
@@ -2190,6 +2208,7 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
         return list;
     }
 
+    @Override
     public KieBase newKieBase() {
         return newKnowledgeBase(null);
     }
@@ -2207,6 +2226,7 @@ public class KnowledgeBuilderImpl implements InternalKnowledgeBuilder {
         return kbase;
     }
 
+    @Override
     public TypeDeclaration getTypeDeclaration(Class<?> cls) {
         return cls != null ? typeBuilder.getTypeDeclaration(cls) : null;
     }

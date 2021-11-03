@@ -115,10 +115,12 @@ public class TypeFieldDescr extends AnnotatedBaseDescr
         this.pattern.setResource(getResource());
     }
 
+    @Override
     public String toString() {
         return "TypeField[ " + this.getFieldName() + " : " + this.pattern + " = " + this.initExpr + " ]";
     }
 
+    @Override
     public int compareTo(TypeFieldDescr other) {
         return (this.index - other.index);
     }

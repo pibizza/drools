@@ -82,6 +82,7 @@ public class RuleDescr extends AnnotatedBaseDescr
         this.consequence = "";
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
@@ -101,6 +102,7 @@ public class RuleDescr extends AnnotatedBaseDescr
         unit = (UnitDescr) in.readObject();
     }
 
+    @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         super.writeExternal(out);
         out.writeObject(name);
@@ -140,6 +142,7 @@ public class RuleDescr extends AnnotatedBaseDescr
         this.name = name;
     }
 
+    @Override
     public String getDialect() {
         AttributeDescr dialect = this.attributes.get("dialect");
         return dialect != null ? dialect.getValue() : null;
@@ -307,66 +310,91 @@ public class RuleDescr extends AnnotatedBaseDescr
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         RuleDescr other = (RuleDescr) obj;
         if (attributes == null) {
-            if (other.attributes != null)
+            if (other.attributes != null) {
                 return false;
-        } else if (!attributes.equals(other.attributes))
+            }
+        } else if (!attributes.equals(other.attributes)) {
             return false;
+        }
         if (className == null) {
-            if (other.className != null)
+            if (other.className != null) {
                 return false;
-        } else if (!className.equals(other.className))
+            }
+        } else if (!className.equals(other.className)) {
             return false;
+        }
         if (consequence == null) {
-            if (other.consequence != null)
+            if (other.consequence != null) {
                 return false;
-        } else if (!consequence.equals(other.consequence))
+            }
+        } else if (!consequence.equals(other.consequence)) {
             return false;
-        if (consequenceLine != other.consequenceLine)
+        }
+        if (consequenceLine != other.consequenceLine) {
             return false;
-        if (consequencePattern != other.consequencePattern)
+        }
+        if (consequencePattern != other.consequencePattern) {
             return false;
-        if (loadOrder != other.loadOrder)
+        }
+        if (loadOrder != other.loadOrder) {
             return false;
+        }
         if (documentation == null) {
-            if (other.documentation != null)
+            if (other.documentation != null) {
                 return false;
-        } else if (!documentation.equals(other.documentation))
+            }
+        } else if (!documentation.equals(other.documentation)) {
             return false;
+        }
         if (errors == null) {
-            if (other.errors != null)
+            if (other.errors != null) {
                 return false;
-        } else if (!errors.equals(other.errors))
+            }
+        } else if (!errors.equals(other.errors)) {
             return false;
+        }
         if (lhs == null) {
-            if (other.lhs != null)
+            if (other.lhs != null) {
                 return false;
-        } else if (!lhs.equals(other.lhs))
+            }
+        } else if (!lhs.equals(other.lhs)) {
             return false;
+        }
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         if (namedConsequence == null) {
-            if (other.namedConsequence != null)
+            if (other.namedConsequence != null) {
                 return false;
-        } else if (!namedConsequence.equals(other.namedConsequence))
+            }
+        } else if (!namedConsequence.equals(other.namedConsequence)) {
             return false;
-        if (offset != other.offset)
+        }
+        if (offset != other.offset) {
             return false;
+        }
         if (parentName == null) {
-            if (other.parentName != null)
+            if (other.parentName != null) {
                 return false;
-        } else if (!parentName.equals(other.parentName))
+            }
+        } else if (!parentName.equals(other.parentName)) {
             return false;
+        }
         return true;
     }
 

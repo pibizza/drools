@@ -35,6 +35,7 @@ public class AtomicExprDescr extends BaseDescr implements ExpressionDescr {
         this.literal = isLiteral;
     }
 
+    @Override
     public String getExpression() {
         return this.expression;
     }

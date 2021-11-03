@@ -50,11 +50,13 @@ public class CompositeKnowledgeBuilderImpl implements CompositeKnowledgeBuilder 
         this.kBuilder = kBuilder;
     }
 
+    @Override
     public CompositeKnowledgeBuilder type(ResourceType type) {
         currentType = type;
         return this;
     }
 
+    @Override
     public CompositeKnowledgeBuilder add(Resource resource) {
         if (currentType == null) {
             throw new RuntimeException("You must declare the type of the resource");
@@ -62,18 +64,22 @@ public class CompositeKnowledgeBuilderImpl implements CompositeKnowledgeBuilder 
         return add(resource, currentType);
     }
 
+    @Override
     public CompositeKnowledgeBuilder add(Resource resource, ResourceType type) {
         return add(resource, type, resource.getConfiguration());
     }
 
+    @Override
     public CompositeKnowledgeBuilder add(Resource resource, ResourceType type, ResourceChangeSet changes) {
         return add(resource, type, resource.getConfiguration(), changes);
     }
 
+    @Override
     public CompositeKnowledgeBuilder add(Resource resource, ResourceType type, ResourceConfiguration configuration) {
         return add(resource, type, configuration, null);
     }
 
+    @Override
     public CompositeKnowledgeBuilder add(Resource resource, ResourceType type, ResourceConfiguration configuration, ResourceChangeSet changes) {
         ResourceDescr resourceDescr = new ResourceDescr(configuration, resource, changes);
         List<ResourceDescr> resourceDescrs = this.resourcesByType.get(type);
@@ -95,6 +101,7 @@ public class CompositeKnowledgeBuilderImpl implements CompositeKnowledgeBuilder 
         return resources;
     }
 
+    @Override
     public void build() {
         build(true);
     }

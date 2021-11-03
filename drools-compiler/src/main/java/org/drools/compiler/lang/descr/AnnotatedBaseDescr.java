@@ -16,9 +16,6 @@
 
 package org.drools.compiler.lang.descr;
 
-import org.drools.compiler.rule.builder.util.AnnotationFactory;
-import org.drools.core.rule.Annotated;
-
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -29,6 +26,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import org.drools.compiler.rule.builder.util.AnnotationFactory;
+import org.drools.core.rule.Annotated;
 
 /**
  * This is the super type for all pattern AST nodes.
@@ -42,15 +42,17 @@ public class AnnotatedBaseDescr extends BaseDescr
     private static final long serialVersionUID = 520l;
 
     public AnnotatedBaseDescr() {
-        this.annotations = new HashMap<String, AnnotationDescr>();
+        this.annotations = new HashMap<>();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         super.readExternal(in);
         this.annotations = (Map<String, AnnotationDescr>) in.readObject();
     }
 
+    @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         super.writeExternal(out);
         out.writeObject(annotations);
@@ -58,7 +60,7 @@ public class AnnotatedBaseDescr extends BaseDescr
 
     /**
      * Assigns a new annotation to this type
-     * 
+     *
      * @param annotation
      * @return returns the previous value of this annotation
      */
@@ -72,7 +74,7 @@ public class AnnotatedBaseDescr extends BaseDescr
 
     protected AnnotationDescr addAnnotation(String name, AnnotationDescr annotation) {
         if (this.annotations == null) {
-            this.annotations = new HashMap<String, AnnotationDescr>();
+            this.annotations = new HashMap<>();
         } else {
             AnnotationDescr existingAnnotation = annotations.get(name);
             if (existingAnnotation != null) {
@@ -86,7 +88,7 @@ public class AnnotatedBaseDescr extends BaseDescr
 
     /**
      * Assigns a new annotation to this type with the respective name and value
-     * 
+     *
      * @param name
      * @param value
      * @return returns the previous value of this annotation
@@ -94,7 +96,7 @@ public class AnnotatedBaseDescr extends BaseDescr
     public AnnotationDescr addAnnotation(String name,
             String value) {
         if (this.annotations == null) {
-            this.annotations = new HashMap<String, AnnotationDescr>();
+            this.annotations = new HashMap<>();
         } else {
             AnnotationDescr existingAnnotation = annotations.get(name);
             if (existingAnnotation != null) {
@@ -111,7 +113,7 @@ public class AnnotatedBaseDescr extends BaseDescr
 
     /**
      * Returns the annotation with the given name
-     * 
+     *
      * @param name
      */
     public AnnotationDescr getAnnotation(String name) {
@@ -122,18 +124,20 @@ public class AnnotatedBaseDescr extends BaseDescr
         return annotations == null ? null : annotations.get(annotationClass.getCanonicalName());
     }
 
+    @Override
     public <A extends Annotation> A getTypedAnnotation(Class<A> annotationClass) {
         AnnotationDescr annotationDescr = getAnnotation(annotationClass);
         return annotationDescr == null ? null : (A) AnnotationFactory.buildAnnotation(annotationDescr, annotationClass);
     }
 
+    @Override
     public boolean hasAnnotation(Class<? extends Annotation> annotationClass) {
         return getAnnotation(annotationClass) != null;
     }
 
     /**
      * Returns the set of annotation names for this type
-     * 
+     *
      * @return
      */
     public Set<String> getAnnotationNames() {
@@ -145,7 +149,7 @@ public class AnnotatedBaseDescr extends BaseDescr
     }
 
     public void indexByFQN(boolean isStrict) {
-        Map<String, AnnotationDescr> fqnAnnotations = new HashMap<String, AnnotationDescr>();
+        Map<String, AnnotationDescr> fqnAnnotations = new HashMap<>();
         for (AnnotationDescr annotationDescr : annotations.values()) {
             if (annotationDescr.getFullyQualifiedName() != null) {
                 fqnAnnotations.put(annotationDescr.getFullyQualifiedName(), annotationDescr);

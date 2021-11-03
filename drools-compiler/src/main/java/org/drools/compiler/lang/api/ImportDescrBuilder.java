@@ -27,7 +27,7 @@ public interface ImportDescrBuilder
 
     /**
      * Sets the import target
-     * 
+     *
      * @param target the class or package being imported
      * @return itself
      */

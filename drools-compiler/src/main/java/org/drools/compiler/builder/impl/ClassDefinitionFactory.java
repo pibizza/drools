@@ -118,7 +118,7 @@ public class ClassDefinitionFactory {
         }
         fullSuperTypes[j] = Thing.class.getName();
 
-        List<String> interfaceList = new ArrayList<String>();
+        List<String> interfaceList = new ArrayList<>();
         interfaceList.add(traitable ? Externalizable.class.getName() : Serializable.class.getName());
         if (traitable) {
             interfaceList.add(TraitableBean.class.getName());
@@ -223,7 +223,7 @@ public class ClassDefinitionFactory {
     private static List<FieldDefinition> sortFields(Map<String, TypeFieldDescr> fields,
             TypeResolver typeResolver,
             KnowledgeBuilderImpl kbuilder) {
-        List<FieldDefinition> fieldDefs = new ArrayList<FieldDefinition>(fields.size());
+        List<FieldDefinition> fieldDefs = new ArrayList<>(fields.size());
         int maxDeclaredPos = 0;
         BitSet occupiedPositions = new BitSet(fields.size());
 
@@ -333,7 +333,7 @@ public class ClassDefinitionFactory {
             Map<String, Method> methods = inspector.getGetterMethods();
             Map<String, Method> setters = inspector.getSetterMethods();
             int j = 0;
-            Map<String, TypeFieldDescr> fields = new HashMap<String, TypeFieldDescr>();
+            Map<String, TypeFieldDescr> fields = new HashMap<>();
             for (String fieldName : methods.keySet()) {
                 if (asTrait && ("core".equals(fieldName) || "fields".equals(fieldName))) {
                     continue;
@@ -368,7 +368,7 @@ public class ClassDefinitionFactory {
                 }
             }
 
-            Set<String> interfaces = new HashSet<String>();
+            Set<String> interfaces = new HashSet<>();
             Collections.addAll(interfaces, def.getInterfaces());
             for (Class iKlass : ClassUtils.getAllImplementedInterfaceNames(concrete)) {
                 interfaces.add(iKlass.getName());

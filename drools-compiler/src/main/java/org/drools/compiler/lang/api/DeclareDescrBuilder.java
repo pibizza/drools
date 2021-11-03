@@ -20,7 +20,7 @@ import org.drools.compiler.lang.descr.PackageDescr;
 
 /**
  * A descriptor builder for declare statements
- * 
+ *
  */
 public interface DeclareDescrBuilder
         extends
@@ -28,21 +28,21 @@ public interface DeclareDescrBuilder
 
     /**
      * Declares a new entry point
-     * 
+     *
      * @return the descriptor builder for the entry point
      */
     public EntryPointDeclarationDescrBuilder entryPoint();
 
     /**
      * Declares a new type
-     * 
+     *
      * @return the descriptor builder for the type
      */
     public TypeDeclarationDescrBuilder type();
 
     /**
      * Declares a new window
-     * 
+     *
      * @return the descriptor builder for the window
      */
     public WindowDeclarationDescrBuilder window();

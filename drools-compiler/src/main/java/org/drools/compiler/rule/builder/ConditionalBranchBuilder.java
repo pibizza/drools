@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -14,6 +14,8 @@
 */
 
 package org.drools.compiler.rule.builder;
+
+import java.util.List;
 
 import org.drools.compiler.compiler.DroolsError;
 import org.drools.compiler.compiler.RuleBuildError;
@@ -29,14 +31,14 @@ import org.drools.core.rule.NamedConsequence;
 import org.drools.core.rule.Pattern;
 import org.drools.core.rule.RuleConditionElement;
 
-import java.util.List;
-
 public class ConditionalBranchBuilder implements RuleConditionBuilder {
 
+    @Override
     public ConditionalBranch build(RuleBuildContext context, BaseDescr descr) {
         return build(context, descr, null);
     }
 
+    @Override
     public ConditionalBranch build(RuleBuildContext context, BaseDescr descr, Pattern prefixPattern) {
         ConditionalBranchDescr conditionalBranch = (ConditionalBranchDescr) descr;
 

@@ -34,6 +34,7 @@ public class BehaviorDescrBuilderImpl<P extends PatternDescrBuilder<?>> extends 
         this.parent.getDescr().addBehavior(descr);
     }
 
+    @Override
     public BehaviorDescrBuilder<P> type(String type,
             String subtype) {
         descr.setType(type);
@@ -41,6 +42,7 @@ public class BehaviorDescrBuilderImpl<P extends PatternDescrBuilder<?>> extends 
         return this;
     }
 
+    @Override
     public BehaviorDescrBuilder<P> parameters(List<String> params) {
         descr.setParameters(params);
         return this;

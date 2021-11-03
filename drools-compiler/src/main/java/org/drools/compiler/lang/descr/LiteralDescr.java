@@ -16,7 +16,7 @@
 
 package org.drools.compiler.lang.descr;
 
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
@@ -40,6 +40,7 @@ public class LiteralDescr extends BaseDescr {
         this.type = type;
     }
 
+    @Override
     public String toString() {
         return "[LiteralValue: " + getValue().getClass() + " " + getValue() + "]";
     }
@@ -52,6 +53,7 @@ public class LiteralDescr extends BaseDescr {
         this.type = type;
     }
 
+    @Override
     public String getText() {
         return this.text;
     }
@@ -60,8 +62,8 @@ public class LiteralDescr extends BaseDescr {
         switch (this.type) {
             case TYPE_NUMBER:
                 try {
-                    // in the DRL, we always use US number formatting 
-                    return DecimalFormat.getInstance(Locale.US).parse(this.getText());
+                    // in the DRL, we always use US number formatting
+                    return NumberFormat.getInstance(Locale.US).parse(this.getText());
                 } catch (ParseException e) {
                     // return String anyway
                     return this.getText();

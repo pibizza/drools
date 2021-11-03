@@ -62,6 +62,7 @@ public abstract class AbstractClassTypeDeclarationDescr extends AnnotatedBaseDes
         out.writeObject(fields);
     }
 
+    @Override
     public void setNamespace(String namespace) {
         super.setNamespace(namespace);
         this.type.setNamespace(namespace);
@@ -115,7 +116,7 @@ public abstract class AbstractClassTypeDeclarationDescr extends AnnotatedBaseDes
     }
 
     public List<QualifiedName> getSuperTypes() {
-        List<QualifiedName> l = new ArrayList<QualifiedName>(1);
+        List<QualifiedName> l = new ArrayList<>(1);
         l.add(new QualifiedName("Object", "java.lang"));
         return l;
     }
@@ -155,17 +156,21 @@ public abstract class AbstractClassTypeDeclarationDescr extends AnnotatedBaseDes
         }
     }
 
+    @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
 
         AbstractClassTypeDeclarationDescr that = (AbstractClassTypeDeclarationDescr) o;
 
         return !(getType() != null ? !getType().equals(that.getType()) : that.getType() != null);
     }
 
+    @Override
     public int hashCode() {
         return getType() != null ? getType().hashCode() : 0;
     }

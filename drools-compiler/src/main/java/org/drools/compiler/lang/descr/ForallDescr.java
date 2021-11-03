@@ -1,12 +1,12 @@
 /*
  * Copyright 2006 Red Hat, Inc. and/or its affiliates.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,19 +31,21 @@ public class ForallDescr extends BaseDescr
     private List<BaseDescr> patterns;
 
     public ForallDescr() {
-        this.patterns = new ArrayList<BaseDescr>(2);
+        this.patterns = new ArrayList<>(2);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.kie.lang.descr.ConditionalElementDescr#addDescr(org.kie.lang.descr.BaseDescr)
      */
+    @Override
     public void addDescr(final BaseDescr baseDescr) {
         // cast to make sure we are adding a pattern descriptor
         this.patterns.add(baseDescr);
     }
 
+    @Override
     public void insertBeforeLast(final Class<?> clazz,
             final BaseDescr baseDescr) {
         throw new UnsupportedOperationException("Can't add descriptors to " + this.getClass().getName());
@@ -51,16 +53,17 @@ public class ForallDescr extends BaseDescr
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.kie.lang.descr.ConditionalElementDescr#getDescrs()
      */
+    @Override
     public List<BaseDescr> getDescrs() {
         return this.patterns;
     }
 
     /**
      * Returns the base pattern from the forall CE
-     * 
+     *
      * @return
      */
     public PatternDescr getBasePattern() {
@@ -72,7 +75,7 @@ public class ForallDescr extends BaseDescr
             // becomes
             // forall( BASE_IDENTIFIER : Cheese() Cheese( this == BASE_IDENTIFIER, type == "stilton" ) )
             PatternDescr original = (PatternDescr) this.patterns.get(0);
-            PatternDescr base = (PatternDescr) original.clone();
+            PatternDescr base = original.clone();
             base.getDescrs().clear();
             base.setIdentifier(BASE_IDENTIFIER);
             base.setResource(original.getResource());
@@ -113,7 +116,7 @@ public class ForallDescr extends BaseDescr
 
     /**
      * Returns the remaining patterns from the forall CE
-     * 
+     *
      * @return
      */
     public List<BaseDescr> getRemainingPatterns() {
@@ -126,7 +129,7 @@ public class ForallDescr extends BaseDescr
             // becomes
             // forall( BASE_IDENTIFIER : Cheese() Cheese( this == BASE_IDENTIFIER, type == "stilton" ) )
             PatternDescr original = (PatternDescr) this.patterns.get(0);
-            PatternDescr remaining = (PatternDescr) original.clone();
+            PatternDescr remaining = original.clone();
             remaining.addConstraint(new ExprConstraintDescr("this == " + BASE_IDENTIFIER));
             remaining.setResource(original.getResource());
             return Collections.singletonList((BaseDescr) remaining);
@@ -134,10 +137,12 @@ public class ForallDescr extends BaseDescr
         return Collections.emptyList();
     }
 
+    @Override
     public void addOrMerge(BaseDescr baseDescr) {
         this.patterns.add(baseDescr);
     }
 
+    @Override
     public boolean removeDescr(BaseDescr baseDescr) {
         return baseDescr == null ? false : patterns.remove(baseDescr);
     }

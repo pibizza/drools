@@ -43,6 +43,7 @@ public class PatternDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends BaseD
         this.parent = parent;
     }
 
+    @Override
     public PatternDescrBuilder<P> id(String id,
             boolean isUnification) {
         descr.setIdentifier(id);
@@ -50,16 +51,19 @@ public class PatternDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends BaseD
         return this;
     }
 
+    @Override
     public PatternDescrBuilder<P> type(String type) {
         descr.setObjectType(type);
         return this;
     }
 
+    @Override
     public PatternDescrBuilder<P> isQuery(boolean query) {
         descr.setQuery(query);
         return this;
     }
 
+    @Override
     public PatternDescrBuilder<P> constraint(String constraint) {
         ExprConstraintDescr constr = new ExprConstraintDescr(constraint);
         constr.setType(ExprConstraintDescr.Type.NAMED);
@@ -69,6 +73,7 @@ public class PatternDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends BaseD
         return this;
     }
 
+    @Override
     public PatternDescrBuilder<P> constraint(String constraint,
             boolean positional) {
         ExprConstraintDescr constr = new ExprConstraintDescr(constraint);
@@ -79,6 +84,7 @@ public class PatternDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends BaseD
         return this;
     }
 
+    @Override
     public PatternDescrBuilder<P> bind(String var,
             String target,
             boolean isUnification) {
@@ -90,16 +96,19 @@ public class PatternDescrBuilderImpl<P extends DescrBuilder<?, ?>> extends BaseD
         return this;
     }
 
+    @Override
     public SourceDescrBuilder<PatternDescrBuilder<P>> from() {
-        return new SourceDescrBuilderImpl<PatternDescrBuilder<P>>(this);
+        return new SourceDescrBuilderImpl<>(this);
     }
 
+    @Override
     public BehaviorDescrBuilder<PatternDescrBuilder<P>> behavior() {
-        return new BehaviorDescrBuilderImpl<PatternDescrBuilder<P>>(this);
+        return new BehaviorDescrBuilderImpl<>(this);
     }
 
+    @Override
     public AnnotationDescrBuilder<PatternDescrBuilder<P>> newAnnotation(String name) {
-        AnnotationDescrBuilder<PatternDescrBuilder<P>> annotation = new AnnotationDescrBuilderImpl<PatternDescrBuilder<P>>(this, name);
+        AnnotationDescrBuilder<PatternDescrBuilder<P>> annotation = new AnnotationDescrBuilderImpl<>(this, name);
         descr.addAnnotation(annotation.getDescr());
         return annotation;
     }
