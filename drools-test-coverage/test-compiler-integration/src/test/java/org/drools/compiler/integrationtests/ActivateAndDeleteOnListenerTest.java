@@ -32,8 +32,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.kie.api.KieBase;
 import org.kie.api.event.rule.AgendaEventListener;
-import org.kie.api.event.rule.MatchCancelledEvent;
 import org.kie.api.event.rule.MatchCreatedEvent;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.runtime.ClassObjectFilter;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
@@ -139,34 +139,24 @@ public class ActivateAndDeleteOnListenerTest {
 
         final KieSession ksession = getSessionWithEagerActivation(drl);
         try {
-            final List<String> list = new ArrayList<>();
-
-            final AgendaEventListener agendaEventListener = new org.kie.api.event.rule.DefaultAgendaEventListener() {
-                @Override
-                public void matchCreated(final org.kie.api.event.rule.MatchCreatedEvent event) {
-                    list.add("activated");
-                }
-
-                @Override
-                public void matchCancelled(final MatchCancelledEvent event ) {
-                    list.add("cancelled");
-                }
-            };
-            ksession.addEventListener(agendaEventListener);
+  
+            final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+            final TrackingAgendaEventListener cancelListener = new TrackingAgendaEventListener.MatchCanceledEventListener();
+            ksession.addEventListener(createListener);
+            ksession.addEventListener(cancelListener);
 
             ksession.insert("test");
-            assertEquals(0, list.size());
+            
+            assertEquals(0, createListener.rulesCount());
+            assertEquals(0, cancelListener.rulesCount());
 
             final FactHandle fh = ksession.insert(1);
-            assertEquals(2, list.size());
-            assertEquals("activated", list.get(0));
-            assertEquals("activated", list.get(1));
+            assertEquals(2, createListener.rulesCount());
+            assertEquals(0, cancelListener.rulesCount());
 
-            list.clear();
             ksession.delete( fh );
-            assertEquals(2, list.size());
-            assertEquals("cancelled", list.get(0));
-            assertEquals("cancelled", list.get(1));
+            assertEquals(2, createListener.rulesCount());
+            assertEquals(2, cancelListener.rulesCount());
         } finally {
             ksession.dispose();
         }
@@ -191,20 +181,15 @@ public class ActivateAndDeleteOnListenerTest {
 
         final KieSession ksession = getSessionWithEagerActivation(drl);
         try {
-            final List<String> list = new ArrayList<>();
 
-            final AgendaEventListener agendaEventListener = new org.kie.api.event.rule.DefaultAgendaEventListener() {
-                public void matchCreated(final org.kie.api.event.rule.MatchCreatedEvent event) {
-                    list.add("activated");
-                }
-            };
-            ksession.addEventListener(agendaEventListener);
+            final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+            ksession.addEventListener(createListener);
 
             ksession.insert("test");
-            assertEquals(0, list.size());
+            assertEquals(0, createListener.rulesCount());
 
             ksession.insert(1);
-            assertEquals(2, list.size());
+            assertEquals(2, createListener.rulesCount());
         } finally {
             ksession.dispose();
         }
@@ -231,24 +216,19 @@ public class ActivateAndDeleteOnListenerTest {
 
         final KieSession ksession = getSessionWithEagerActivation(drl);
         try {
-            final List<String> list = new ArrayList<>();
 
-            final AgendaEventListener agendaEventListener = new org.kie.api.event.rule.DefaultAgendaEventListener() {
-                public void matchCreated(final org.kie.api.event.rule.MatchCreatedEvent event) {
-                    list.add(event.getMatch().getRule().getName());
-                }
-            };
-            ksession.addEventListener(agendaEventListener);
+            final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+            ksession.addEventListener(createListener);
 
             ksession.insert("test");
-            assertEquals(0, list.size());
+            assertEquals(0, createListener.eventCount());
 
             ksession.insert(Boolean.TRUE);
-            assertEquals(0, list.size());
+            assertEquals(0, createListener.eventCount());
 
             ksession.insert(1);
-            assertEquals(1, list.size());
-            assertEquals("yyy", list.get(0));
+            assertEquals(1, createListener.eventCount());
+            assertEquals("yyy", createListener.getRulesFiredOrder().get(0));
         } finally {
             ksession.dispose();
         }
@@ -275,33 +255,24 @@ public class ActivateAndDeleteOnListenerTest {
         final KieSessionConfiguration conf = RuleBaseFactory.newKnowledgeSessionConfiguration();
         conf.setOption( new ForceEagerActivationOption.FILTERED(rule -> rule.getName().equals("yyy")));
 
-        final List<String> list = new ArrayList<>();
 
-        final AgendaEventListener agendaEventListener = new org.kie.api.event.rule.DefaultAgendaEventListener() {
-            public void matchCreated(final org.kie.api.event.rule.MatchCreatedEvent event) {
-                list.add(event.getMatch().getRule().getName());
-            }
-        };
-
-        KieSession ksession = null;
 
         // scenario 1
-        ksession = kbase.newKieSession(conf, null);
+        KieSession ksession = kbase.newKieSession(conf, null);
         try {
-            list.clear();
-            ksession.addEventListener(agendaEventListener);
+            final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+            ksession.addEventListener(createListener);
 
             ksession.insert("test");
-            assertEquals(0, list.size());
+            assertEquals(0, createListener.eventCount());
 
             ksession.insert(1);
-            assertEquals(1, list.size());
-            assertEquals("yyy", list.get(0));
+            assertEquals(1, createListener.eventCount());
+            assertEquals("yyy", createListener.getRulesFiredOrder().get(0));
 
-            list.clear();
             ksession.fireAllRules();
-            assertEquals(1, list.size());
-            assertEquals("xxx", list.get(0));
+            assertEquals(2, createListener.eventCount());
+            assertEquals("xxx", createListener.getRulesFiredOrder().get(1));
         } finally {
             ksession.dispose();
         }
@@ -309,20 +280,19 @@ public class ActivateAndDeleteOnListenerTest {
         // scenario 2
         ksession = kbase.newKieSession(conf, null);
         try {
-            list.clear();
-            ksession.addEventListener(agendaEventListener);
+            final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+            ksession.addEventListener(createListener);
 
             ksession.insert("test");
-            assertEquals(0, list.size());
+            assertEquals(0, createListener.eventCount());
 
             ksession.insert(Long.valueOf(1));
-            assertEquals(1, list.size());
-            assertEquals("yyy", list.get(0));
+            assertEquals(1, createListener.eventCount());
+            assertEquals("yyy", createListener.getRulesFiredOrder().get(0));
 
-            list.clear();
             ksession.fireAllRules();
-            assertEquals(1, list.size());
-            assertEquals("xxx", list.get(0));
+            assertEquals(2, createListener.eventCount());
+            assertEquals("xxx", createListener.getRulesFiredOrder().get(1));
         } finally {
             ksession.dispose();
         }
@@ -359,12 +329,8 @@ public class ActivateAndDeleteOnListenerTest {
         final KieSessionConfiguration conf = RuleBaseFactory.newKnowledgeSessionConfiguration();
         conf.setOption( new ForceEagerActivationOption.FILTERED(rule -> rule.getName().equals("yyy")));
 
-        final List<String> list = new ArrayList<>();
-        final AgendaEventListener agendaEventListener = new org.kie.api.event.rule.DefaultAgendaEventListener() {
-            public void matchCreated(final org.kie.api.event.rule.MatchCreatedEvent event) {
-                list.add(event.getMatch().getRule().getName());
-            }
-        };
+
+        List<String> list = new ArrayList<>();
 
         KieSession ksession = null;
 
@@ -373,18 +339,18 @@ public class ActivateAndDeleteOnListenerTest {
         try {
             list.clear();
             ksession.setGlobal("list", list);
-            ksession.addEventListener(agendaEventListener);
+            final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+            ksession.addEventListener(createListener);
 
             ksession.insert("test");
-            assertEquals(0, list.size());
+            assertEquals(0, createListener.eventCount());
 
             ksession.insert(0);
             ksession.insert(3);
-            assertEquals("[e1, yyy]", list.toString());
+            assertEquals("[yyy]", createListener.getRulesFiredOrder().toString());
 
-            list.clear();
             ksession.fireAllRules();
-            assertEquals("[xxx, zzz]", list.toString());
+            assertEquals("[yyy, xxx, zzz]", createListener.getRulesFiredOrder().toString());
         } finally {
             ksession.dispose();
         }
@@ -394,18 +360,18 @@ public class ActivateAndDeleteOnListenerTest {
         try {
             list.clear();
             ksession.setGlobal("list", list);
-            ksession.addEventListener(agendaEventListener);
+            final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+            ksession.addEventListener(createListener);
 
             ksession.insert("test");
             assertEquals(0, list.size());
 
             ksession.insert(0);
             ksession.insert(Long.valueOf(1));
-            assertEquals("[e2, yyy]", list.toString());
+            assertEquals("[yyy]", createListener.getRulesFiredOrder().toString());
 
-            list.clear();
             ksession.fireAllRules();
-            assertEquals("[xxx, zzz]", list.toString());
+            assertEquals("[yyy, xxx, zzz]", createListener.getRulesFiredOrder().toString());
         } finally {
             ksession.dispose();
         }
@@ -515,23 +481,17 @@ public class ActivateAndDeleteOnListenerTest {
 
         final KieSession ksession = getSessionWithEagerActivation(drl);
         try {
-            final List<String> list = new ArrayList<>();
-
-            final AgendaEventListener agendaEventListener = new org.kie.api.event.rule.DefaultAgendaEventListener() {
-                public void matchCreated(final org.kie.api.event.rule.MatchCreatedEvent event) {
-                    list.add("activated");
-                }
-            };
-            ksession.addEventListener(agendaEventListener);
+            final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+            ksession.addEventListener(createListener);
 
             ksession.insert(Boolean.TRUE);
-            assertEquals(0, list.size());
+            assertEquals(0, createListener.rulesCount());
 
             ksession.insert("test");
-            assertEquals(0, list.size());
+            assertEquals(0, createListener.rulesCount());
 
             ksession.insert(1);
-            assertEquals(1, list.size());
+            assertEquals(1, createListener.rulesCount());
         } finally {
             ksession.dispose();
         }

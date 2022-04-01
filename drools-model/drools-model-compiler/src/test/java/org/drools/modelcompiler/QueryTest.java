@@ -29,11 +29,11 @@ import org.drools.modelcompiler.domain.Person;
 import org.drools.modelcompiler.domain.Relationship;
 import org.drools.modelcompiler.domain.Result;
 import org.drools.modelcompiler.oopathdtables.InternationalAddress;
-import org.drools.modelcompiler.util.TrackingAgendaEventListener;
 import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.command.Command;
 import org.kie.api.definition.type.FactType;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.runtime.ExecutionResults;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
@@ -453,7 +453,7 @@ public class QueryTest extends BaseModelTest {
 
         FactType locationType = ksession.getKieBase().getFactType("org.test", "Location");
 
-        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener();
+        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         ksession.addEventListener(listener);
 
         final Person peter = new Person("Peter");

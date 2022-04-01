@@ -19,7 +19,6 @@ package org.drools.testcoverage.regression;
 import java.util.Collection;
 
 import org.assertj.core.api.Assertions;
-import org.drools.testcoverage.common.listener.TrackingAgendaEventListener;
 import org.drools.testcoverage.common.util.KieBaseTestConfiguration;
 import org.drools.testcoverage.common.util.KieBaseUtil;
 import org.drools.testcoverage.common.util.TestConstants;
@@ -30,6 +29,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.io.Resource;
 import org.kie.api.runtime.KieSession;
 import org.slf4j.Logger;
@@ -58,7 +58,7 @@ public class UnwantedStringConversionTest {
                                                                                  kieBaseTestConfiguration, drlResource);
 
         final KieSession ksession = kieBase.newKieSession();
-        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener();
+        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         ksession.addEventListener(listener);
         final Message message = new Message();
         final SomeEntity someEntity = new SomeEntity("1.5");

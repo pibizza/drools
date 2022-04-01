@@ -42,10 +42,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.kie.api.KieBase;
 import org.kie.api.event.rule.AfterMatchFiredEvent;
-import org.kie.api.event.rule.AgendaEventListener;
-import org.kie.api.event.rule.DefaultAgendaEventListener;
-import org.kie.api.event.rule.MatchCancelledEvent;
-import org.kie.api.event.rule.MatchCreatedEvent;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 
@@ -817,21 +814,11 @@ public class ExecutionFlowControlTest {
 
         KieSession ksession = kbase.newKieSession();
 
-        final List created = new ArrayList();
-        final List cancelled = new ArrayList();
-        final AgendaEventListener l = new DefaultAgendaEventListener() {
-            @Override
-            public void matchCreated(MatchCreatedEvent event) {
-                created.add( event );
-            }
+        final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+        final TrackingAgendaEventListener cancelListener = new TrackingAgendaEventListener.MatchCanceledEventListener();
+        ksession.addEventListener(createListener);
+        ksession.addEventListener(cancelListener);
 
-            @Override
-            public void matchCancelled(MatchCancelledEvent event) {
-                cancelled.add( event );
-            }
-        };
-
-        ksession.addEventListener( l );
 
         final Cheese stilton = new Cheese( "stilton", 15 );
         final FactHandle stiltonHandle = ksession.insert( stilton );
@@ -850,15 +837,15 @@ public class ExecutionFlowControlTest {
 
         ksession.fireAllRules();
 
-        assertEquals( 3, created.size() );
-        assertEquals( 0, cancelled.size() );
+        assertEquals( 3, createListener.eventCount() );
+        assertEquals( 0, cancelListener.eventCount() );
 
         // simulate a modify inside a consequence
         ksession.update( stiltonHandle, stilton );
 
         // with true modify, no reactivations should be triggered
-        assertEquals( 3, created.size() );
-        assertEquals( 0, cancelled.size() );
+        assertEquals( 3, createListener.eventCount() );
+        assertEquals( 0, cancelListener.eventCount() );
     }
 
     @Test

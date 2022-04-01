@@ -27,8 +27,7 @@ import org.assertj.core.api.Assertions;
 import org.drools.modelcompiler.domain.Person;
 import org.drools.modelcompiler.domain.Result;
 import org.junit.Test;
-import org.kie.api.event.rule.AfterMatchFiredEvent;
-import org.kie.api.event.rule.DefaultAgendaEventListener;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 
@@ -337,14 +336,14 @@ public class RuleAttributesTest extends BaseModelTest {
 
         KieSession ksession = getKieSession( str );
 
-        final OrderListener listener = new OrderListener();
+        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         ksession.addEventListener(listener);
 
         // first test - we try to fire rule in agenda group which has auto focus
         // disable, we won't succeed
         final FactHandle withoutAutoFocus = ksession.insert("withoutAutoFocus");
         ksession.fireAllRules();
-        Assertions.assertThat(listener.size()).isEqualTo(0);
+        Assertions.assertThat(listener.rulesCount()).isEqualTo(0);
 
         // second test - we try to fire rule in agenda group with auto focus
         // enabled
@@ -353,30 +352,10 @@ public class RuleAttributesTest extends BaseModelTest {
         ksession.insert("autoFocus");
         ksession.delete(withoutAutoFocus);
         ksession.fireAllRules();
-        Assertions.assertThat(listener.size()).isEqualTo(2);
-        final String[] expected = {"b2", "b1"};
-        for (int i = 0; i < listener.size(); i++) {
-            Assertions.assertThat(listener.get(i)).isEqualTo(expected[i]);
-        }
+        Assertions.assertThat(listener.rulesCount()).isEqualTo(2);
+        Assertions.assertThat(listener.getRulesFiredOrder()).containsExactly("b2", "b1");
     }
 
-    public static class OrderListener extends DefaultAgendaEventListener {
-
-        private List<String> rulesFired = new ArrayList<String>();
-
-        @Override
-        public void afterMatchFired(final AfterMatchFiredEvent event) {
-            rulesFired.add(event.getMatch().getRule().getName());
-        }
-
-        public int size() {
-            return rulesFired.size();
-        }
-
-        public String get(final int index) {
-            return rulesFired.get(index);
-        }
-    }
 
     @Test
     public void testMetadataBasics() {

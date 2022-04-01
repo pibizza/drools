@@ -109,12 +109,13 @@ import org.kie.api.definition.type.Position;
 import org.kie.api.definition.type.PropertyReactive;
 import org.kie.api.event.kiebase.DefaultKieBaseEventListener;
 import org.kie.api.event.kiebase.KieBaseEventListener;
-import org.kie.api.event.rule.AfterMatchFiredEvent;
 import org.kie.api.event.rule.AgendaEventListener;
 import org.kie.api.event.rule.DebugAgendaEventListener;
 import org.kie.api.event.rule.DefaultAgendaEventListener;
 import org.kie.api.event.rule.MatchCancelledEvent;
 import org.kie.api.event.rule.MatchCreatedEvent;
+import org.kie.api.event.rule.RuleFlowGroupActivatedEvent;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -477,36 +478,10 @@ public class Misc2Test {
         List<String> res = new ArrayList<>();
         ksession.setGlobal( "results", res );
 
-        AgendaEventListener agendaEventListener = new AgendaEventListener() {
-            public void matchCreated( org.kie.api.event.rule.MatchCreatedEvent event ) {
-            }
-
-            public void matchCancelled( org.kie.api.event.rule.MatchCancelledEvent event ) {
-            }
-
-            public void beforeMatchFired( org.kie.api.event.rule.BeforeMatchFiredEvent event ) {
-            }
-
-            public void afterMatchFired( org.kie.api.event.rule.AfterMatchFiredEvent event ) {
-            }
-
-            public void agendaGroupPopped( org.kie.api.event.rule.AgendaGroupPoppedEvent event ) {
-            }
-
-            public void agendaGroupPushed( org.kie.api.event.rule.AgendaGroupPushedEvent event ) {
-            }
-
-            public void beforeRuleFlowGroupActivated( org.kie.api.event.rule.RuleFlowGroupActivatedEvent event ) {
-            }
-
-            public void afterRuleFlowGroupActivated( org.kie.api.event.rule.RuleFlowGroupActivatedEvent event ) {
+        AgendaEventListener agendaEventListener = new DefaultAgendaEventListener() {
+        	
+            public void afterRuleFlowGroupActivated( RuleFlowGroupActivatedEvent event ) {
                 ksession.fireAllRules();
-            }
-
-            public void beforeRuleFlowGroupDeactivated( org.kie.api.event.rule.RuleFlowGroupDeactivatedEvent event ) {
-            }
-
-            public void afterRuleFlowGroupDeactivated( org.kie.api.event.rule.RuleFlowGroupDeactivatedEvent event ) {
             }
         };
 
@@ -2743,53 +2718,20 @@ public class Misc2Test {
         KieBase kbase = KieBaseUtil.getKieBaseFromKieModuleFromDrl("test", kieBaseTestConfiguration, str);
         StatelessKieSession ksession = kbase.newStatelessKieSession();
 
-        final List<String> firings = new ArrayList<>();
+        TrackingAgendaEventListener afterListener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
 
-        AgendaEventListener agendaEventListener = new AgendaEventListener() {
-            public void matchCreated( org.kie.api.event.rule.MatchCreatedEvent event ) {
-            }
-
-            public void matchCancelled( org.kie.api.event.rule.MatchCancelledEvent event ) {
-            }
-
-            public void beforeMatchFired( org.kie.api.event.rule.BeforeMatchFiredEvent event ) {
-            }
-
-            public void afterMatchFired( org.kie.api.event.rule.AfterMatchFiredEvent event ) {
-                firings.add( "Fired!" );
-            }
-
-            public void agendaGroupPopped( org.kie.api.event.rule.AgendaGroupPoppedEvent event ) {
-            }
-
-            public void agendaGroupPushed( org.kie.api.event.rule.AgendaGroupPushedEvent event ) {
-            }
-
-            public void beforeRuleFlowGroupActivated( org.kie.api.event.rule.RuleFlowGroupActivatedEvent event ) {
-            }
-
-            public void afterRuleFlowGroupActivated( org.kie.api.event.rule.RuleFlowGroupActivatedEvent event ) {
-            }
-
-            public void beforeRuleFlowGroupDeactivated( org.kie.api.event.rule.RuleFlowGroupDeactivatedEvent event ) {
-            }
-
-            public void afterRuleFlowGroupDeactivated( org.kie.api.event.rule.RuleFlowGroupDeactivatedEvent event ) {
-            }
-        };
-
-        ksession.addEventListener( agendaEventListener );
+        ksession.addEventListener( afterListener );
 
         ksession.execute( "1" );
         ksession.execute( "2" );
 
-        assertEquals( 2, firings.size() );
+        assertEquals( 2, afterListener.eventCount() );
 
-        ksession.removeEventListener( agendaEventListener );
+        ksession.removeEventListener( afterListener );
 
         ksession.execute( "3" );
 
-        assertEquals( 2, firings.size() );
+        assertEquals( 2, afterListener.eventCount() );
     }
 
     @Test
@@ -3520,26 +3462,13 @@ public class Misc2Test {
         KieBase kb = KieBaseUtil.getKieBaseFromKieModuleFromDrl("test", kieBaseTestConfiguration, drl);
         KieSession ks = kb.newKieSession();
 
-//        ReteDumper.dumpRete(kb);
+        final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+        final TrackingAgendaEventListener cancelListener = new TrackingAgendaEventListener.MatchCanceledEventListener();
+        final TrackingAgendaEventListener afterFiredListener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
+        ks.addEventListener(createListener);
+        ks.addEventListener(cancelListener);
+        ks.addEventListener(afterFiredListener);
 
-        final List created = new ArrayList();
-        final List cancelled = new ArrayList();
-        final List fired = new ArrayList();
-
-        ks.addEventListener( new DefaultAgendaEventListener() {
-
-            public void matchCreated( MatchCreatedEvent event ) {
-                created.add( event.getMatch().getRule().getName() );
-            }
-
-            public void matchCancelled( MatchCancelledEvent event ) {
-                cancelled.add( event.getMatch().getRule().getName() );
-            }
-
-            public void afterMatchFired( AfterMatchFiredEvent event ) {
-                fired.add( event.getMatch().getRule().getName() );
-            }
-        } );
         ks.fireAllRules();
 
         TradeBooking tb = new TradeBookingImpl( new TradeHeaderImpl() );
@@ -3547,19 +3476,19 @@ public class Misc2Test {
         ks.insert( tb );
         assertEquals( 1, ks.fireAllRules() );
 
-        assertEquals( 3, created.size() );
-        assertEquals( 2, cancelled.size() );
-        assertEquals( 1, fired.size() );
+        assertEquals( 3, createListener.eventCount());
+        assertEquals( 2, cancelListener.eventCount());
+        assertEquals( 1, afterFiredListener.eventCount());
 
 
-        assertEquals( "Rule2", created.get( 0 ) );
-        assertEquals( "Rule1", created.get( 1 ) );
-        assertEquals( "Rule2", created.get( 2 ) );
+        assertEquals( "Rule2", createListener.getRulesFiredOrder().get( 0 ) );
+        assertEquals( "Rule1", createListener.getRulesFiredOrder().get( 1 ) );
+        assertEquals( "Rule2", createListener.getRulesFiredOrder().get( 2 ) );
 
-        assertEquals( "Rule2", cancelled.get( 0 ) );
-        assertEquals( "Rule2", cancelled.get( 1 ) );
+        assertEquals( "Rule2", cancelListener.getRulesFiredOrder().get( 0 ) );
+        assertEquals( "Rule2", cancelListener.getRulesFiredOrder().get( 1 ) );
 
-        assertEquals( "Rule1", fired.get( 0 ) );
+        assertEquals( "Rule1", afterFiredListener.getRulesFiredOrder().get( 0 ) );
     }
 
     @Test
@@ -3590,25 +3519,15 @@ public class Misc2Test {
                      "end";
         KieBase kb = KieBaseUtil.getKieBaseFromKieModuleFromDrl("test", kieBaseTestConfiguration, drl);
         KieSession ks = kb.newKieSession();
+        
 
-        final List created = new ArrayList();
-        final List cancelled = new ArrayList();
-        final List fired = new ArrayList();
+        final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+        final TrackingAgendaEventListener cancelListener = new TrackingAgendaEventListener.MatchCanceledEventListener();
+        final TrackingAgendaEventListener afterFiredListener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
+        ks.addEventListener(createListener);
+        ks.addEventListener(cancelListener);
+        ks.addEventListener(afterFiredListener);
 
-        ks.addEventListener( new DefaultAgendaEventListener() {
-
-            public void matchCreated( MatchCreatedEvent event ) {
-                created.add( event.getMatch().getRule().getName() );
-            }
-
-            public void matchCancelled( MatchCancelledEvent event ) {
-                cancelled.add( event.getMatch().getRule().getName() );
-            }
-
-            public void afterMatchFired( AfterMatchFiredEvent event ) {
-                fired.add( event.getMatch().getRule().getName() );
-            }
-        } );
         ks.fireAllRules();
 
         TradeBooking tb = new TradeBookingImpl( new TradeHeaderImpl() );
@@ -3616,18 +3535,19 @@ public class Misc2Test {
         ks.insert( tb );
         assertEquals( 2, ks.fireAllRules() );
 
-        assertEquals( 3, created.size() );
-        assertEquals( 1, cancelled.size() );
-        assertEquals( 2, fired.size() );
+        assertEquals( 3, createListener.eventCount() );
+        assertEquals( 1, cancelListener.eventCount() );
+        assertEquals( 2, afterFiredListener.eventCount() );
+        
 
-        assertEquals( "Rule1", created.get( 0 ) );
-        assertEquals( "Rule1", created.get( 1 ) );
-        assertEquals( "Rule2", created.get( 2 ) );
+        assertEquals( "Rule1", createListener.getRulesFiredOrder().get( 0 ) );
+        assertEquals( "Rule1", createListener.getRulesFiredOrder().get( 1 ) );
+        assertEquals( "Rule2", createListener.getRulesFiredOrder().get( 2 ) );
 
-        assertEquals( "Rule1", cancelled.get( 0 ) );
+        assertEquals( "Rule1", cancelListener.getRulesFiredOrder().get( 0 ) );
 
-        assertEquals( "Rule1", fired.get( 0 ) );
-        assertEquals( "Rule2", fired.get( 1 ) );
+        assertEquals( "Rule1", afterFiredListener.getRulesFiredOrder().get( 0 ) );
+        assertEquals( "Rule2", afterFiredListener.getRulesFiredOrder().get( 1 ) );
     }
 
     @Test

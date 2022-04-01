@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 import org.assertj.core.api.Assertions;
 import org.kie.api.time.SessionPseudoClock;
 import org.drools.core.impl.RuleBaseFactory;
-import org.drools.testcoverage.common.listener.TrackingAgendaEventListener;
 import org.drools.testcoverage.common.model.Event;
 import org.drools.testcoverage.common.model.EventA;
 import org.drools.testcoverage.common.model.EventB;
@@ -39,6 +38,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.io.Resource;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
@@ -76,7 +76,7 @@ public class FusionAfterBeforeTest {
         ksconf.setOption(ClockTypeOption.PSEUDO);
 
         final KieSession ksession = kieBase.newKieSession(ksconf, null);
-        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener();
+        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         ksession.addEventListener(listener);
 
         final EntryPoint stream = ksession.getEntryPoint("EventStream");

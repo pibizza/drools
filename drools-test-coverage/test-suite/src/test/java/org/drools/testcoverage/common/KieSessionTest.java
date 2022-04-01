@@ -16,12 +16,12 @@
 
 package org.drools.testcoverage.common;
 
-import org.drools.testcoverage.common.listener.TrackingAgendaEventListener;
 import org.drools.testcoverage.common.util.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.io.Resource;
 
 @RunWith(Parameterized.class)
@@ -49,7 +49,7 @@ public abstract class KieSessionTest {
             session = KieSessionUtil.getKieSessionFromKieBaseModel(TestConstants.PACKAGE_REGRESSION,
                     kieBaseTestConfiguration, kieSessionTestConfiguration, resources);
         }
-        firedRules = new TrackingAgendaEventListener();
+        firedRules = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         session.addEventListener(firedRules);
     }
 

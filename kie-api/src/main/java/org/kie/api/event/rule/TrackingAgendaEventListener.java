@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-package org.drools.testcoverage.common.listener;
-
-import org.kie.api.event.rule.AfterMatchFiredEvent;
-import org.kie.api.event.rule.DefaultAgendaEventListener;
+package org.kie.api.event.rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,23 +27,24 @@ import java.util.Map;
  * time it's added to fired rules and when the rule fires afterwards the counter
  * is incremented to make it possible to track how many times the rule was fired
  */
-public class TrackingAgendaEventListener extends DefaultAgendaEventListener {
+public abstract class TrackingAgendaEventListener extends DefaultAgendaEventListener {
 
-    private Map<String, Integer> rulesFired = new HashMap<String, Integer>();
-    private List<String> rulesFiredOrder = new ArrayList<>();
+    private Map<String, Integer> firedRules = new HashMap<>();
+    private List<String> firedRulesHistory = new ArrayList<>();
 
-    @Override
-    public void afterMatchFired(final AfterMatchFiredEvent event) {
-        String rule = event.getMatch().getRule().getName();
+    
+
+    public void firedRule(String rule) {
         if (isRuleFired(rule)) {
-            rulesFired.put(rule,
-                           rulesFired.get(rule) + 1);
+        	firedRules.put(rule,
+        			firedRules.get(rule) + 1);
         } else {
-            rulesFired.put(rule,
+        	firedRules.put(rule,
                            1);
         }
-        rulesFiredOrder.add(rule);
+        firedRulesHistory.add(rule);
     }
+
 
     /**
      * Return true if the rule was fired at least once
@@ -54,9 +52,10 @@ public class TrackingAgendaEventListener extends DefaultAgendaEventListener {
      * @return true if the rule was fired
      */
     public boolean isRuleFired(final String rule) {
-        return rulesFired.containsKey(rule);
+        return firedRules.containsKey(rule);
     }
 
+    
     /**
      * Returns number saying how many times the rule was fired
      * @param rule - name ot the rule
@@ -64,31 +63,67 @@ public class TrackingAgendaEventListener extends DefaultAgendaEventListener {
      */
     public int ruleFiredCount(final String rule) {
         if (isRuleFired(rule)) {
-            return rulesFired.get(rule);
+            return firedRules.get(rule);
         } else {
             return 0;
         }
     }
 
+    
     /**
      * @return how many rules were fired
      */
     public int rulesCount() {
-        return rulesFired.size();
+        return firedRules.size();
     }
 
+    public int eventCount() {
+        return firedRulesHistory.size();
+    }
+    
     /**
      * Clears all the information
      */
     public void clear() {
-        rulesFired.clear();
+    	firedRules.clear();
+        firedRulesHistory.clear();
     }
 
     public Collection<String> getFiredRules() {
-        return rulesFired.keySet();
+        return firedRules.keySet();
     }
 
     public List<String> getRulesFiredOrder() {
-        return rulesFiredOrder;
+        return firedRulesHistory;
     }
+    
+
+	public static class AfterMatchFiredEventListener extends TrackingAgendaEventListener {
+	    @Override
+	    public void afterMatchFired(final AfterMatchFiredEvent event) {
+	    	firedRule(event.getMatch().getRule().getName());
+	    }
+	}
+	
+	public static class BeforeMatchFiredEventListener extends TrackingAgendaEventListener {
+	    @Override
+	    public void beforeMatchFired(final BeforeMatchFiredEvent event) {
+	    	firedRule(event.getMatch().getRule().getName());
+	    }
+	}
+
+	public static class MatchCreatedEventListener extends TrackingAgendaEventListener {
+	    @Override
+	    public void matchCreated(final MatchCreatedEvent event) {
+	    	firedRule(event.getMatch().getRule().getName());
+	    }
+	}
+
+	public static class MatchCanceledEventListener extends TrackingAgendaEventListener {
+	    @Override
+	    public void matchCancelled(MatchCancelledEvent event) {
+	    	firedRule(event.getMatch().getRule().getName());
+	    }
+	}
+
 }

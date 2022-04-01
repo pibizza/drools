@@ -18,8 +18,6 @@ package org.drools.compiler.integrationtests;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.drools.testcoverage.common.util.KieBaseTestConfiguration;
@@ -32,8 +30,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.kie.api.KieBase;
-import org.kie.api.event.rule.AfterMatchFiredEvent;
-import org.kie.api.event.rule.DefaultAgendaEventListener;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.EntryPoint;
 import org.kie.api.runtime.rule.FactHandle;
@@ -118,7 +115,7 @@ public class NegativePatternsTest {
 
         final KieBase kbase = KieBaseUtil.getKieBaseFromKieModuleFromDrl("subnetwork-test", kieBaseTestConfiguration, drl);
         ksession = kbase.newKieSession(KieSessionTestConfiguration.STATEFUL_PSEUDO.getKieSessionConfiguration(), null);
-        firedRulesListener = new TrackingAgendaEventListener();
+        firedRulesListener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         ksession.addEventListener(firedRulesListener);
     }
 
@@ -309,49 +306,4 @@ public class NegativePatternsTest {
         }
     }
 
-    /**
-     * Listener tracking number of rules fired.
-     */
-    public static class TrackingAgendaEventListener extends DefaultAgendaEventListener {
-
-        private final Map<String, Integer> rulesFired = new HashMap<String, Integer>();
-
-        @Override
-        public void afterMatchFired(final AfterMatchFiredEvent event) {
-            final String rule = event.getMatch().getRule().getName();
-            if (isRuleFired(rule)) {
-                rulesFired.put(rule, rulesFired.get(rule) + 1);
-            } else {
-                rulesFired.put(rule, 1);
-            }
-        }
-
-        /**
-         * Return true if the rule was fired at least once
-         *
-         * @param rule - name of the rule
-         * @return true if the rule was fired
-         */
-        public boolean isRuleFired(final String rule) {
-            return rulesFired.containsKey(rule);
-        }
-
-        /**
-         * Returns number saying how many times the rule was fired
-         *
-         * @param rule - name of the rule
-         * @return number how many times rule was fired, 0 if rule wasn't fired
-         */
-        public int ruleFiredCount(final String rule) {
-            if (isRuleFired(rule)) {
-                return rulesFired.get(rule);
-            } else {
-                return 0;
-            }
-        }
-
-        public void clear() {
-            rulesFired.clear();
-        }
-    }
 }

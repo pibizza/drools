@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.drools.testcoverage.common.listener.TrackingAgendaEventListener;
 import org.drools.testcoverage.common.util.KieBaseTestConfiguration;
 import org.drools.testcoverage.common.util.KieBaseUtil;
 import org.drools.testcoverage.common.util.TestConstants;
@@ -32,6 +31,7 @@ import org.junit.runners.Parameterized;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
 import org.kie.api.command.Command;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.io.Resource;
 import org.kie.api.runtime.KieSession;
 
@@ -85,7 +85,7 @@ public class ActivationGroupTest {
     
     private TrackingAgendaEventListener prepareKSession(String startingRule) {
         List<Command<?>> commands = new ArrayList<Command<?>>();
-        TrackingAgendaEventListener listener = new TrackingAgendaEventListener();
+        TrackingAgendaEventListener listener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
 
         final KieSession ksession = getKieBaseForTest().newKieSession();
         try {

@@ -23,8 +23,6 @@ import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.drools.template.parser.DecisionTableParseException;
-import org.drools.testcoverage.common.listener.OrderListener;
-import org.drools.testcoverage.common.listener.TrackingAgendaEventListener;
 import org.drools.testcoverage.common.model.Person;
 import org.drools.testcoverage.common.model.Sample;
 import org.drools.testcoverage.common.model.Subject;
@@ -41,6 +39,7 @@ import org.junit.runners.Parameterized;
 import org.kie.api.KieBase;
 import org.kie.api.definition.KiePackage;
 import org.kie.api.definition.type.FactType;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.io.Resource;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
@@ -221,7 +220,7 @@ public class DecisionTableTest {
 
         KieSession session = kbase.newKieSession();
 
-        final TrackingAgendaEventListener rulesFired = new TrackingAgendaEventListener();
+        final TrackingAgendaEventListener rulesFired = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         session.addEventListener(rulesFired);
         rulesFired.clear();
 
@@ -320,7 +319,7 @@ public class DecisionTableTest {
         final KieBase kbase = KieBaseUtil.getKieBaseFromResources(kieBaseTestConfiguration, advancedDecisionTable);
         KieSession session = kbase.newKieSession();
 
-        final OrderListener listener = new OrderListener();
+        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         session.addEventListener(listener);
 
         final Subject lili = new Subject("Lili");
@@ -331,13 +330,9 @@ public class DecisionTableTest {
         session.fireAllRules();
 
         // just 4 rules should fire
-        Assertions.assertThat(listener.size()).isEqualTo(4);
+        Assertions.assertThat(listener.rulesCount()).isEqualTo(4);
 
-        // rules have to be fired in expected order
-        final String[] expected = new String[]{"HelloWorld_11", "namedRule", "b1", "another rule"};
-        for (int i = 0; i < 4; i++) {
-            Assertions.assertThat(listener.get(i)).isEqualTo(expected[i]);
-        }
+        Assertions.assertThat(listener.getRulesFiredOrder()).containsExactly("HelloWorld_11", "namedRule", "b1", "another rule");
 
         session.dispose();
     }
@@ -349,7 +344,7 @@ public class DecisionTableTest {
         final FactType locationType = kbase.getFactType(TestConstants.PACKAGE_FUNCTIONAL, "Location");
 
         final KieSession ksession = kbase.newKieSession();
-        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener();
+        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         ksession.addEventListener(listener);
 
         final Person peter = new Person("Peter");
@@ -407,7 +402,7 @@ public class DecisionTableTest {
         final FactType locationType = kbase.getFactType(TestConstants.PACKAGE_FUNCTIONAL, "Location");
 
         final KieSession ksession = kbase.newKieSession();
-        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener();
+        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         ksession.addEventListener(listener);
 
         final Person peter = new Person("Peter");
@@ -466,15 +461,13 @@ public class DecisionTableTest {
         final KieBase kbase = KieBaseUtil.getKieBaseFromResources(kieBaseTestConfiguration, sequentialDecisionTable);
 
         final KieSession ksession = kbase.newKieSession();
-        final OrderListener listener = new OrderListener();
+        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         ksession.addEventListener(listener);
         ksession.insert("something");
         ksession.fireAllRules();
-        Assertions.assertThat(listener.size()).as("Wrong number of rules fired").isEqualTo(3);
-        final String[] expected = {"Rule1", "Rule2", "Rule3"};
-        for (int i = 0; i < 3; i++) {
-            Assertions.assertThat(listener.get(i)).isEqualTo(expected[i]);
-        }
+        Assertions.assertThat(listener.rulesCount()).as("Wrong number of rules fired").isEqualTo(3);
+        Assertions.assertThat(listener.getRulesFiredOrder()).containsExactly("Rule1", "Rule2", "Rule3");
+
         ksession.dispose();
     }
 
@@ -482,15 +475,12 @@ public class DecisionTableTest {
     public void testLockOnActive() {
         final KieBase kbase = KieBaseUtil.getKieBaseFromResources(kieBaseTestConfiguration, agendaGroupDecisionTable);
         final KieSession ksession = kbase.newKieSession();
-        final OrderListener listener = new OrderListener();
+        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         ksession.addEventListener(listener);
         ksession.insert("lockOnActive");
         ksession.fireAllRules();
-        Assertions.assertThat(listener.size()).isEqualTo(3);
-        final String[] expected = {"a", "a2", "a3"};
-        for (int i = 0; i < listener.size(); i++) {
-            Assertions.assertThat(listener.get(i)).isEqualTo(expected[i]);
-        }
+        Assertions.assertThat(listener.rulesCount()).as("Wrong number of rules fired").isEqualTo(3);
+        Assertions.assertThat(listener.getRulesFiredOrder()).containsExactly("a", "a2", "a3");
         ksession.dispose();
     }
 
@@ -502,14 +492,14 @@ public class DecisionTableTest {
     public void testAutoFocus() {
         final KieBase kbase = KieBaseUtil.getKieBaseFromResources(kieBaseTestConfiguration, agendaGroupDecisionTable);
         final KieSession ksession = kbase.newKieSession();
-        final OrderListener listener = new OrderListener();
+        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         ksession.addEventListener(listener);
 
         // first test - we try to fire rule in agenda group which has auto focus
         // disable, we won't succeed
         final FactHandle withoutAutoFocus = ksession.insert("withoutAutoFocus");
         ksession.fireAllRules();
-        Assertions.assertThat(listener.size()).isEqualTo(0);
+        Assertions.assertThat(listener.rulesCount()).as("Wrong number of rules fired").isEqualTo(0);
 
         // second test - we try to fire rule in agenda group with auto focus
         // enabled
@@ -518,11 +508,8 @@ public class DecisionTableTest {
         ksession.insert("autoFocus");
         ksession.delete(withoutAutoFocus);
         ksession.fireAllRules();
-        Assertions.assertThat(listener.size()).isEqualTo(2);
-        final String[] expected = {"b2", "b1"};
-        for (int i = 0; i < listener.size(); i++) {
-            Assertions.assertThat(listener.get(i)).isEqualTo(expected[i]);
-        }
+        Assertions.assertThat(listener.rulesCount()).as("Wrong number of rules fired").isEqualTo(2);
+        Assertions.assertThat(listener.getRulesFiredOrder()).containsExactly("b2", "b1");
         ksession.dispose();
     }
 
@@ -530,7 +517,7 @@ public class DecisionTableTest {
     public void testActivationGroup() {
         final KieBase kbase = KieBaseUtil.getKieBaseFromResources(kieBaseTestConfiguration, agendaGroupDecisionTable);
         final KieSession ksession = kbase.newKieSession();
-        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener();
+        final TrackingAgendaEventListener listener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
         ksession.addEventListener(listener);
 
         // only one rule from activation group may fire

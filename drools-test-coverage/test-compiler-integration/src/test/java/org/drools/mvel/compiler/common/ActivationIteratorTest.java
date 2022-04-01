@@ -33,8 +33,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.kie.api.KieBase;
 import org.kie.api.definition.rule.Rule;
-import org.kie.api.event.rule.AgendaEventListener;
-import org.kie.api.event.rule.DefaultAgendaEventListener;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
 import org.kie.internal.runtime.conf.ForceEagerActivationFilter;
@@ -698,18 +697,12 @@ public class ActivationIteratorTest {
         KieBase kbase = KieBaseUtil.getKieBaseFromKieModuleFromDrl("test", kieBaseTestConfiguration, str);
         KieSession ksession = kbase.newKieSession( conf, null );
 
-        final List list = new ArrayList();
-
-        AgendaEventListener agendaEventListener = new DefaultAgendaEventListener() {
-            public void matchCreated(org.kie.api.event.rule.MatchCreatedEvent event) {
-                list.add("activated");
-            }
-        };
-        ksession.addEventListener(agendaEventListener);
+        final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+        ksession.addEventListener(createListener);
 
         ksession.insert("test");
 
-        assertEquals(2, list.size());
+        assertEquals(2, createListener.rulesCount());
     }
 
     @Test(timeout=10000)
@@ -737,19 +730,13 @@ public class ActivationIteratorTest {
 
         KieBase kbase = KieBaseUtil.getKieBaseFromKieModuleFromDrl("test", kieBaseTestConfiguration, str);
         KieSession ksession = kbase.newKieSession( conf, null );
-
-        final List list = new ArrayList();
-
-        AgendaEventListener agendaEventListener = new DefaultAgendaEventListener() {
-            public void matchCreated(org.kie.api.event.rule.MatchCreatedEvent event) {
-                list.add("activated");
-            }
-        };
-        ksession.addEventListener(agendaEventListener);
+        
+        final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+        ksession.addEventListener(createListener);
 
         ksession.insert("test");
         ((InternalWorkingMemory) ksession).flushPropagations();
 
-        assertEquals(1, list.size());
+        assertEquals(1, createListener.rulesCount());
     }
 }

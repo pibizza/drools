@@ -35,15 +35,7 @@ import org.kie.api.builder.KieModule;
 import org.kie.api.builder.model.KieBaseModel;
 import org.kie.api.builder.model.KieModuleModel;
 import org.kie.api.conf.DeclarativeAgendaOption;
-import org.kie.api.event.rule.AfterMatchFiredEvent;
-import org.kie.api.event.rule.AgendaEventListener;
-import org.kie.api.event.rule.AgendaGroupPoppedEvent;
-import org.kie.api.event.rule.AgendaGroupPushedEvent;
-import org.kie.api.event.rule.BeforeMatchFiredEvent;
-import org.kie.api.event.rule.MatchCancelledEvent;
-import org.kie.api.event.rule.MatchCreatedEvent;
-import org.kie.api.event.rule.RuleFlowGroupActivatedEvent;
-import org.kie.api.event.rule.RuleFlowGroupDeactivatedEvent;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 import org.kie.api.runtime.rule.Match;
@@ -693,42 +685,9 @@ public class DeclarativeAgendaTest {
         final KieModule kieModule = KieUtil.getKieModuleFromDrls("test", kieBaseTestConfiguration, str);
         final KieBase kbase = KieBaseUtil.newKieBaseFromKieModuleWithAdditionalOptions(kieModule, kieBaseTestConfiguration, DeclarativeAgendaOption.ENABLED);
         KieSession ksession = kbase.newKieSession();
-
-        final List cancelled = new ArrayList();
-
-        ksession.addEventListener( new AgendaEventListener() {
-
-            public void beforeMatchFired(BeforeMatchFiredEvent event) {
-            }
-
-            public void agendaGroupPushed(AgendaGroupPushedEvent event) {
-            }
-
-            public void agendaGroupPopped(AgendaGroupPoppedEvent event) {
-            }
-
-            public void afterMatchFired(AfterMatchFiredEvent event) {
-            }
-
-            public void matchCreated(MatchCreatedEvent event) {
-            }
-
-            public void beforeRuleFlowGroupActivated(RuleFlowGroupActivatedEvent event) {
-            }
-
-            public void afterRuleFlowGroupActivated(RuleFlowGroupActivatedEvent event) {
-            }
-
-            public void beforeRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent event) {
-            }
-
-            public void afterRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent event) {
-            }
-            
-            public void matchCancelled(MatchCancelledEvent event) {
-                cancelled.add( event );
-            }            
-        } );
+        
+        TrackingAgendaEventListener cancelListener = new TrackingAgendaEventListener.MatchCanceledEventListener();
+        ksession.addEventListener(cancelListener);
 
         List list = new ArrayList();
         ksession.setGlobal( "list",
@@ -739,10 +698,8 @@ public class DeclarativeAgendaTest {
         assertEquals( 0,
                       list.size() );
 
-        assertEquals( 1,
-                      cancelled.size() );
-        assertEquals( "rule1",
-                      ((MatchCancelledEvent) cancelled.get( 0 )).getMatch().getRule().getName() );
+        assertEquals( 1, cancelListener.eventCount() );
+        assertEquals( "[rule1]", cancelListener.getRulesFiredOrder().toString());
         ksession.dispose();
     }
 

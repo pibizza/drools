@@ -43,8 +43,7 @@ import org.kie.api.builder.KieFileSystem;
 import org.kie.api.builder.Results;
 import org.kie.api.definition.type.FactType;
 import org.kie.api.definition.type.PropertyReactive;
-import org.kie.api.event.rule.AgendaEventListener;
-import org.kie.api.event.rule.DefaultAgendaEventListener;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
 import org.kie.internal.builder.conf.LanguageLevelOption;
@@ -137,15 +136,11 @@ public class StrictAnnotationTest {
         try {
             final List list = new ArrayList();
 
-            AgendaEventListener agendaEventListener = new DefaultAgendaEventListener() {
-                public void matchCreated(org.kie.api.event.rule.MatchCreatedEvent event) {
-                    list.add("activated");
-                }
-            };
-            ksession.addEventListener(agendaEventListener);
+            final TrackingAgendaEventListener createListener = new TrackingAgendaEventListener.MatchCreatedEventListener();
+            ksession.addEventListener(createListener);
 
             ksession.insert("test");
-            assertEquals(2, list.size());
+            assertEquals(2, createListener.eventCount());
         } finally {
             ksession.dispose();
         }

@@ -36,7 +36,6 @@ import org.drools.compiler.kie.builder.impl.DrlProject;
 import org.drools.core.ClassObjectFilter;
 import org.drools.core.command.runtime.rule.FireAllRulesCommand;
 import org.drools.core.definitions.rule.impl.RuleImpl;
-import org.drools.core.event.DefaultAgendaEventListener;
 import org.drools.core.impl.RuleBase;
 import org.drools.core.reteoo.EntryPointNode;
 import org.drools.core.reteoo.ObjectTypeNode;
@@ -72,7 +71,7 @@ import org.kie.api.command.KieCommands;
 import org.kie.api.definition.KiePackage;
 import org.kie.api.definition.rule.Rule;
 import org.kie.api.definition.type.FactType;
-import org.kie.api.event.rule.AfterMatchFiredEvent;
+import org.kie.api.event.rule.TrackingAgendaEventListener;
 import org.kie.api.internal.utils.KieService;
 import org.kie.api.io.KieResources;
 import org.kie.api.io.Resource;
@@ -2755,22 +2754,18 @@ public class IncrementalCompilationTest {
 
         final KieContainer kc = ks.newKieContainer(releaseId1);
         final KieSession ksession = kc.newKieSession();
-        final List<String> fired = new ArrayList<>();
-        ksession.addEventListener(new DefaultAgendaEventListener() {
-            @Override
-            public void afterMatchFired(final AfterMatchFiredEvent event) {
-                fired.add(event.getMatch().getRule().getName());
-            }
-        });
+        TrackingAgendaEventListener listener = new TrackingAgendaEventListener.AfterMatchFiredEventListener();
+		ksession.addEventListener(listener);
 
         ksession.insert(new Message("Hello World"));
         ksession.insert("x");
+        
         assertEquals(2, ksession.fireAllRules());
-        assertTrue(fired.contains("Rs"));
-        assertTrue(fired.contains("Rx"));
+        assertTrue(listener.getFiredRules().contains("Rs"));
+        assertTrue(listener.getFiredRules().contains("Rx"));
 
-        fired.clear();
-
+        listener.clear();
+        
         final ReleaseId releaseId2 = ks.newReleaseId("org.kie", "test-upgrade", "1.1.0");
         KieUtil.getKieModuleFromDrls(releaseId2, kieBaseTestConfiguration, drl2);
         kc.updateToVersion(releaseId2);
@@ -2778,8 +2773,8 @@ public class IncrementalCompilationTest {
         // rule Rx is UNchanged and should NOT fire again
         // rule Rs is changed and should match again, and fire again.
         assertEquals(1, ksession.fireAllRules());
-        assertTrue(fired.contains("Rs"));
-        assertFalse(fired.contains("Rx"));
+        assertTrue(listener.getFiredRules().contains("Rs"));
+        assertFalse(listener.getFiredRules().contains("Rx"));
     }
 
     @Test
