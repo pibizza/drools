@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.drools.modelcompiler;
+package org.drools.modelcompiler.builder;
 
 import java.util.Collection;
 import java.util.Map;

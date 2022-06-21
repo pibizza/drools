@@ -19,8 +19,6 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import org.drools.core.util.Drools;
 import org.drools.model.Model;
-import org.drools.modelcompiler.CanonicalKieModule;
-import org.drools.modelcompiler.CanonicalKieModuleModel;
 import org.kie.api.builder.ReleaseId;
 import org.kie.api.builder.model.KieBaseModel;
 import org.kie.api.builder.model.KieModuleModel;

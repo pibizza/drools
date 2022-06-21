@@ -2,7 +2,7 @@ package org.drools.modelcompiler.assembler;
 
 import java.util.List;
 
-import org.drools.modelcompiler.ExecutableModelProject;
+import org.drools.modelcompiler.builder.ExecutableModelProject;
 import org.junit.Test;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;

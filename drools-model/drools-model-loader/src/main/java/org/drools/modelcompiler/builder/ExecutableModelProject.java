@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package org.drools.modelcompiler;
+package org.drools.modelcompiler.builder;
 
 import java.util.function.BiFunction;
 
 import org.drools.compiler.kie.builder.impl.InternalKieModule;
 import org.drools.compiler.kie.builder.impl.KieModuleKieProject;
-import org.drools.modelcompiler.builder.CanonicalModelKieProject;
 import org.kie.api.builder.KieBuilder;
 
 public class ExecutableModelProject implements KieBuilder.ProjectType {

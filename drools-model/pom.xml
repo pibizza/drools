@@ -22,6 +22,7 @@
     <module>drools-model-project-codegen</module>
     <module>drools-mvel-parser</module>
     <module>drools-mvel-compiler</module>
+    <module>drools-model-loader</module>
   </modules>
 
 

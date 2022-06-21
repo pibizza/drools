@@ -110,7 +110,7 @@ public class ClassLoaderLeakTest {
 
         KieBuilder kb = ks.newKieBuilder(kfs);
         if (withExecModel) {
-            kb.buildAll(org.drools.modelcompiler.ExecutableModelProject.class);
+            kb.buildAll(org.drools.modelcompiler.builder.ExecutableModelProject.class);
         } else {
             kb.buildAll();
         }

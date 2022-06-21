@@ -3,7 +3,7 @@ package org.drools.modelcompiler.benchmark;
 import java.util.concurrent.TimeUnit;
 
 import org.drools.compiler.kie.builder.impl.ZipKieModule;
-import org.drools.modelcompiler.CanonicalKieModule;
+import org.drools.modelcompiler.builder.CanonicalKieModule;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieModule;

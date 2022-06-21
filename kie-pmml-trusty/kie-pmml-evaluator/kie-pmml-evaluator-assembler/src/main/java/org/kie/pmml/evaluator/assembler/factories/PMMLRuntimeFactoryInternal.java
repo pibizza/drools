@@ -35,7 +35,7 @@ import org.drools.util.io.DescrResource;
 import org.drools.util.io.FileSystemResource;
 import org.drools.util.io.InternalResource;
 import org.drools.kiesession.rulebase.KnowledgeBaseFactory;
-import org.drools.modelcompiler.ExecutableModelProject;
+import org.drools.modelcompiler.builder.ExecutableModelProject;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
 import org.kie.api.builder.ReleaseId;

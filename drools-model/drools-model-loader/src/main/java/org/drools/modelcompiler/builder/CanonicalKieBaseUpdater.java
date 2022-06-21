@@ -35,8 +35,6 @@ import org.drools.core.impl.KieBaseUpdate;
 import org.drools.core.reteoo.CoreComponentFactory;
 import org.drools.core.rule.Function;
 import org.drools.core.rule.TypeDeclaration;
-import org.drools.modelcompiler.CanonicalKieModule;
-import org.drools.modelcompiler.CanonicalKiePackages;
 import org.kie.api.definition.KiePackage;
 import org.kie.api.definition.rule.Rule;
 import org.kie.internal.builder.ChangeType;

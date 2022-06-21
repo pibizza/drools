@@ -31,7 +31,7 @@ import org.apache.maven.project.MavenProject;
 import org.drools.ancompiler.CompiledNetworkSources;
 import org.drools.ancompiler.ObjectTypeNodeCompiler;
 import org.drools.kiesession.rulebase.InternalKnowledgeBase;
-import org.drools.modelcompiler.CanonicalKieModule;
+import org.drools.modelcompiler.builder.CanonicalKieModule;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.maven.plugin.KieMavenPluginContext;

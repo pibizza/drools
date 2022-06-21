@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.drools.modelcompiler;
+package org.drools.modelcompiler.builder;
 
 import java.io.File;
 
@@ -26,7 +26,7 @@ import org.kie.api.builder.model.KieModuleModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.drools.modelcompiler.CanonicalKieModule.getModelFileWithGAV;
+import static org.drools.modelcompiler.builder.CanonicalKieModule.getModelFileWithGAV;
 
 public class CanonicalKieModuleProvider extends InternalKieModuleProvider.DrlBasedKieModuleProvider implements InternalKieModuleProvider {
 

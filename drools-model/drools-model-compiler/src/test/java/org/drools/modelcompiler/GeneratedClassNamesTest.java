@@ -23,6 +23,8 @@ import org.drools.compiler.compiler.io.memory.MemoryFileSystem;
 import org.drools.compiler.kie.builder.impl.InternalKieModule;
 import org.drools.compiler.kie.builder.impl.KieContainerImpl;
 import org.drools.compiler.kie.builder.impl.MemoryKieModule;
+import org.drools.modelcompiler.builder.CanonicalKieModule;
+import org.drools.modelcompiler.builder.ExecutableModelProject;
 import org.drools.modelcompiler.domain.Person;
 import org.drools.wiring.api.classloader.ProjectClassLoader;
 import org.drools.wiring.api.classloader.ProjectClassLoaderTestUtil;

@@ -18,6 +18,7 @@ import java.util.Collection;
 
 import org.drools.drl.ast.descr.PackageDescr;
 import org.drools.drl.ast.dsl.DescrFactory;
+import org.drools.modelcompiler.builder.ExecutableModelProject;
 import org.drools.modelcompiler.domain.Person;
 import org.drools.modelcompiler.domain.Result;
 import org.junit.Test;

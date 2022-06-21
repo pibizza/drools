@@ -23,8 +23,6 @@ import org.drools.core.RuleBaseConfiguration;
 import org.drools.kiesession.rulebase.InternalKnowledgeBase;
 import org.drools.kiesession.rulebase.KnowledgeBaseFactory;
 import org.drools.model.Model;
-import org.drools.modelcompiler.CanonicalKiePackages;
-import org.drools.modelcompiler.KiePackagesBuilder;
 import org.kie.api.KieBaseConfiguration;
 import org.kie.api.KieServices;
 import org.kie.api.builder.model.KieBaseModel;

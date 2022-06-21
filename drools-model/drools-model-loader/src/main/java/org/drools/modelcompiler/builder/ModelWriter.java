@@ -26,12 +26,13 @@ import java.util.stream.Collectors;
 import org.drools.compiler.compiler.io.memory.MemoryFileSystem;
 import org.drools.core.util.Drools;
 import org.kie.api.builder.ReleaseId;
-import org.drools.util.PortablePath;
 
-import static org.drools.modelcompiler.CanonicalKieModule.MODEL_VERSION;
-import static org.drools.modelcompiler.CanonicalKieModule.RULE_UNIT_SERVICES_FILE;
-import static org.drools.modelcompiler.CanonicalKieModule.getGeneratedClassNamesFile;
-import static org.drools.modelcompiler.CanonicalKieModule.getModelFileWithGAV;
+import static org.drools.modelcompiler.builder.CanonicalKieModule.MODEL_VERSION;
+import static org.drools.modelcompiler.builder.CanonicalKieModule.RULE_UNIT_SERVICES_FILE;
+import static org.drools.modelcompiler.builder.CanonicalKieModule.getGeneratedClassNamesFile;
+import static org.drools.modelcompiler.builder.CanonicalKieModule.getModelFileWithGAV;
+
+import org.drools.util.PortablePath;
 
 public class ModelWriter {
 

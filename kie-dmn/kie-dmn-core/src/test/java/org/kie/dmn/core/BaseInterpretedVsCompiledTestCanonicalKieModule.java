@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.drools.modelcompiler.CanonicalKieModule;
+import org.drools.modelcompiler.builder.CanonicalKieModule;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;

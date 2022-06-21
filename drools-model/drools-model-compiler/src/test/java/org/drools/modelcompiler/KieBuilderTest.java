@@ -22,6 +22,7 @@ import org.drools.core.reteoo.AlphaNode;
 import org.drools.core.reteoo.EntryPointNode;
 import org.drools.core.reteoo.ObjectTypeNode;
 import org.drools.core.rule.constraint.AlphaNodeFieldConstraint;
+import org.drools.modelcompiler.builder.ExecutableModelProject;
 import org.drools.modelcompiler.constraints.LambdaConstraint;
 import org.junit.Test;
 import org.kie.api.KieServices;

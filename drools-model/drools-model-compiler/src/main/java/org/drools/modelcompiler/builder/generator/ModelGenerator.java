@@ -357,7 +357,7 @@ public class ModelGenerator {
     /**
      * Build a list of method calls, representing each needed {@link org.drools.model.impl.RuleBuilder#metadata(String, Object)}
      * starting from a drools-compiler {@link RuleDescr}.<br/>
-     * Based on {@link org.drools.modelcompiler.KiePackagesBuilder#setRuleMetaAttributes(Rule, RuleImpl)} the reserved annotation keywords are:
+     * Based on {@link org.drools.modelcompiler.builder.KiePackagesBuilder#setRuleMetaAttributes(Rule, RuleImpl)} the reserved annotation keywords are:
      * Propagation, All, Direct.
      */
     private static List<MethodCallExpr> ruleMetaAttributes(RuleContext context, RuleDescr ruleDescr) {
