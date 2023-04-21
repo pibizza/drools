@@ -123,13 +123,11 @@ public class BayesAbsorbtionTest {
         int sepVarNumberOfStates = PotentialMultiplier.createNumberOfStates(sepVars);
         int[] sepVarMultipliers = PotentialMultiplier.createIndexMultipliers(sepVars, sepVarNumberOfStates);
 
-        double v = 0.44;
         updatePotentials(node1.getPotentials(), 0.44, 0.4);
 
         double[] oldSepPotentials = new double[sep.getPotentials().length];
         Arrays.fill(oldSepPotentials, 0.2);
 
-        v = 0.5;
         updatePotentials(sep.getPotentials(), 0.5, 0.5);
 
         BayesAbsorption p = new BayesAbsorption(sepVarPos, oldSepPotentials, sep.getPotentials(), sepVarMultipliers, vars, node1.getPotentials());

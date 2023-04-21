@@ -807,7 +807,7 @@ public class JunctionTreeBuilderTest {
         jtNode = sep.getChild();
         assertThat(jtNode.getBitSet()).isEqualTo(OpenBitSet2);
         assertThat(jtNode.getChildren()).hasSize(1);
-        sep =   jtNode.getChildren().get(0);
+        sep = jtNode.getChildren().get(0);
         assertThat(sep.getParent().getBitSet()).isEqualTo(OpenBitSet2);
         assertThat(sep.getChild().getBitSet()).isEqualTo(OpenBitSet3);
         assertThat(sep.getBitSet()).isEqualTo(intersect2And3);
@@ -906,7 +906,7 @@ public class JunctionTreeBuilderTest {
         jtNode = sep.getChild();
         assertThat(jtNode.getBitSet()).isEqualTo(OpenBitSet2);
         assertThat(jtNode.getChildren()).hasSize(1);
-        sep =   jtNode.getChildren().get(0);
+        sep = jtNode.getChildren().get(0);
         assertThat(sep.getParent().getBitSet()).isEqualTo(OpenBitSet2);
         assertThat(sep.getChild().getBitSet()).isEqualTo(OpenBitSet3);
         assertThat(sep.getBitSet()).isEqualTo(intersect2And3);
@@ -976,7 +976,7 @@ public class JunctionTreeBuilderTest {
         assertThat(jtNode.getBitSet()).isEqualTo(OpenBitSet4);
         assertThat(jtNode.getChildren()).hasSize(1);
         
-        sep =   jtNode.getChildren().get(0);
+        sep = jtNode.getChildren().get(0);
         assertThat(sep.getParent().getBitSet()).isEqualTo(OpenBitSet4);
         assertThat(sep.getChild().getBitSet()).isEqualTo(OpenBitSet3);
         assertThat(sep.getBitSet()).isEqualTo(intersect3And4);

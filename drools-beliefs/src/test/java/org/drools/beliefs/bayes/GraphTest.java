@@ -59,7 +59,7 @@ public class GraphTest {
             assertThat(adjVert).as("does not contain " + ints[i]).contains(ints[i]);
         }
 
-        return   false;
+        return false;
     }
 
 
