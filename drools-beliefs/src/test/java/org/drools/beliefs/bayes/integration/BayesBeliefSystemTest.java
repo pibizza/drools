@@ -34,7 +34,6 @@ import org.junit.Test;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
-import org.kie.api.runtime.conf.BeliefSystemTypeOption;
 import org.kie.api.runtime.rule.FactHandle;
 import org.kie.internal.builder.KnowledgeBuilder;
 import org.kie.internal.builder.KnowledgeBuilderFactory;
@@ -54,48 +53,48 @@ public class BayesBeliefSystemTest {
                      "dialect 'mvel'; \n" +
                      " " +
                      "rule rule1 when " +
-                     "        String( this == 'rule1') \n" +
+                     "        String(this == 'rule1') \n" +
                      "    g : Garden()" +
                      "then " +
                       "    System.out.println(\"rule 1\"); \n" +
-                     "    insertLogical( new PropertyReference(g, 'cloudy'), bsFactory.create( new double[] {1.0,0.0} ) ); \n " +
+                     "    insertLogical(new PropertyReference(g, 'cloudy'), bsFactory.create(new double[] {1.0,0.0})); \n " +
                      "end " +
 
                      "rule rule2 when " +
-                     "        String( this == 'rule2') \n" +
+                     "        String(this == 'rule2') \n" +
                      "    g : Garden()" +
                      "then " +
                      "    System.out.println(\"rule2\"); \n" +
-                     "    insertLogical( new PropertyReference(g, 'sprinkler'), bsFactory.create( new double[] {1.0,0.0} ) ); \n " +
+                     "    insertLogical(new PropertyReference(g, 'sprinkler'), bsFactory.create(new double[] {1.0,0.0})); \n " +
                      "end " +
 
                      "rule rule3 when " +
-                     "        String( this == 'rule3') \n" +
+                     "        String(this == 'rule3') \n" +
                      "    g : Garden()" +
                      "then " +
                      "    System.out.println(\"rule3\"); \n" +
-                     "    insertLogical( new PropertyReference(g, 'sprinkler'), bsFactory.create( new double[] {1.0,0.0} ) ); \n " +
+                     "    insertLogical(new PropertyReference(g, 'sprinkler'), bsFactory.create(new double[] {1.0,0.0})); \n " +
                      "end " +
 
 
                      "rule rule4 when " +
-                     "        String( this == 'rule4') \n" +
+                     "        String(this == 'rule4') \n" +
                      "    g : Garden()" +
                      "then " +
                      "    System.out.println(\"rule4\"); \n" +
-                     "    insertLogical( new PropertyReference(g, 'sprinkler'), bsFactory.create( new double[] {0.0,1.0} ) ); \n " +
+                     "    insertLogical(new PropertyReference(g, 'sprinkler'), bsFactory.create(new double[] {0.0,1.0})); \n " +
                      "end " +
                      "\n";
 
-        StatefulKnowledgeSessionImpl ksession = (StatefulKnowledgeSessionImpl) getSessionFromString( drl );
+        StatefulKnowledgeSessionImpl ksession = (StatefulKnowledgeSessionImpl) getSessionFromString(drl);
 
         NamedEntryPoint ep = (NamedEntryPoint) ksession.getEntryPoint(EntryPointId.DEFAULT.getEntryPointId());
 
-        BayesBeliefSystem bayesBeliefSystem = new BayesBeliefSystem( ep, TruthMaintenanceSystemFactory.get().getOrCreateTruthMaintenanceSystem(ep));
+        BayesBeliefSystem bayesBeliefSystem = new BayesBeliefSystem(ep, TruthMaintenanceSystemFactory.get().getOrCreateTruthMaintenanceSystem(ep));
 
         BayesModeFactoryImpl bayesModeFactory = new BayesModeFactoryImpl(bayesBeliefSystem);
 
-        ksession.setGlobal( "bsFactory", bayesModeFactory);
+        ksession.setGlobal("bsFactory", bayesModeFactory);
 
         BayesRuntime bayesRuntime = ksession.getKieRuntime(BayesRuntime.class);
         BayesInstance<Garden> instance = bayesRuntime.createInstance(Garden.class);
@@ -106,8 +105,8 @@ public class BayesBeliefSystemTest {
         Garden garden = instance.marginalize();
         assertThat(garden.isWetGrass()).isTrue();
 
-        FactHandle fh = ksession.insert( garden );
-        FactHandle fh1 = ksession.insert( "rule1" );
+        FactHandle fh = ksession.insert(garden);
+        FactHandle fh1 = ksession.insert("rule1");
         ksession.fireAllRules();
         assertThat(instance.isDecided()).isTrue();
         instance.globalUpdate(); // rule1 has added evidence, update the bayes network
@@ -115,71 +114,70 @@ public class BayesBeliefSystemTest {
         assertThat(garden.isWetGrass()).isTrue();  // grass was wet before rule1 and continues to be wet
 
 
-        FactHandle fh2 = ksession.insert( "rule2" ); // applies 2 logical insertions
+        FactHandle fh2 = ksession.insert("rule2"); // applies 2 logical insertions
         ksession.fireAllRules();
         assertThat(instance.isDecided()).isTrue();
         instance.globalUpdate();
         garden = instance.marginalize();
-        assertThat(garden.isWetGrass() ).isFalse();  // new evidence means grass is no longer wet
+        assertThat(garden.isWetGrass()).isFalse();  // new evidence means grass is no longer wet
 
-        FactHandle fh3 = ksession.insert( "rule3" ); // adds an additional support for the sprinkler, belief set of 2
+        FactHandle fh3 = ksession.insert("rule3"); // adds an additional support for the sprinkler, belief set of 2
         ksession.fireAllRules();
         assertThat(instance.isDecided()).isTrue();
         instance.globalUpdate();
         garden = instance.marginalize();
-        assertThat(garden.isWetGrass() ).isFalse(); // nothing has changed
+        assertThat(garden.isWetGrass()).isFalse(); // nothing has changed
 
-        FactHandle fh4 = ksession.insert( "rule4" ); // rule4 introduces a conflict, and the BayesFact becomes undecided
+        FactHandle fh4 = ksession.insert("rule4"); // rule4 introduces a conflict, and the BayesFact becomes undecided
         ksession.fireAllRules();
 
         assertThat(instance.isDecided()).isFalse();
         try {
             instance.globalUpdate();
-            fail( "The BayesFact is undecided, it should throw an exception, as it cannot be updated." );
-        } catch ( Exception e ) {
+            fail("The BayesFact is undecided, it should throw an exception, as it cannot be updated.");
+        } catch (Exception e) {
             // this should fail
         }
 
-        ksession.delete( fh4 ); // the conflict is resolved, so it should be decided again
+        ksession.delete(fh4); // the conflict is resolved, so it should be decided again
         ksession.fireAllRules();
         assertThat(instance.isDecided()).isTrue();
         instance.globalUpdate();
         garden = instance.marginalize();
-        assertThat(garden.isWetGrass() ).isFalse();// back to grass is not wet
+        assertThat(garden.isWetGrass()).isFalse();// back to grass is not wet
 
 
-        ksession.delete( fh2 ); // takes the sprinkler belief set back to 1
+        ksession.delete(fh2); // takes the sprinkler belief set back to 1
         ksession.fireAllRules();
         instance.globalUpdate();
         garden = instance.marginalize();
-        assertThat(garden.isWetGrass() ).isFalse(); // still grass is not wet
+        assertThat(garden.isWetGrass()).isFalse(); // still grass is not wet
 
-        ksession.delete( fh3 ); // no sprinkler support now
+        ksession.delete(fh3); // no sprinkler support now
         ksession.fireAllRules();
         instance.globalUpdate();
         garden = instance.marginalize();
         assertThat(garden.isWetGrass()).isTrue(); // grass is wet again
     }
 
-    protected KieSession getSessionFromString( String drlString) {
+    protected KieSession getSessionFromString(String drlString) {
         KnowledgeBuilder kBuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-        kBuilder.add( ResourceFactory.newByteArrayResource(drlString.getBytes()),
-                      ResourceType.DRL );
+        kBuilder.add(ResourceFactory.newByteArrayResource(drlString.getBytes()), ResourceType.DRL);
 
-        kBuilder.add( ResourceFactory.newClassPathResource("Garden.xmlbif", AssemblerTest.class), ResourceType.BAYES );
+        kBuilder.add(ResourceFactory.newClassPathResource("Garden.xmlbif", AssemblerTest.class), ResourceType.BAYES);
 
-        if ( kBuilder.hasErrors() ) {
-            System.err.println( kBuilder.getErrors() );
+        if (kBuilder.hasErrors()) {
+            System.err.println(kBuilder.getErrors());
             fail("Unexpected errors");
         }
 
         InternalKnowledgeBase kBase = KnowledgeBaseFactory.newKnowledgeBase();
-        kBase.addPackages( kBuilder.getKnowledgePackages() );
+        kBase.addPackages(kBuilder.getKnowledgePackages());
 
         KieSessionConfiguration ksConf = RuleBaseFactory.newKnowledgeSessionConfiguration();
         ksConf.as(RuleSessionConfiguration.KEY).setBeliefSystemType(BeliefSystemType.DEFEASIBLE);
 
-        KieSession kSession = kBase.newKieSession( ksConf, null );
+        KieSession kSession = kBase.newKieSession(ksConf, null);
         return kSession;
     }
 }

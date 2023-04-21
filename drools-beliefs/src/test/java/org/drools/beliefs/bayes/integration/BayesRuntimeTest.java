@@ -33,11 +33,11 @@ public class BayesRuntimeTest {
     @Test
     public void testBayesRuntimeManager() throws Exception {
         KnowledgeBuilderImpl kbuilder = new KnowledgeBuilderImpl();
-        kbuilder.add( ResourceFactory.newClassPathResource("Garden.xmlbif", AssemblerTest.class), ResourceType.BAYES );
+        kbuilder.add(ResourceFactory.newClassPathResource("Garden.xmlbif", AssemblerTest.class), ResourceType.BAYES);
 
 
         InternalKnowledgeBase kbase = getKnowledgeBase();
-        kbase.addPackages( kbuilder.getKnowledgePackages() );
+        kbase.addPackages(kbuilder.getKnowledgePackages());
 
         StatefulKnowledgeSessionImpl ksession = (StatefulKnowledgeSessionImpl) kbase.newKieSession();
 

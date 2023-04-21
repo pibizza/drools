@@ -25,7 +25,6 @@ import org.drools.beliefs.bayes.model.XmlBifParser;
 import org.drools.beliefs.graph.GraphNode;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,54 +41,48 @@ public class ParserTest {
         assertThat(network.getName()).isEqualTo("Garden");
         assertThat(network.getProperties().get(0)).isEqualTo("package = org.drools.beliefs.bayes.integration");
 
-        Map<String, Variable> varMap = varToMap( network.getVariables() );
-        assertThat(varMap.size()).isEqualTo(4);
+        Map<String, Variable> varMap = varToMap(network.getVariables());
+        assertThat(varMap).hasSize(4);
 
         Variable var = varMap.get("WetGrass");
         assertThat(var.getName()).isEqualTo("WetGrass");
-        assertThat(var.getOutComes().size()).isEqualTo(2);
-        assertThat(Arrays.asList("false", "true")).isEqualTo(var.getOutComes());
+        assertThat(var.getOutComes()).hasSize(2).containsExactly("false", "true");
         assertThat(var.getProperties().get(0)).isEqualTo("position = (0,10)");
 
         var = varMap.get("Cloudy");
         assertThat(var.getName()).isEqualTo("Cloudy");
-        assertThat(var.getOutComes().size()).isEqualTo(2);
-        assertThat(Arrays.asList("false", "true")).isEqualTo(var.getOutComes());
+        assertThat(var.getOutComes()).hasSize(2).containsExactly("false", "true");
         assertThat(var.getProperties().get(0)).isEqualTo("position = (0,-10)");
 
         var = varMap.get("Sprinkler");
         assertThat(var.getName()).isEqualTo("Sprinkler");
-        assertThat(var.getOutComes().size()).isEqualTo(2);
-        assertThat(Arrays.asList("false", "true")).isEqualTo(var.getOutComes());
+        assertThat(var.getOutComes()).hasSize(2).containsExactly("false", "true");
         assertThat(var.getProperties().get(0)).isEqualTo("position = (13,0)");
 
         var = varMap.get("Rain");
         assertThat(var.getName()).isEqualTo("Rain");
-        assertThat(var.getOutComes().size()).isEqualTo(2);
-        assertThat(Arrays.asList("false", "true")).isEqualTo(var.getOutComes());
+        assertThat(var.getOutComes()).hasSize(2).containsExactly("false", "true");
         assertThat(var.getProperties().get(0)).isEqualTo("position = (-12,0)");
 
-        Map<String, Definition> defMap = defToMap( network.getDefinitions() );
-        assertThat(defMap.size()).isEqualTo(4);
+        Map<String, Definition> defMap = defToMap(network.getDefinitions());
+        assertThat(defMap).hasSize(4);
 
-        Definition def = defMap.get( "WetGrass");
+        Definition def = defMap.get("WetGrass");
         assertThat(def.getName()).isEqualTo("WetGrass");
-        assertThat(def.getGiven().size()).isEqualTo(2);
-        assertThat(Arrays.asList("Sprinkler", "Rain")).isEqualTo(def.getGiven());
+        assertThat(def.getGiven()).hasSize(2).containsExactly("Sprinkler", "Rain");
         assertThat(def.getProbabilities()).isEqualTo("1.0 0.0 0.1 0.9 0.1 0.9 0.01 0.99");
 
-        def = defMap.get( "Cloudy");
+        def = defMap.get("Cloudy");
         assertThat(def.getName()).isEqualTo("Cloudy");
         assertThat(def.getGiven()).isNull();
         assertThat(def.getProbabilities().trim()).isEqualTo("0.5 0.5");
 
-        def = defMap.get( "Sprinkler");
+        def = defMap.get("Sprinkler");
         assertThat(def.getName()).isEqualTo("Sprinkler");
-        assertThat(def.getGiven().size()).isEqualTo(1);
-        assertThat(def.getGiven().get(0)).isEqualTo("Cloudy");
+        assertThat(def.getGiven()).hasSize(1).containsExactly("Cloudy");
         assertThat(def.getProbabilities().trim()).isEqualTo("0.5 0.5 0.9 0.1");
 
-        def = defMap.get( "Rain");
+        def = defMap.get("Rain");
         assertThat(def.getName()).isEqualTo("Rain");
         assertThat(def.getGiven()).isNull();
         assertThat(def.getProbabilities().trim()).isEqualTo("0.5 0.5");
@@ -99,57 +92,51 @@ public class ParserTest {
     public void testSprinklerBuildBayesNework() {
         Bif bif = XmlBifParser.loadBif(ParserTest.class.getResource("Garden.xmlbif"));
 
-        BayesNetwork network = XmlBifParser.buildBayesNetwork( bif );
+        BayesNetwork network = XmlBifParser.buildBayesNetwork(bif);
         Map<String, GraphNode<BayesVariable>> map = nodeToMap(network);
 
-        GraphNode<BayesVariable> node = map.get( "WetGrass" );
-        BayesVariable wetGrass = node.getContent();
-        assertThat(Arrays.asList(wetGrass.getOutcomes())).isEqualTo(Arrays.asList("false", "true"));
-        assertThat(wetGrass.getGiven().length).isEqualTo(2);
-        assertThat(Arrays.asList("Sprinkler", "Rain")).isEqualTo(Arrays.asList(wetGrass.getGiven()));
-        assertThat(Arrays.deepEquals(new double[][]{{1.0, 0.0}, {0.1, 0.9}, {0.1, 0.9}, {0.01, 0.99}}, wetGrass.getProbabilityTable())).isTrue();
+        BayesVariable wetGrass = map.get("WetGrass").getContent();
+        assertThat(wetGrass.getOutcomes()).containsExactly("false", "true");
+        assertThat(wetGrass.getGiven()).hasSize(2).containsExactly("Sprinkler", "Rain");
+        assertThat(wetGrass.getProbabilityTable()).isDeepEqualTo(new double[][]{{1.0, 0.0}, {0.1, 0.9}, {0.1, 0.9}, {0.01, 0.99}});    
 
-        node = map.get( "Sprinkler" );
-        BayesVariable sprinkler = node.getContent();
-        assertThat(Arrays.asList(sprinkler.getOutcomes())).isEqualTo(Arrays.asList("false", "true"));
-        assertThat(sprinkler.getGiven().length).isEqualTo(1);
-        assertThat(sprinkler.getGiven()[0]).isEqualTo("Cloudy");
-        assertThat(Arrays.deepEquals(new double[][]{{0.5, 0.5}, {0.9, 0.1}}, sprinkler.getProbabilityTable())).isTrue();
+        BayesVariable sprinkler = map.get("Sprinkler").getContent();
+        assertThat(sprinkler.getOutcomes()).containsExactly("false", "true");
+        assertThat(sprinkler.getGiven()).hasSize(1).containsExactly("Cloudy");
+        assertThat(sprinkler.getProbabilityTable()).isDeepEqualTo(new double[][]{{0.5, 0.5}, {0.9, 0.1}});    
 
-        node = map.get( "Cloudy" );
-        BayesVariable cloudy = node.getContent();
-        assertThat(Arrays.asList(cloudy.getOutcomes())).isEqualTo(Arrays.asList("false", "true"));
-        assertThat(cloudy.getGiven().length).isEqualTo(0);
-        assertThat(Arrays.deepEquals(new double[][]{{0.5, 0.5}}, cloudy.getProbabilityTable())).isTrue();
+        BayesVariable cloudy = map.get("Cloudy").getContent();
+        assertThat(cloudy.getOutcomes()).containsExactly("false", "true");
+        assertThat(cloudy.getGiven()).hasSize(0);
+        assertThat(cloudy.getProbabilityTable()).isDeepEqualTo(new double[][]{{0.5, 0.5}});
 
-        node = map.get( "Rain" );
-        BayesVariable rain = node.getContent();
-        assertThat(Arrays.asList(rain.getOutcomes())).isEqualTo(Arrays.asList("false", "true"));
-        assertThat(rain.getGiven().length).isEqualTo(0);
-        assertThat(Arrays.deepEquals(new double[][]{{0.5, 0.5}}, rain.getProbabilityTable())).isTrue();
+        BayesVariable rain = map.get("Rain").getContent();
+        assertThat(rain.getOutcomes()).containsExactly("false", "true");
+        assertThat(rain.getGiven()).hasSize(0);
+        assertThat(cloudy.getProbabilityTable()).isDeepEqualTo(new double[][]{{0.5, 0.5}});    
     }
 
     Map<String, GraphNode<BayesVariable>> nodeToMap(BayesNetwork network) {
-        Map<String, GraphNode<BayesVariable>> map = new HashMap<String, GraphNode<BayesVariable>>();
-        for ( GraphNode<BayesVariable> node : network ) {
-            map.put( node.getContent().getName(), node );
+        Map<String, GraphNode<BayesVariable>> map = new HashMap<>();
+        for (GraphNode<BayesVariable> node : network) {
+            map.put(node.getContent().getName(), node);
         }
         return map;
     }
 
 
     public Map<String, Variable> varToMap(List<Variable> list) {
-        Map<String, Variable> map = new HashMap<String, Variable>();
-        for ( Variable var : list ) {
-            map.put( var.getName(), var );
+        Map<String, Variable> map = new HashMap<>();
+        for (Variable var : list) {
+            map.put(var.getName(), var);
         }
         return map;
     }
 
     public Map<String, Definition> defToMap(List<Definition> list) {
-        Map<String, Definition> map = new HashMap<String, Definition>();
-        for ( Definition def : list ) {
-            map.put( def.getName(), def );
+        Map<String, Definition> map = new HashMap<>();
+        for (Definition def : list) {
+            map.put(def.getName(), def);
         }
         return map;
     }
