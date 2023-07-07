@@ -87,15 +87,20 @@ public class AccumulateTest extends BaseModelTest {
 
         KieSession ksession = getKieSession( str );
 
-        ksession.insert(new Person("Mark", 37));
-        ksession.insert(new Person("Edson", 35));
-        ksession.insert(new Person("Mario", 40));
+        FactHandle mark = ksession.insert(new Person("Mark", 37));
+        FactHandle edson = ksession.insert(new Person("Edson", 35));
+        FactHandle mario = ksession.insert(new Person("Mario", 40));
 
         ksession.fireAllRules();
 
-        Collection<Result> results = getObjectsIntoList(ksession, Result.class);
-        assertThat(results.size()).isEqualTo(1);
-        assertThat(results.iterator().next().getValue()).isEqualTo(77);
+        ksession.update(mario, new Person("Mario", 41));
+        ksession.update(mark, new Person("Mark", 38));
+
+        ksession.fireAllRules();
+
+        ArrayList<Result> results = (ArrayList<Result>) getObjectsIntoList(ksession, Result.class);
+        assertThat(results.size()).isEqualTo(2);
+        assertThat(results.stream().map(Result::getValue)).containsExactlyInAnyOrder(77, 79);
     }
 
     @Test
