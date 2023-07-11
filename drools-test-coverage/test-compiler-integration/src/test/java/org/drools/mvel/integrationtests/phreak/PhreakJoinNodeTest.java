@@ -76,14 +76,14 @@ public class PhreakJoinNodeTest {
         wm = (InternalWorkingMemory) KnowledgeBaseFactory.newKnowledgeBase(buildContext.getRuleBase()).newKieSession();
 
         bm = (BetaMemory)  wm.getNodeMemory( joinNode );
-        
+
         bm0 =(BetaMemory)  wm.getNodeMemory( sinkNode );
-        
+
         smem = proto1.newSegmentMemory(wm);
         bm.setSegmentMemory( smem );
-        
+
         smem0 = proto2.newSegmentMemory(wm);
-        bm0.setSegmentMemory( smem0 );       
+        bm0.setSegmentMemory( smem0 );
         smem.add( smem0 );
 
     }

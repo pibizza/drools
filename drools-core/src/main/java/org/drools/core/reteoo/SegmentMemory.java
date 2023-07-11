@@ -480,7 +480,12 @@ public class SegmentMemory extends LinkedList<SegmentMemory>
                 mem.setSegmentMemory(smem);
                 MemoryPrototype proto = memories[i];
                 if (proto != null) {
-                    proto.populateMemory(reteEvaluator, mem);
+                    // TODO Luca not sure this is useful
+                    if(mem instanceof AccumulateNode.AccumulateMemory) {
+                        proto.populateMemory(reteEvaluator, ((AccumulateNode.AccumulateMemory) mem).getBetaMemory());
+                    } else {
+                        proto.populateMemory(reteEvaluator, mem);
+                    }
                 }
             }
             smem.setNodeMemories(nodeMemories);

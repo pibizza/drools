@@ -18,10 +18,12 @@ package org.drools.mvel.integrationtests.phreak;
 import org.drools.core.common.InternalWorkingMemory;
 import org.drools.core.common.TupleSets;
 import org.drools.core.common.TupleSetsImpl;
+import org.drools.core.phreak.PhreakAccumulateNode;
 import org.drools.core.phreak.PhreakExistsNode;
 import org.drools.core.phreak.PhreakJoinNode;
 import org.drools.core.phreak.PhreakNotNode;
 import org.drools.core.phreak.SegmentPropagator;
+import org.drools.core.reteoo.AccumulateNode;
 import org.drools.core.reteoo.BetaMemory;
 import org.drools.core.reteoo.BetaNode;
 import org.drools.core.reteoo.ExistsNode;
@@ -49,6 +51,7 @@ public class Scenario {
     BetaNode              betaNode;
     LeftTupleSink         sinkNode;
     BetaMemory            bm;
+    AccumulateNode.AccumulateMemory am;
     InternalWorkingMemory wm;
 
     TupleSets<LeftTuple>  leftTuples;
@@ -87,6 +90,15 @@ public class Scenario {
         this.bm.setStagedRightTuples(rightRuples);
         this.leftMemory = new ArrayList<LeftTuple>();
         this.rightMemory = new ArrayList<RightTuple>();
+    }
+
+    public Scenario(Class phreakNode,
+                    BetaNode betaNode,
+                    LeftTupleSink sinkNode,
+                    AccumulateNode.AccumulateMemory am,
+                    InternalWorkingMemory wm) {
+        this(phreakNode, betaNode, sinkNode, am.getBetaMemory(), wm);
+        this.am = am;
     }
 
     public StagedBuilder getExpectedResultBuilder() {
@@ -184,11 +196,15 @@ public class Scenario {
         } else if ( phreakNode == PhreakExistsNode.class ) {
             new PhreakExistsNode().doNode( (ExistsNode) betaNode, sinkNode,
                                            bm, wm, leftTuples, actualResultLeftTuples, previousResultTuples );            
+        }   else if ( phreakNode == PhreakAccumulateNode.class ) {
+            new PhreakAccumulateNode().doNode((AccumulateNode) betaNode, sinkNode,
+                                              am, wm, leftTuples, actualResultLeftTuples, previousResultTuples );
         }
         
         if ( expectedResultBuilder != null ) {
-            assertEquals( expectedResultBuilder.get(), actualResultLeftTuples, 
-                          expectedResultBuilder.isTestStagedInsert(),  expectedResultBuilder.isTestStagedDelete(),  expectedResultBuilder.isTestStagedUpdate() );
+            TupleSets<LeftTuple> expected = expectedResultBuilder.get();
+            assertEquals(expected, actualResultLeftTuples,
+                         expectedResultBuilder.isTestStagedInsert(), expectedResultBuilder.isTestStagedDelete(), expectedResultBuilder.isTestStagedUpdate() );
         }                     
         
         if ( !preStagedBuilders.isEmpty() ) {
@@ -315,11 +331,17 @@ public class Scenario {
             actual = actual.getParent();
         }
 
-        // A LeftTuple is  only the same if it has the same hashCode, factId and parent
-        return expected.hashCode() == actual.hashCode() &&
-               expected.getFactHandle() == actual.getFactHandle() &&
-               equals( expected.getParent(), actual.getParent() );
+        if(am == null) { // join node
 
+            // A LeftTuple is  only the same if it has the same hashCode, factId and parent
+            return expected.hashCode() == actual.hashCode() &&
+                    expected.getFactHandle() == actual.getFactHandle() &&
+                    equals(expected.getParent(), actual.getParent());
+        } else { // accumulate result, FactHandle is newly created by AccumulateHandle so we can't expect id to be stable
+            boolean wrappedFactEquals = expected.getFactHandle().getObject().equals(actual.getFactHandle().getObject());
+            boolean parentEquals = equals(expected.getParent(), actual.getParent());
+            return wrappedFactEquals && parentEquals;
+        }
     }
 
     public void equalsLeftMemory(List<LeftTuple> leftTuples) {
