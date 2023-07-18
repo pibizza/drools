@@ -72,6 +72,9 @@ public class Scenario {
     private boolean testLeftMemory;
     private boolean testRightMemory;
 
+    // Disable all assertions. Useful to avoid polluting benchmark with equals
+    private boolean assertEnabled = true;
+
     public Scenario(Class phreakNode,
                     BetaNode betaNode,
                     LeftTupleSink sinkNode,
@@ -182,6 +185,10 @@ public class Scenario {
         return rightMemory;
     }
 
+    public void setAssertEnabled(boolean assertEnabled) {
+        this.assertEnabled = assertEnabled;
+    }
+
     public Scenario run() {
         previousResultTuples = bm.getSegmentMemory().getFirst().getStagedLeftTuples();
         actualResultLeftTuples = new TupleSetsImpl<LeftTuple>();
@@ -203,34 +210,43 @@ public class Scenario {
         
         if ( expectedResultBuilder != null ) {
             TupleSets<LeftTuple> expected = expectedResultBuilder.get();
-            assertEquals(expected, actualResultLeftTuples,
-                         expectedResultBuilder.isTestStagedInsert(), expectedResultBuilder.isTestStagedDelete(), expectedResultBuilder.isTestStagedUpdate() );
+            if(assertEnabled) {
+                assertEquals(expected, actualResultLeftTuples,
+                             expectedResultBuilder.isTestStagedInsert(), expectedResultBuilder.isTestStagedDelete(), expectedResultBuilder.isTestStagedUpdate());
+            }
         }                     
         
         if ( !preStagedBuilders.isEmpty() ) {
             for ( StagedBuilder stagedBuilder : preStagedBuilders ) {
                 TupleSets<LeftTuple> expected = stagedBuilder.get();
                 TupleSets<LeftTuple> actual = stagedBuilder.getSegmentMemory().getStagedLeftTuples();
-                
-                assertEquals( expected, actual, stagedBuilder.isTestStagedInsert(), stagedBuilder.isTestStagedDelete(), stagedBuilder.isTestStagedUpdate() );    
+
+                if(assertEnabled) {
+                    assertEquals(expected, actual, stagedBuilder.isTestStagedInsert(), stagedBuilder.isTestStagedDelete(), stagedBuilder.isTestStagedUpdate());
+                }
             }
         }        
         
         SegmentMemory smem = bm.getSegmentMemory();
         SegmentPropagator.propagate(smem, actualResultLeftTuples, wm);
-        if ( testLeftMemory ) {
-            equalsLeftMemory( leftMemory );
+
+        if(assertEnabled) {
+            if (testLeftMemory) {
+                equalsLeftMemory(leftMemory);
+            }
+            if (testRightMemory) {
+                equalsRightMemory(rightMemory);
+            }
         }
-        if ( testRightMemory) {
-            equalsRightMemory( rightMemory );
-        }  
         
         if ( !postStagedBuilders.isEmpty() ) {
             for ( StagedBuilder stagedBuilder : postStagedBuilders ) {
                 TupleSets<LeftTuple> expected = stagedBuilder.get();
                 TupleSets<LeftTuple> actual = stagedBuilder.getSegmentMemory().getStagedLeftTuples();
-                
-                assertEquals( expected, actual, stagedBuilder.isTestStagedInsert(), stagedBuilder.isTestStagedDelete(), stagedBuilder.isTestStagedUpdate() );    
+
+                if(assertEnabled) {
+                    assertEquals(expected, actual, stagedBuilder.isTestStagedInsert(), stagedBuilder.isTestStagedDelete(), stagedBuilder.isTestStagedUpdate());
+                }
             }
         }
         

@@ -3,6 +3,7 @@ package org.drools.mvel.integrationtests.phreak;
 import java.util.concurrent.TimeUnit;
 
 import org.drools.base.reteoo.NodeTypeEnums;
+import org.drools.core.common.InternalFactHandle;
 import org.drools.core.common.InternalWorkingMemory;
 import org.drools.core.common.TupleSets;
 import org.drools.core.phreak.PhreakAccumulateNode;
@@ -47,10 +48,13 @@ public class PhreakAccumulateNodeBenchmark {
     A a2;
     A a3;
     A a4;
+    A a5;
 
     B b0;
 
     int expectedResult;
+    private int expectedUpdateResult1;
+    private int expectedUpdateResult2;
 
     public PhreakAccumulateNodeBenchmark() {
 
@@ -63,11 +67,13 @@ public class PhreakAccumulateNodeBenchmark {
         a2 = A.a(2);
         a3 = A.a(3);
         a4 = A.a(4);
+        a5 = A.a(5);
         b0 = B.b(0);
 
         expectedResult = 10;
 
-        System.out.println("+++++ SETUP");
+        expectedUpdateResult1 = 15;
+        expectedUpdateResult2 = 17;
 
         setupAccumulateNode();
 
@@ -111,7 +117,7 @@ public class PhreakAccumulateNodeBenchmark {
     @BenchmarkMode(Mode.Throughput)
     @Warmup(iterations = 10, time = 400, timeUnit = TimeUnit.MILLISECONDS)
     @Measurement(iterations = 10, time = 100, timeUnit = TimeUnit.MILLISECONDS)
-    public Object constraintEvaluation() {
+    public Object benchmarkInsert() {
 
         Scenario test = new Scenario(PhreakAccumulateNode.class, accumulateNode, sinkNode, this.sam, wm);
 
@@ -131,5 +137,50 @@ public class PhreakAccumulateNodeBenchmark {
 
         return actualResultLeftTuples;
 
+    }
+
+    @Benchmark
+    @Fork(value = 3)
+    @BenchmarkMode(Mode.Throughput)
+    @Warmup(iterations = 10, time = 400, timeUnit = TimeUnit.MILLISECONDS)
+    @Measurement(iterations = 10, time = 100, timeUnit = TimeUnit.MILLISECONDS)
+    public Object benchmarkUpdate() {
+        Scenario test = new Scenario(PhreakAccumulateNode.class, accumulateNode, sinkNode, this.sam, wm);
+        test.setAssertEnabled(false);
+
+        int expectedResult = expectedUpdateResult1;
+        wm.insert(expectedResult);
+
+        test.left().insert(b0)// Left is usually InitialFactHandle
+                .right().insert(a0, a1, a2, a3, a4, a5)
+                .preStaged(smem0).insert( )
+                .delete( )
+                .update( )
+                .postStaged(smem0)
+                .delete( )
+                .update( )
+                .run();
+
+        Scenario testUpdate = new Scenario(PhreakAccumulateNode.class, accumulateNode, sinkNode, this.sam, wm);
+        testUpdate.setAssertEnabled(false);
+
+        InternalFactHandle fh = wm.getFactHandle(a0);
+        wm.getObjectStore().updateHandle( fh, a2 );
+
+        int updatedExpectedResult = expectedUpdateResult2; // a0 becomes 2
+        wm.insert(updatedExpectedResult);
+
+        testUpdate.right().update(a2)
+                .preStaged(smem0).insert( )
+                .delete( )
+                .update( )
+                .postStaged(smem0).update( t(b0, updatedExpectedResult) )
+                .delete( )
+                .update( )
+                .run();
+
+        wm.reset();
+
+        return testUpdate;
     }
 }
