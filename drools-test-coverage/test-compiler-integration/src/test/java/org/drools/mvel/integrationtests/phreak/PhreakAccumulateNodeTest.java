@@ -16,6 +16,7 @@
 package org.drools.mvel.integrationtests.phreak;
 
 import org.drools.base.reteoo.NodeTypeEnums;
+import org.drools.core.common.InternalFactHandle;
 import org.drools.core.common.InternalWorkingMemory;
 import org.drools.core.phreak.PhreakAccumulateNode;
 import org.drools.core.reteoo.AccumulateNode;
@@ -50,6 +51,7 @@ public class PhreakAccumulateNodeTest {
     A a2 = A.a(2);
     A a3 = A.a(3);
     A a4 = A.a(4);
+    A a5 = A.a(5);
 
     B b0 = B.b(0);
 
@@ -89,20 +91,58 @@ public class PhreakAccumulateNodeTest {
     }
 
     @Test
-    public void testAccumulate() {
+    public void testAccumulateInsert() {
         setupAccumulateNode();
 
         Scenario test = new Scenario(PhreakAccumulateNode.class, accumulateNode, sinkNode, this.sam, wm);
 
-        wm.insert(10);
+        int expectedResult = 10;
+        wm.insert(expectedResult);
 
         test
             .left().insert(b0)// Left is usually InitialFactHandle
             .right().insert(a0, a1, a2, a3, a4)
-            .result().insert(t(b0, 10))
+            .result().insert(t(b0, expectedResult))
             .left(b0) // are left memories needed?
             .right(a0, a1, a2, a3, a4) // are right memories needed?
             .run().getActualResultLeftTuples().resetAll();
+    }
+
+    @Test
+    public void testUpdate() {
+        setupAccumulateNode();
+
+        Scenario test = new Scenario(PhreakAccumulateNode.class, accumulateNode, sinkNode, this.sam, wm);
+
+        int expectedResult = 15;
+        wm.insert(expectedResult);
+
+        test.left().insert(b0)// Left is usually InitialFactHandle
+                .right().insert(a0, a1, a2, a3, a4, a5)
+                .preStaged(smem0).insert( )
+                .delete( )
+                .update( )
+                .postStaged(smem0)
+                .delete( )
+                .update( )
+                .run();
+
+        Scenario testUpdate = new Scenario(PhreakAccumulateNode.class, accumulateNode, sinkNode, this.sam, wm);
+
+        InternalFactHandle fh = wm.getFactHandle(a0);
+        wm.getObjectStore().updateHandle( fh, a2 );
+
+        int updatedExpectedResult = 17; // a0 becomes 2
+        wm.insert(updatedExpectedResult);
+
+        testUpdate.right().update(a2)
+                .preStaged(smem0).insert( )
+                .delete( )
+                .update( )
+                .postStaged(smem0).update( t(b0, updatedExpectedResult) )
+                .delete( )
+                .update( )
+                .run();
     }
 
 }
