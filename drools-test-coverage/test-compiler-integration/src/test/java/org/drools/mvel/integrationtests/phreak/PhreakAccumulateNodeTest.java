@@ -18,11 +18,22 @@ package org.drools.mvel.integrationtests.phreak;
 import org.drools.base.reteoo.NodeTypeEnums;
 import org.drools.core.common.InternalFactHandle;
 import org.drools.core.common.InternalWorkingMemory;
+import org.drools.core.common.TupleSets;
+import org.drools.core.common.TupleSetsImpl;
 import org.drools.core.phreak.PhreakAccumulateNode;
+import org.drools.core.phreak.PhreakExistsNode;
+import org.drools.core.phreak.PhreakJoinNode;
+import org.drools.core.phreak.PhreakNotNode;
+import org.drools.core.phreak.SegmentPropagator;
 import org.drools.core.reteoo.AccumulateNode;
 import org.drools.core.reteoo.BetaMemory;
+import org.drools.core.reteoo.ExistsNode;
 import org.drools.core.reteoo.JoinNode;
+import org.drools.core.reteoo.JoinNodeLeftTuple;
+import org.drools.core.reteoo.LeftTuple;
 import org.drools.core.reteoo.LeftTupleNode;
+import org.drools.core.reteoo.NotNode;
+import org.drools.core.reteoo.RightTupleImpl;
 import org.drools.core.reteoo.SegmentMemory;
 import org.drools.core.reteoo.SegmentMemory.BetaMemoryPrototype;
 import org.drools.core.reteoo.SegmentMemory.MemoryPrototype;
@@ -94,7 +105,7 @@ public class PhreakAccumulateNodeTest {
     public void testAccumulateInsert() {
         setupAccumulateNode();
 
-        Scenario test = new Scenario(PhreakAccumulateNode.class, accumulateNode, sinkNode, this.sam, wm);
+        Scenario test = new Scenario(PhreakAccumulateNode.class, accumulateNode, sinkNode, sam, wm);
 
         int expectedResult = 10;
         wm.insert(expectedResult);
@@ -104,9 +115,38 @@ public class PhreakAccumulateNodeTest {
             .right().insert(a0, a1, a2, a3, a4)
             .result().insert(t(b0, expectedResult))
             .left(b0) // are left memories needed?
-            .right(a0, a1, a2, a3, a4) // are right memories needed?
-            .run().getActualResultLeftTuples().resetAll();
+            .right(a0, a1, a2, a3, a4);
+        
+		TupleSets<LeftTuple> previousResultTuples = bm.getSegmentMemory().getFirst().getStagedLeftTuples();
+		TupleSetsImpl<LeftTuple> actualResultLeftTuples = new TupleSetsImpl<LeftTuple>();
+		
+	    new PhreakAccumulateNode().doNode(accumulateNode, sinkNode,
+	                                      sam, wm, test.leftTuples, actualResultLeftTuples, previousResultTuples );
+		
+	    TupleSets<LeftTuple> expected = test.expectedResultBuilder.get();
+	    
+	    test.assertEqualsInsert(expected, actualResultLeftTuples);
+		
+		SegmentMemory smem = bm.getSegmentMemory();
+		SegmentPropagator.propagate(smem, actualResultLeftTuples, wm);
+		
+	    test.equalsLeftMemory(test.leftMemory);
+	    test.equalsRightMemory(test.rightMemory);
     }
+    
+    public TupleSetsImpl<LeftTuple> leftTuples(Object... objects) {        
+		TupleSetsImpl<LeftTuple> leftTuples = new TupleSetsImpl<LeftTuple>();
+        
+        for ( int i = 0; i < objects.length; i++ ) {
+                Object o1 = objects[i];
+                InternalFactHandle fh1 = wm.getFactHandle(o1);
+                LeftTuple leftTuple = new JoinNodeLeftTuple( fh1, sinkNode, true );
+                leftTuples.addInsert( leftTuple );
+        }
+
+        return leftTuples;
+    }    
+    
 
     @Test
     public void testUpdate() {

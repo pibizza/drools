@@ -270,6 +270,60 @@ public class Scenario {
         addPostStagedBuilder( stagedBuilder );
         return stagedBuilder;        
     }      
+    
+    public void assertEqualsInsert(TupleSets<LeftTuple> expected,
+                             TupleSets<LeftTuple> actual) {
+        if ( expected.getInsertFirst() != null ) {
+            Tuple expectedTuple = expected.getInsertFirst();
+            Tuple actualTuple = actual.getInsertFirst();        
+            int i = 0;
+            for ( ; expectedTuple != null; expectedTuple = expectedTuple.getStagedNext() ) {
+                assertThat(equals(expectedTuple, actualTuple)).as("insert " + i + ":\n" + actualTuple + "\nis not the expected\n" + expectedTuple).isTrue();
+                actualTuple = actualTuple.getStagedNext();
+                i++;
+            }
+            assertThat(actualTuple).as("Insert excpected more").isNull();
+        } else if ( actual.getInsertFirst() != null ) {
+            fail( "Expected nothing, but insert existed" );
+        }
+    	
+    	
+    }
+    
+    public void assertEqualsDelete(TupleSets<LeftTuple> expected, TupleSets<LeftTuple> actual) {
+        if ( expected.getDeleteFirst() != null ) {        
+            Tuple expectedTuple = expected.getDeleteFirst();
+            Tuple actualTuple = actual.getDeleteFirst();
+            int i = 0;
+            for ( ; expectedTuple != null; expectedTuple = expectedTuple.getStagedNext() ) {
+                assertThat(equals(expectedTuple, actualTuple)).as("delete " + i + ":\n" + actualTuple + "\nis not the expected\n" + expectedTuple).isTrue();
+                actualTuple = actualTuple.getStagedNext();
+                i++;
+            }
+            assertThat(actualTuple).as("Delete excpected more").isNull();
+        } else if ( actual.getDeleteFirst() != null ) {
+            fail( "Expected nothing, but delete existed" );
+        }    	
+    	
+    }
+    
+    public void assertEqualsUpdate(TupleSets<LeftTuple> expected, TupleSets<LeftTuple> actual) {
+        if ( expected.getUpdateFirst() != null ) {
+            Tuple expectedTuple = expected.getUpdateFirst();
+            Tuple actualTuple = actual.getUpdateFirst();
+            int i = 0;
+            for ( ; expectedTuple != null; expectedTuple = expectedTuple.getStagedNext() ) {
+                assertThat(equals(expectedTuple, actualTuple)).as("update " + i + ":\n" + actualTuple + "\nis not the expected\n" + expectedTuple).isTrue();
+                actualTuple = actualTuple.getStagedNext();
+                i++;
+            }
+            assertThat(actualTuple).as("Update excpected more").isNull();
+        } else if ( actual.getUpdateFirst() != null ) {
+            fail( "Expected nothing, but update existed" );
+        }   	
+    	
+    }
+    
 
     public void assertEquals(TupleSets<LeftTuple> expected,
                              TupleSets<LeftTuple> actual,
@@ -329,6 +383,8 @@ public class Scenario {
         }
 
     }
+    
+    
 
     public boolean equals(final Tuple expected, Tuple actual) {
         // we know the object is never null and always of the  type LeftTuple
