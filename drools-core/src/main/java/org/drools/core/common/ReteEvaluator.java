@@ -45,7 +45,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Consumer;
 
-public interface ReteEvaluator extends ValueResolver {
+public interface ReteEvaluator extends ValueResolver, SimpleWorkingMemory {
 
     enum InternalOperationType{ FIRE, INSERT, UPDATE, DELETE, SET_GLOBAL }
 
@@ -64,10 +64,6 @@ public interface ReteEvaluator extends ValueResolver {
     default WorkingMemoryEntryPoint getDefaultEntryPoint() {
         return getEntryPoint(getDefaultEntryPointId().getEntryPointId());
     }
-
-    <T extends Memory> T getNodeMemory(MemoryFactory<T> node);
-
-    NodeMemories getNodeMemories();
 
     default Object getGlobal(String identifier) {
         return getGlobalResolver().resolveGlobal( identifier );

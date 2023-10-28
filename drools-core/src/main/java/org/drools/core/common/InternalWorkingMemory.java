@@ -46,8 +46,6 @@ public interface InternalWorkingMemory
     void setAgendaEventSupport(AgendaEventSupport agendaEventSupport);
 
     void clearNodeMemory(MemoryFactory node);
-    
-    NodeMemories getNodeMemories();
 
     default FactHandleClassStore getStoreForClass(Class<?> clazz) {
         return getObjectStore().getStoreForClass(clazz);

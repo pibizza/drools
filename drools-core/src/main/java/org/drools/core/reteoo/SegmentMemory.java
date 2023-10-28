@@ -22,6 +22,7 @@ import org.drools.base.reteoo.NodeTypeEnums;
 import org.drools.core.common.Memory;
 import org.drools.core.common.MemoryFactory;
 import org.drools.core.common.ReteEvaluator;
+import org.drools.core.common.SimpleWorkingMemory;
 import org.drools.core.common.TupleSets;
 import org.drools.core.common.TupleSetsImpl;
 import org.drools.core.phreak.BuildtimeSegmentUtilities;
@@ -75,7 +76,7 @@ public class SegmentMemory extends LinkedList<SegmentMemory>
         this.proto = new SegmentPrototype(rootNode, null);
     }
 
-    public <T extends Memory> T createNodeMemory(MemoryFactory<T> memoryFactory, ReteEvaluator reteEvaluator) {
+    public <T extends Memory> T createNodeMemory(MemoryFactory<T> memoryFactory, SimpleWorkingMemory reteEvaluator) {
         return reteEvaluator.getNodeMemory(memoryFactory);
     }
 

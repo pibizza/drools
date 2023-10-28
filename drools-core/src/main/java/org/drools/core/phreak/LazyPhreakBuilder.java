@@ -29,6 +29,7 @@ import org.drools.core.common.MemoryFactory;
 import org.drools.core.common.PropagationContext;
 import org.drools.core.common.PropagationContextFactory;
 import org.drools.core.common.ReteEvaluator;
+import org.drools.core.common.SimpleWorkingMemory;
 import org.drools.core.common.TupleSets;
 import org.drools.core.impl.InternalRuleBase;
 import org.drools.core.reteoo.AbstractTerminalNode;
@@ -1502,26 +1503,26 @@ class LazyPhreakBuilder implements PhreakBuilder {
         return ! queryNode.getQueryElement().isAbductive();
     }
 
-    private static void processFromNode(MemoryFactory tupleSource, ReteEvaluator reteEvaluator, SegmentMemory smem, List<Memory> memories) {
+    private static void processFromNode(MemoryFactory tupleSource, SimpleWorkingMemory reteEvaluator, SegmentMemory smem, List<Memory> memories) {
         Memory mem = smem.createNodeMemory(tupleSource, reteEvaluator);
         memories.add(mem);
         mem.setSegmentMemory(smem);
     }
 
-    private static void processAsyncSendNode(MemoryFactory tupleSource, ReteEvaluator reteEvaluator, SegmentMemory smem, List<Memory> memories) {
+    private static void processAsyncSendNode(MemoryFactory tupleSource, SimpleWorkingMemory reteEvaluator, SegmentMemory smem, List<Memory> memories) {
         Memory mem = smem.createNodeMemory(tupleSource, reteEvaluator);
         mem.setSegmentMemory(smem);
         memories.add(mem);
     }
 
-    private static void processAsyncReceiveNode(AsyncReceiveNode tupleSource, ReteEvaluator reteEvaluator, SegmentMemory smem, List<Memory> memories, long nodePosMask) {
+    private static void processAsyncReceiveNode(AsyncReceiveNode tupleSource, SimpleWorkingMemory reteEvaluator, SegmentMemory smem, List<Memory> memories, long nodePosMask) {
         AsyncReceiveNode.AsyncReceiveMemory tnMem = smem.createNodeMemory( tupleSource, reteEvaluator );
         memories.add(tnMem);
         tnMem.setNodePosMaskBit(nodePosMask);
         tnMem.setSegmentMemory(smem);
     }
 
-    private static void processReactiveFromNode(MemoryFactory tupleSource, ReteEvaluator reteEvaluator, SegmentMemory smem, List<Memory> memories, long nodePosMask) {
+    private static void processReactiveFromNode(MemoryFactory tupleSource, SimpleWorkingMemory reteEvaluator, SegmentMemory smem, List<Memory> memories, long nodePosMask) {
         FromNode.FromMemory mem = ((FromNode.FromMemory) smem.createNodeMemory(tupleSource, reteEvaluator));
         memories.add(mem);
         mem.setSegmentMemory(smem);
