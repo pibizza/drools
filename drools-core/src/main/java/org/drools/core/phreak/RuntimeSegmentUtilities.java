@@ -144,9 +144,9 @@ public class RuntimeSegmentUtilities {
     }
 
     public static SegmentMemory createChildSegment(ReteEvaluator reteEvaluator, SimpleWorkingMemory workingMemory, LeftTupleNode node) {
-        Memory memory = reteEvaluator.getNodeMemory((MemoryFactory) node);
+        Memory memory = workingMemory.getNodeMemory((MemoryFactory) node);
         if (memory.getSegmentMemory() == null) {
-            getOrCreateSegmentMemory(memory, node, reteEvaluator, reteEvaluator);
+            getOrCreateSegmentMemory(memory, node, reteEvaluator, workingMemory);
         }
         return memory.getSegmentMemory();
     }
