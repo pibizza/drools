@@ -26,6 +26,7 @@ import org.drools.core.common.BetaConstraints;
 import org.drools.core.common.Memory;
 import org.drools.base.common.NetworkNode;
 import org.drools.core.common.ReteEvaluator;
+import org.drools.core.common.SimpleWorkingMemory;
 import org.drools.core.common.TupleSets;
 import org.drools.core.common.TupleSetsImpl;
 import org.drools.core.reteoo.AbstractTerminalNode;
@@ -641,7 +642,7 @@ public class RuleNetworkEvaluator {
                    subLts, activationsManager, stack, true, executor );
     }
 
-    private void doRiaNode2(ReteEvaluator reteEvaluator,
+    private void doRiaNode2(SimpleWorkingMemory reteEvaluator,
                             TupleSets<LeftTuple> srcTuples,
                             RightInputAdapterNode riaNode) {
 

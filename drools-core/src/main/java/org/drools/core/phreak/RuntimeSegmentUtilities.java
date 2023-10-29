@@ -23,6 +23,7 @@ import org.drools.base.rule.constraint.QueryNameConstraint;
 import org.drools.core.common.Memory;
 import org.drools.core.common.MemoryFactory;
 import org.drools.core.common.ReteEvaluator;
+import org.drools.core.common.SimpleWorkingMemory;
 import org.drools.core.reteoo.AlphaNode;
 import org.drools.core.reteoo.BetaNode;
 import org.drools.core.reteoo.LeftInputAdapterNode;
@@ -48,13 +49,14 @@ public class RuntimeSegmentUtilities {
      * Initialises the NodeSegment memory for all nodes in the segment.
      */
     public static SegmentMemory getOrCreateSegmentMemory(LeftTupleNode node, ReteEvaluator reteEvaluator) {
-        return getOrCreateSegmentMemory(reteEvaluator.getNodeMemory((MemoryFactory<? extends Memory>) node), node, reteEvaluator);
+        return getOrCreateSegmentMemory(reteEvaluator.getNodeMemory((MemoryFactory<? extends Memory>) node), node, reteEvaluator, reteEvaluator);
     }
 
     /**
      * Initialises the NodeSegment memory for all nodes in the segment.
+     * @param workingMemory TODO
      */
-    public static SegmentMemory getOrCreateSegmentMemory(Memory memory, LeftTupleNode node, ReteEvaluator reteEvaluator) {
+    public static SegmentMemory getOrCreateSegmentMemory(Memory memory, LeftTupleNode node, ReteEvaluator reteEvaluator, SimpleWorkingMemory workingMemory) {
         SegmentMemory smem = memory.getSegmentMemory();
         if ( smem != null ) {
             return smem;
@@ -66,7 +68,7 @@ public class RuntimeSegmentUtilities {
         smem = restoreSegmentFromPrototype(reteEvaluator, segmentRoot);
         if ( smem != null ) {
             if (NodeTypeEnums.isBetaNode(segmentRoot) && segmentRoot.isRightInputIsRiaNode()) {
-                createRiaSegmentMemory((BetaNode) segmentRoot, reteEvaluator);
+                createRiaSegmentMemory((BetaNode) segmentRoot, reteEvaluator, workingMemory);
             }
             return smem;
         }
@@ -104,27 +106,27 @@ public class RuntimeSegmentUtilities {
         return smem;
     }
 
-    public static SegmentMemory getQuerySegmentMemory(ReteEvaluator reteEvaluator, QueryElementNode queryNode) {
+    public static SegmentMemory getQuerySegmentMemory(ReteEvaluator reteEvaluator, SimpleWorkingMemory workingMemory, QueryElementNode queryNode) {
         ObjectTypeNode queryOtn = reteEvaluator.getDefaultEntryPoint().getEntryPointNode().getQueryNode();
         LeftInputAdapterNode liaNode = getQueryLiaNode(queryNode.getQueryElement().getQueryName(), queryOtn);
-        LiaNodeMemory liam = reteEvaluator.getNodeMemory(liaNode);
+        LiaNodeMemory liam = workingMemory.getNodeMemory(liaNode);
         SegmentMemory querySmem = liam.getSegmentMemory();
         if (querySmem == null) {
-            querySmem = getOrCreateSegmentMemory(liam, liaNode, reteEvaluator);
+            querySmem = getOrCreateSegmentMemory(liam, liaNode, reteEvaluator, workingMemory);
         }
         return querySmem;
     }
 
-    static RightInputAdapterNode createRiaSegmentMemory( BetaNode betaNode, ReteEvaluator reteEvaluator ) {
+    static RightInputAdapterNode createRiaSegmentMemory( BetaNode betaNode, ReteEvaluator reteEvaluator, SimpleWorkingMemory workingMemory ) {
         RightInputAdapterNode riaNode = (RightInputAdapterNode) betaNode.getRightInput();
 
         LeftTupleSource subnetworkLts = riaNode.getStartTupleSource();
 
-        Memory rootSubNetwokrMem = reteEvaluator.getNodeMemory( (MemoryFactory) subnetworkLts );
+        Memory rootSubNetwokrMem = workingMemory.getNodeMemory( (MemoryFactory) subnetworkLts );
         SegmentMemory subNetworkSegmentMemory = rootSubNetwokrMem.getSegmentMemory();
         if (subNetworkSegmentMemory == null) {
             // we need to stop recursion here
-            getOrCreateSegmentMemory(rootSubNetwokrMem, subnetworkLts, reteEvaluator);
+            getOrCreateSegmentMemory(rootSubNetwokrMem, subnetworkLts, reteEvaluator, workingMemory);
         }
         return riaNode;
     }
@@ -135,16 +137,16 @@ public class RuntimeSegmentUtilities {
         }
         for (LeftTupleSinkNode sink = sinkProp.getFirstLeftTupleSink(); sink != null; sink = sink.getNextLeftTupleSinkNode()) {
             SegmentMemory childSmem = PhreakBuilder.isEagerSegmentCreation() ?
-                    createChildSegment(reteEvaluator, sink) :
+                    createChildSegment(reteEvaluator, reteEvaluator, sink) :
                     LazyPhreakBuilder.createChildSegment(reteEvaluator, sink);
             smem.add(childSmem);
         }
     }
 
-    public static SegmentMemory createChildSegment(ReteEvaluator reteEvaluator, LeftTupleNode node) {
+    public static SegmentMemory createChildSegment(ReteEvaluator reteEvaluator, SimpleWorkingMemory workingMemory, LeftTupleNode node) {
         Memory memory = reteEvaluator.getNodeMemory((MemoryFactory) node);
         if (memory.getSegmentMemory() == null) {
-            getOrCreateSegmentMemory(memory, node, reteEvaluator);
+            getOrCreateSegmentMemory(memory, node, reteEvaluator, reteEvaluator);
         }
         return memory.getSegmentMemory();
     }

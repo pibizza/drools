@@ -25,6 +25,7 @@ import java.util.List;
 import org.drools.core.common.ActivationsManager;
 import org.drools.core.common.Memory;
 import org.drools.core.common.ReteEvaluator;
+import org.drools.core.common.SimpleWorkingMemory;
 import org.drools.core.common.TupleSets;
 import org.drools.core.common.TupleSetsImpl;
 import org.drools.core.reteoo.AbstractTerminalNode;
@@ -84,7 +85,7 @@ public class TupleEvaluationUtil {
         }
     }
 
-    public static List<PathMemory> findPathsToFlushFromRia(ReteEvaluator reteEvaluator, PathMemory pmem) {
+    public static List<PathMemory> findPathsToFlushFromRia(SimpleWorkingMemory reteEvaluator, PathMemory pmem) {
         List<PathMemory> paths = null;
         if (pmem.isDataDriven() && pmem.getNodeType() == NodeTypeEnums.RightInputAdapterNode) {
             for (PathEndNode pnode : pmem.getPathEndNode().getPathEndNodes()) {

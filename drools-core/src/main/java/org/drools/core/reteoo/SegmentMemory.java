@@ -751,7 +751,7 @@ public class SegmentMemory extends LinkedList<SegmentMemory>
         @Override
         public void populateMemory(ReteEvaluator reteEvaluator, Memory mem) {
             QueryElementNodeMemory qmem = (QueryElementNodeMemory)  mem;
-            SegmentMemory querySmem = getQuerySegmentMemory(reteEvaluator, queryNode);
+            SegmentMemory querySmem = getQuerySegmentMemory(reteEvaluator, reteEvaluator, queryNode);
             qmem.setQuerySegmentMemory(querySmem);
             qmem.setNodePosMaskBit(nodePosMaskBit);
         }

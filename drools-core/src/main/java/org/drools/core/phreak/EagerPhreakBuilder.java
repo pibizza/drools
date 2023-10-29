@@ -598,7 +598,7 @@ public class EagerPhreakBuilder implements PhreakBuilder {
                     if (parentMem != null && parentMem.getSegmentMemory() != null &&
                         !parentMem.getSegmentMemory().isEmpty()) {
                         SegmentMemory sm = parentMem.getSegmentMemory();
-                        SegmentMemory childSmem = RuntimeSegmentUtilities.createChildSegment(wm, child);
+                        SegmentMemory childSmem = RuntimeSegmentUtilities.createChildSegment(wm, wm, child);
                         sm.add(childSmem);
                         sm.notifyRuleLinkSegment(wm);
                         notifyImpactedSegments(sm, wm, smemsToNotify);

@@ -22,6 +22,7 @@ import org.drools.core.common.ActivationsManager;
 import org.drools.core.common.InternalFactHandle;
 import org.drools.base.common.NetworkNode;
 import org.drools.core.common.ReteEvaluator;
+import org.drools.core.common.SimpleWorkingMemory;
 import org.drools.core.phreak.PhreakRuleTerminalNode;
 import org.drools.core.phreak.RuleAgendaItem;
 import org.drools.core.phreak.RuleExecutor;
@@ -98,7 +99,7 @@ public class AlphaTerminalNode extends LeftInputAdapterNode {
         PhreakRuleTerminalNode.doLeftDelete( activationsManager, getRuleAgendaItem( reteEvaluator, activationsManager, rtn, false ).getRuleExecutor(), leftTuple );
     }
 
-    public static RuleAgendaItem getRuleAgendaItem(ReteEvaluator reteEvaluator, ActivationsManager activationsManager, TerminalNode rtn, boolean linkPmem ) {
+    public static RuleAgendaItem getRuleAgendaItem(SimpleWorkingMemory reteEvaluator, ActivationsManager activationsManager, TerminalNode rtn, boolean linkPmem ) {
         PathMemory pathMemory = reteEvaluator.getNodeMemory( rtn );
         if (linkPmem) {
             pathMemory.doLinkRule( activationsManager );

@@ -1494,7 +1494,7 @@ class LazyPhreakBuilder implements PhreakBuilder {
 
     private static boolean processQueryNode(QueryElementNode queryNode, ReteEvaluator reteEvaluator, LeftTupleSource segmentRoot, SegmentMemory smem, List<Memory> memories, long nodePosMask) {
         // Initialize the QueryElementNode and have it's memory reference the actual query SegmentMemory
-        SegmentMemory querySmem = getQuerySegmentMemory(reteEvaluator, queryNode);
+        SegmentMemory querySmem = getQuerySegmentMemory(reteEvaluator, reteEvaluator, queryNode);
         QueryElementNode.QueryElementNodeMemory queryNodeMem = smem.createNodeMemory(queryNode, reteEvaluator);
         queryNodeMem.setNodePosMaskBit(nodePosMask);
         queryNodeMem.setQuerySegmentMemory(querySmem);
@@ -1579,7 +1579,7 @@ class LazyPhreakBuilder implements PhreakBuilder {
         bm.setSegmentMemory(smem);
 
         if (betaNode.isRightInputIsRiaNode()) {
-            RightInputAdapterNode riaNode = createRiaSegmentMemory( betaNode, reteEvaluator );
+            RightInputAdapterNode riaNode = createRiaSegmentMemory( betaNode, reteEvaluator, reteEvaluator );
 
             PathMemory riaMem = reteEvaluator.getNodeMemory(riaNode);
             bm.setRiaRuleMemory((RiaPathMemory) riaMem);
