@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.drools.core.io.impl;
+package org.drools.io;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

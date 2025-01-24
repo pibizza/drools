@@ -47,6 +47,11 @@
       <artifactId>drools-model-compiler</artifactId>
       <version>${org.kie.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-wiring-static</artifactId>
+      <version>${org.kie.version}</version>
+    </dependency>
   </dependencies>
 
   <modules>

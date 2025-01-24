@@ -16,13 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.drools.core.util;
+package org.drools.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.StringReader;
 
-import org.drools.io.ReaderInputStream;
-import org.drools.util.IoUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,7 +30,7 @@ public class IoUtilsTest {
     @Test
     public void testReadEmptyStream() throws IOException {
         // DROOLS-971
-        byte[] bytes = IoUtils.readBytesFromInputStream( new ReaderInputStream( new StringReader( "" ) ) );
+        byte[] bytes = IoUtils.readBytesFromInputStream( ByteArrayInputStream.nullInputStream());
         assertThat(bytes).isEmpty();
     }
 
