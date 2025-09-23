@@ -453,8 +453,8 @@ public class PhreakTimerNode {
         }
 
         RuleNetworkEvaluator.INSTANCE.outerEval(pmem, sink, bit, tm,
-                                                smems, smemIndex, trgLeftTuples,
-                                                activationsManager, true, pmem.getRuleAgendaItem().getRuleExecutor());
+                                                smemIndex, trgLeftTuples, activationsManager,
+                                                true, pmem.getRuleAgendaItem().getRuleExecutor());
     }
 
     public static class TimerNodeJobContext

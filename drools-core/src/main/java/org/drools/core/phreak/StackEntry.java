@@ -39,7 +39,6 @@ public class StackEntry extends AbstractLinkedListNode<StackEntry> {
     private final LeftTupleSinkNode    sink;
     private final PathMemory           pmem;
     private final Memory               nodeMem;
-    private final SegmentMemory[]      smems;
     private final int                  smemIndex;
     private final TupleSets trgTuples;
     private final boolean              resumeFromNextNode;
@@ -51,7 +50,6 @@ public class StackEntry extends AbstractLinkedListNode<StackEntry> {
                       LeftTupleSinkNode sink,
                       PathMemory pmem,
                       Memory nodeMem,
-                      SegmentMemory[] smems,
                       int smemIndex,
                       TupleSets trgTuples,
                       boolean resumeFromNextNode,
@@ -61,7 +59,6 @@ public class StackEntry extends AbstractLinkedListNode<StackEntry> {
         this.sink = sink;
         this.pmem = pmem;
         this.nodeMem = nodeMem;
-        this.smems = smems;
         this.smemIndex = smemIndex;
         this.trgTuples = trgTuples;
         this.resumeFromNextNode = resumeFromNextNode;
@@ -85,7 +82,7 @@ public class StackEntry extends AbstractLinkedListNode<StackEntry> {
     }
 
     public SegmentMemory[] getSmems() {
-        return smems;
+        return pmem.getSegmentMemories();
     }
 
     public int getSmemIndex() {
