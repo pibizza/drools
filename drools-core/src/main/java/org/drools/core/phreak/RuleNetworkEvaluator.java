@@ -493,6 +493,7 @@ public class RuleNetworkEvaluator {
                                                    smemIndex, trgTuples, true, true);
 
             stack.add(stackEntry);
+            System.out.println(stackEntry.getRmem());
 
             pQueryNode.doNode(qnode, (QueryElementNodeMemory) nodeMem, stackEntry,
                     reteEvaluator, srcTuples, trgTuples, stagedLeftTuples);
@@ -534,6 +535,7 @@ public class RuleNetworkEvaluator {
                     log.trace("{} ORQueue branch={} {} {}", indent(offset), i, stackEntry.getNode().toString(), trgTuples.toStringSizes());
                 }
                 stack.add(stackEntry);
+                System.out.println(stackEntry.getRmem());
             }
             return true;
         } else {
